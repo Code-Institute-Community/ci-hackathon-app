@@ -3,5 +3,5 @@ env.py
 *.py[cod]
 __pycache__/
 *.sqlite3
-static/
-media/
+# static/
+# media/
