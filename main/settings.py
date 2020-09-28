@@ -71,11 +71,12 @@ WSGI_APPLICATION = "main.wsgi.application"
 
 
 if "DATABASE_URL" in os.environ:
+    print("Postgres DATABASE_URL found.")
     DATABASES = {
         "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
     }
 else:
-    print("Postgres URL not found, using sqlite3 instead")
+    print("Postgres DATABASE_URL not found, using db.sqlite3")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
