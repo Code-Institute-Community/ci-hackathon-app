@@ -91,14 +91,14 @@ xx
 *Palette*: **Secondary Colors**
 
 | `--s-grey` | `--s-yellow` | `--s-pink` | `--s-teal` |
-| :---: | :---: | :---: | :---: | :---: |
+| :---: | :---: | :---: | :---: |
 | ![#E6ECF0](https://placehold.it/15/E6ECF0/E6ECF0) | ![#EFB920](https://placehold.it/15/EFB920/EFB920) | ![#FF5A60](https://placehold.it/15/FF5A60/FF5A60) | ![#23BBBB](https://placehold.it/15/23BBBB/23BBBB) |
 | #E6ECF0 | #EFB920 | #FF5A60 | #23BBBB |
 
 *Palette*: **Tertiary Colors**
 
 | `--t-grey` |
-| :---: | :---: | :---: | :---: | :---: |
+| :---: |
 | ![#E0E7FF](https://placehold.it/15/E0E7FF/E0E7FF) |
 | #E0E7FF |
 
