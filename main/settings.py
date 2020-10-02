@@ -1,10 +1,10 @@
 import os
-if os.path.exists("env.py"):
-    import env
+if os.path.exists(".env"):
+    from dotenv import load_dotenv
+    load_dotenv()
     DEBUG = True
 else:
     DEBUG = False
-    # STATICFILES_STORAGE = "custom_storages.StaticStorage"
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
