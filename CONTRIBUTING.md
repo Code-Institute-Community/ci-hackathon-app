@@ -50,10 +50,10 @@ By contributing to Code Institute, you agree that your contributions will be lic
 
 ## Contributors
 
-***We :heart: Contributions!**
+**WE :heart: CONTRIBUTIONS!**
 
-Thank You to all contributors:
+Thank You to our contributors:
 
-||||||
-|:---:|:---:|:---:|:---:|:---:|
+||||
+|:---:|:---:|:---:|
 |![TravelTimN](https://avatars0.githubusercontent.com/u/41592028?s=100)<br>[Tim Nelson](https://github.com/TravelTimN)|![stefdworschak](https://avatars3.githubusercontent.com/u/31205982?s=100)<br>[Stefan Dworschak](https://github.com/stefdworschak)|![Your Name Here](https://avatars0.githubusercontent.com/u/583231?s=100)<br>Your Name Here|
