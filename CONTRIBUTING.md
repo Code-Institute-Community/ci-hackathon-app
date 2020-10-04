@@ -42,6 +42,11 @@ All active development of this project happens on GitHub. We actively welcome yo
 6. Assign yourself as the **Assignee** on the PR.
 7. Assign the **help wanted** label to your PR.
 8. Assign the appropriate **Project** to your PR.
+9. If contributing to specific User Stories, please be sure to include the appropriate User Story ID.
+    - **#M01** (Miscellaneous User Story #01)
+    - **#P02** (Participant User Story #02)
+    - **#S03** (Staff User Story #03)
+    - **#A04** (Admin User Story #04)
 
 ---
 
