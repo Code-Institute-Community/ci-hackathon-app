@@ -34,6 +34,15 @@ The [GitHub Issues](https://github.com/Code-Institute-Community/ci-hackathon-app
 
 All active development of this project happens on GitHub. We actively welcome your [pull requests](https://github.com/Code-Institute-Community/ci-hackathon-app/pulls)! For information on how to create a pull request, please refer to this [GitHub article](https://help.github.com/articles/creating-a-pull-request).
 
+1. Follow the steps for [Development](https://github.com/Code-Institute-Community/ci-hackathon-app/wiki/Development).
+2. If you've added code that should be tested, please attempt to add the required tests.
+3. Make sure you address any known issues/bugs/warnings/errors.
+4. If you make visual changes, please include tested screenshots.
+5. If you make any existing code better, please let us know in your PR description.
+6. Assign yourself as the **Assignee** on the PR.
+7. Assign the **help wanted** label to your PR.
+8. Assign the appropriate **Project** to your PR.
+
 ---
 
 ## Commit Messages
