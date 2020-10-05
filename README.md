@@ -4,6 +4,8 @@
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Code-Institute-Community/ci-hackathon-app)
 
+**WE :heart: CONTRIBUTIONS!**
+
 This project is a community effort, and everyone is welcome to contribute!
 
 Full details can be found on the **[CONTRIBUTING.md](CONTRIBUTING.md)** page, with additional information located on the **[Development Wiki](https://github.com/Code-Institute-Community/ci-hackathon-app/wiki/Development)** page.
@@ -44,7 +46,10 @@ Please refer to the **[Testing Wiki](https://github.com/Code-Institute-Community
 ## User Stories
 
 Please refer to the **[User Stories Wiki](https://github.com/Code-Institute-Community/ci-hackathon-app/wiki/User-Stories)** for information about:
-- **User Stories**
+- **Participant User Stories**
+- **Staff User Stories**
+- **Admin User Stories**
+- **Miscellaneous User Stories**
 
 ---
 
@@ -52,15 +57,6 @@ Please refer to the **[User Stories Wiki](https://github.com/Code-Institute-Comm
 
 Please refer to the **[Wireframes Wiki](https://github.com/Code-Institute-Community/ci-hackathon-app/wiki/Wireframes)** for information about:
 - **Wireframes**
-
----
-
-## Acknowledgements
-
-We appreciate all contributions, and want to give a special thanks to everyone involved!
-
-- [Tim Nelson](https://github.com/TravelTimN)
-- [Stefan Dworschak](https://github.com/stefdworschak)
 
 ---
 
