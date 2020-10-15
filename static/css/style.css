@@ -1,0 +1,74 @@
+:root {
+    /* P = Primary | S = Secondary | T = Tertiary */
+    --p-orange: #E84610;
+    --p-blue: #009FE3;
+    --p-grey: #4A4A4F;
+    --p-navy: #445261;
+    --p-red: #D63649;
+    --s-grey: #E6ECF0;
+    --s-yellow: #EFB920;
+    --s-pink: #FF5A60;
+    --s-teal: #23BBBB;
+    --t-grey: #E0E7FF;
+    --white: #FFFFFF;
+    --black: #000000;
+    --bg-grey: #F5F5F5;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: Montserrat, sans-serif;
+    background-color: var(--bg-grey);
+    color: var(--p-grey);
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: var(--white);
+    box-shadow: 0 2px 9px 0 rgba(0, 0, 0, .2);
+}
+
+.navbar-brand {
+    background: url("../img/ci-logo.svg") no-repeat center;
+    height: 40px;
+    width: 200px;
+}
+
+.navbar-nav .nav-item {
+    margin: 0 1em;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: var(--p-orange);
+}
+
+/* MAIN */
+main {
+    margin-top: 2em;
+    flex: 1 0 auto;
+}
+
+/* BUTTONS */
+.btn-ci {
+    background-color: transparent;
+    color: var(--p-orange);
+    border: 3px solid var(--p-orange);
+    transition: all .4s;
+}
+
+.btn-ci:hover {
+    background-color: var(--p-orange);
+    color: var(--s-grey);
+}
+
+/* FOOTER */
+footer {
+    flex-shrink: 0;
+    color: var(--s-grey);
+    background-color: var(--p-grey);
+}
