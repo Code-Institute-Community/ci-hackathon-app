@@ -12,7 +12,7 @@ class Hackathon(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
-                                   related_name="hackathon_created")
+                                   related_name="hackathon_created_by")
     display_name = models.CharField(default="", max_length=254)
     description = models.TextField()
     start_date = models.DateTimeField()
@@ -34,3 +34,23 @@ class Hackathon(models.Model):
                                   blank=True,
                                   on_delete=models.SET_NULL,
                                   related_name="hackathon_organiser")
+
+
+class HackAwardCategory(models.Model):
+    """Model representing a Hackathon. It is connected by a foreign key to 
+    Users and HackProject."""
+    created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User,
+                                   on_delete=models.CASCADE,
+                                   related_name="hackawardcategory_created_by")
+    display_name = models.CharField(default="", max_length=254)
+    description = models.TextField()
+    # winning_project = models.OneToOne("HackProject",
+    #                            null=True,
+    #                            blank=True,
+    #                            on_delete=models.SET_NULL)
+
+    class Meta:
+        verbose_name_plural = "Hack award categories"
+
