@@ -3,14 +3,15 @@ from django import forms
 from .models import Submission
 
 class SubmissionForm(forms.ModelForm):
-    model = Submission
-    fields = ('team_name', 'team_speaker','repo_url','deployed_url')
+    class Meta:
+        model = Submission
+        fields = ('team_name', 'speaker_name','repo_url','deployed_url')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         placeholders = {
             'team_name': 'Team Name',
-            'team_speaker': 'Speaker Name',
+            'speaker_name': 'Speaker Name',
             'repo_url': 'Github Repository URL',
             'deployed_url': 'Deployed URL',
         }

@@ -3,10 +3,10 @@
 
 {% block content %}
 
-    <!-- TO DO - help wanted -->
-    <h1>TO DO : home > templates > home > index.html</h1>
-    <a class="btn btn-ci" href="{% url 'home' %}">Sample Button</a>
-    <br>
-    <small>custom class: <strong>btn-ci</strong></small>
+<form id="submission_form" method="POST">
+    {% csrf_token %}
+    {{ submission_form.team_name | as_crispy_field }}
+    <button class="btn button-main btn-block" type="submit">Send</button>
+</form>
 
 {% endblock %}
