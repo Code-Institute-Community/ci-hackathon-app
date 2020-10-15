@@ -4,5 +4,8 @@ env.py
 *.py[cod]
 __pycache__/
 *.sqlite3
+.venv
+venv/
+env/
 # static/
 # media/
