@@ -95,3 +95,18 @@ class HackProject(models.Model):
                                blank=True,
                                on_delete=models.SET_NULL,
                                related_name="hackproject_mentor")
+
+
+class HackProjectScore(models.Model):
+    """Model representing a HackProject. It is connected by a foreign key to 
+    User and HackProjectScore. Optional Fields: mentor."""
+    created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User,
+                                   on_delete=models.CASCADE,
+                                   related_name="hackprojectscore_created_by")
+    judge = models.ForeignKey(User, on_delete=models.CASCADE)
+    # score = models.ForignKey("HackProjectScoreCategory",
+    #                            null=True,
+    #                            blank=True,
+    #                            on_delete=models.SET_NULL)
