@@ -5,6 +5,15 @@ from django.contrib.auth.models import User
 
 # Commented out fields be added when the other models are finished.
 
+# Optional fields are ony set to deal with user deletion issues.
+# If this isn't a problem, they can all be changed to required fields.
+
+# The "updated" field isn't editable in admin. Neither is "submission" field.
+
+# When it seemed relevant, I moved the ForeignKey field to another model and
+# used the one listed in the schema as the related_name. I may have been
+# erroneous to do so but it can be corrected easily.
+
 
 # Create your models here.
 class Hackathon(models.Model):
@@ -19,14 +28,6 @@ class Hackathon(models.Model):
     description = models.TextField()
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    # awards = models.ForeignKey("HackAwardCategory",
-    #                            null=True,
-    #                            blank=True,
-    #                            on_delete=models.SET_NULL)
-    # teams = models.OneToOne("HackTeam",
-    #                            null=True,
-    #                            blank=True,
-    #                            on_delete=models.SET_NULL)
     judges = models.ManyToManyField(User,
                                     blank=True,
                                     related_name='hackathon_judges')
@@ -35,6 +36,9 @@ class Hackathon(models.Model):
                                   blank=True,
                                   on_delete=models.SET_NULL,
                                   related_name="hackathon_organiser")
+
+    def __str__(self):
+        return self.display_name
 
 
 class HackAwardCategory(models.Model):
@@ -47,10 +51,16 @@ class HackAwardCategory(models.Model):
                                    related_name="hackawardcategory_created_by")
     display_name = models.CharField(default="", max_length=254)
     description = models.TextField()
-    # winning_project = models.OneToOne("HackProject",
-    #                            null=True,
-    #                            blank=True,
-    #                            on_delete=models.SET_NULL)
+    hackathon = models.ForeignKey("Hackathon",
+                                  on_delete=models.CASCADE,
+                                  related_name="awards")
+    winning_project = models.OneToOneField("HackProject",
+                                           null=True,
+                                           blank=True,
+                                           on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.display_name
 
     class Meta:
         verbose_name_plural = "Hack award categories"
@@ -65,12 +75,19 @@ class HackTeam(models.Model):
                                    on_delete=models.CASCADE,
                                    related_name="hackteam_created_by")
     display_name = models.CharField(default="", max_length=254)
+    # It may be necessary to alter User model?
     participants = models.ManyToManyField(User,
                                           related_name='hackteam')
-    # winning_project = models.OneToOne("HackProject",
-    #                            null=True,
-    #                            blank=True,
-    #                            on_delete=models.SET_NULL)
+    hackathon = models.ForeignKey("Hackathon",
+                                  on_delete=models.CASCADE,
+                                  related_name="teams")
+    project = models.OneToOneField("HackProject",
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.display_name
 
 
 class HackProject(models.Model):
@@ -86,15 +103,14 @@ class HackProject(models.Model):
     github_link = models.CharField(default="", max_length=255)
     collab_link = models.CharField(default="", max_length=255)
     submission_time = models.DateTimeField(auto_now_add=True)
-    # scores = models.ForignKey("HackProjectScore",
-    #                            null=True,
-    #                            blank=True,
-    #                            on_delete=models.SET_NULL)
     mentor = models.ForeignKey(User,
                                null=True,
                                blank=True,
                                on_delete=models.SET_NULL,
                                related_name="hackproject_mentor")
+
+    def __str__(self):
+        return self.display_name
 
 
 class HackProjectScore(models.Model):
@@ -105,22 +121,30 @@ class HackProjectScore(models.Model):
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
                                    related_name="hackprojectscore_created_by")
-    judge = models.ForeignKey(User, on_delete=models.CASCADE)
-    # score = models.ForignKey("HackProjectScoreCategory",
-    #                            null=True,
-    #                            blank=True,
-    #                            on_delete=models.SET_NULL)
+    judge = models.OneToOneField(User, on_delete=models.CASCADE)
+    project = models.ForeignKey("HackProject",
+                                on_delete=models.CASCADE,
+                                related_name="scores")
+    score = models.ForeignKey("HackProjectScoreCategory",
+                              on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.project}, {self.judge}'
 
 
 class HackProjectScoreCategory(models.Model):
-    """Model representing a HackProject. It is connected by a foreign key to 
-    User and HackProjectScore. Optional Fields: mentor."""
+    """Model representing a HackProjectScoreCategory. It is connected by a
+    foreign key to User."""
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
-                                   related_name="hackprojectscore_created_by")
-    category = models.IntegerField()
+                                   related_name="hackprojectscorecategory_created_by")  # NOQA E501
+    category = models.CharField(default="", max_length=255)
+    score = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.category}, {self.score}'
 
     class Meta:
         verbose_name_plural = "Hack project score categories"
