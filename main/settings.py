@@ -9,7 +9,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = "DEVELOPMENT" in os.environ
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 host = os.environ.get("SITE_NAME")
 if host:
     ALLOWED_HOSTS.append(host)
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "home",
     "profiles",
     "crispy_forms",
+    "submissions",
 ]
 
 MIDDLEWARE = [
