@@ -2,7 +2,7 @@
 
 We welcome contributions and assistance! If you want to know where to start, check out our [GitHub Projects](https://github.com/Code-Institute-Community/ci-hackathon-app/projects?query=is%3Aopen+sort%3Aname-asc) page.
 
-If you want to add a new feature that isn't currently listed in our Projects, that's great, but make sure you submit feature requests with that in mind. Otherwise, feel free to contribute to any [open Project](https://github.com/Code-Institute-Community/ci-hackathon-app/projects?query=is%3Aopen+sort%3Aname-asc)!
+Sometimes we might forget something, so if you want to add a new feature that isn't currently listed in our Projects, that's great! Make sure to open a [New Issue](https://github.com/Code-Institute-Community/ci-hackathon-app/issues/new), with as much information as possible about the feature you'd like to work on, or needs improvements. Otherwise, feel free to contribute to any [open Project](https://github.com/Code-Institute-Community/ci-hackathon-app/projects?query=is%3Aopen+sort%3Aname-asc)!
 
 ---
 
@@ -50,11 +50,16 @@ Example - Staff User Story #03:
 All active development of this project happens on GitHub. We actively welcome your [pull requests](https://github.com/Code-Institute-Community/ci-hackathon-app/pulls)! For information on how to create a pull request, please refer to this [GitHub article](https://help.github.com/articles/creating-a-pull-request).
 
 1. Follow the steps for [Development](https://github.com/Code-Institute-Community/ci-hackathon-app/wiki/Development). _**IMPORTANT**_!
-2. If you've added code that should be tested, please attempt to add the required tests.
-3. Make sure you address any known issues/bugs/warnings/errors.
-4. If you make visual changes, please include tested screenshots.
-5. If you make any existing code better, please let us know in your PR description.
-6. If contributing to specific User Stories, please be sure to include the appropriate User Story ID.
+2. From your forked repo, the PR should look something like this:
+- *base repository*: **Code-Institute-Community/ci-hackathon-app**
+- *base*: **master**
+- *head repository*: **your-own-account/forked repo**
+- *compare*: **your-own-branch**
+3. If you've added code that should be tested, please attempt to add the required tests.
+4. Make sure you address any known issues/bugs/warnings/errors.
+5. If you make visual changes, please include tested screenshots.
+6. If you make any existing code better, please let us know in your PR description.
+7. If contributing to specific User Stories, please be sure to include the appropriate User Story ID.
     - **#M01** (Miscellaneous User Story #01)
     - **#P02** (Participant User Story #02)
     - **#S03** (Staff User Story #03)
