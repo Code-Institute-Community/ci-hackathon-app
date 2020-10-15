@@ -3,11 +3,13 @@ from django.utils import timezone
 
 from django.contrib.auth.models import User
 
+# Commented out fields be added when the other models are finished.
+
 
 # Create your models here.
 class Hackathon(models.Model):
     """Model representing a Hackathon. It is connected by a foreign key to 
-    Users, HackAwards and HackTeam."""
+    Users, HackAwards and HackTeam. Optional Fields: judges, organiser"""
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User,
@@ -17,7 +19,6 @@ class Hackathon(models.Model):
     description = models.TextField()
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    # To be added when the other models are added.
     # awards = models.ForeignKey("HackAwardCategory",
     #                            null=True,
     #                            blank=True,
@@ -54,3 +55,20 @@ class HackAwardCategory(models.Model):
     class Meta:
         verbose_name_plural = "Hack award categories"
 
+
+class HackTeam(models.Model):
+    """Model representing a Hackathon. It is connected by a foreign key to 
+    Users and HackProject. Optional Fields: participants"""
+    created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User,
+                                   on_delete=models.CASCADE,
+                                   related_name="hackteam_created_by")
+    display_name = models.CharField(default="", max_length=254)
+    participants = models.ManyToManyField(User,
+                                          blank=True,
+                                          related_name='hackteam')
+    # winning_project = models.OneToOne("HackProject",
+    #                            null=True,
+    #                            blank=True,
+    #                            on_delete=models.SET_NULL)
