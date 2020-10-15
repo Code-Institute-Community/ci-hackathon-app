@@ -13,7 +13,7 @@ If you want to add a new feature that isn't currently listed in our Projects, th
 ---
 
 ## Projects & Issues
-
+ 
 Since this is a new app being developed, we ask that contributors take a look at the [GitHub Projects](https://github.com/Code-Institute-Community/ci-hackathon-app/projects?query=is%3Aopen+sort%3Aname-asc) page for areas that we're looking for help and contributions. If you see an item that is not currently _**In Progress**_ by somebody else, be sure to tag yourself (`@your-username`) on the particular [Open Issue](https://github.com/Code-Institute-Community/ci-hackathon-app/issues?query=is%3Aopen+sort%3Aname-asc), to avoid duplicate work.
 
 ![Project To-Do](static/img/documentation/projects-to-do.png?raw=true "Project To-Do")
