@@ -2,13 +2,12 @@ import os
 if os.path.exists(".env"):
     from dotenv import load_dotenv
     load_dotenv()
-    DEBUG = True
-else:
-    DEBUG = False
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
+
+DEBUG = "DEVELOPMENT" in os.environ
 
 ALLOWED_HOSTS = []
 host = os.environ.get("SITE_NAME")
@@ -27,6 +26,9 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "home",
+    "profiles",
+    "crispy_forms",
 ]
 
 MIDDLEWARE = [
@@ -41,10 +43,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "main.urls"
 
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [
+            os.path.join(BASE_DIR, "templates"),
+            os.path.join(BASE_DIR, "templates", "allauth"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -53,10 +60,15 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
+            "builtins": [
+                "crispy_forms.templatetags.crispy_forms_tags",
+                "crispy_forms.templatetags.crispy_forms_field",
+            ]
         },
     },
 ]
 
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -114,9 +126,5 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIAFILES_LOCATION = "media"
-# DEFAULT_FILE_STORAGE = "custom_storages.MediaStorage"
+MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-# MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
-
-# KILL SESSION ON CLOSE
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
