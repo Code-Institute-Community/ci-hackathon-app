@@ -3,7 +3,8 @@ from .models import (Hackathon,
                      HackAwardCategory,
                      HackTeam,
                      HackProject,
-                     HackProjectScore)
+                     HackProjectScore,
+                     HackProjectScoreCategory)
 
 
 # Register your models here.
@@ -12,3 +13,4 @@ admin.site.register(HackAwardCategory)
 admin.site.register(HackTeam)
 admin.site.register(HackProject)
 admin.site.register(HackProjectScore)
+admin.site.register(HackProjectScoreCategory)

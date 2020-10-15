@@ -98,8 +98,8 @@ class HackProject(models.Model):
 
 
 class HackProjectScore(models.Model):
-    """Model representing a HackProject. It is connected by a foreign key to 
-    User and HackProjectScore. Optional Fields: mentor."""
+    """Model representing a HackProjectScore. It is connected by a foreign key to 
+    User and HackProjectScoreCategory."""
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User,
@@ -110,3 +110,17 @@ class HackProjectScore(models.Model):
     #                            null=True,
     #                            blank=True,
     #                            on_delete=models.SET_NULL)
+
+
+class HackProjectScoreCategory(models.Model):
+    """Model representing a HackProject. It is connected by a foreign key to 
+    User and HackProjectScore. Optional Fields: mentor."""
+    created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User,
+                                   on_delete=models.CASCADE,
+                                   related_name="hackprojectscore_created_by")
+    category = models.IntegerField()
+
+    class Meta:
+        verbose_name_plural = "Hack project score categories"
