@@ -55,7 +55,7 @@ class HackAwardCategory(models.Model):
                                    related_name="hackawardcategories")
     display_name = models.CharField(default="", max_length=254)
     description = models.TextField()
-    # a Category will only apply to one Hackathon and 
+    # a Category will only apply to one Hackathon and
     # a Hackathon has numerous categories: One to Many.
     # If the category was going to be reused, instead, use Many to Many.
     hackathon = models.ForeignKey(Hackathon,
@@ -168,7 +168,7 @@ class HackProjectScoreCategory(models.Model):
     category = models.CharField(default="", max_length=255)
 
     def __str__(self):
-        return f'{self.category}, {self.score}'
+        return self.category
 
     class Meta:
         verbose_name_plural = "Hack project score categories"
