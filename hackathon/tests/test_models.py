@@ -63,3 +63,26 @@ class HackathonTests(TestCase):
     def test_hackathon_str(self):
         """Tests the string method on the hackathon."""
         self.assertEqual(str(Hackathon.objects.get(pk=1)), ('hacktest'))
+
+    def test_hackteam_str(self):
+        """Tests the string method on the hackathon."""
+        self.assertEqual(str(HackTeam.objects.get(pk=1)), ('testteam'))
+
+    def test_hackawardcategory_str(self):
+        """Tests the string method on the hackathon."""
+        self.assertEqual(str(HackAwardCategory.objects.get(pk=1)),
+                         ('testaward'))
+
+    def test_hackproject_str(self):
+        """Tests the string method on the hackathon."""
+        self.assertEqual(str(HackProject.objects.get(pk=1)), ('testproject'))
+
+    def test_hackprojectscore_str(self):
+        """Tests the string method on the hackathon."""
+        self.assertEqual(str(HackProjectScore.objects.get(pk=1)),
+                         ("testproject, testuser"))
+
+    def test_hackprojectscorecategory_str(self):
+        """Tests the string method on the hackathon."""
+        self.assertEqual(str(HackProjectScoreCategory.objects.get(pk=1)),
+                         ('testcategory'))

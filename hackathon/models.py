@@ -150,7 +150,7 @@ class HackProjectScore(models.Model):
     score = models.IntegerField(default=0)
     # A score applies to one category, a category has many scores: One to Many
     hack_project_score_category = models.ForeignKey("HackProjectScoreCategory",
-                                                 on_delete=models.CASCADE)
+                                                    on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.project}, {self.judge}'
