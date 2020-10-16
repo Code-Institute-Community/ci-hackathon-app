@@ -1,6 +1,4 @@
 from django.db import models
-from django.utils import timezone
-
 from django.contrib.auth.models import User
 
 # Optional fields are ony set to deal with object deletion issues.
@@ -60,7 +58,7 @@ class HackAwardCategory(models.Model):
     # a Category will only apply to one Hackathon and 
     # a Hackathon has numerous categories: One to Many.
     # If the category was going to be reused, instead, use Many to Many.
-    hackathon = models.ForeignKey("Hackathon",
+    hackathon = models.ForeignKey(Hackathon,
                                   on_delete=models.CASCADE,
                                   related_name="awards")
     # One category can have one winner: One to One
@@ -94,7 +92,7 @@ class HackTeam(models.Model):
                                           related_name='hackteam')
     # A team participates in one Hackathon and
     # a Hackathon has numerous teams: One to Many.
-    hackathon = models.ForeignKey("Hackathon",
+    hackathon = models.ForeignKey(Hackathon,
                                   on_delete=models.CASCADE,
                                   related_name="teams")
     # One to team will have one project: One to One
