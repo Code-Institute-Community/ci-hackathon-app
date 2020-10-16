@@ -6,3 +6,6 @@ __pycache__/
 *.sqlite3
 # static/
 # media/
+setup.bat
+Pipfile
+Pipfile.lock
