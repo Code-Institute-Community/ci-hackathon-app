@@ -15,13 +15,12 @@ from django.contrib.auth.models import User
 # My reasoning is explained in comments above the ForeignKey fields.
 
 
-# Create your models here.
 class Hackathon(models.Model):
     """Model representing a Hackathon. It is connected by a foreign key to 
     User, HackAwards and HackTeam. Optional Fields: judges, organiser.
     "awards" and "teams" are related tables. They have been moved to
     HackAwardCategory and HackTeam respectively. Please see comments there."""
-    created = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(auto_add_now=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
     created_by = models.ForeignKey(User,
@@ -50,12 +49,12 @@ class Hackathon(models.Model):
 class HackAwardCategory(models.Model):
     """Model representing a HackAwardCategory. It is connected by a foreign key to 
     User, Hackathon and HackProject. Optional fields: winning_project."""
-    created = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(auto_add_now=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
-                                   related_name="hackawardcategory_created_by")
+                                   related_name="hackawardcategories")
     display_name = models.CharField(default="", max_length=254)
     description = models.TextField()
     # a Category will only apply to one Hackathon and 
@@ -80,7 +79,7 @@ class HackAwardCategory(models.Model):
 class HackTeam(models.Model):
     """Model representing a HackTeam. It is connected by a foreign key to 
     User, Hackathon and HackProject. Optional fields: project."""
-    created = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(auto_add_now=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
     created_by = models.ForeignKey(User,
@@ -113,7 +112,7 @@ class HackProject(models.Model):
     User and HackProjectScore. Optional Fields: mentor.
     Used URLFields for the *_link fields, a CharField with URL validation.
     "scores" has been moved to HackProjectScore. See comments there."""
-    created = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(auto_add_now=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
     created_by = models.ForeignKey(User,
@@ -138,7 +137,7 @@ class HackProject(models.Model):
 class HackProjectScore(models.Model):
     """Model representing a HackProjectScore. It is connected by a foreign key to 
     User, HackProject and HackProjectScoreCategory."""
-    created = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(auto_add_now=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
     created_by = models.ForeignKey(User,
@@ -147,12 +146,13 @@ class HackProjectScore(models.Model):
     # One Judge can give one score - One to One
     judge = models.OneToOneField(User, on_delete=models.CASCADE)
     # One score is for one project, a project has numerous scores: One to Many
-    project = models.ForeignKey("HackProject",
+    project = models.ForeignKey(HackProject,
                                 on_delete=models.CASCADE,
                                 related_name="scores")
+    score = models.IntegerField(default=0)
     # A score applies to one category, a category has many scores: One to Many
-    score = models.ForeignKey("HackProjectScoreCategory",
-                              on_delete=models.CASCADE)
+    hackprojectscorecategory = models.ForeignKey("HackProjectScoreCategory",
+                                                 on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.project}, {self.judge}'
@@ -161,14 +161,13 @@ class HackProjectScore(models.Model):
 class HackProjectScoreCategory(models.Model):
     """Model representing a HackProjectScoreCategory. It is connected by a
     foreign key to User and HackProjectScore."""
-    created = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(auto_add_now=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user - One To Many
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
                                    related_name="hackprojectscorecategory_created_by")  # NOQA E501
     category = models.CharField(default="", max_length=255)
-    score = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.category}, {self.score}'
