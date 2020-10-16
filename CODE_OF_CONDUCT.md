@@ -11,7 +11,7 @@ By taking part in Code Institute’s Community, including activity on Code Insti
 All organizers, attendees, speakers, sponsors and volunteers at Hacktoberfest community events are required to agree to uphold the following code of conduct. Hacktoberfest community event organizers and/or DigitalOcean staff will enforce this code throughout the event.
 
 **[View the full "*Hacktoberfest Events Code of Conduct*"](https://docs.google.com/document/d/1gFKOhyUqMZzrZcbq8A_TpO5x9J9HK6agv70awCH8pyI/edit#heading=h.mpz2is7k9ovi)**.
-
+ 
 ---
 
 # Contributor Covenant Code of Conduct
