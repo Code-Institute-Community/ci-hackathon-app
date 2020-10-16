@@ -149,7 +149,7 @@ class HackProjectScore(models.Model):
                                 related_name="scores")
     score = models.IntegerField(default=0)
     # A score applies to one category, a category has many scores: One to Many
-    hackprojectscorecategory = models.ForeignKey("HackProjectScoreCategory",
+    hack_project_score_category = models.ForeignKey("HackProjectScoreCategory",
                                                  on_delete=models.CASCADE)
 
     def __str__(self):
