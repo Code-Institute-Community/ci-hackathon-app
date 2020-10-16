@@ -111,6 +111,7 @@ class HackTeam(models.Model):
 class HackProject(models.Model):
     """Model representing a HackProject. It is connected by a foreign key to 
     User and HackProjectScore. Optional Fields: mentor.
+    Used URLFields for the *_link fields, a CharField with URL validation.
     "scores" has been moved to HackProjectScore. See comments there."""
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True)
@@ -120,8 +121,8 @@ class HackProject(models.Model):
                                    related_name="hackproject_created_by")
     display_name = models.CharField(default="", max_length=255)
     description = models.TextField()
-    github_link = models.CharField(default="", max_length=255)
-    collab_link = models.CharField(default="", max_length=255)
+    github_link = models.URLField(default="", max_length=255)
+    collab_link = models.URLField(default="", max_length=255)
     submission_time = models.DateTimeField(auto_now_add=True)
     # A project has one mentor, a mentor has numerous projects: One to Many.
     mentor = models.ForeignKey(User,
