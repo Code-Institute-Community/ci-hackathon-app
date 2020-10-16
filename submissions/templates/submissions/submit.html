@@ -2,11 +2,17 @@
 {% load static %}
 
 {% block content %}
-
+<h2 class="pb-5">Submit your Hackathon Project</h2>
+<div class="row d-flex justify-content-center">
+<div class="col-lg-8 col-md-10 col-sm-12">
 <form id="submission_form" method="POST">
     {% csrf_token %}
     {{ submission_form.team_name | as_crispy_field }}
-    <button class="btn button-main btn-block" type="submit">Send</button>
+    {{ submission_form.speaker_name | as_crispy_field }}
+    {{ submission_form.repo_url | as_crispy_field }}
+    {{ submission_form.deployed_url | as_crispy_field }}
+    <button class="btn btn-ci" type="submit">Send</button>
 </form>
-
+</div>
+</div>
 {% endblock %}
