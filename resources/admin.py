@@ -1,3 +1,12 @@
 from django.contrib import admin
+from resources.models import Resource
 
-# Register your models here.
+
+class ResourceAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'link',
+    )
+
+
+admin.site.register(Resource, ResourceAdmin)
