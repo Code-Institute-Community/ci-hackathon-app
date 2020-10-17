@@ -8,12 +8,12 @@
 
 ## Forking the repo
 
-In order to contribute to this project you will need to create a fork of the repo on your own account. 
-To fork the repo just open the repository in a browser and click on the "fork" button on the top right of the page.
+In order to contribute to this project, you will need to create a fork of the repo on your own account.
+To fork the repo, just open the repository in a browser and click on the "fork" button on the top right of the page.
 
 ![Forking a repo](https://github.com/Code-Institute-Community/ci-hackathon-app/blob/forking-md/static/img/documentation/fork.PNG?raw=true)
 
-If you are part of any organisations it will ask you which organisation you want to create the fork in.
+If you are part of any organisations, it will ask you which organisation you want to create the fork in.
 If you are not part of any, it will automatically create it under your personal GitHub account.
 
 ## Cloning the forked code
@@ -21,7 +21,7 @@ If you are not part of any, it will automatically create it under your personal 
 ### Gitpod
 
 1. Open your forked repo in the browser
-2. Click on the GitPod button to open a new workspace
+2. Click on the Gitpod button to open a new workspace
 
 ### Local Development
 
@@ -68,10 +68,26 @@ git push origin [my-development-branch]
 5. Go back to your forked repo in the browser
 6. Click on the message saying "Compare & pull request"
 
-![Compare & pull request message](https://github.com/Code-Institute-Community/ci-hackathon-app/blob/forking-md/static/img/documentation/compare-and-pull.PNG?raw=true)
+![Compare & pull request message](https://github.com/Code-Institute-Community/ci-hackathon-app/blob/master/static/img/documentation/compare-and-pull.PNG?raw=true)
 
 7. Make sure that the Pull Request is created from the fork to the upstream master branch
 
-![Pull Request](https://github.com/Code-Institute-Community/ci-hackathon-app/blob/forking-md/static/img/documentation/pull-request.PNG?raw=true)
+![Pull Request](https://github.com/Code-Institute-Community/ci-hackathon-app/blob/master/static/img/documentation/pull-request.PNG?raw=true)
 
 8. Add details to the Pull Requests
+
+## Update fork with newest changes from upstream
+
+1. Checkout to master (on your fork)
+
+```
+git checkout master
+```
+2. Pull updates from upstream
+```
+git pull upstream master
+```
+3. Push changes to fork
+```
+git push
+```
