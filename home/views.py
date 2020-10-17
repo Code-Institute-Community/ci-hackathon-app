@@ -6,6 +6,7 @@ def index(request):
 
     return render(request, "home/index.html")
 
+
 def criteria(request):
     """ A view to return the judging criteria page """
 
