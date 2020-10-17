@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<p>listview here</p>
+<section>
+    {% for hackathon in hackathons %}
+        {% include 'hackathon/includes/hackathon_card.html' %}
+        <hr>
+    {% endfor %}
+</section>
 {% endblock %}
