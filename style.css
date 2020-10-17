@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Rubik&display=swap');
+
+:root {
+    /* P = Primary | S = Secondary | T = Tertiary */
+    --p-orange: #E84610;
+    --p-blue: #009FE3;
+    --p-grey: #4A4A4F;
+    --p-navy: #445261;
+    --p-red: #D63649;
+    --s-grey: #E6ECF0;
+    --s-yellow: #EFB920;
+    --s-pink: #FF5A60;
+    --s-teal: #23BBBB;
+    --t-grey: #E0E7FF;
+    --bg-grey: #F5F5F5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body,
+html {
+    overflow-x: hidden;
+    background-color: var(--s-grey);
+    height: 100%;
+    position: relative;
+    
+}
+
+.container-fluid {
+    background-image: url('assets/images/hackathon.jpeg');
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+     opacity: .7;
+}
+
+h1, 
+.card {
+    z-index: 2;
+}
+
+    
