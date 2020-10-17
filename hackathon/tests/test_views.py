@@ -7,6 +7,7 @@ from hackathon.models import Hackathon
 
 class TestHackathonViews(TestCase):
     """Tests views for the Hackathon app."""
+
     def setUp(self):
         """Sets up the models for testing"""
         user = User.objects.create(username="testuser")
@@ -25,7 +26,13 @@ class TestHackathonViews(TestCase):
 
         response = self.client.get('/hackathon/')
 
-        # Confirms the correct template and context items
+        # Confirms the correct template, context items and queryset
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'hackathon/hackathon_list.html')
-        self.assertTrue(response.context['hackathons'])
+        self.assertTemplateUsed(response,
+                                'hackathon/includes/hackathon_card.html')
+        self.assertTemplateUsed(response, 'hackathon/includes/paginator.html')
+        self.assertTrue(response.context['page_obj'])
+        self.assertQuerysetEqual(response.context['page_obj'],
+                                 Hackathon.objects.all().order_by('-created'),
+                                 transform=lambda x: x)
