@@ -3,6 +3,42 @@
 
 {% block content %}
 
-    <h1 class="text-center mt-4">Useful resources and links</h1>
-    
+    <div class="row my-4">
+        <div class="col-12 text-center mb-3">
+            <h1>Useful resources and links</h1>
+            <hr class="divider-orange w-25 mt-4 d">
+        </div>
+        <div class="col-12 mt-3">
+            <!--Resources and Links Table (medium and larger devices)-->
+            <table class="table table-striped d-none d-md-flex justify-content-center">
+            {% for resource in resources %}
+                <tr>
+                    <th> {{ resource.name }}</th>
+                    <td>
+                        <a href="{{ resource.link }}" target="_blank" rel="noopener">
+                            {{ resource.link|truncatechars:50 }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
+
+            <!--Resources and Links List (small devices)-->
+            <div class="d-block d-md-none">
+                <table class="table table-striped">
+                {% for resource in resources %}
+                    <tr>
+                        <th> 
+                            <a href="{{ resource.link }}" target="_blank" rel="noopener" class="text-dark">
+                            <i class="fas fa-link mr-2"></i>
+                            {{ resource.name }}
+                            </a>
+                        </th>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        </div>
+        
+    </div>
 {% endblock %}
