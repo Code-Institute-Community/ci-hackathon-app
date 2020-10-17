@@ -9,3 +9,4 @@ class HackathonListView(ListView):
     model = Hackathon
     context_object_name = 'hackathons'
     ordering = ['-created']
+    paginate_by = 10
