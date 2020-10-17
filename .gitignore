@@ -7,3 +7,4 @@ __pycache__/
 # static/
 # media/
 settings.json
+.gitpod.yml
