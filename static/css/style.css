@@ -68,10 +68,16 @@ main {
 }
 
 /* FOOTER */
-footer {  
+footer {
   flex-shrink: 0;
   color: var(--s-grey);
   background-color: var(--p-grey);
+}
+
+footer h4{
+  margin: 20px 0;
+  font-weight: 500;
+  letter-spacing: 1px;
 }
 
 footer p {
@@ -90,11 +96,6 @@ footer ul {
 
 footer ul li a {
   color: var(--s-grey);
-}
-
-footer h4,
-.copyright-wrapper {
-  margin: 20px 0;
 }
 
 .github-wrapper {
@@ -118,9 +119,12 @@ footer h4,
 
 .fab {
   font-size: 200%;
+  margin: 0 20px;
   color: var(--s-grey);
+  transition: transform 0.4s;
 }
 
-@media only screen and (min-width: 768px) {
-  
+.fab:hover {
+  transform: scale(1.3);
 }
+
