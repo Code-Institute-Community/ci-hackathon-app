@@ -12,8 +12,7 @@ List any non-trivial configuration instructions (if any)
 
 **Testing:**
 
-Explain what kind of testing was performed and list any
-testing instructions (if needed)
+Explain what kind of testing was performed and list any testing instructions (if needed)
 
 **Screenshots:**
 
