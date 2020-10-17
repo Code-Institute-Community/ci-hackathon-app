@@ -72,3 +72,9 @@ footer {
     color: var(--s-grey);
     background-color: var(--p-grey);
 }
+
+/* CARDS */
+.card-title {
+    font-family: Rubik, sans-serif;
+    color: var(--p-orange);
+}
