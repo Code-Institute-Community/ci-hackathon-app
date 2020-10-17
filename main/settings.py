@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     "home",
     "profiles",
     "crispy_forms",
+    # M05 App "Hackathon" added
+    "hackathon",
 ]
 
 MIDDLEWARE = [
@@ -77,7 +79,7 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-SIDE_ID = 1
+SITE_ID = 1
 
 WSGI_APPLICATION = "main.wsgi.application"
 
