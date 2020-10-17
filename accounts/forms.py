@@ -45,6 +45,6 @@ class ExtendedSignupForm(SignupForm):
         super().__init__(*args, **kwargs)
 
     def custom_signup(self, request, user):
-        user.user_type=self.cleaned_data["user_type"]
-        user.current_lms_module=self.cleaned_data["current_lms_module"]
+        user.user_type = self.cleaned_data["user_type"]
+        user.current_lms_module = self.cleaned_data["current_lms_module"]
         user.save()
