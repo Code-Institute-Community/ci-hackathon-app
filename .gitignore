@@ -6,4 +6,6 @@ __pycache__/
 *.sqlite3
 # static/
 # media/
+settings.json
+.gitpod.yml
 .venv/
