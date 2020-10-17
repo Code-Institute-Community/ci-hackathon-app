@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 
 
 class Hackathon(models.Model):
-    """Model representing a Hackathon. It is connected by a foreign key to 
+    """Model representing a Hackathon. It is connected by a foreign key to
     User, HackAwards and HackTeam. Optional Fields: judges, organiser.
     "awards" and "teams" are related tables. They have been moved to
     HackAwardCategory and HackTeam respectively. Please see comments there."""
@@ -23,7 +23,7 @@ class Hackathon(models.Model):
     # Each model can only be created by one user: One To Many
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
-                                   related_name="hackathon_created_by")
+                                   related_name="hackathons")
     display_name = models.CharField(default="", max_length=254)
     description = models.TextField()
     start_date = models.DateTimeField()
@@ -45,7 +45,7 @@ class Hackathon(models.Model):
 
 
 class HackAwardCategory(models.Model):
-    """Model representing a HackAwardCategory. It is connected by a foreign key to 
+    """Model representing a HackAwardCategory. It is connected by a foreign key to
     User, Hackathon and HackProject. Optional fields: winning_project."""
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -75,14 +75,14 @@ class HackAwardCategory(models.Model):
 
 
 class HackTeam(models.Model):
-    """Model representing a HackTeam. It is connected by a foreign key to 
+    """Model representing a HackTeam. It is connected by a foreign key to
     User, Hackathon and HackProject. Optional fields: project."""
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
-                                   related_name="hackteam_created_by")
+                                   related_name="hackteams")
     display_name = models.CharField(default="", max_length=254)
     # users could be the participants of more than one Hackathon, on different
     # teams and a team is made of a number of participants - Many to Many
@@ -106,7 +106,7 @@ class HackTeam(models.Model):
 
 
 class HackProject(models.Model):
-    """Model representing a HackProject. It is connected by a foreign key to 
+    """Model representing a HackProject. It is connected by a foreign key to
     User and HackProjectScore. Optional Fields: mentor.
     Used URLFields for the *_link fields, a CharField with URL validation.
     "scores" has been moved to HackProjectScore. See comments there."""
@@ -115,7 +115,7 @@ class HackProject(models.Model):
     # Each model can only be created by one user: One To Many
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
-                                   related_name="hackproject_created_by")
+                                   related_name="hackprojects")
     display_name = models.CharField(default="", max_length=255)
     description = models.TextField()
     github_link = models.URLField(default="", max_length=255)
@@ -133,14 +133,14 @@ class HackProject(models.Model):
 
 
 class HackProjectScore(models.Model):
-    """Model representing a HackProjectScore. It is connected by a foreign key to 
+    """Model representing a HackProjectScore. It is connected by a foreign key to
     User, HackProject and HackProjectScoreCategory."""
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
-                                   related_name="hackprojectscore_created_by")
+                                   related_name="hackprojectscores")
     # One Judge can give one score - One to One
     judge = models.OneToOneField(User, on_delete=models.CASCADE)
     # One score is for one project, a project has numerous scores: One to Many
@@ -164,7 +164,7 @@ class HackProjectScoreCategory(models.Model):
     # Each model can only be created by one user - One To Many
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
-                                   related_name="hackprojectscorecategory_created_by")  # NOQA E501
+                                   related_name="hackprojectscorecategories")
     category = models.CharField(default="", max_length=255)
 
     def __str__(self):
