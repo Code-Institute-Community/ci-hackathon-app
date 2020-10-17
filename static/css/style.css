@@ -74,7 +74,24 @@ footer {
 }
 
 /* CARDS */
+.card-link, .card-title {
+   color: var(--p-orange); 
+}
+
+.card-link:hover {
+   color: rgba(0, 0, 0, .7); 
+}
+
 .card-title {
     font-family: Rubik, sans-serif;
+}
+
+/* PAGINATION */
+.page-item .page-link {
     color: var(--p-orange);
+}
+
+.page-item.active .page-link {
+    background-color: var(--p-orange);
+    border-color: var(--p-orange);
 }
