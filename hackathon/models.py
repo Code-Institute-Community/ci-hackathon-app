@@ -24,10 +24,11 @@ class Hackathon(models.Model):
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
                                    related_name="hackathons")
-    display_name = models.CharField(default="", max_length=254)
-    description = models.TextField()
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    display_name = models.CharField(default="", max_length=254, blank=False, null=True)
+    description = models.TextField(blank=False, null=True)
+    theme = models.CharField(blank=False, null=True)
+    start_date = models.DateTimeField(blank=False, null=True)
+    end_date = models.DateTimeField(blank=False, null=True)
     # Hackathons can have numerous judges and
     # users could be the judges of more than one Hackathon: Many to Many
     judges = models.ManyToManyField(User,
