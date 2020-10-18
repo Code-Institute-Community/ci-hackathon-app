@@ -72,3 +72,31 @@ footer {
     color: var(--s-grey);
     background-color: var(--p-grey);
 }
+
+/* TEXT */
+.p-orange {
+    color: var(--p-orange);  
+}
+
+.p-blue {
+    color: var(--p-blue);  
+}
+
+/* CARDS */
+.card-link:hover {
+    color: rgba(0, 0, 0, .7); 
+}
+
+.card-title {
+    font-family: Rubik, sans-serif;
+}
+
+/* PAGINATION */
+.page-item .page-link {
+    color: var(--p-orange);
+}
+
+.page-item.active .page-link {
+    background-color: var(--p-orange);
+    border-color: var(--p-orange);
+}

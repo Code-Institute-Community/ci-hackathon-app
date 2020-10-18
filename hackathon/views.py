@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from django.views.generic import ListView
 
-# Create your views here.
+from .models import Hackathon
+
+
+class HackathonListView(ListView):
+    """Renders a page with a list of Hackathons."""
+    model = Hackathon
+    ordering = ['-created']
+    paginate_by = 8
