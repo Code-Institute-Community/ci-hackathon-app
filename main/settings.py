@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     'accounts',
     "profiles",
     "crispy_forms",
+    # M05 App "Hackathon" added
+    "hackathon",
 ]
 
 MIDDLEWARE = [
