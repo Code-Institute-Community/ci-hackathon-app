@@ -9,3 +9,6 @@ __pycache__/
 settings.json
 .gitpod.yml
 .venv/
+setup.bat
+Pipfile
+Pipfile.lock
