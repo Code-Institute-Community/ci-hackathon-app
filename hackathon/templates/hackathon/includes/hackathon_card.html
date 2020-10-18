@@ -1,0 +1,11 @@
+<article class="card shadow">
+	<div class="card-body">
+		<h5 class="p-orange card-title">{{ hackathon.display_name }}</h5>
+		<h6 class="card-subtitle mb-2 text-muted">{{ hackathon.start_date }} - {{ hackathon.end_date }}</h6>
+		<p class="card-text">{{ hackathon.description }}</p>
+        {% if hackathon.organiser %}
+		<p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
+        {% endif %}
+		<a href="#" class="btn btn-ci">Read More</a>
+	</div>
+</article>

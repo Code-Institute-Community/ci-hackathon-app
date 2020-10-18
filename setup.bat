@@ -4,7 +4,7 @@ MKDIR  .venv
 ECHO CREATING .env file
 ECHO DEVELOPMENT=1 >> .env
 ECHO SECRET_KEY="your_secret_key_here" >> .env
-ECHO SITE_NAME="localhost" >> .env
+ECHO SITE_NAME="*" >> .env
 ECHO Installing pipenv for development use
 pip install pipenv
 CLS
