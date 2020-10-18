@@ -43,6 +43,8 @@ class ExtendedSignupForm(SignupForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs['autofocus'] = True
+        self.fields['username'].widget.attrs['autofocus'] = False
 
     def custom_signup(self, request, user):
         user.first_name = self.cleaned_data["first_name"]
