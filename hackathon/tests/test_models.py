@@ -49,7 +49,8 @@ class HackathonTests(TestCase):
 
         score_category = HackProjectScoreCategory.objects.create(
             created_by=user,
-            category="testcategory")
+            category="testcategory",
+            highest_score=15)
         score_category.save()
 
         score = HackProjectScore.objects.create(
