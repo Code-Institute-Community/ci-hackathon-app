@@ -167,8 +167,9 @@ class HackProjectScoreCategory(models.Model):
                                    related_name="hackprojectscorecategories")
     category = models.CharField(default="", max_length=255)
     # Score Categories can have different score range (e.g. 1-10, 1-15)
-    # this field sets the upper end of the scale
-    highest_score = models.IntegerField(default=10)
+    # these fields set the scale
+    min_score = models.IntegerField(default=1)
+    max_score = models.IntegerField(default=10)
 
     def __str__(self):
         return self.category
