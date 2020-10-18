@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     "crispy_forms",
     # M05 App "Hackathon" added
     "hackathon",
+    # P09 - Hackathon submission.
+    "submissions",
 ]
 
 MIDDLEWARE = [
