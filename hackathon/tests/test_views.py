@@ -11,14 +11,12 @@ class TestHackathonViews(TestCase):
     def setUp(self):
         """Sets up the models for testing"""
         user = User.objects.create(username="testuser")
-        user.save()
-        hackathon = Hackathon.objects.create(
+        Hackathon.objects.create(
             created_by=user,
             display_name="hacktest",
             description="lorem ipsum",
             start_date=f'{timezone.now()}',
             end_date=f'{timezone.now()}')
-        hackathon.save()
 
     def test_render_hackathon_list(self):
         """Tests the correct rendering of the hackathon list page,
