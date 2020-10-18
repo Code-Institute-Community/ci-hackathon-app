@@ -37,7 +37,7 @@ html {
     min-height: 100vh;
     background-size: cover;
     background-position: center;
-     opacity: .7;
+     
 }
 
 h1, 
@@ -45,4 +45,13 @@ h1,
     z-index: 2;
 }
 
-    
+.collapse-content .fa.fa-heart:hover {
+  color: #f44336 !important;
+}
+.collapse-content .fa.fa-share-alt:hover {
+  color: #0d47a1 !important;
+}
+
+p {
+    color: red;
+}
