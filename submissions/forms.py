@@ -1,6 +1,6 @@
   
 from django import forms
-from hackathon.models import Submission
+from hackathon.models import HackProject
 
 class SubmissionForm(forms.ModelForm):
     class Meta:
