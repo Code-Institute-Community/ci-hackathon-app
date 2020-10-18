@@ -113,22 +113,22 @@ class HackProject(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
-    created_by = models.ForeignKey(User,
-                                   on_delete=models.CASCADE,
-                                   related_name="hackprojects")
+    # created_by = models.ForeignKey(User,
+    #                                 on_delete=models.CASCADE,
+    #                                 related_name="hackprojects")
     display_name = models.CharField(default="", max_length=255)
-    description = models.TextField()
+    description = models.TextField(max_length=500)
     github_url = models.URLField(default="", max_length=255)
     deployed_url = models.URLField(default="", max_length=255)
     submission_time = models.DateTimeField(auto_now_add=True)
     speaker_name = models.CharField(default="", max_length=225)
     share_permission = models.BooleanField(default=True)
     # A project has one mentor, a mentor has numerous projects: One to Many.
-    mentor = models.ForeignKey(User,
-                               null=True,
-                               blank=True,
-                               on_delete=models.SET_NULL,
-                               related_name="hackproject_mentor")
+    # mentor = models.ForeignKey(User,
+    #                            null=True,
+    #                            blank=True,
+    #                            on_delete=models.SET_NULL,
+    #                            related_name="hackproject_mentor")
 
     def __str__(self):
         return self.display_name
