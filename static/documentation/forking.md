@@ -11,7 +11,7 @@
 In order to contribute to this project, you will need to create a fork of the repo on your own account.
 To fork the repo, just open the repository in a browser and click on the "fork" button on the top right of the page.
 
-![Forking a repo](https://github.com/Code-Institute-Community/ci-hackathon-app/blob/forking-md/static/img/documentation/fork.PNG?raw=true)
+![Forking a repo](https://github.com/Code-Institute-Community/ci-hackathon-app/blob/master/static/img/documentation/fork.PNG?raw=true)
 
 If you are part of any organisations, it will ask you which organisation you want to create the fork in.
 If you are not part of any, it will automatically create it under your personal GitHub account.
@@ -68,11 +68,11 @@ git push origin [my-development-branch]
 5. Go back to your forked repo in the browser
 6. Click on the message saying "Compare & pull request"
 
-![Compare & pull request message](https://github.com/Code-Institute-Community/ci-hackathon-app/blob/master/static/img/documentation/compare-and-pull.PNG?raw=true)
+![Compare & pull request message](https://github.com/Code-Institute-Community/ci-hackathon-app/blob/master/static/img/documentation/compare-and-pull.png?raw=true)
 
 7. Make sure that the Pull Request is created from the fork to the upstream master branch
 
-![Pull Request](https://github.com/Code-Institute-Community/ci-hackathon-app/blob/master/static/img/documentation/pull-request.PNG?raw=true)
+![Pull Request](https://github.com/Code-Institute-Community/ci-hackathon-app/blob/master/static/img/documentation/pull-request.png?raw=true)
 
 8. Add details to the Pull Requests
 
