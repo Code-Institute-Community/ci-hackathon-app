@@ -26,7 +26,7 @@ class Hackathon(models.Model):
                                    related_name="hackathons")
     display_name = models.CharField(default="", max_length=254, blank=False, null=True)
     description = models.TextField(blank=False, null=True)
-    theme = models.CharField(blank=False, null=True)
+    theme = models.CharField(max_length=264, blank=False, null=True)
     start_date = models.DateTimeField(blank=False, null=True)
     end_date = models.DateTimeField(blank=False, null=True)
     # Hackathons can have numerous judges and
