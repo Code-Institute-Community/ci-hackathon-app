@@ -8,4 +8,5 @@ urlpatterns = [
     path("profile/", include("profiles.urls")),
     path("hackathon/", include(("hackathon.urls", "hackathon"),
                                namespace='hackathon')),
+    path("submission/", include("submissions.urls")),
 ]
