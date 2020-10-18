@@ -6,21 +6,20 @@ class SubmissionForm(forms.ModelForm):
     class Meta:
         model = HackProject
         fields = ('display_name', 'description','github_url',
-            'deployed_url', 'share_permission', 'speaker_name','mentor',)
+            'deployed_url', 'share_permission', 'speaker_name',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         placeholders = {
             'display_name': 'Project Name',
-            'speaker_name': "Speaker(s) Name"
+            'speaker_name': "Speaker(s) Name",
             'description': 'Description',
             'github_url': 'Github Repository URL',
             'deployed_url': 'Deployed URL',
             'share_permission': "Permission",
-            'mentor': 'Mentor'
         }
 
-        self.fields['team_name'].widget.attrs['autofocus'] = True
+        self.fields['display_name'].widget.attrs['autofocus'] = True
         for field in self.fields:
             if self.fields[field].required:
                 placeholder = f'{placeholders[field]} *'
