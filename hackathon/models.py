@@ -121,6 +121,8 @@ class HackProject(models.Model):
     github_link = models.URLField(default="", max_length=255)
     collab_link = models.URLField(default="", max_length=255)
     submission_time = models.DateTimeField(auto_now_add=True)
+    speaker_name = models.CharField(default="", max_length=225)
+    share_permission = models.BooleanField(default=True)
     # A project has one mentor, a mentor has numerous projects: One to Many.
     mentor = models.ForeignKey(User,
                                null=True,
