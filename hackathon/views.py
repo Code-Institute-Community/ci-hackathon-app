@@ -3,16 +3,25 @@ from django.utils import timezone
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Hackathon, HackTeam, HackProject, HackProjectScore, HackProjectScoreCategory
+from django.views.generic import ListView
 
 # Create your views here.
 
-@login_required
-def judging(request):
-    """Displays the judging landing page for the judge to save their scores
-    for each submitted project"""
 
-    # Only "open" Hackathons can be judged, theoretically there can be
-    # more than one event at a time, filter events by start_date - end_date
+class HackathonListView(ListView):
+    """Renders a page with a list of Hackathons."""
+    model = Hackathon
+    ordering = ['-created']
+    paginate_by = 8
+
+
+@login_required
+def judging(request, hack_id, team_id):
+    """Displays the judging page for the judge to save their scores
+    for the selected project - determined by hackathon id and team id"""
+
+    # Becomes available only after a Hackathon End Date/Time
+    
     events = Hackathon.objects.all()
     open_events = []
     for hackathon in events:
