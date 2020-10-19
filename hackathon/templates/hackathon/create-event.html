@@ -1,9 +1,30 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
   <!-- TODO : build create Hackathon event form -->
   <h1>Create Hackathon Event</h1>
 
+  <form method="POST" action="">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" class="btn-ci">
+  </form>
+
+{% endblock %}
+
+{% block js %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+          integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+          crossorigin="anonymous">
+  </script>
+  <script>
+    $(document).ready(function () {
+      $('.date-time-picker').datepicker({
+        format: 'dd/mm/yyyy'
+      });
+    });
+  </script>
 {% endblock %}
