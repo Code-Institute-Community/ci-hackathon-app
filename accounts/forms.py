@@ -52,4 +52,3 @@ class ExtendedSignupForm(SignupForm):
         user.slack_display_name = self.cleaned_data["slack_display_name"]
         user.user_type = self.cleaned_data["user_type"]
         user.current_lms_module = self.cleaned_data["current_lms_module"]
-        user.save()
