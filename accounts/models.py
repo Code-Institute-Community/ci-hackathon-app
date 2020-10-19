@@ -4,37 +4,19 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_delete
-
-"""List of user types to be passed into dropdown of same name for each 
-user selection."""
-user_types = [
-    ('', 'Select Post Category'),
-    ('participant', 'Participant'),
-    ('staff', 'Staff'),
-    ('admin', 'Admin'),
-]
-
-"""List of CI LMS modules to be passed into dropdown of same name for each 
-user selection."""
-lms_modules = [
-    ('', 'Select Learning Stage'),
-    ('programme preliminaries', 'Programme Preliminaries'),
-    ('programming paradigms', 'Programming Paradigms'),
-    ('html fundamentals', 'HTML Fundamentals'),
-    ('css fundamentals', 'CSS Fundamentals'),
-    ('user centric frontend development', 'User Centric Frontend Development'),
-    ('javascript fundamentals', 'Javascript Fundamentals'),
-    ('interactive frontend development', 'Interactive Frontend Development'),
-    ('python fundamentals', 'Python Fundamentals'),
-    ('practical python', 'Practical Python'),
-    ('data centric development', 'Data Centric Development'),
-    ('full stack frameworks with django', 'Full Stack Frameworks with Django'),
-    ('alumni', 'Alumni'),
-    ('staff', 'Staff'),
-]
+from .lists import user_types, lms_modules
 
 
 class Profile(models.Model):
+    """
+    Define Profile Model with OneToOne relationship to AUTH_USER_MODEL and
+    custom fields to suit Signup Form Extending in forms.py replicating same
+    in DB.
+    Using "related_name" in the OneToOne relationship between the two models
+    specifies the reverse relationship to the User Model, allowing us to
+    target the custom fields for injection into the profile.html
+    template via `{{ user.profile.<<field_name>> }}`.
+    """
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, default=1,
         related_name='profile',
@@ -78,12 +60,14 @@ class Profile(models.Model):
 
 @receiver(user_signed_up)
 def user_signed_up(request, user, **kwargs):
-    # capture server request object in dict from QueryDict, for easy accessing
-    # of headers within
+    """
+    Capture server request object in dict from QueryDict, to access form values.
+
+    Iterate over user_type field value to check for type and set permissions
+    based on user story and save user to User and Profile Models.
+    """
     form = dict(request.POST)
     print(form)
-    # check user_type value for explicit statement and set user active
-    # permission to true/false
     if form['user_type'][0] == 'participant':
         user.is_active = True
     elif form['user_type'][0] == 'staff':

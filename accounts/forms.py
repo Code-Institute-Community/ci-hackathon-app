@@ -1,36 +1,17 @@
 from allauth.account.forms import SignupForm
 from django import forms
-
-"""List of user types to be passed into dropdown of same name for each 
-user selection."""
-user_types = [
-    ('', 'Select Post Category'),
-    ('participant', 'Participant'),
-    ('staff', 'Staff'),
-    ('admin', 'Admin'),
-]
-
-"""List of CI LMS modules to be passed into dropdown of same name for each 
-user selection."""
-lms_modules = [
-    ('', 'Select Learning Stage'),
-    ('programme preliminaries', 'Programme Preliminaries'),
-    ('programming paradigms', 'Programming Paradigms'),
-    ('html fundamentals', 'HTML Fundamentals'),
-    ('css fundamentals', 'CSS Fundamentals'),
-    ('user centric frontend development', 'User Centric Frontend Development'),
-    ('javascript fundamentals', 'Javascript Fundamentals'),
-    ('interactive frontend development', 'Interactive Frontend Development'),
-    ('python fundamentals', 'Python Fundamentals'),
-    ('practical python', 'Practical Python'),
-    ('data centric development', 'Data Centric Development'),
-    ('full stack frameworks with django', 'Full Stack Frameworks with Django'),
-    ('alumni', 'Alumni'),
-    ('staff', 'Staff'),
-]
+from .lists import user_types, lms_modules
 
 
 class ExtendedSignupForm(SignupForm):
+    """
+    Extending default Django allauth Signup Form to include fields to capture:
+    - first name/last name/slack display name/user type/current lms module
+
+    Also, overriding the init method to call the parent class and reset the
+    autofocus to suit the form updated flow and adding custom
+    validation logic to suit the additional fields.
+    """
     first_name = forms.CharField(max_length=20)
     last_name = forms.CharField(max_length=20)
     slack_display_name = forms.CharField(max_length=25)
@@ -43,6 +24,7 @@ class ExtendedSignupForm(SignupForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Resetting the form autofocus to 'email' as the first displayed field.
         self.fields['email'].widget.attrs['autofocus'] = True
         self.fields['username'].widget.attrs['autofocus'] = False
 
