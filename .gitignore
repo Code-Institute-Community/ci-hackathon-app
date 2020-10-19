@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .env
 .venv
 env.py
@@ -8,3 +9,19 @@ __pycache__/
 # static/
 # media/
 .venv/
+=======
+.env
+env.py
+.vscode
+*.py[cod]
+__pycache__/
+*.sqlite3
+# static/
+# media/
+settings.json
+.gitpod.yml
+.venv/
+setup.bat
+Pipfile
+Pipfile.lock
+>>>>>>> 919ceb8979b6d597b3845fbd67e0fb6ff9de4594
