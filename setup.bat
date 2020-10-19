@@ -23,5 +23,6 @@ code --install-extension ms-python.python
 echo
 ECHO ============================
 ECHO Please edit .env file and add your secret key
+ECHO Please make sure you select python intepreter from .venv
 ECHO Please restart VSCode if running
 ECHO ============================

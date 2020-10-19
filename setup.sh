@@ -33,4 +33,5 @@ code --install-extension ms-python.python
 clear
 echo "============================"
 echo "Please restart VSCode if running"
+echo "Please make sure you select python intepreter from .venv"
 echo "============================"
