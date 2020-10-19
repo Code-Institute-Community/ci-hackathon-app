@@ -35,3 +35,4 @@ def useful_resources(request):
     """ A view to return the Useful Resources page """
 
     return render(request, "useful-resources.html")
+
