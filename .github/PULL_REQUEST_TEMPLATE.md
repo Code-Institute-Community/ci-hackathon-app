@@ -3,9 +3,11 @@
 <!-- Describe in a couple of sentences what this PR adds -->
 
 ## Pull request type
-
-Please check the type of change your PR introduces:
-
+<!-- Please make sure you add the type to the name of the PR eg: feature/M06-as-a-user-i-love-pr -->
+- [ ] #M01 (Miscellaneous User Story #01)
+- [ ] #P02 (Participant User Story #02)
+- [ ] #S03 (Staff User Story #03)
+- [ ] #A04 (Admin User Story #04)
 - [ ] Bugfix
 - [ ] Feature
 - [ ] Code style update (formatting, renaming)
