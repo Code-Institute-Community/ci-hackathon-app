@@ -11,3 +11,6 @@ settings.json
 .venv/
 venv/
 .idea/
+setup.bat
+Pipfile
+Pipfile.lock
