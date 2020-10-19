@@ -10,5 +10,3 @@ env.py
 settings.json
 .gitpod.yml
 setup.*
-Pipfile
-Pipfile.lock
