@@ -13,7 +13,7 @@
             {% if user in hackathon.judges.all %}
                 <!-- Scores button only appears for closed events, button to be removed by JS if event not finished -->
                 <!-- If scores already submitted for all projects, scores still can be displayed, but not modified -->
-                <a id="score-button#{{hackathon.id}}" href="#" class="btn btn-ci score-button">Scores</a>
+                <a id="score-button#{{hackathon.id}}" href="{% url hackathon.id 'team' hackathon.id %}" class="btn btn-ci score-button">Scores</a>
             {% endif %}
         </div>
 	</div>
