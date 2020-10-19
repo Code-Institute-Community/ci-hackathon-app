@@ -1,23 +1,41 @@
-**Description:**
+## Description
 
-Describe in a couple of sentences what this PR adds
+<!-- Describe in a couple of sentences what this PR adds -->
 
-**Related Issue:**
+## Pull request type
 
-Link to the related Issue
+Please check the type of change your PR introduces:
 
-**Configuration instructions:**
+- [ ] Bugfix
+- [ ] Feature
+- [ ] Code style update (formatting, renaming)
+- [ ] Refactoring
+- [ ] Build related changes
+- [ ] Documentation content changes
+- [ ] Other (please describe):
 
-List any non-trivial configuration instructions (if any)
+## Related Issue
 
-**Testing:**
+<!-- Link to the related Issue -->
 
-Explain what kind of testing was performed and list any testing instructions (if needed)
+## Configuration instructions
 
-**Screenshots:**
+<!-- List any non-trivial configuration instructions (if any) -->
 
-Add any screenshots (if needed)
+## Testing
 
-**Additional Information:**
+<!-- Explain what kind of testing was performed and list any testing instructions (if needed) -->
 
-Any other information that is needed
+## Screenshots
+
+<!-- Add any screenshots (if needed) -->
+
+## Additional Information
+
+<!-- Any other information that is needed -->
+
+## Does this introduce a breaking change
+
+- [ ] Yes
+- [] No
+<!-- Please fill in an xinside the [] for the correct one -->
