@@ -6,6 +6,6 @@
         {% if hackathon.organiser %}
 		<p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
         {% endif %}
-		<a href="#" class="btn btn-ci">Read More</a>
+		<a href="{% url 'hackathon:hackathon-detail' hackathon.id %}" class="btn btn-ci">Read More</a>
 	</div>
 </article>
