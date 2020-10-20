@@ -51,5 +51,10 @@
 {% block js %}
 {% endblock %}
 <script src="{% static 'js/script.js' %}"></script>
+<script>
+    $("#sidebar-collapse").click(function () {
+  $("#user-dashboard").toggleClass("active");
+});
+</script>
 
 </html>

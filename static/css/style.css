@@ -15,57 +15,7 @@
     --bg-grey: #F5F5F5;
 }
 
-.user-panel {
-    background: var(--p-grey);
-    color: var(--s-grey);
-    overflow: hidden;
-    height: 51vh;
-    padding-left: 0;
-    padding-right: 0;
-}
 
-.user-panel #accordion {
-    padding-left: 4px;
-    padding-right: 4px;
-}
-
-.user-panel #accordion .card {
-    border-left: 1px var(--s-grey);
-    border-right: 1px var(--s-grey);
-    border-top: none;
-}
-
-.user-panel #accordion .card .card-body a{
-    background: var(--t-grey);
-    color: var(--p-orange);
-}
-
-.user-panel #accordion .card .collapse .card-body,
-.user-panel #accordion .card .collapse .card-body a,
-.user-panel #accordion .card .collapsing .card-body a {
-    background: var(--bg-grey);
-    color: var(--p-grey);
-}
-
-.user-panel #accordion .card .card-header {
-    border-radius: 0;
-    border: none; 
-    padding: 0;
-    background: var(--p-grey);
-    color: var(--s-grey);
-}
-
-.card .card-header .btn {
-    color: var(--s-grey);
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-}
-
-.ci-orange {
-    color: var(--p-orange);
-}
 
 html,
 body {

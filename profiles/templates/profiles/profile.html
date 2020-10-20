@@ -1,23 +1,36 @@
 {% extends "base.html" %}
+
+{% block title %}User profile dashboard{% endblock %}
+
 {% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+{% endblock %}
 
 {% block content %}
 
     <!-- TO DO : build profile page -->
     <div class="container">
         <div class="row">
-            <div class="col-4 col-md-2 user-panel">
-                <span class="text-center mt-4">Dashboard</span>
+          <!-- <div class="dashboard-start"></div> -->
+            <div id="user-dashboard" class="col-4 col-md-2 p-1 user-panel">
+              <div class="custom-menu">
+                <button type="button" id="sidebar-collapse" class="btn">
+                  <i class="fa fa-bars"></i>
+                  <span class="sr-only">Toggle Menu</span>
+                </button>
+              </div>
+                <span class="mt-4">Dashboard</span>
                 <div class="mt-2" id="accordion">
                     <div class="card">
                       <div class="card-header" id="headingOne">
                         <h5 class="mb-0">
                           <a class="btn btn-link dropdown-toggle" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Pr<span class="ci-orange">o</span>file
+                            Profile
                           </a>
                         </h5>
-                      </div>
-                  
+                      </div>                 
                       <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
                             <a href="">Update Profile</a>
@@ -29,7 +42,7 @@
                       <div class="card-header" id="headingTwo">
                         <h5 class="mb-0">
                           <a class="btn btn-link dropdown-toggle collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Hackath<span class="ci-orange">o</span>ns
+                            Hackathons
                           </a>
                         </h5>
                       </div>
@@ -42,18 +55,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-5 col-md-7">
-                <span class="text-center mt-2">Form Includes Rendered Here</span>
+            <div class="col-12 col-md-7 text-center">
+                <span class="mt-2">Form Includes Rendered Here</span>
             </div>
-            <div class="col-12 col-md-3">
-                <span class="text-center mt-4">My Hackathons</span>
-                <div class="card mt-2" style="width: 18rem;">
-                    <img class="card-img-top" src="..." alt="Card image cap">
-                    <div class="card-body">
-                      <h5 class="card-title">CI APP</h5>
-                      <a href="#" class="btn btn-ci">Go somewhere</a>
-                    </div>
-                </div>
+            <div class="col-12 col-md-3 text-center">
+                <span class="mt-4">My Hackath<span class="ci-orange">o</span>ns</span>
             </div>
         </div>
     </div>
