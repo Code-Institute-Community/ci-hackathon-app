@@ -48,7 +48,7 @@ class Profile(models.Model):
             self.user_type = self.user.user_type
             self.current_lms_module = self.user.current_lms_module
         # when saving via admin panel
-        except:
+        except KeyError:
             self.slack_display_name = self.user.profile.slack_display_name
             self.user_type = self.user.profile.user_type
             self.current_lms_module = self.user.profile.current_lms_module
