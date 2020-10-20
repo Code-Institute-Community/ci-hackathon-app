@@ -80,14 +80,14 @@ footer {
 
 
 
-footer h4 {
+.sub-footer-heading {
     margin: 25px 0;
-    padding-left: 10px;
+    padding-left: 20px;
     font-weight: 500;
     letter-spacing: 1px;
 }
 
-footer p {
+.sub-footer-text {
     text-align: justify;
     font-weight: 400;
     padding-left: 15px;
@@ -105,6 +105,10 @@ footer ul {
 footer ul li a {
     color: var(--s-grey);
     padding-left: 15px;
+}
+
+.sub-footer{
+    border-top: 1px solid var(--s-grey);
 }
 
 .github-wrapper {
@@ -129,12 +133,13 @@ footer ul li a {
 .fab {
     font-size: 200%;
     margin: 0 20px;
-    color: var(--p-orange);
+    color: var(--s-grey);
     transition: transform .4s;
 }
 
 .fab:hover {
     transform: scale(1.3);
+    color: var(--p-orange);
 
 /* TEXT */
 .p-orange {

@@ -1,21 +1,21 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-6 ">
-			<h4>
+			<h4 class="sub-footer-heading">
 				About Us
 			</h4>
-			<p>
+			<p class="sub-footer-text">
 				Code Institute is the leading global provider
 				of online coding education. Credit-rated by Edinburgh Napier University and validated by the Higher
 				Education Authority in Sweden, the Ministry of Communications in Singapore, and the Higher Education
 				Authority in Ireland.
 			</p>
 		</div>
-        <div class="col-md-3 ">
-			<h4>
+		<div class="col-md-3 ">
+			<h4 class="sub-footer-heading">
 				Resources
 			</h4>
-			<ul>
+			<ul class="sub-footer-text">
 				<li>
 					<a href="{% url 'faq' %}">FAQ</a>
 				</li>
@@ -34,9 +34,9 @@
 				</li>
 			</ul>
 		</div>
-        <div class="col-md-3 ">
-			<h4>Policies</h4>
-			<ul>
+		<div class="col-md-3 ">
+			<h4 class="sub-footer-heading">Policies</h4>
+			<ul class="sub-footer-text">
 				<li>
 					<!-- To link to own Privacy Policy page once built -->
 					<a href="{% url 'privacy_policy' %}" target=" _blank">Privacy Policy</a>
@@ -53,25 +53,27 @@
 		</div>
 	</div>
 
-	<hr>
-	<div class="col github-wrapper">
-		<a href="https://www.facebook.com/Code.InstituteIRL/" target="_blank">
-			<i class="fab fa-facebook-square"></i>
-		</a>
-		<a href="https://twitter.com/codersinstitute" target="_blank">
-			<i class="fab fa-twitter-square"></i>
-		</a>
-		<a href="https://www.linkedin.com/school/code-institute/" target="_blank">
-			<i class="fab fa-linkedin"></i>
-		</a>
-		<a href="https://github.com/Code-Institute-Community/ci-hackathon-app" target="_blank">
-			<i class="fab fa-github"></i>
-		</a>
+	<div class="row">
+		<div class="col github-wrapper">
+			<a href="https://www.facebook.com/Code.InstituteIRL/" target="_blank">
+				<i class="fab fa-facebook-square"></i>
+			</a>
+			<a href="https://twitter.com/codersinstitute" target="_blank">
+				<i class="fab fa-twitter-square"></i>
+			</a>
+			<a href="https://www.linkedin.com/school/code-institute/" target="_blank">
+				<i class="fab fa-linkedin"></i>
+			</a>
+			<a href="https://github.com/Code-Institute-Community/ci-hackathon-app" target="_blank">
+				<i class="fab fa-github"></i>
+			</a>
+		</div>
 	</div>
-</div>
-<div class="col copyright-wrapper">
-	<p>
-		<a href="https://codeinstitute.net/" target=" _blank">&copy; 2020 Code Institute</a>
-	</p>
-</div>
+	<div class="row sub-footer">
+		<div class="col copyright-wrapper">
+			<p>
+				<a href="https://codeinstitute.net/" target=" _blank">&copy; 2020 Code Institute</a>
+			</p>
+		</div>
+	</div>
 </div>
