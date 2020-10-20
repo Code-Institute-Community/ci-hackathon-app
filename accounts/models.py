@@ -56,6 +56,9 @@ class Profile(models.Model):
         super(Profile, self).save(*args, **kwargs)
 
     def __str__(self):
+        """
+        Return Class object to string via the user email value
+        """
         return self.user.email
 
 

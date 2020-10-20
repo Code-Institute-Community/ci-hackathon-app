@@ -8,10 +8,6 @@ class ExtendedSignupForm(SignupForm):
     """
     Extending default Django allauth Signup Form to include fields to capture:
     - first name/last name/slack display name/user type/current lms module
-
-    Also, overriding the init method to call the parent class and reset the
-    autofocus to suit the form updated flow and adding custom
-    validation logic to suit the additional fields.
     """
     first_name = forms.CharField(max_length=20)
     last_name = forms.CharField(max_length=20)
@@ -24,11 +20,18 @@ class ExtendedSignupForm(SignupForm):
     )
 
     def __init__(self, *args, **kwargs):
+        """
+        Setting unique attribute of the class instance and calling the parent
+        class.
+        Resetting the form autofocus to 'email' as the first displayed field.
+        """
         super().__init__(*args, **kwargs)
-        # Resetting the form autofocus to 'email' as the first displayed field.
         self.fields['email'].widget.attrs['autofocus'] = True
 
     def custom_signup(self, request, user):
+        """
+        Custom logic to ensure clean data via the form response.
+        """
         user.first_name = self.cleaned_data["first_name"]
         user.last_name = self.cleaned_data["last_name"]
         user.slack_display_name = self.cleaned_data["slack_display_name"]
