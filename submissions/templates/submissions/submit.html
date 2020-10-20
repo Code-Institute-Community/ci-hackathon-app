@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block content %}
-    <h1>Submit your project</h1>
-    <form id="submission_form" action="{% url 'submit' %}" name ="submission_form" method="POST">
+    <h1 class="mt-3 pb-3">Submit your project</h1>
+    <form id="submission_form" action="{% url 'submit' %}" name ="submission_form" method="POST" class="py-5">
         {% csrf_token %}
         {{ submission_form.display_name | as_crispy_field }}
         {{ submission_form.speaker_name | as_crispy_field }}
         {{ submission_form.description | as_crispy_field }}
         {{ submission_form.github_url | as_crispy_field }}
         {{ submission_form.deployed_url | as_crispy_field }}
-        <button class="btn btn-ci" type="submit">Submit</button>
+        <button class="btn btn-ci mt-4" type="submit">Submit</button>
     </form>
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Optional fields are ony set to deal with object deletion issues.
 # If this isn't a problem, they can all be changed to required fields.
@@ -112,10 +113,7 @@ class HackProject(models.Model):
     "scores" has been moved to HackProjectScore. See comments there."""
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    # Each model can only be created by one user: One To Many
-    # created_by = models.ForeignKey(User,
-    #                                 on_delete=models.CASCADE,
-    #                                 related_name="hackprojects")
+    created_by = models.ForeignKey(User,on_delete=models.SET_NULL, null=True, blank=True, related_name="hackproject", default="")
     display_name = models.CharField(default="", max_length=255)
     description = models.TextField(max_length=500)
     github_url = models.URLField(default="", max_length=255)
@@ -124,11 +122,11 @@ class HackProject(models.Model):
     speaker_name = models.CharField(default="", max_length=225)
     share_permission = models.BooleanField(default=True)
     # A project has one mentor, a mentor has numerous projects: One to Many.
-    # mentor = models.ForeignKey(User,
-    #                            null=True,
-    #                            blank=True,
-    #                            on_delete=models.SET_NULL,
-    #                            related_name="hackproject_mentor")
+    mentor = models.ForeignKey(User,
+                               null=True,
+                               blank=True,
+                               on_delete=models.SET_NULL,
+                               related_name="hackproject_mentor")
 
     def __str__(self):
         return self.display_name
@@ -140,9 +138,7 @@ class HackProjectScore(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
-    created_by = models.ForeignKey(User,
-                                   on_delete=models.CASCADE,
-                                   related_name="hackprojectscores")
+    created_by = models.ForeignKey(User,on_delete=models.CASCADE, related_name="hackprojectscores", default="")
     # One Judge can give one score - One to One
     judge = models.OneToOneField(User, on_delete=models.CASCADE)
     # One score is for one project, a project has numerous scores: One to Many

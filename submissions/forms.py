@@ -5,6 +5,7 @@ from hackathon.models import HackProject
 class SubmissionForm(forms.ModelForm):
     class Meta:
         model = HackProject
+        exclude = ('mentor',)
         fields = ('display_name', 'description','github_url',
             'deployed_url', 'share_permission', 'speaker_name',)
 
