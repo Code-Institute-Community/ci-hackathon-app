@@ -30,3 +30,33 @@
 </article>
 </section>
 {% endblock %}
+{% block js %}
+{% if request.user.is_staff %}
+    <script>
+        function enroll(formData, formUrl) {
+            // Sends form to Django view
+            fetch(formUrl, {
+                method: "POST",
+                body: formData,
+                credentials: "same-origin",
+            })
+            .then(response => response.json())
+            .then(data => console.log(data));
+        }
+
+        $("#enroll-form").on("submit", function (ev) {
+            // stops form from sending
+            ev.preventDefault();
+            
+            // The data sent in the form POST request.
+            const formData = new FormData(this);
+
+            // The URL for the form
+            var formUrl = this.action;
+
+            // Fires the main ajax function
+            enroll(formData, formUrl);
+        });
+    </script>
+{% endif %}
+{% endblock %}

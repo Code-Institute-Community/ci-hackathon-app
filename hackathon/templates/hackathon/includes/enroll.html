@@ -1,7 +1,7 @@
-<form  action="{% url 'hackathon:enroll-toggle' %}" method="POST">
+<form id="enroll-form" action="{% url 'hackathon:enroll-toggle' %}" method="POST">
     {% csrf_token %}
     <!--It only sends the hackathon ID.-->
-    <input type="hidden" name="item-id" value="{{ hackathon.id }}" />
+    <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
     <button type="submit" class="btn btn-ci mb-2">
         <!--Selects the default icon based on whether the item is in the like context or not.
         object tags are used to display the SVG for caching.-->
