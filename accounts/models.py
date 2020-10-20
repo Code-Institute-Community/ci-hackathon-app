@@ -1,10 +1,11 @@
-from allauth.account.signals import user_signed_up
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_delete
-from .lists import user_types, lms_modules
+from allauth.account.signals import user_signed_up
+
+from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
 
 
 class Profile(models.Model):
@@ -31,13 +32,13 @@ class Profile(models.Model):
         max_length=20,
         blank=False,
         null=True,
-        choices=user_types
+        choices=USER_TYPES_CHOICES
     )
     current_lms_module = models.CharField(
         max_length=35,
         blank=False,
         null=True,
-        choices=lms_modules
+        choices=LMS_MODULES_CHOICES
     )
 
     def save(self, *args, **kwargs):
@@ -67,7 +68,7 @@ def user_signed_up(request, user, **kwargs):
     based on user story and save user to User and Profile Models.
     """
     form = dict(request.POST)
-    print(form)
+
     if form['user_type'][0] == 'participant':
         user.is_active = True
     elif form['user_type'][0] == 'staff':

@@ -1,6 +1,7 @@
-from allauth.account.forms import SignupForm
 from django import forms
-from .lists import user_types, lms_modules
+from allauth.account.forms import SignupForm
+
+from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
 
 
 class ExtendedSignupForm(SignupForm):
@@ -16,17 +17,16 @@ class ExtendedSignupForm(SignupForm):
     last_name = forms.CharField(max_length=20)
     slack_display_name = forms.CharField(max_length=25)
     user_type = forms.ChoiceField(
-        choices=user_types
+        choices=USER_TYPES_CHOICES
     )
     current_lms_module = forms.ChoiceField(
-        choices=lms_modules
+        choices=LMS_MODULES_CHOICES
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Resetting the form autofocus to 'email' as the first displayed field.
         self.fields['email'].widget.attrs['autofocus'] = True
-        self.fields['username'].widget.attrs['autofocus'] = False
 
     def custom_signup(self, request, user):
         user.first_name = self.cleaned_data["first_name"]
