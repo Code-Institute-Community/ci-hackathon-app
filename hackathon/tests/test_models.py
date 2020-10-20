@@ -45,7 +45,10 @@ class HackathonTests(TestCase):
 
         score_category = HackProjectScoreCategory.objects.create(
             created_by=user,
-            category="testcategory")
+            category="testcategory",
+            min_score=1,
+            max_score=15)
+        score_category.save()
 
         HackProjectScore.objects.create(
             created_by=user,
@@ -80,3 +83,7 @@ class HackathonTests(TestCase):
         """Tests the string method on the hackathon."""
         self.assertEqual(str(HackProjectScoreCategory.objects.get(pk=1)),
                          ('testcategory'))
+        self.assertEqual(HackProjectScoreCategory.objects.get(pk=1).min_score,
+                        1)
+        self.assertEqual(HackProjectScoreCategory.objects.get(pk=1).max_score,
+                        15)
