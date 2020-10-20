@@ -1,16 +1,14 @@
-.env
-env.py
-.vscode
-*.py[cod]
-__pycache__/
-*.sqlite3
 # static/
 # media/
+__pycache__/
+.venv/
+.vscode/
+.env
+env.py
+*.py[cod]
+*.sqlite3
 settings.json
 .gitpod.yml
-.venv/
+setup.*
 venv/
 .idea/
-setup.bat
-Pipfile
-Pipfile.lock
