@@ -2,6 +2,45 @@
 
 
 {% block content %}
-<h2 class="mt-5">FOO</h2>
+<div class="container text-center">
+    <section>
+        <h1>Judging Team {{ selected_team }}</h1>
+        <div class="d-flex justify-content-around my-4">
+            <div>
+                <a href="#" class="btn btn-outline-info" target="_blank">View Project Repo</a>
+            </div>
+            <div>
+                <a href="#" class="btn btn-outline-info" target="_blank">View Deployed Site</a>
+            </div>
+        </div>
+    </section>
 
+    <section class="row">
+        {% for category in score_categories %}
+            <div class="col-12 col-md-6">
+                <div class="row">
+                    <div class="col-3 input-group ">
+                        <select class="custom-select" id="inputGroupSelect01">
+                            <option selected>Score</option>
+                            <!-- itt kell a for loop a {{ category.max_score }} -->
+                            
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <div class="col-9 text-left">
+                        <h5><strong>{{ category }}</strong></h5>
+                        <p>there is no description field of the categories, that could be used here</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </section>
+
+    <div class="mt-4 mb-5">
+        <a href="#" class="btn-lg btn-ci mt-4">Submit Scores</a>
+    </div>
+</div>
 {% endblock %}

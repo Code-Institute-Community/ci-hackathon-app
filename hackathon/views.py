@@ -58,22 +58,34 @@ def judging(request, hack_id, team_id):
         return render(request, template)
 
     # check if the judge has already scored the requested team's Project
-    # ********************************************************************
-    project = team.values('project')
-    print(f"Team Project: {project[0]['project']}")
+    
+    the_event = get_object_or_404(Hackathon, pk=hack_id)
+    team_ids_in_event = Hackathon.objects.filter(pk=hack_id).values_list('teams', flat=True)
+    print(f"teams_in_event = {team_ids_in_event}")
 
-    bar = HackProject.objects.filter(pk=project[0]['project'])
-    print(f"the project from the HackProject model: {bar}")
+    # megse kene minden team-et a templatre kuldeni, mert nehezebb kezelni ott
 
-    # Users can see this page, but only judges should be able to start the judging process
-    judging_events = Hackathon.objects.filter(judges=request.user)
-    print(f"hackathons filterd for the user as judge: {judging_events}")
+    teams_in_event = []
+    for team in team_ids_in_event:
+        teams_in_event.append(get_object_or_404(HackTeam, pk=team))
+    print(f"team objects in list for the tempalte: {teams_in_event}")
+
+    # for project in team.values('project'):
+    #     print(f"Team Project: {project['project']}")
+
+    # bar = HackProject.objects.filter(pk=project[0]['project'])
+    # print(f"the project from the HackProject model: {bar}")
+
+    # HackProjectScoreCategories for the template:
+    score_categories = HackProjectScoreCategory.objects.all()
 
     template = 'hackathon/judging.html'
+    # pass all the teams and their projects to the page, so the judge can swap
     context = {
-        # 'number_of_open_events': number_of_open_events,
-        # 'open_events': open_events,
-        # 'judging_events': judging_events,
-        # 'number_of_events_to_judge': len(judging_events),
+        'hackathon': the_event,
+        'teams': teams_in_event, #Project is part of the Team object
+        'score_categories': score_categories,
+        'selected_team': get_object_or_404(HackTeam, pk=team_id),
+
     }
     return render(request, template, context)
