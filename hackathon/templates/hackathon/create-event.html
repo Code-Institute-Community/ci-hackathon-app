@@ -9,7 +9,22 @@
 
   <form method="POST" action="">
     {% csrf_token %}
-    {{ form|crispy }}
+    {{ form.display_name|as_crispy_field }}
+    {{ form.description|as_crispy_field }}
+    {{ form.theme|as_crispy_field }}
+    <!-- Render datetimepicker fields individually to enable datetimepicker to work correctly -->
+    <div id="div_id_start_date" class="form-group">
+      <label for="id_start_date" class=" requiredField">
+        Start date<span class="asteriskField">*</span>
+      </label>
+      <div class="input-group date" id="start_datetimepicker" data-target-input="nearest">
+        <input type="text" name="start_date" class="datetimepicker-input form-control" required id="id_start_date"
+               data-target="#start_datetimepicker"/>
+        <div class="input-group-append" data-target="#start_datetimepicker" data-toggle="datetimepicker">
+          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        </div>
+      </div>
+    </div>
     <input type="submit" class="btn-ci">
   </form>
 
@@ -22,9 +37,7 @@
   </script>
   <script>
     $(document).ready(function () {
-      $('.date-time-picker').datepicker({
-        format: 'dd/mm/yyyy'
-      });
+      $('#datetimepicker1').datetimepicker();
     });
   </script>
 {% endblock %}
