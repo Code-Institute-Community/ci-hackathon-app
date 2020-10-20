@@ -26,18 +26,18 @@ class Profile(models.Model):
     slack_display_name = models.CharField(
         max_length=80,
         blank=False,
-        null=True
+        null=''
     )
     user_type = models.CharField(
         max_length=20,
         blank=False,
-        null=True,
+        null='',
         choices=USER_TYPES_CHOICES
     )
     current_lms_module = models.CharField(
         max_length=35,
         blank=False,
-        null=True,
+        null='',
         choices=LMS_MODULES_CHOICES
     )
 
@@ -56,7 +56,7 @@ class Profile(models.Model):
         super(Profile, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.user.username
+        return self.user.email
 
 
 @receiver(user_signed_up)
