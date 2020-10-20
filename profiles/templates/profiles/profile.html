@@ -3,7 +3,39 @@
 
 {% block content %}
 
-    <!-- TO DO : build profile page -->
-    TEST PROFILE PAGE
+    <h1>Profile Page</h1>
+    <h2>You are logged in as:</h2>
 
+<!-- Profile display -->  
+ 
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-4">
+                <h4>Username:</h4>
+                <p>{{ user.username }}</p>
+            </div>
+
+            <div class="col-md-4">
+                <h4>Email Address:</h4>
+                <p>{{ user.email }}</p>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <h4>First name:</h4>
+                <p>{{ user.first_name }}</p>
+            </div>
+
+            <div class="col-md-4">
+                <h4>Last name:</h4>
+                <p>{{ user.last_name }}</p>
+            </div>
+
+        </div>
+
+    </div>
 {% endblock %}
