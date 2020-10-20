@@ -91,3 +91,4 @@ def post_delete_user(sender, instance, *args, **kwargs):
     """
     if instance:
         instance.user.delete()
+

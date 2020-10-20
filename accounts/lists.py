@@ -25,3 +25,4 @@ LMS_MODULES_CHOICES = [
     ('alumni', 'Alumni'),
     ('staff', 'Staff'),
 ]
+
