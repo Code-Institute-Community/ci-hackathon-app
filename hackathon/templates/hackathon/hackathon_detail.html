@@ -60,7 +60,9 @@
                     throw Error(response.statusText);
                 }
             })
+            // Fires off a toast notification
             .then(data => toastMessage(data.tag, data.message))
+            // Catches any errors and displays their text message
             .catch(error => toastMessage("Error", error))
         }
             

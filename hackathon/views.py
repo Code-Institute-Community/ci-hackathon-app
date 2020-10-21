@@ -39,6 +39,4 @@ def ajax_enroll_toggle(request):
         data["tag"] = "Success"
         return JsonResponse(data)
     else:
-        data["tag"] = "Error"
-        data["message"] = "403: Forbidden."
         return HttpResponse(status=403)

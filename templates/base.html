@@ -48,8 +48,9 @@
 </script>
 {% block js %}
 <script>
+// Fires toast popups if there are messages
 {% if messages %}
-    $('.toast').toast('show')
+    $(".toast").toast("show")
 {% endif %}
 </script>
 {% endblock %}
