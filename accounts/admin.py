@@ -13,6 +13,8 @@ class ProfileAdmin(admin.ModelAdmin):
         'slack_display_name',
         'user_type',
         'current_lms_module',
+        'organisation',
+        'status',
     )
 
 

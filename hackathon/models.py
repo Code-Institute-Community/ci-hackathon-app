@@ -39,6 +39,9 @@ class Hackathon(models.Model):
                                   blank=True,
                                   on_delete=models.SET_NULL,
                                   related_name="hackathon_organiser")
+    organisation = models.CharField(default='Code Institute',
+                                    blank=True,
+                                    max_length=100)
 
     def __str__(self):
         return self.display_name

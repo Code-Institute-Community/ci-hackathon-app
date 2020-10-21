@@ -5,7 +5,7 @@ from django.conf import settings
 from django.db.models.signals import post_delete
 from allauth.account.signals import user_signed_up
 
-from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
+from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES, STATUS_TYPES_CHOICES
 import logging
 
 # Initialise instance of a logger to handle error logging
@@ -44,6 +44,17 @@ class Profile(models.Model):
         default='',
         choices=LMS_MODULES_CHOICES
     )
+    organisation = models.CharField(
+        max_length=100,
+        default='Code Institute',
+        blank=True
+    )
+    status = models.CharField(
+        max_length=9,
+        blank=False,
+        default='draft',
+        choices=STATUS_TYPES_CHOICES
+    )
 
     def save(self, *args, **kwargs):
         # when signup takes place
@@ -51,11 +62,13 @@ class Profile(models.Model):
             self.slack_display_name = self.user.slack_display_name
             self.user_type = self.user.user_type
             self.current_lms_module = self.user.current_lms_module
+            self.organisation = self.user.organisation
         # when saving via admin panel
         except KeyError:
             self.slack_display_name = self.user.profile.slack_display_name
             self.user_type = self.user.profile.user_type
             self.current_lms_module = self.user.profile.current_lms_module
+            self.organisation = self.user.profile.organisation
             logger.exception(str(KeyError))
         super(Profile, self).save(*args, **kwargs)
 
