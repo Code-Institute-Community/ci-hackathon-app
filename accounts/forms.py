@@ -18,6 +18,7 @@ class ExtendedSignupForm(SignupForm):
     current_lms_module = forms.ChoiceField(
         choices=LMS_MODULES_CHOICES
     )
+    organisation = forms.CharField(max_length=100, initial="Code Institute")
 
     def __init__(self, *args, **kwargs):
         """

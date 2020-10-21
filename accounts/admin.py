@@ -14,7 +14,6 @@ class ProfileAdmin(admin.ModelAdmin):
         'user_type',
         'current_lms_module',
         'organisation',
-        'status',
     )
 
 
