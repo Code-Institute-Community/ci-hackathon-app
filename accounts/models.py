@@ -6,6 +6,10 @@ from django.db.models.signals import post_delete
 from allauth.account.signals import user_signed_up
 
 from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
+import logging
+
+# Initialise instance of a logger to handle error logging
+logger = logging.getLogger(__name__)
 
 
 class Profile(models.Model):
@@ -52,7 +56,7 @@ class Profile(models.Model):
             self.slack_display_name = self.user.profile.slack_display_name
             self.user_type = self.user.profile.user_type
             self.current_lms_module = self.user.profile.current_lms_module
-
+            logger.exception(str(KeyError))
         super(Profile, self).save(*args, **kwargs)
 
     def __str__(self):

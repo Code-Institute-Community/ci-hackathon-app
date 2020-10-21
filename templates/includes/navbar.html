@@ -39,11 +39,13 @@
                         My Account
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarAccount">
-                        <a class="dropdown-item" href="#">Register</a>
-                        <a class="dropdown-item" href="#">Login</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
-                        <a class="dropdown-item" href="#">Logout</a>
+                        {% if not user.is_authenticated %}
+                            <a class="dropdown-item" href="{%  url 'account_signup' %}">Register</a>
+                            <a class="dropdown-item" href="{% url 'account_login' %}">Login</a>
+                        {% else %}
+                            <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
+                            <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+                        {% endif %}
                     </div>
                 </li>
             </ul>
