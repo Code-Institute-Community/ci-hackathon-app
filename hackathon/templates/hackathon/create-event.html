@@ -2,6 +2,13 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+{% block css %}
+  <!-- XDSoft DateTimePicker -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+        integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
+{% endblock %}
+
 {% block content %}
 
   <!-- TODO : build create Hackathon event form -->
@@ -12,32 +19,19 @@
     {{ form.display_name|as_crispy_field }}
     {{ form.description|as_crispy_field }}
     {{ form.theme|as_crispy_field }}
-    <!-- Render datetimepicker fields individually to enable datetimepicker to work correctly -->
-    <div id="div_id_start_date" class="form-group">
-      <label for="id_start_date" class=" requiredField">
-        Start date<span class="asteriskField">*</span>
-      </label>
-      <div class="input-group date" id="start_datetimepicker" data-target-input="nearest">
-        <input type="text" name="start_date" class="datetimepicker-input form-control" required id="id_start_date"
-               data-target="#start_datetimepicker"/>
-        <div class="input-group-append" data-target="#start_datetimepicker" data-toggle="datetimepicker">
-          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-        </div>
-      </div>
-    </div>
+    {{ form.start_date|as_crispy_field }}
     <input type="submit" class="btn-ci">
   </form>
 
 {% endblock %}
 
 {% block js %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
-          integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
-          crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+          integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous">
   </script>
   <script>
     $(document).ready(function () {
-      $('#datetimepicker1').datetimepicker();
+      $('#id_start_date').datetimepicker();
     });
   </script>
 {% endblock %}
