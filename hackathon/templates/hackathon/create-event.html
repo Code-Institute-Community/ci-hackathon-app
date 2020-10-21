@@ -20,6 +20,7 @@
     {{ form.description|as_crispy_field }}
     {{ form.theme|as_crispy_field }}
     {{ form.start_date|as_crispy_field }}
+    {{ form.end_date|as_crispy_field }}
     <input type="submit" class="btn-ci">
   </form>
 
@@ -32,6 +33,7 @@
   <script>
     $(document).ready(function () {
       $('#id_start_date').datetimepicker();
+      $('#id_end_date').datetimepicker();
     });
   </script>
 {% endblock %}
