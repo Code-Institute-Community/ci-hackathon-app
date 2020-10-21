@@ -5,6 +5,10 @@
     <button type="submit" class="btn btn-ci mb-2">
         <!--Selects the default icon based on whether the item is in the like context or not.
         object tags are used to display the SVG for caching.-->
+        {% if user in hackathon.judges.all %}
+        Unenroll
+        {% else %}
         Enroll as Judge
+        {% endif %}
     </button>
 </form>

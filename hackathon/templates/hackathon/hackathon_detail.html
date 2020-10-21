@@ -10,7 +10,7 @@
         {% if hackathon.organiser %}
 		<p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
         {% endif %}
-        {% if hackathon.judges %}
+        <!-- {% if hackathon.judges %}
         <div class="row">
             <div class="col-auto">
                 <p>Judges:</p>
@@ -21,7 +21,7 @@
             </div>
             {% endfor %}
         </div>
-        {% endif %}
+        {% endif %} -->
         {% if request.user.is_staff %}
             {% include 'hackathon/includes/enroll.html' %}
         {% endif %}
@@ -40,8 +40,13 @@
                 body: formData,
                 credentials: "same-origin",
             })
-            .then(response => response.json())
-            .then(data => console.log(data));
+            .then(function(response) {
+                if (response.ok === true) {
+                    response = response.json()
+                    return response
+                }
+            })
+            .then(function(data) {console.log(data)})
         }
 
         $("#enroll-form").on("submit", function (ev) {
@@ -52,7 +57,7 @@
             const formData = new FormData(this);
 
             // The URL for the form
-            var formUrl = this.action;
+            const formUrl = this.action;
 
             // Fires the main ajax function
             enroll(formData, formUrl);
