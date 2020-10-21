@@ -31,13 +31,14 @@ def ajax_enroll_toggle(request):
         # Either enrolls or unenrolls a user from the judges
         if user in hackathon.judges.all():
             hackathon.judges.remove(user)
-            data['message'] = "You have withdrawn from judging."
+            data["message"] = "You have withdrawn from judging."
         else:
             hackathon.judges.add(user)
-            data['message'] = "You have enrolled a judge."
+            data["message"] = "You have enrolled as a judge."
 
-        data["tag"] = "success"
-        data["id"] = hackathon_id
+        data["tag"] = "Success"
         return JsonResponse(data)
     else:
+        data["tag"] = "Error"
+        data["message"] = "403: Forbidden."
         return HttpResponse(status=403)
