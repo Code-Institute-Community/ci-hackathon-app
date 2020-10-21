@@ -10,18 +10,6 @@
         {% if hackathon.organiser %}
 		<p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
         {% endif %}
-        <!-- {% if hackathon.judges %}
-        <div class="row">
-            <div class="col-auto">
-                <p>Judges:</p>
-            </div>
-            {% for judge in hackathon.judges.all %}
-            <div class="col-auto">
-                <p><a href="#" class="p-blue card-link">{{ judge }}</a></p>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %} -->
         {% if request.user.is_staff %}
             {% include 'hackathon/includes/enroll.html' %}
         {% endif %}
@@ -31,6 +19,7 @@
 </section>
 {% endblock %}
 {% block js %}
+{{ block.super }}
 {% if request.user.is_staff %}
     <script>
         function enroll(formData, formUrl) {
@@ -41,12 +30,30 @@
                 credentials: "same-origin",
             })
             .then(function(response) {
-                if (response.ok === true) {
-                    response = response.json()
-                    return response
-                }
+                response = response.json()
+                return response
             })
-            .then(function(data) {console.log(data)})
+            .then(function(data) {
+                // Sets the toast HTML.
+                $(".toast-wrapper").html(
+                    `<div class="toast" data-delay="5000">
+                        <div class="toast-header bg-p-blue">
+                            <strong class="mr-auto text-white">${data.tag}</strong>
+                            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="toast-body">${data.message}</div>
+                    </div>`
+                );
+                if ($("#enroll-submit").html() === "Unenroll") {
+                    $("#enroll-submit").html("Enroll as Judge")
+                } else {
+                    $("#enroll-submit").html("Unenroll")
+                }
+                // Fires the toast.
+                $(".toast").toast("show");
+            })
         }
 
         $("#enroll-form").on("submit", function (ev) {
