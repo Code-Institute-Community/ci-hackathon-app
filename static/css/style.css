@@ -191,6 +191,29 @@ footer ul li a {
     color:var(--black);
 }
 
+.project-list>ol{
+     margin: 20px;
+     font-size: 1.7rem;
+     text-align: left;
+     color: var(--black);
+     padding: 6px 6px;
+
+}
+
+.project-list {
+    width: 100%;
+    height: auto;
+    background-color:var(--t-orange);
+    border-radius: 10px;
+    border-color: 2px black solid;
+}
+
+.list li{
+    font-size: 0.5em;
+    text-align: left;
+
+}
+
 @media (max-width:453px) {
     #accordion-wrapper>h1,
     #carousel-wrapper>h1 {
