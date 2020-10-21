@@ -35,10 +35,10 @@
                     <div class="toast-body">${message}</div>
                 </div>`
             );
-            if ($("#enroll-submit").html() === "Unenroll") {
-                $("#enroll-submit").html("Enroll as Judge")
+            if ($("#enroll-submit").text() === "Withdraw as Judge") {
+                $("#enroll-submit").text("Enroll as Judge")
             } else {
-                $("#enroll-submit").html("Unenroll")
+                $("#enroll-submit").text("Withdraw as Judge")
             }
             // Fires the toast.
             $(".toast").toast("show");
