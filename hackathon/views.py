@@ -79,13 +79,20 @@ def judging(request, hack_id, team_id):
     # HackProjectScoreCategories for the template:
     score_categories = HackProjectScoreCategory.objects.all()
 
+    selected_team = get_object_or_404(HackTeam, pk=team_id)
+    selected_project = get_object_or_404(HackProject, pk=selected_team.project.id)
+
     template = 'hackathon/judging.html'
     # pass all the teams and their projects to the page, so the judge can swap
     context = {
         'hackathon': the_event,
         'teams': teams_in_event, #Project is part of the Team object
         'score_categories': score_categories,
-        'selected_team': get_object_or_404(HackTeam, pk=team_id),
+        'team': selected_team,
+        'project': selected_project,
 
     }
+
+    print(f"XXXXXXXXXXXXXXXXXXXXX CONTEXT:\n{context}")
+
     return render(request, template, context)

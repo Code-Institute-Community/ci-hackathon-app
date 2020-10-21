@@ -1,32 +1,35 @@
 {% extends 'base.html' %}
 
+{% load my_tags %}<!-- for the usage of custom get_range tag -->
 
 {% block content %}
 <div class="container text-center">
     <section>
-        <h1>Judging Team {{ selected_team }}</h1>
+        <h1>Judging Team {{ team }}</h1>
         <div class="d-flex justify-content-around my-4">
             <div>
-                <a href="#" class="btn btn-outline-info" target="_blank">View Project Repo</a>
+                <a href="{{ project.github_link }}" class="btn btn-outline-info" target="_blank">View Project Repo</a>
             </div>
             <div>
-                <a href="#" class="btn btn-outline-info" target="_blank">View Deployed Site</a>
+                <a href="{{ project.collab_link }}" class="btn btn-outline-info" target="_blank">View Deployed Site</a>
             </div>
         </div>
     </section>
 
     <section class="row">
+    <!-- form comes here -->
         {% for category in score_categories %}
             <div class="col-12 col-md-6">
                 <div class="row">
                     <div class="col-3 input-group ">
                         <select class="custom-select" id="inputGroupSelect01">
                             <option selected>Score</option>
-                            <!-- itt kell a for loop a {{ category.max_score }} -->
+                            <!-- using custom get_range tag -->
+							{% for i in category.max_score|get_range:category.min_score %}
+							
+							<option value="{{ i }}">{{ i }}</option>
+							{% endfor %}
                             
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
                         </select>
                     </div>
                     <div class="col-9 text-left">
