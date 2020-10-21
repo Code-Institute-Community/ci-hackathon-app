@@ -11,18 +11,38 @@
 
 {% block content %}
 
-  <!-- TODO : build create Hackathon event form -->
-  <h1>Create Hackathon Event</h1>
+  <section class="h-100">
+    <div class="row">
+      <div class="col-12">
+        <h1>Create Hackathon Event</h1>
+      </div>
+    </div>
 
-  <form method="POST" action="">
-    {% csrf_token %}
-    {{ form.display_name|as_crispy_field }}
-    {{ form.description|as_crispy_field }}
-    {{ form.theme|as_crispy_field }}
-    {{ form.start_date|as_crispy_field }}
-    {{ form.end_date|as_crispy_field }}
-    <input type="submit" class="btn-ci">
-  </form>
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-12">
+          {{ form.display_name|as_crispy_field }}
+        </div>
+        <div class="col-12">
+          {{ form.description|as_crispy_field }}
+        </div>
+        <div class="col-12">
+          {{ form.theme|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.start_date|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.end_date|as_crispy_field }}
+        </div>
+        <div class="col-12">
+          <input type="submit" class="btn-ci">
+        </div>
+      </div>
+    </form>
+
+  </section>
 
 {% endblock %}
 
@@ -32,8 +52,12 @@
   </script>
   <script>
     $(document).ready(function () {
-      $('#id_start_date').datetimepicker();
-      $('#id_end_date').datetimepicker();
+      $('#id_start_date').datetimepicker({
+        format: 'd/m/Y H:i',
+      });
+      $('#id_end_date').datetimepicker({
+        format: 'd/m/Y H:i',
+      });
     });
   </script>
 {% endblock %}
