@@ -2,26 +2,49 @@
 {% load static %}
 {% block content %}
 <section class="h-100">
-<h2 class="p-orange text-center">{{ hackathon.display_name }}</h2>
-<article class="card shadow mb-3">
-	<div class="card-body">
-		<p class="card-text">{{ hackathon.description }}</p>
-		<h6 class="card-subtitle mb-2 text-muted"><strong>From</strong> {{ hackathon.start_date }} <strong>to</strong> {{ hackathon.end_date }}</h6>
-        {% if hackathon.organiser %}
-		<p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
-        {% endif %}
-        {% if request.user.is_staff %}
-            {% include 'hackathon/includes/enroll.html' %}
-        {% endif %}
-		<a href="{% url 'hackathon:hackathon-list' %}" class="btn btn-ci">See other Hackathons</a>
-	</div>
-</article>
+    <h2 class="p-orange text-center">{{ hackathon.display_name }}</h2>
+    <article class="card shadow mb-3">
+        <div class="card-body">
+            <p class="card-text">{{ hackathon.description }}</p>
+            <h6 class="card-subtitle mb-2 text-muted"><strong>From</strong> {{ hackathon.start_date }} <strong>to</strong> {{ hackathon.end_date }}</h6>
+            {% if hackathon.organiser %}
+                <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
+            {% endif %}
+            {% if request.user.is_staff %}
+                {% include 'hackathon/includes/enroll.html' %}
+            {% endif %}
+            <a href="{% url 'hackathon:hackathon-list' %}" class="btn btn-ci">See other Hackathons</a>
+        </div>
+    </article>
 </section>
 {% endblock %}
 {% block js %}
 {{ block.super }}
 {% if request.user.is_staff %}
     <script>
+        function toastMessage(tag, message) {
+            // Sets the toast HTML.
+            $(".toast-wrapper").html(
+                `<div class="toast" data-delay="5000">
+                    <div class="toast-header bg-p-blue">
+                        <strong class="mr-auto text-white">${tag}</strong>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="toast-body">${message}</div>
+                </div>`
+            );
+            if ($("#enroll-submit").html() === "Unenroll") {
+                $("#enroll-submit").html("Enroll as Judge")
+            } else {
+                $("#enroll-submit").html("Unenroll")
+            }
+            // Fires the toast.
+            $(".toast").toast("show");
+        }
+        
+        // Sends the enrollment form with fetch.
         function enroll(formData, formUrl) {
             // Sends form to Django view
             fetch(formUrl, {
@@ -29,33 +52,20 @@
                 body: formData,
                 credentials: "same-origin",
             })
-            .then(function(response) {
-                response = response.json()
-                return response
-            })
-            .then(function(data) {
-                // Sets the toast HTML.
-                $(".toast-wrapper").html(
-                    `<div class="toast" data-delay="5000">
-                        <div class="toast-header bg-p-blue">
-                            <strong class="mr-auto text-white">${data.tag}</strong>
-                            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="toast-body">${data.message}</div>
-                    </div>`
-                );
-                if ($("#enroll-submit").html() === "Unenroll") {
-                    $("#enroll-submit").html("Enroll as Judge")
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
                 } else {
-                    $("#enroll-submit").html("Unenroll")
+                    console.log(response)
+                    throw Error(response.statusText);
                 }
-                // Fires the toast.
-                $(".toast").toast("show");
             })
+            .then(data => toastMessage(data.tag, data.message))
+            .catch(error => toastMessage("Error", error))
         }
+            
 
+        // Watches the form for submission, then fires the Fetch function
         $("#enroll-form").on("submit", function (ev) {
             // stops form from sending
             ev.preventDefault();
@@ -66,7 +76,7 @@
             // The URL for the form
             const formUrl = this.action;
 
-            // Fires the main ajax function
+            // Fires the main fetch function
             enroll(formData, formUrl);
         });
     </script>
