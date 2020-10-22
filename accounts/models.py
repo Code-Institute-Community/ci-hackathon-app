@@ -12,6 +12,17 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+class Organisation(models.Model):
+    display_name = models.CharField(
+        max_length=100,
+        default='Code Institute',
+        blank=True
+    )
+
+    def __str__(self):
+        return self.display_name
+
+
 class Profile(models.Model):
     """
     Define Profile Model with OneToOne relationship to AUTH_USER_MODEL and
@@ -44,9 +55,10 @@ class Profile(models.Model):
         default='',
         choices=LMS_MODULES_CHOICES
     )
-    organisation = models.CharField(
-        max_length=100,
-        default='Code Institute',
+    organisation = models.ForeignKey(
+        Organisation,
+        on_delete=models.CASCADE,
+        related_name='profile',
         blank=True
     )
 
@@ -105,4 +117,5 @@ def post_delete_user(sender, instance, *args, **kwargs):
     """
     if instance:
         instance.user.delete()
+
 
