@@ -71,6 +71,10 @@ main {
     color: var(--s-grey);
 }
 
+.cancel-button {
+    padding: 1px 5px;
+}
+
 /* FOOTER */
 footer {
     flex-shrink: 0;
@@ -132,16 +136,16 @@ footer ul li a {
 
 /* TEXT */
 .p-orange {
-    color: var(--p-orange);  
+    color: var(--p-orange);
 }
 
 .p-blue {
-    color: var(--p-blue);  
+    color: var(--p-blue);
 }
 
 /* CARDS */
 .card-link:hover {
-    color: rgba(0, 0, 0, .7); 
+    color: rgba(0, 0, 0, .7);
 }
 
 .card-title {

@@ -1,4 +1,3 @@
-from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
@@ -21,12 +20,9 @@ def create_event(request):
     """ Allow users to create hackathon event """
 
     if request.method == 'GET':
-        # TODO: Add conditional to check if user is admin - if not, redirect to Hackathon events list
-        # TODO: Incorporate editing event in the same view in GET conditional:
-        #  - Get pk from params (passed in when user clicks 'EDIT' in events list
-        #  - If pk, get object and form instance and pass in as form context to enable pre-rendering data in frontend
-        #  - Else, pass empty form in as form context to frontend
-        # TODO: Check user is admin, otherwise redirect
+        # Redirect user if they are not admin
+        if not request.user.is_superuser:
+            return redirect("hackathon:hackathon-list")
 
         template = "hackathon/create-event.html"
         form = HackathonForm()
@@ -46,19 +42,20 @@ def create_event(request):
         # Ensure start_date is a day in the future
         if start_date.date() <= now.date():
             messages.error(request, 'The start date must be a date in the future.')
-            return HttpResponseRedirect(request.path)
+            return redirect("hackathon:create_event")
 
         # Ensure end_date is after start_date
         if end_date <= start_date:
             messages.error(request, 'The end date must be at least one day after the start date.')
-            return HttpResponseRedirect(request.path)
+            return redirect("hackathon:create_event")
 
+        # Submit form and save record
         if form.is_valid():
             form.instance.created_by = request.user
             form.instance.start_date = start_date
             form.instance.end_date = end_date
             form.save()
             messages.success(request, 'Thanks for submitting a new Hackathon event!')
-        return HttpResponseRedirect(request.path)
+        return redirect("hackathon:hackathon-list")
 
     pass
