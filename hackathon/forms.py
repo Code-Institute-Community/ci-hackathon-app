@@ -7,7 +7,11 @@ class HackathonForm(forms.ModelForm):
         label='Display Name',
         min_length=5,
         max_length=254,
-        widget=forms.TextInput(),
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Event name...'
+            }
+        ),
         required=True
     )
     description = forms.CharField(
@@ -16,7 +20,8 @@ class HackathonForm(forms.ModelForm):
         max_length=3000,
         widget=forms.Textarea(
             attrs={
-                'rows': 3
+                'rows': 3,
+                'placeholder': 'Tell us more about this event...'
             }
         ),
         required=True
@@ -25,18 +30,34 @@ class HackathonForm(forms.ModelForm):
         label='Theme',
         min_length=5,
         max_length=254,
-        widget=forms.TextInput(),
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Event theme...'
+            }
+        ),
         required=True
     )
     start_date = forms.DateTimeField(
         label="Start Date",
         input_formats=['%d/%m/%Y %H:%M'],
-        required=True
+        required=True,
+        widget=forms.DateTimeInput(
+            attrs={
+                'placeholder': 'DD/MM/YYYY HH:MM',
+                'autocomplete': 'off'
+            }
+        ),
     )
     end_date = forms.DateTimeField(
         label="End Date",
         input_formats=['%d/%m/%Y %H:%M'],
-        required=True
+        required=True,
+        widget=forms.DateTimeInput(
+            attrs={
+                'placeholder': 'DD/MM/YYYY HH:MM',
+                'autocomplete': 'off'
+            }
+        ),
     )
 
     class Meta:
