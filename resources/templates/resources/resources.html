@@ -11,16 +11,18 @@
         <div class="col-12 mt-3">
             <!--Resources and Links Table (medium and larger devices)-->
             <table class="table table-striped d-none d-md-flex justify-content-center">
+            <tbody>
             {% for resource in resources %}
                 <tr>
                     <th> {{ resource.name }}</th>
                     <td>
                         <a href="{{ resource.link }}" target="_blank" rel="noopener">
-                            {{ resource.link|truncatechars:50 }}
+                            {{ resource.link|truncatechars:60 }}
                         </a>
                     </td>
                 </tr>
             {% endfor %}
+            </tbody>
             </table>
 
             <!--Resources and Links List (small devices)-->

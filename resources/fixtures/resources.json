@@ -1,0 +1,82 @@
+[
+  {
+    "model": "resources.resource",
+    "pk": 1,
+    "fields": {
+      "name": "Gitpod - Code Institute full template",
+      "link": "https://github.com/Code-Institute-Org/gitpod-full-template"
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 2,
+    "fields": {
+      "name": "GitHub 'Projects' (in lieu of Trello)",
+      "link": "https://www.youtube.com/watch?v=C6MGKHkNtxU&t=0s"
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 3,
+    "fields": {
+      "name": "The Git Story",
+      "link": "https://eventyret.github.io/the-git-story/"
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 4,
+    "fields": {
+      "name": "Git Team workflow",
+      "link": "https://jameschambers.co/git-team-workflow-cheatsheet/"
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 5,
+    "fields": {
+      "name": "Forking",
+      "link": "https://www.youtube.com/watch?v=HbSjyU2vf6Y"
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 6,
+    "fields": {
+      "name": "Branches",
+      "link": "https://www.youtube.com/watch?v=QV0kVNvkMxc"
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 7,
+    "fields": {
+      "name": "Syncing",
+      "link": "https://www.youtube.com/watch?v=-zvHQXnBO6c"
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 8,
+    "fields": {
+      "name": "How to deal with merge refusal error",
+      "link": "https://github.community/t/how-to-deal-with-refusing-to-merge-unrelated-histories-error/1372/3#M5000"
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 9,
+    "fields": {
+      "name": "Merge unrelated histories",
+      "link": "https://www.youtube.com/watch?v=sdNyMmMSU34"
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 10,
+    "fields": {
+      "name": "Collaborate Issues/Pull Requests",
+      "link": "https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/working-with-forks"
+    }
+  }
+]

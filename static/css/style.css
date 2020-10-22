@@ -74,7 +74,7 @@ footer {
 }
 
 .divider-orange{
-background-image: radial-gradient(var(--p-orange), var(--p-red));
-height: 4px;
-border-radius: 100%;
+    background-image: radial-gradient(var(--p-orange), var(--p-red));
+    height: 4px;
+    border-radius: 100%;
 }
