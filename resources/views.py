@@ -7,8 +7,5 @@ def resources(request):
 
     template = "resources/resources.html"
     resources = Resource.objects.all()
-    context = {
-        'resources': resources,
-    }
 
-    return render(request, template, context)
+    return render(request, template, {'resources': resources})

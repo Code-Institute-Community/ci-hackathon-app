@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "home",
+    'accounts',
     "profiles",
     "resources",
     "crispy_forms",
@@ -81,6 +82,18 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_FORMS = {'signup': 'accounts.forms.ExtendedSignupForm'}
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
+ACCOUNT_USERNAME_MIN_LENGTH = 4
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = "main.wsgi.application"
 
