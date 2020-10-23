@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Edit Profile</h1>
-<div class="container">
-	<form method="post" enctype="multipart/form-data">
+<h1 class="edit_title">Edit Profile</h1>
+{% for message in messages %}
+<div class="alert alert-warning">
+	{{ message }}
+</div>
+{% endfor %}
+<div class="edit_form">
+	<form method="post">
 		{% csrf_token %}
-		<table>
-			{{ form.as_p }}
-		</table>
+		{{ form.as_p }}
 		<button type="submit">Submit</button>
 	</form>
-	<br>
 </div>
-
-	{% endblock %}
+{% endblock %}
