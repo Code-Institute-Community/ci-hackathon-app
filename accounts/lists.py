@@ -1,15 +1,19 @@
-# User types list passed into dropdown of same name for user selection used
-# in models.py & forms.py
-USER_TYPES_CHOICES = [
+"""
+    List of user types to be passed into dropdown of same name for each
+    user selection.
+"""
+USER_TYPES_CHOICES = (
     ('', 'Select Post Category'),
     ('participant', 'Participant'),
     ('staff', 'Staff'),
     ('admin', 'Admin'),
-]
+)
 
-# LMS Modules list passed into dropdown of same name for user selection used
-# in modules.py & forms.py
-LMS_MODULES_CHOICES = [
+"""
+    List of CI LMS modules to be passed into dropdown of same name for each 
+    user selection.
+"""
+LMS_MODULES_CHOICES = (
     ('', 'Select Learning Stage'),
     ('programme_preliminaries', 'Programme Preliminaries'),
     ('programming_paradigms', 'Programming Paradigms'),
@@ -24,5 +28,4 @@ LMS_MODULES_CHOICES = [
     ('full_stack_frameworks with django', 'Full Stack Frameworks with Django'),
     ('alumni', 'Alumni'),
     ('staff', 'Staff'),
-]
-
+)
