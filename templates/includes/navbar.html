@@ -30,7 +30,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarResources">
                         <a class="dropdown-item" href="#">FAQs</a>
                         <a class="dropdown-item" href="{% url 'judging_criteria' %}">Judging Criteria</a>
-                        <a class="dropdown-item" href="#">Useful Resources</a>
+                        <a class="dropdown-item" href="{% url 'resources' %}">Useful Resources</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -39,11 +39,21 @@
                         My Account
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarAccount">
+<<<<<<< HEAD
                         <a class="dropdown-item" href="#">Register</a>
                         <a class="dropdown-item" href="#">Login</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
                         <a class="dropdown-item" href="#">Logout</a>
+=======
+                        {% if not user.is_authenticated %}
+                            <a class="dropdown-item" href="{%  url 'account_signup' %}">Register</a>
+                            <a class="dropdown-item" href="{% url 'account_login' %}">Login</a>
+                        {% else %}
+                            <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
+                            <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+                        {% endif %}
+>>>>>>> 00f47c16cd4ff400d8924a26ce03a12c65cba5a7
                     </div>
                 </li>
             </ul>
