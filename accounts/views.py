@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .forms import EditProfileForm
+
 
 @login_required
 def edit_profile(request):
@@ -11,14 +13,14 @@ def edit_profile(request):
     """
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
-       
+
         if form.is_valid():
             form.save()
-          
             return redirect('profile')
+
+        else:
+            messages.error(request, 'Invalid entry, please try again.')
+            return redirect('edit_profile')
     else:
         form = EditProfileForm(instance=request.user)
-        contex = {
-            'form':form
-        }
-        return render(request, 'accounts/edit_profile.html', contex)
+        return render(request, 'accounts/edit_profile.html', {'form': form})
