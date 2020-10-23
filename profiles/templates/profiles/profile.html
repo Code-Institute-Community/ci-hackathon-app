@@ -12,8 +12,8 @@
         <div class="row">
 
             <div class="col-md-4">
-                <h4>Username:</h4>
-                <p>{{ user.username }}</p>
+                <h4>Slack Name:</h4>
+                <p>{{ user.slack_display_name }}</p>
             </div>
 
             <div class="col-md-4">
@@ -27,12 +27,12 @@
 
             <div class="col-md-4">
                 <h4>First name:</h4>
-                <p>{{ user.first_name }}</p>
+                <p>{{ user.first_name|title }}</p>
             </div>
 
             <div class="col-md-4">
                 <h4>Last name:</h4>
-                <p>{{ user.last_name }}</p>
+                <p>{{ user.last_name|title }}</p>
             </div>
 
         </div>
