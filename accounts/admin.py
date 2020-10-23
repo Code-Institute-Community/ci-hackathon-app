@@ -1,5 +1,6 @@
 from django.contrib import admin
-from django.contrib.auth.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
+from django.contrib.auth.forms import AdminPasswordChangeForm, \
+    UserChangeForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 
 from .models import CustomUser
@@ -9,15 +10,18 @@ class CustomUserAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': (
-            'first_name', 'last_name', 'slack_display_name', 'user_type', 'current_lms_module')}),
+            'first_name', 'last_name', 'slack_display_name', 'user_type',
+            'current_lms_module')}),
         ('Permissions', {'fields': (
-            'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+            'is_active', 'is_staff', 'is_superuser', 'groups',
+            'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
 
     limited_fieldsets = (
         (None, {'fields': ('email',)}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'slack_display_name', 'user_type',)}),
+        ('Personal info', {'fields': ('first_name', 'last_name',
+                                      'slack_display_name', 'user_type',)}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
 
