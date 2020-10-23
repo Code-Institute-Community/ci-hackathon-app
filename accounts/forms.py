@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 
 from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
+from .models import CustomUser
 
 
 class SignupForm(forms.Form):
@@ -11,9 +12,12 @@ class SignupForm(forms.Form):
     """
     first_name = forms.CharField(max_length=30, label='First Name')
     last_name = forms.CharField(max_length=30, label='Last Name')
-    slack_display_name = forms.CharField(max_length=30, label='Slack display name')
-    user_type = forms.CharField(widget=forms.Select(choices=USER_TYPES_CHOICES))
-    current_lms_module = forms.CharField(widget=forms.Select(choices=LMS_MODULES_CHOICES))
+    slack_display_name = forms.CharField(
+        max_length=30, label='Slack display name')
+    user_type = forms.CharField(
+        widget=forms.Select(choices=USER_TYPES_CHOICES))
+    current_lms_module = forms.CharField(
+        widget=forms.Select(choices=LMS_MODULES_CHOICES))
 
     class Meta:
         fields = (
@@ -44,3 +48,20 @@ class SignupForm(forms.Form):
             user.is_active = False
 
         user.save()
+
+
+class EditProfileForm(forms.ModelForm):
+    """ 
+        Using ModelForm to directly convert the CustomUser model into the EditProfileForm form.
+    """
+
+    class Meta:
+        model = CustomUser
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'slack_display_name',
+            'user_type',
+            'current_lms_module'
+        )
