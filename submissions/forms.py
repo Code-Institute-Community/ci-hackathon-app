@@ -7,7 +7,7 @@ class HackProjectSubmissionForm(forms.ModelForm):
         model = HackProject
         exclude = ('mentor',)
         fields = ('display_name', 'description', 'github_url',
-                  'deployed_url', 'share_permission', 'speaker_name',)
+                  'deployed_url', 'speaker_name','share_permission')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -17,7 +17,7 @@ class HackProjectSubmissionForm(forms.ModelForm):
             'description': 'Description',
             'github_url': 'GitHub Repository URL',
             'deployed_url': 'Deployed URL',
-            'share_permission': "Permission",
+            'share_permission': 'Share Permission',
         }
 
         self.fields['display_name'].widget.attrs['autofocus'] = True

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from hackathon.models import HackProject
 from .forms import HackProjectSubmissionForm
 """Fuction that renders the submission page for the groups projects.
@@ -13,6 +13,5 @@ def submit(request):
             submission = submission_form.save()
             return render(request, 'submissions/success.html')
     submission_form = HackProjectSubmissionForm()
-
     return render(request, 'submissions/submit.html',
                   {'submission_form': submission_form})
