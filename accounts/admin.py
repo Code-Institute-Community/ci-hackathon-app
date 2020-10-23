@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AdminPasswordChangeForm, \
     UserChangeForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 
-from .models import CustomUser
+from .models import CustomUser, Organisation
 
 
 class CustomUserAdmin(admin.ModelAdmin):
@@ -11,7 +11,7 @@ class CustomUserAdmin(admin.ModelAdmin):
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': (
             'first_name', 'last_name', 'slack_display_name', 'user_type',
-            'current_lms_module')}),
+            'current_lms_module', 'organisation')}),
         ('Permissions', {'fields': (
             'is_active', 'is_staff', 'is_superuser', 'groups',
             'user_permissions')}),
@@ -21,7 +21,8 @@ class CustomUserAdmin(admin.ModelAdmin):
     limited_fieldsets = (
         (None, {'fields': ('email',)}),
         ('Personal info', {'fields': ('first_name', 'last_name',
-                                      'slack_display_name', 'user_type',)}),
+                                      'slack_display_name', 'user_type',
+                                      'organisation')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
 
@@ -35,9 +36,10 @@ class CustomUserAdmin(admin.ModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     change_password_form = AdminPasswordChangeForm
-    list_display = ('email', 'first_name', 'last_name', 'is_superuser')
+    list_display = ('email', 'first_name', 'last_name', 'is_superuser',
+                    'organisation')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
-    search_fields = ('first_name', 'last_name', 'email')
+    search_fields = ('first_name', 'last_name', 'email', 'organisation')
     ordering = ('email',)
     readonly_fields = ('last_login', 'date_joined',)
 
@@ -45,3 +47,4 @@ class CustomUserAdmin(admin.ModelAdmin):
 # sign-in via allauth required before accessing the admin panel
 admin.site.login = login_required(admin.site.login)
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Organisation)

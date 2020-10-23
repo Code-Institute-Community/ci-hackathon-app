@@ -4,6 +4,21 @@ from django.contrib.auth.models import AbstractUser
 from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
 
 
+class Organisation(models.Model):
+    display_name = models.CharField(
+        max_length=100,
+        default='Code Institute'
+    )
+
+    def __str__(self):
+        return self.display_name
+
+
+def get_orgs():
+    Organisation.objects.all()
+print(get_orgs())
+
+
 class CustomUser(AbstractUser):
     """ Custom user model extending the basic AbstractUser model """
     slack_display_name = models.CharField(
@@ -24,6 +39,14 @@ class CustomUser(AbstractUser):
         blank=False,
         default='',
         choices=LMS_MODULES_CHOICES
+    )
+
+    organisation = models.ForeignKey(
+        Organisation,
+        on_delete=models.CASCADE,
+        related_name='user_organisation',
+        default='',
+        null=True
     )
 
     def __str__(self):
