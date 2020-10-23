@@ -54,6 +54,7 @@
 
 /* Overwrite Bootstrap Card styles for the user-panel menu items */
 
+.user-panel .text-center span,
 .card .card-header .btn,
 .card .card-body a {
     color: var(--s-grey);
@@ -66,6 +67,7 @@
 .card .card-body {
     display: flex;
     flex-direction: column;
+    /* justify-content: space-evenly; */
 }
 
 /* Overwrite Bootstrap Card styles for the Hackathon Card items */
