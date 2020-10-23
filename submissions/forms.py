@@ -15,7 +15,7 @@ class HackProjectSubmissionForm(forms.ModelForm):
             'display_name': 'Project Name',
             'speaker_name': 'Speaker(s) Name',
             'description': 'Description',
-            'github_url': 'Github Repository URL',
+            'github_url': 'GitHub Repository URL',
             'deployed_url': 'Deployed URL',
             'share_permission': "Permission",
         }
