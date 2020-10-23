@@ -71,7 +71,7 @@ main {
     color: var(--s-grey);
 }
 
-.cancel-button {
+.button {
     padding: 1px 5px;
 }
 

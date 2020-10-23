@@ -3,6 +3,8 @@ from .models import Hackathon
 
 
 class HackathonForm(forms.ModelForm):
+    """ A form to enable users to add hackathon events via the frontend site.
+     The form renders the fields that require value inputs from the user, along with some basic validation. """
     display_name = forms.CharField(
         label='Display Name',
         min_length=5,

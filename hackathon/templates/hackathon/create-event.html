@@ -14,7 +14,7 @@
   <section class="h-100">
     <div class="row mb-3">
       <div class="col-12">
-        <h1>Create Hackathon Event</h1>
+        <h1>Create Hackathon</h1>
       </div>
     </div>
 
@@ -38,7 +38,7 @@
         </div>
         <div class="col-12 mb-5">
           <input type="submit" class="btn-ci mr-2">
-          <a href="{% url 'hackathon:hackathon-list' %}" type="button" class="btn-ci cancel-button">Cancel</a>
+          <a href="{% url 'hackathon:hackathon-list' %}" type="button" class="btn-ci button">Cancel</a>
         </div>
       </div>
     </form>
@@ -51,41 +51,5 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
           integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous">
   </script>
-  <script>
-    $(document).ready(function () {
-      const today = new Date();
-      // Tomorrow's date is min and default start date
-      const defaultStartDate = today.setDate(today.getDate() + 1);
-      // The day after tomorrow's date is min and default end date
-      const defaultEndDate = today.setDate(today.getDate() + 1);
-
-      $('#id_start_date').datetimepicker({
-        format: 'd/m/Y H:i',
-        lazyInit: true,
-        step: 30,
-        minDate: defaultStartDate,
-        defaultDate: defaultStartDate,
-        defaultTime: '08:00',
-        minTime: '08:00',
-        maxTime: '18:30',
-        yearStart: today.getFullYear(),
-        mask: true,
-        dayOfWeekStart: 1,
-      });
-
-      $('#id_end_date').datetimepicker({
-        format: 'd/m/Y H:i',
-        lazyInit: true,
-        step: 30,
-        minDate: defaultEndDate,
-        defaultDate: defaultEndDate,
-        defaultTime: '08:00',
-        minTime: '08:00',
-        maxTime: '18:30',
-        yearStart: today.getFullYear(),
-        mask: true,
-        dayOfWeekStart: 1,
-      });
-    });
-  </script>
+  <script src="{% static 'js/datetimepicker.js' %}"></script>
 {% endblock %}
