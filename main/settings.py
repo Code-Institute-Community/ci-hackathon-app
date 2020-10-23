@@ -29,9 +29,7 @@ INSTALLED_APPS = [
     "home",
     "profiles",
     "crispy_forms",
-    # M05 App "Hackathon" added
     "hackathon",
-    # P09 - Hackathon submission.
     "submissions",
 ]
 

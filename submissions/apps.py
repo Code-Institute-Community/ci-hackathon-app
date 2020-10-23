@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class SubmissionsConfig(AppConfig):
+class HackProjectSubmissionConfig(AppConfig):
     name = 'submissions'

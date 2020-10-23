@@ -113,7 +113,13 @@ class HackProject(models.Model):
     "scores" has been moved to HackProjectScore. See comments there."""
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User,on_delete=models.SET_NULL, null=True, blank=True, related_name="hackproject", default="")
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="hackproject",
+        default="")
     display_name = models.CharField(default="", max_length=255)
     description = models.TextField(max_length=500)
     github_url = models.URLField(default="", max_length=255)
@@ -138,7 +144,11 @@ class HackProjectScore(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
-    created_by = models.ForeignKey(User,on_delete=models.CASCADE, related_name="hackprojectscores", default="")
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="hackprojectscores",
+        default="")
     # One Judge can give one score - One to One
     judge = models.OneToOneField(User, on_delete=models.CASCADE)
     # One score is for one project, a project has numerous scores: One to Many

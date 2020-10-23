@@ -1,19 +1,19 @@
-  
 from django import forms
 from hackathon.models import HackProject
 
-class SubmissionForm(forms.ModelForm):
+
+class HackProjectSubmissionForm(forms.ModelForm):
     class Meta:
         model = HackProject
         exclude = ('mentor',)
-        fields = ('display_name', 'description','github_url',
-            'deployed_url', 'share_permission', 'speaker_name',)
+        fields = ('display_name', 'description', 'github_url',
+                  'deployed_url', 'share_permission', 'speaker_name',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         placeholders = {
             'display_name': 'Project Name',
-            'speaker_name': "Speaker(s) Name",
+            'speaker_name': 'Speaker(s) Name',
             'description': 'Description',
             'github_url': 'Github Repository URL',
             'deployed_url': 'Deployed URL',
