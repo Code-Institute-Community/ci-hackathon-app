@@ -10,3 +10,5 @@ env.py
 settings.json
 .gitpod.yml
 setup.*
+venv/
+.idea/
