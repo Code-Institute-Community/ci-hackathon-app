@@ -7,13 +7,17 @@ from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
 class SignupForm(forms.Form):
     """ 
         Custom Signup form overriding the standard all_auth Signup form 
-        Additional fields include: first_name | last_name | slack_display_name | user_type | current lms module
+        Additional fields include: first_name | last_name |
+        slack_display_name | user_type | current lms module
     """
     first_name = forms.CharField(max_length=30, label='First Name')
     last_name = forms.CharField(max_length=30, label='Last Name')
-    slack_display_name = forms.CharField(max_length=30, label='Slack display name')
-    user_type = forms.CharField(widget=forms.Select(choices=USER_TYPES_CHOICES))
-    current_lms_module = forms.CharField(widget=forms.Select(choices=LMS_MODULES_CHOICES))
+    slack_display_name = forms.CharField(max_length=30,
+                                         label='Slack display name')
+    user_type = forms.CharField(widget=forms.Select(
+        choices=USER_TYPES_CHOICES))
+    current_lms_module = forms.CharField(widget=forms.Select(
+        choices=LMS_MODULES_CHOICES))
 
     class Meta:
         fields = (
