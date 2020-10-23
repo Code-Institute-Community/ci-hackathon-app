@@ -9,20 +9,20 @@ class CustomUser(AbstractUser):
     slack_display_name = models.CharField(
         max_length=80,
         blank=False,
-        null=True
+        default=''
     )
 
     user_type = models.CharField(
         max_length=20,
         blank=False,
-        null=True,
+        default='',
         choices=USER_TYPES_CHOICES
     )
 
     current_lms_module = models.CharField(
         max_length=35,
         blank=False,
-        null=True,
+        default='',
         choices=LMS_MODULES_CHOICES
     )
 
