@@ -30,9 +30,10 @@ INSTALLED_APPS = [
 
     # custom apps
     'accounts',
-    "profiles",
     "hackathon",
     "home",
+    "profiles",
+    "resources",
 ]
 
 MIDDLEWARE = [
