@@ -36,6 +36,19 @@
 		</div>
 
 	</div>
+    	<div class="row">
+
+		<div class="col-md-4">
+			<h4>User type:</h4>
+			<p>{{ user.user_type|title}}</p>
+		</div>
+
+		<div class="col-md-4">
+			<h4>Current LMS module :</h4>
+			<p>{{ user.human_readable_current_lms_module|title}}</p>
+		</div>
+
+	</div>
 	<div class="row">
 		<a class="btn btn-dark" href="{% url 'edit_profile' %}">Edit Profile</a>
 	</div>
