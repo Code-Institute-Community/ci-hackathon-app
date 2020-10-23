@@ -14,7 +14,7 @@
     <div class="container">
         <div class="row">
           <!-- <div class="dashboard-start"></div> -->
-            <div id="user-dashboard" class="col-4 col-md-2 p-1 user-panel">
+            <div id="user-dashboard" class="col-6 col-md-2 p-1 user-panel">
               <div class="custom-menu">
                 <button type="button" id="sidebar-collapse" class="btn">
                   <i class="fa fa-bars"></i>
@@ -24,14 +24,14 @@
                 <span class="mt-4">Dashboard</span>
                 <div class="mt-2" id="accordion">
                     <div class="card">
-                      <div class="card-header" id="headingOne">
+                      <div class="card-header" id="dashboardProfile">
                         <h5 class="mb-0">
-                          <a class="btn btn-link dropdown-toggle" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          <a class="btn btn-link dropdown-toggle" data-toggle="collapse" data-target="#collapseProfile" aria-expanded="true" aria-controls="collapseProfile">
                             Profile
                           </a>
                         </h5>
                       </div>                 
-                      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                      <div id="collapseProfile" class="collapse" aria-labelledby="dashboardProfile" data-parent="#accordion">
                         <div class="card-body">
                             <a href="">Update Profile</a>
                             <a href="">Change Password</a>
@@ -39,17 +39,47 @@
                       </div>
                     </div>
                     <div class="card">
-                      <div class="card-header" id="headingTwo">
+                      <div class="card-header" id="dashboardHackathons">
                         <h5 class="mb-0">
-                          <a class="btn btn-link dropdown-toggle collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          <a class="btn btn-link dropdown-toggle collapsed" data-toggle="collapse" data-target="#collapseHackathons" aria-expanded="false" aria-controls="collapseHackathons">
                             Hackathons
                           </a>
                         </h5>
                       </div>
-                      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                      <div id="collapseHackathons" class="collapse" aria-labelledby="dashboardHackathons" data-parent="#accordion">
                         <div class="card-body">
                           <a href="">Add New</a>
                           <a href="">Update</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" id="dashboardTeams">
+                        <h5 class="mb-0">
+                          <a class="btn btn-link dropdown-toggle collapsed" data-toggle="collapse" data-target="#collapseTeams" aria-expanded="false" aria-controls="collapseTeams">
+                            Teams
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseTeams" class="collapse" aria-labelledby="dashboardTeams" data-parent="#accordion">
+                        <div class="card-body">
+                          <a href="">Team One</a>
+                          <a href="">Team Two</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header" id="dashboardResources">
+                        <h5 class="mb-0">
+                          <a class="btn btn-link dropdown-toggle collapsed" data-toggle="collapse" data-target="#collapseResources" aria-expanded="false" aria-controls="collapseResources">
+                            Resources
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseResources" class="collapse" aria-labelledby="dashboardResources" data-parent="#accordion">
+                        <div class="card-body">
+                          <a href="">Resource</a>
+                          <a href="">Resource</a>
                         </div>
                       </div>
                     </div>
@@ -59,7 +89,31 @@
                 <span class="mt-2">Form Includes Rendered Here</span>
             </div>
             <div class="col-12 col-md-3 text-center">
-                <span class="mt-4">My Hackath<span class="ci-orange">o</span>ns</span>
+                <span class="mt-4">Hackath<span class="ci-orange">o</span>n Hall</span>
+                <div class="card hackathon-card">
+                  <div class="card-body">
+                    <h5 class="card-title">Hackath<span class="ci-orange">o</span>n #1</h5>
+                    <a href="#" class="btn btn-ci">Go somewhere</a>
+                  </div>
+                </div>
+                <div class="card hackathon-card">
+                  <div class="card-body">
+                    <h5 class="card-title">Hackath<span class="ci-orange">o</span>n #2</h5>
+                    <a href="#" class="btn btn-ci">Go somewhere</a>
+                  </div>
+                </div>
+                <div class="card hackathon-card">
+                  <div class="card-body">
+                    <h5 class="card-title">Hackath<span class="ci-orange">o</span>n #3</h5>
+                    <a href="#" class="btn btn-ci">Go somewhere</a>
+                  </div>
+                </div>
+                <div class="card hackathon-card">
+                  <div class="card-body">
+                    <h5 class="card-title">Hackath<span class="ci-orange">o</span>n #4</h5>
+                    <a href="#" class="btn btn-ci">Go somewhere</a>
+                  </div>
+                </div>
             </div>
         </div>
     </div>

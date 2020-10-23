@@ -1,10 +1,9 @@
-
 /* USER DASHBOARD */
 
 .user-panel {
     background: var(--p-grey);
     height: 51vh;
-    margin-left: -131px;
+    margin-left: -54vw;
     transition: 0.5s;
     box-shadow: 
          2px 2px 9px var(--p-grey),
@@ -12,7 +11,7 @@
 }
 
 .user-panel.active {
-    margin-left: 0px;
+    margin-left: 0vw;
 }
 
 .dashboard-start {
@@ -53,7 +52,10 @@
     color: var(--s-grey);
 }
 
-.card .card-header .btn {
+/* Overwrite Bootstrap Card styles for the user-panel menu items */
+
+.card .card-header .btn,
+.card .card-body a {
     color: var(--s-grey);
     text-decoration: none;
     font-size: .75rem;
@@ -61,6 +63,20 @@
     line-height: 1.5;
 }
 
+.card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Overwrite Bootstrap Card styles for the Hackathon Card items */
+
+.hackathon-card {
+    margin-bottom: 2px;
+}
+
+.card .hackathon-card .btn {
+    color: var(--p-grey);
+}
 /* For specific color targeting of 'o' chars in keeping with the CI Logo */
 
 .ci-orange {
@@ -72,14 +88,6 @@
 #sidebar-collapse:focus {
     border: none;
     box-shadow: none;
-}
-
-#user-dashboard .custom-menu .btn i {
-    margin-right: -80px;
-    font-size: 14px;
-    color: var(--p-orange);
-    cursor: pointer;
-    text-decoration: none;
 }
 
 button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disabled), [type="submit"]:not(:disabled) {
@@ -110,26 +118,43 @@ button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disab
     -moz-osx-font-smoothing: grayscale;
 }
 
+.fa-bars {
+    z-index: 9999;
+}
+
 .fa-bars:before {
     content: "\f0c9";
+}
+
+#user-dashboard {
+    z-index: 9999;
+    position: fixed;
 }
 
 #user-dashboard .custom-menu {
     display: inline-block;
     position: absolute;
-    top: 40px;
+    top: 30px;
     right: 0;
-    margin-right: -40px;
+    margin-right: -30px;
     -webkit-transition: 0.3s;
     -o-transition: 0.3s;
     transition: 0.3s;
 }
 
+#user-dashboard .custom-menu .btn i {
+    margin-right: -60px;
+    font-size: 18px;
+    color: var(--p-orange);
+    cursor: pointer;
+    text-decoration: none;
+}
+
 #user-dashboard .custom-menu .btn {
     background: transparent;
     border-color: transparent;
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     position: relative;
 }
@@ -150,5 +175,14 @@ button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disab
     box-shadow: 
          2px 2px 9px var(--p-grey),
          2px 2px 9px var(--p-grey);
-        
+}
+
+@media screen and (min-width: 600px) {
+    .user-panel {
+        margin-left: 0vw;
+    }
+
+    #user-dashboard {
+        position: relative;
+    }
 }
