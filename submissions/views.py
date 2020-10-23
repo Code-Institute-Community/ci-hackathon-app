@@ -14,8 +14,5 @@ def submit(request):
             return render(request, 'submissions/success.html')
     submission_form = HackProjectSubmissionForm()
 
-    context = {
-        'submission_form': submission_form,
-    }
-
-    return render(request, 'submissions/submit.html', context)
+    return render(request, 'submissions/submit.html',
+                  {'submission_form': submission_form})
