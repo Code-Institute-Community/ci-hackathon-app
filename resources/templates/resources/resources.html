@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="row my-4">
+        <div class="col-12 text-center mb-3">
+            <h1>Useful resources and links</h1>
+            <hr class="divider-orange w-25 mt-4 d">
+        </div>
+        <div class="col-12 my-3 d-none d-md-block ">
+            <!--Resources and Links Table (medium and larger devices)-->
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" class="p-orange">Resource & Link</th>
+                        <th scope="col" class="p-orange">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for resource in resources %}
+                    <tr>
+                        <th scope="row"> 
+                            <a href="{{ resource.link }}" target="_blank" rel="noopener" class="text-dark">
+                                <i class="fas fa-link mr-2"></i>
+                                {{ resource.name }}
+                            </a>
+                        </th>
+                        <td class="w-75"> {{ resource.description}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+    {% for resource in resources %}
+        <div class="col-12 d-block d-md-none table border-top pt-2">
+        
+        <a href="{{ resource.link }}" target="_blank" rel="noopener" class="text-dark font-weight-bold lead">
+                            <i class="fas fa-link mr-2"></i>
+                            {{ resource.name }}
+                            </a>
+        </div>
+        <div class="col-12 d-block d-md-none table">
+        {{ resource.description }}
+        
+        </div>
+        {% endfor %}   
+    </div>
+    
+{% endblock %}
