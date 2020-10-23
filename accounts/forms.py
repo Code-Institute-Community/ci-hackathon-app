@@ -62,6 +62,5 @@ class EditProfileForm(forms.ModelForm):
             'first_name',
             'last_name',
             'slack_display_name',
-            'user_type',
             'current_lms_module'
         )
