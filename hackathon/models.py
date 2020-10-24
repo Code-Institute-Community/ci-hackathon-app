@@ -42,6 +42,8 @@ class Hackathon(models.Model):
                                   blank=True,
                                   on_delete=models.SET_NULL,
                                   related_name="hackathon_organiser")
+    # Status field which can be set to deleted to filter out deleted hackathons from frontend list
+    status = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.display_name
