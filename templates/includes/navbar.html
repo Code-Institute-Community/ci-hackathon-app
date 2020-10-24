@@ -17,7 +17,11 @@
                         Hackathons
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarHackathons">
-                        <a class="dropdown-item" href="{% url 'hackathon:hackathon-list' %}">Events</a>
+                        <a class="dropdown-item" href="{% url 'hackathon:hackathon-list' %}">View Hackathons</a>
+                        <!-- Create event link only available for admin users -->
+                        {% if user.is_authenticated and user.is_superuser %}
+                            <a class="dropdown-item" href="{% url 'hackathon:create_hackathon' %}">Create Hackathon</a>
+                        {% endif %}
                         <a class="dropdown-item" href="#">Winning Projects</a>
                         <a class="dropdown-item" href="#">Awards</a>
                     </div>

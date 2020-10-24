@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block css %}
+  <!-- XDSoft DateTimePicker -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+        integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
+{% endblock %}
+
+{% block content %}
+
+  <section class="h-100">
+    <div class="row mb-3">
+      <div class="col-12">
+        <h1>Create Hackathon</h1>
+      </div>
+    </div>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-12">
+          {{ form.display_name|as_crispy_field }}
+        </div>
+        <div class="col-12">
+          {{ form.description|as_crispy_field }}
+        </div>
+        <div class="col-12">
+          {{ form.theme|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-6">
+          {{ form.start_date|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-6 mb-3">
+          {{ form.end_date|as_crispy_field }}
+        </div>
+        <div class="col-12 mb-5">
+          <input type="submit" class="btn-ci mr-2">
+          <a href="{% url 'hackathon:hackathon-list' %}" type="button" class="btn-ci button">Cancel</a>
+        </div>
+      </div>
+    </form>
+
+  </section>
+
+{% endblock %}
+
+{% block js %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+          integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous">
+  </script>
+  <script src="{% static 'js/datetimepicker.js' %}"></script>
+{% endblock %}
