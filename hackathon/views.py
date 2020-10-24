@@ -19,8 +19,9 @@ class HackathonListView(ListView):
         """
         Pass in the following context to the template:
         hackathons - filter out deleted hackathons and order by newest first
-        today - needed to compare dates to display delete alert for hackathons in progress (needed because using built
-        in template 'now' date didn't work correctly for the comparison)
+        today - needed to compare dates to display delete alert for hackathons
+        in progress (needed because using built in template 'now' date didn't
+        work correctly for the comparison)
         """
         context = super().get_context_data(**kwargs)
         context['hackathons'] = Hackathon.objects.order_by('-created').exclude(status='deleted')
@@ -71,7 +72,8 @@ def create_hackathon(request):
 
 @login_required
 def delete_hackathon(request, hackathon_id):
-    """ Allow users to 'soft delete' hackathon event - set status to 'deleted' to remove from frontend list """
+    """ Allow users to 'soft delete' hackathon event - set status to 'deleted'
+     to remove from frontend list """
 
     # Redirect user if they are not admin
     if not request.user.is_superuser:
