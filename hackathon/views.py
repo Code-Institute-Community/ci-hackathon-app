@@ -55,3 +55,20 @@ def create_hackathon(request):
         return redirect("hackathon:hackathon-list")
 
     pass
+
+
+@login_required
+def delete_hackathon(request, hackathon_id):
+    """ Allow users to 'soft delete' hackathon event - set status to 'deleted' to remove from frontend list """
+
+    # Redirect user if they are not admin
+    if not request.user.is_superuser:
+        return redirect("hackathon:hackathon-list")
+
+    # Get selected hackathon and set status to deleted to remove from frontend list
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    hackathon.status = 'deleted'
+    hackathon.save()
+
+    messages.success(request, f'{hackathon.display_name} has been successfully deleted!')
+    return redirect("hackathon:hackathon-list")
