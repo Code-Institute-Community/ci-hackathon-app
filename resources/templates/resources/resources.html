@@ -8,6 +8,13 @@
             <h1>Useful resources and links</h1>
             <hr class="divider-orange w-25 mt-4 d">
         </div>
+
+        {% if request.user.is_superuser %}
+        <div class="col-12 text-right">
+            <a class="btn btn-ci" href="{% url 'add_resource' %}"><i class="fas fa-plus-circle mr-1"></i> Add a Resource</a>
+        </div>
+        {% endif %}
+        
         <div class="col-12 my-3 d-none d-md-block ">
             <!--Resources and Links Table (medium and larger devices)-->
             <table class="table table-striped">
