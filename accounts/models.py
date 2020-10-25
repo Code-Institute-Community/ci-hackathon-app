@@ -14,11 +14,6 @@ class Organisation(models.Model):
         return self.display_name
 
 
-def get_orgs():
-    Organisation.objects.all()
-print(get_orgs())
-
-
 class CustomUser(AbstractUser):
     """ Custom user model extending the basic AbstractUser model """
     slack_display_name = models.CharField(

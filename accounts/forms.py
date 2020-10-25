@@ -1,14 +1,16 @@
 from django import forms
+from django.forms import ModelForm
 from django.contrib.auth import get_user_model
 
 from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
+from .models import Organisation
 
 
 class SignupForm(forms.Form):
     """ 
         Custom Signup form overriding the standard all_auth Signup form 
         Additional fields include: first_name | last_name |
-        slack_display_name | user_type | current lms module
+        slack_display_name | user_type | current lms module | organisation
     """
     first_name = forms.CharField(max_length=30, label='First Name')
     last_name = forms.CharField(max_length=30, label='Last Name')
@@ -18,11 +20,13 @@ class SignupForm(forms.Form):
         choices=USER_TYPES_CHOICES))
     current_lms_module = forms.CharField(widget=forms.Select(
         choices=LMS_MODULES_CHOICES))
+    organisation = forms.ModelChoiceField(queryset=Organisation.objects.all())
 
     class Meta:
         fields = (
             'email', 'password1', 'password2',
-            'slack_display_name', 'user_type', 'current_lms_module'
+            'slack_display_name', 'user_type', 'current_lms_module',
+            'organisation'
         )
         model = get_user_model()
 
