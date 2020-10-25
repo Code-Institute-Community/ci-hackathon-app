@@ -47,7 +47,10 @@ class CustomUser(AbstractUser):
     def __str__(self):
         """  Return Class object to string via the user email value  """
         return self.username
-    
+
+    def human_readable_current_lms_module(self):
+        return self.current_lms_module.replace('_', ' ')
+
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'

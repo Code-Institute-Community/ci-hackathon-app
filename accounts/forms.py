@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 
 from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
 from .models import Organisation
+from .models import CustomUser
 
 
 class SignupForm(forms.Form):
@@ -52,3 +53,19 @@ class SignupForm(forms.Form):
             user.is_active = False
 
         user.save()
+
+
+class EditProfileForm(forms.ModelForm):
+    """ 
+        Using ModelForm to directly convert the CustomUser model into the EditProfileForm form.
+    """
+
+    class Meta:
+        model = CustomUser
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'slack_display_name',
+            'current_lms_module'
+        )
