@@ -148,8 +148,8 @@ class HackProjectScore(models.Model):
     created_by = models.ForeignKey(User,
                                    on_delete=models.CASCADE,
                                    related_name="hackprojectscores")
-    # One Judge can give one score - One to One
-    judge = models.OneToOneField(User, on_delete=models.CASCADE)
+    # One Judge scores several scorecategories - One to Many
+    judge = models.ForeignKey(User, on_delete=models.CASCADE)
     # One score is for one project, a project has numerous scores: One to Many
     project = models.ForeignKey(HackProject,
                                 on_delete=models.CASCADE,

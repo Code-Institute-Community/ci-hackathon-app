@@ -22,14 +22,16 @@
 
     <section class="container">
     <!-- judging form -->
-        <form class="hack-score-form row justify-content-around" action="" method="post">
+        <form class="hack-score-form tex-center" action="{% url 'hackathon:judging' hackathon.id team.id %}" method="post">
+            {% csrf_token %}
+            <div class=" row justify-content-around" >
             {% for category in score_categories %}
                 <div class="col-12 col-md-6 mb-4">
                     <div class="shadow p-3 bg-white rounded mx-3">
                         <div class="row">
                             <div class="col-3 input-group ">
-                                <select class="custom-select" id="inputGroupSelect01">
-                                    <option selected>Score</option>
+                                <select required class="custom-select" name="score_{{ category.id }}">
+                                    <option selected disabled value="">Score</option>
                                     <!-- using custom get_range tag -->
                                     {% for i in category.max_score|get_range:category.min_score %}
                                     
@@ -56,12 +58,17 @@
                     </div>
                 </div>
             {% endfor %}
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="mt-1 mb-5">
+                    <button class="btn-lg btn-ci mt-1" type="submit" value="Submit">Submit scores</button>
+                </div>
+            </div>
+            
         </form>
 
     </section>
 
-    <div class="mt-4 mb-5">
-        <a href="#" class="btn-lg btn-ci mt-4">Submit Scores</a>
-    </div>
+
 </div>
 {% endblock %}

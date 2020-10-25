@@ -20,84 +20,99 @@ class HackathonListView(ListView):
 def judging(request, hack_id, team_id):
     """Displays the judging page for the judge to save their scores
     for the selected project - determined by hackathon id and team id"""
+
+    # HackProjectScoreCategories:
+    score_categories = HackProjectScoreCategory.objects.all()
+
+    event = Hackathon.objects.filter(pk=hack_id)
+    team = HackTeam.objects.filter(pk=team_id)
+
+    print(f"-----------------\n\n         JUDGING START       --------------------- \n\n")
+
+    # verify whether user is judge for the event
+    user_is_judge = False
+    for judge in event.values('judges'):
+        if judge['judges'] == request.user.id:
+            print("1. user is verified to be judge for the event")
+            user_is_judge = True
+    if not user_is_judge:
+        messages.error(request, "You are not a judge for that event!")
+        template = 'hackathon/hackathon_list.html'
+        return render(request, template)
+
+    # verify if event is ready to be judged (finished)
+    finish = event.values('end_date')[0]['end_date']
+    now = timezone.now()
+    if finish > now:
+        messages.error(request, f"The event has not finished yet, check back after {finish}!")
+        template = 'hackathon/hackathon_list.html'
+        return render(request, template)
+    print("2. the event has finished - ready to be judged")
+
+    # verify that the selected team belongs to the selected event
+    team_belongs_to_event = False
+    for team in event.values('teams'):
+        if team['teams'] == int(team_id):
+            team_belongs_to_event = True
+            print("3. team is verified to be part of the event")
+    if not team_belongs_to_event:
+        messages.error(request, f"Nice try! That team is not part of the event...")
+        template = 'hackathon/hackathon_list.html'
+        return render(request, template)
+
+    # check if the judge has already scored the requested team's Project
+    the_event = get_object_or_404(Hackathon, pk=hack_id)
+    project = get_object_or_404(HackTeam, pk=team_id).project
+    judge_has_scored_this = False
+    print(f"4a project score {HackProjectScore.objects.filter(judge=request.user)}")
+    if HackProjectScore.objects.filter(judge=request.user, project=project):
+        messages.error(request, f"Oooops, sorry! Something went wrong, you have already scored that team...")
+        template = 'hackathon/hackathon_list.html'
+        return render(request, template)
+    print("4. Judge has not scored this project verified!")
+    
+    
+    # team_ids_in_event = Hackathon.objects.filter(pk=hack_id).values_list('teams', flat=True)
+    # print(f"teams_in_event = {team_ids_in_event}")
+
     
     if request.method == 'POST':
         # judge score submitted for a team
-        pass
+        print(f"##############################\n         POST \n")
+        for score_category in score_categories:
+            created_by = request.user
+            judge = request.user
+            project = get_object_or_404(HackTeam, pk=team_id).project
+            score_cat_id = f"score_{score_category.id}"
+            score = request.POST.get(score_cat_id)
+            hack_project_score_category = score_category
+            team_score = HackProjectScore(
+                created_by = request.user,
+                judge = request.user,
+                project = get_object_or_404(HackTeam, pk=team_id).project,
+                score = request.POST.get(score_cat_id),
+                hack_project_score_category = score_category,
+            )
+            team_score.save()
+            
+        return redirect("hackathon:hackathon-list")
 
-    else:
+    # else:
         # rendering the page for the judge to score a team
-        # Becomes available only after a Hackathon End Date/Time
         
-        event = Hackathon.objects.filter(pk=hack_id)
-        team = HackTeam.objects.filter(pk=team_id)
-        
-        # verify whether user is judge for the event
-        user_is_judge = False
-        for judge in event.values('judges'):
-            if judge['judges'] == request.user.id:
-                print("judge there")
-                user_is_judge = True
-        if not user_is_judge:
-            messages.error(request, "You are not a judge for that event!")
-            template = 'hackathon/hackathon_list.html'
-            return render(request, template)
+    selected_team = get_object_or_404(HackTeam, pk=team_id)
+    selected_project = get_object_or_404(HackProject, pk=selected_team.project.id)
 
-        # verify if event is ready to be judged (finished)
-        finish = event.values('end_date')[0]['end_date']
-        now = timezone.now()
-        if finish > now:
-            messages.error(request, f"The event has not finished yet, check back after {finish}!")
-            template = 'hackathon/hackathon_list.html'
-            return render(request, template)
-        print("the event has finished")
+    template = 'hackathon/judging.html'
+    # to be decided whether to pass all the teams and their projects to the page,
+    # so the judge can swap without rerendering the page
+    context = {
+        'hackathon': the_event,
+        'score_categories': score_categories,
+        'team': selected_team,
+        'project': selected_project,
 
-        # verify that the selected team belongs to the selected event
-        team_belongs_to_event = False
-        for team in event.values('teams'):
-            if team['teams'] == int(team_id):
-                team_belongs_to_event = True
-                print("team is in event")
-        if not team_belongs_to_event:
-            messages.error(request, f"Nice try! That team is not part of the event...")
-            template = 'hackathon/hackathon_list.html'
-            return render(request, template)
-
-        # check if the judge has already scored the requested team's Project
-        
-        the_event = get_object_or_404(Hackathon, pk=hack_id)
-        team_ids_in_event = Hackathon.objects.filter(pk=hack_id).values_list('teams', flat=True)
-        print(f"teams_in_event = {team_ids_in_event}")
-
-        # megse kene minden team-et a templatre kuldeni, mert nehezebb kezelni ott
-
-        teams_in_event = []
-        for team in team_ids_in_event:
-            teams_in_event.append(get_object_or_404(HackTeam, pk=team))
-        print(f"team objects in list for the tempalte: {teams_in_event}")
-
-        # for project in team.values('project'):
-        #     print(f"Team Project: {project['project']}")
-
-        # bar = HackProject.objects.filter(pk=project[0]['project'])
-        # print(f"the project from the HackProject model: {bar}")
-
-        # HackProjectScoreCategories for the template:
-        score_categories = HackProjectScoreCategory.objects.all()
-
-        selected_team = get_object_or_404(HackTeam, pk=team_id)
-        selected_project = get_object_or_404(HackProject, pk=selected_team.project.id)
-
-        template = 'hackathon/judging.html'
-        # pass all the teams and their projects to the page, so the judge can swap
-        context = {
-            'hackathon': the_event,
-            'teams': teams_in_event, #Project is part of the Team object
-            'score_categories': score_categories,
-            'team': selected_team,
-            'project': selected_project,
-
-        }
+    }
 
     print(f"XXXXXXXXXXXXXXXXXXXXX CONTEXT:\n{context}")
 
