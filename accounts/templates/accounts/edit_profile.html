@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="edit_title">Edit Profile</h1>
+{% for message in messages %}
+<div class="alert alert-warning">
+	{{ message }}
+</div>
+{% endfor %}
+<div class="edit_form">
+	<form method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit">Submit</button>
+	</form>
+</div>
+{% endblock %}
