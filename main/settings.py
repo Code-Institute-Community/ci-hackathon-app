@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     "crispy_forms",
 
     # custom apps
-    'accounts',
+    "accounts",
     "hackathon",
     "home",
     "profiles",
@@ -85,19 +85,19 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
-ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.SignupForm'
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+AUTH_USER_MODEL = "accounts.CustomUser"
+ACCOUNT_SIGNUP_FORM_CLASS = "accounts.forms.SignupForm"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_REQUIRED=True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_USERNAME_MIN_LENGTH = 4
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/"
 
 
 WSGI_APPLICATION = "main.wsgi.application"
