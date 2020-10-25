@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% load my_tags %}<!-- for the usage of custom get_range tag -->
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" type="text/css">
+{% endblock %}
 
 {% block content %}
 <div class="container text-center">
@@ -16,29 +20,43 @@
         </div>
     </section>
 
-    <section class="row">
-    <!-- form comes here -->
-        {% for category in score_categories %}
-            <div class="col-12 col-md-6">
-                <div class="row">
-                    <div class="col-3 input-group ">
-                        <select class="custom-select" id="inputGroupSelect01">
-                            <option selected>Score</option>
-                            <!-- using custom get_range tag -->
-							{% for i in category.max_score|get_range:category.min_score %}
-							
-							<option value="{{ i }}">{{ i }}</option>
-							{% endfor %}
-                            
-                        </select>
-                    </div>
-                    <div class="col-9 text-left">
-                        <h5><strong>{{ category }}</strong></h5>
-                        <p>there is no description field of the categories, that could be used here</p>
+    <section class="container">
+    <!-- judging form -->
+        <form class="hack-score-form row justify-content-around" action="" method="post">
+            {% for category in score_categories %}
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="shadow p-3 bg-white rounded mx-3">
+                        <div class="row">
+                            <div class="col-3 input-group ">
+                                <select class="custom-select" id="inputGroupSelect01">
+                                    <option selected>Score</option>
+                                    <!-- using custom get_range tag -->
+                                    {% for i in category.max_score|get_range:category.min_score %}
+                                    
+                                    <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                    
+                                </select>
+                            </div>
+                            <div class="col-9 text-left">
+                                <h5 class="hack-score-cat-name"><strong>{{ category }}</strong></h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-12 text-left">
+                            <p class="mb-0">some description here... probably something one liner or max two</p> 
+                            <p class="mb-0">
+                            <em><small> descr. field needed in ScoreCat model</small></em>
+                            </p>
+                        </div>
+                        </div>
+                        
+                        
+                        
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </form>
 
     </section>
 
