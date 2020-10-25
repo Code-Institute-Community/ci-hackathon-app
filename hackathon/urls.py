@@ -1,8 +1,10 @@
 from django.urls import path
 from . import views
-from .views import HackathonListView
+from .views import HackathonListView, create_hackathon
 
 urlpatterns = [
     path('', HackathonListView.as_view(), name="hackathon-list"),
     path("<int:hack_id>/team/<int:team_id>/judging/", views.judging, name="judging"),
+    path("create_hackathon", create_hackathon, name='create_hackathon'),
 ]
+

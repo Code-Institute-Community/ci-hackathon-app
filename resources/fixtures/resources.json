@@ -1,0 +1,94 @@
+[
+  {
+    "model": "resources.resource",
+    "pk": 1,
+    "fields": {
+      "name": "Gitpod - Code Institute full template",
+      "link": "https://github.com/Code-Institute-Org/gitpod-full-template",
+      "description": "Full workspace template for GitPod. Provides extensions and tools for CI students."
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 2,
+    "fields": {
+      "name": "GitHub 'Projects'",
+      "link": "https://www.youtube.com/watch?v=C6MGKHkNtxU&t=0s",
+      "description": "Projects are an issue management feature on GitHub which will help you organize Issues, Pull Requests, and notes into a Kanban-style board for better visualization and prioritization of work."
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 3,
+    "fields": {
+      "name": "The Git Story",
+      "link": "https://eventyret.github.io/the-git-story/",
+      "description": "The story of Git. Get to know git commands!"
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 4,
+    "fields": {
+      "name": "Git Team workflow",
+      "link": "https://jameschambers.co/git-team-workflow-cheatsheet/",
+      "description": "Using Git in a team cheatsheet."
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 5,
+    "fields": {
+      "name": "Forking",
+      "link": "https://www.youtube.com/watch?v=HbSjyU2vf6Y",
+      "description": "Git & GitHub Tutorial for Beginners - Forking & Contributing: how to fork a repository to your own GitHub account."
+
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 6,
+    "fields": {
+      "name": "Branches",
+      "link": "https://www.youtube.com/watch?v=QV0kVNvkMxc",
+      "description": "Git & GitHub Tutorial for Beginners - Branches: introduction to branching and creating new branches to test out new features on."
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 7,
+    "fields": {
+      "name": "Syncing",
+      "link": "https://www.youtube.com/watch?v=-zvHQXnBO6c",
+      "description": "Syncing Your GitHub Fork: what that means and how to do that video-tutorial."
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 8,
+    "fields": {
+      "name": "Dealing with merge refusal error",
+      "link": "https://github.community/t/how-to-deal-with-refusing-to-merge-unrelated-histories-error/1372/3#M5000",
+      "description": "The solution to 'refusing to merge unrelated histories' error."
+
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 9,
+    "fields": {
+      "name": "Merge unrelated histories",
+      "link": "https://www.youtube.com/watch?v=sdNyMmMSU34",
+      "description": "Check out this video if git won't let you push due to the remote containing work that your local repository doesn't have, despite the fact that the remote repository is a new Git Hub repository and should have no history of its own."
+    }
+  },
+  {
+    "model": "resources.resource",
+    "pk": 10,
+    "fields": {
+      "name": "Collaborate Issues/Pull Requests",
+      "link": "https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests",
+      "description": "GitHub docs: Collaborating with issues and pull requests. Use the GitHub flow to track and discuss changes in issues, then propose and review changes in pull requests."
+    }
+  }
+]

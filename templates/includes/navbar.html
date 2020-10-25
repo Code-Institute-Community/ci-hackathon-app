@@ -17,7 +17,11 @@
                         Hackathons
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarHackathons">
-                        <a class="dropdown-item" href="{% url 'hackathon:hackathon-list' %}">Events</a>
+                        <a class="dropdown-item" href="{% url 'hackathon:hackathon-list' %}">View Hackathons</a>
+                        <!-- Create event link only available for admin users -->
+                        {% if user.is_authenticated and user.is_superuser %}
+                            <a class="dropdown-item" href="{% url 'hackathon:create_hackathon' %}">Create Hackathon</a>
+                        {% endif %}
                         <a class="dropdown-item" href="#">Winning Projects</a>
                         <a class="dropdown-item" href="#">Awards</a>
                     </div>
@@ -30,7 +34,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarResources">
                         <a class="dropdown-item" href="#">FAQs</a>
                         <a class="dropdown-item" href="{% url 'judging_criteria' %}">Judging Criteria</a>
-                        <a class="dropdown-item" href="#">Useful Resources</a>
+                        <a class="dropdown-item" href="{% url 'resources' %}">Useful Resources</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -39,11 +43,13 @@
                         My Account
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarAccount">
-                        <a class="dropdown-item" href="#">Register</a>
-                        <a class="dropdown-item" href="#">Login</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
-                        <a class="dropdown-item" href="#">Logout</a>
+                        {% if not user.is_authenticated %}
+                            <a class="dropdown-item" href="{%  url 'account_signup' %}">Register</a>
+                            <a class="dropdown-item" href="{% url 'account_login' %}">Login</a>
+                        {% else %}
+                            <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
+                            <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+                        {% endif %}
                     </div>
                 </li>
             </ul>
