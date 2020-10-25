@@ -164,3 +164,7 @@ footer ul li a {
     height: 4px;
     border-radius: 100%;
 }
+
+.delete-resource-button {
+    cursor: pointer;
+}

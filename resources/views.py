@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Resource
 from django.contrib import messages
 from .forms import ResourceForm
@@ -36,3 +36,16 @@ def add_resource(request):
     template = 'resources/add_resource.html'
 
     return render(request, template, {'form': form})
+
+
+@login_required
+def delete_resource(request, resource_id):
+    """ A view to allow only admin to delete a resource """
+    if not request.user.is_superuser:
+        messages.error(request, 'Access denied!\
+            Only admin can delete resources.')
+        return redirect(reverse('home'))
+    resource = get_object_or_404(Resource, pk=resource_id)
+    resource.delete()
+    messages.info(request, f'{resource.name} was successfully deleted.')
+    return redirect(reverse('resources'))
