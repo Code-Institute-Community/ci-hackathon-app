@@ -9,13 +9,13 @@
 {% block content %}
 <div class="container text-center">
     <section>
-        <h1>Judging Team {{ team }}</h1>
-        <div class="d-flex justify-content-around my-4">
+        <h2>Judging Team {{ team }}</h2>
+        <div class="d-flex flex-wrap justify-content-around my-2 my-md-4">
             <div>
-                <a href="{{ project.github_url }}" class="btn btn-outline-info" target="_blank">View Project Repo</a>
+                <a href="{{ project.github_url }}" class="btn btn-outline-info mb-3 mb-md-0" target="_blank">View Project Repo</a>
             </div>
             <div>
-                <a href="{{ project.deployed_url }}" class="btn btn-outline-info" target="_blank">View Deployed Site</a>
+                <a href="{{ project.deployed_url }}" class="btn btn-outline-info mb-3 mb-md-0" target="_blank">View Deployed Site</a>
             </div>
         </div>
     </section>
@@ -26,10 +26,10 @@
             {% csrf_token %}
             <div class=" row justify-content-around" >
             {% for category in score_categories %}
-                <div class="col-12 col-md-6 mb-4">
+                <div class="col-12 col-md-6 mb-3 mb-md-4 p-0 p-md-2">
                     <div class="shadow p-3 bg-white rounded mx-3">
                         <div class="row">
-                            <div class="col-3 input-group ">
+                            <div class="col-32 order-12 col-md-3 order-md-1 mt-2 input-group">
                                 <select required class="custom-select" name="score_{{ category.id }}">
                                     <option selected disabled value="">Score</option>
                                     <!-- using custom get_range tag -->
@@ -40,15 +40,15 @@
                                     
                                 </select>
                             </div>
-                            <div class="col-9 text-left">
+                            <div class="col-12 order-1 col-md-9 order-md-12 text-left">
                                 <h5 class="hack-score-cat-name"><strong>{{ category }}</strong></h5>
                             </div>
                         </div>
                         <div class="row">
-                        <div class="col-12 text-left">
+                        <div class="col-12 my-2 text-left">
                             <p class="mb-0">some description here... probably something one liner or max two</p> 
                             <p class="mb-0">
-                            <em><small> descr. field needed in ScoreCat model</small></em>
+                                <em><small> descr. field needed in ScoreCat model</small></em>
                             </p>
                         </div>
                         </div>

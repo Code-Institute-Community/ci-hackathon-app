@@ -5,5 +5,16 @@
 }
 
 .hack-score-cat-name {
-    height: 60px;
+    min-height: 60px;
+    margin-bottom: 0;
+}
+
+@media screen and (max-width: 720px) {
+    .hack-score-cat-name {
+        min-height: 30px;
+    }
+    /* .hack-score-cat-name, h5 {
+        font-size: 1rem;
+    } */
+
 }
