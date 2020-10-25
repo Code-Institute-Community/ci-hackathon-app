@@ -39,9 +39,7 @@ class CustomUser(AbstractUser):
     organisation = models.ForeignKey(
         Organisation,
         on_delete=models.CASCADE,
-        related_name='user_organisation',
-        default='',
-        null=True
+        related_name='user_organisation'
     )
 
     def __str__(self):
