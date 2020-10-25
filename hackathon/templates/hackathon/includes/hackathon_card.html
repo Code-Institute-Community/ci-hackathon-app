@@ -3,9 +3,6 @@
     <h5 class="p-orange card-title">{{ hackathon.display_name }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">{{ hackathon.start_date }} - {{ hackathon.end_date }}</h6>
     <p class="card-text">{{ hackathon.description }}</p>
-    {% if hackathon.start_date < now %}
-      Less than
-    {% endif %}
     {% if hackathon.organiser %}
       <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
     {% endif %}
@@ -26,7 +23,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="exampleModalLabel">Delete Hackathon</h4>
+        <h4 class="modal-title">Delete Hackathon</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
