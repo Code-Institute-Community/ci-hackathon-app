@@ -3,6 +3,7 @@ from .models import Resource
 
 
 class ResourceForm(forms.ModelForm):
+    """Allows admin to add/edit resources"""
 
     class Meta:
         model = Resource
