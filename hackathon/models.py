@@ -3,7 +3,6 @@ from django.utils import timezone
 
 from accounts.models import CustomUser as User
 from accounts.models import Organisation
-
 from .lists import STATUS_TYPES_CHOICES
 
 # Optional fields are ony set to deal with object deletion issues.
