@@ -5,6 +5,7 @@ from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
 
 
 class Organisation(models.Model):
+    DEFAULT_PK = 1
     display_name = models.CharField(
         max_length=100,
         default='Code Institute'
@@ -39,7 +40,8 @@ class CustomUser(AbstractUser):
     organisation = models.ForeignKey(
         Organisation,
         on_delete=models.CASCADE,
-        related_name='user_organisation'
+        related_name='user_organisation',
+        default=Organisation.DEFAULT_PK
     )
 
     def __str__(self):
