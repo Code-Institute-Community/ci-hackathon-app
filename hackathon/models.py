@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 
 from accounts.models import CustomUser as User
+from accounts.models import Organisation
+from .lists import STATUS_TYPES_CHOICES
 
 # Optional fields are ony set to deal with object deletion issues.
 # If this isn't a problem, they can all be changed to required fields.
@@ -42,6 +44,17 @@ class Hackathon(models.Model):
                                   blank=True,
                                   on_delete=models.SET_NULL,
                                   related_name="hackathon_organiser")
+    organisation = models.ForeignKey(Organisation,
+                                     null=True,
+                                     blank=True,
+                                     on_delete=models.SET_NULL,
+                                     related_name='hackathon_organisation')
+    status = models.CharField(
+        max_length=10,
+        blank=False,
+        default='draft',
+        choices=STATUS_TYPES_CHOICES
+    )
 
     def __str__(self):
         return self.display_name

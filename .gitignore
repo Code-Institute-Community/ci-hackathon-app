@@ -9,5 +9,6 @@ env.py
 *.sqlite3
 settings.json
 .gitpod.yml
-setup.*
+venv/
+.idea/
 MYNOTES.md
