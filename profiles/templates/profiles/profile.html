@@ -3,39 +3,55 @@
 
 {% block content %}
 
-    <h1>Profile Page</h1>
-    <h2>You are logged in as:</h2>
+<h1>Profile Page</h1>
+<h2>You are logged in as:</h2>
 
-<!-- Profile display -->  
- 
-    <div class="container-fluid">
-        <div class="row">
+<!-- Profile display -->
 
-            <div class="col-md-4">
-                <h4>Username:</h4>
-                <p>{{ user.username }}</p>
-            </div>
+<div class="container-fluid">
+	<div class="row">
 
-            <div class="col-md-4">
-                <h4>Email Address:</h4>
-                <p>{{ user.email }}</p>
-            </div>
+		<div class="col-md-4">
+			<h4>Slack Name:</h4>
+			<p>{{ user.slack_display_name }}</p>
+		</div>
 
-        </div>
+		<div class="col-md-4">
+			<h4>Email Address:</h4>
+			<p>{{ user.email }}</p>
+		</div>
 
-        <div class="row">
+	</div>
 
-            <div class="col-md-4">
-                <h4>First name:</h4>
-                <p>{{ user.first_name }}</p>
-            </div>
+	<div class="row">
 
-            <div class="col-md-4">
-                <h4>Last name:</h4>
-                <p>{{ user.last_name }}</p>
-            </div>
+		<div class="col-md-4">
+			<h4>First name:</h4>
+			<p>{{ user.first_name|title }}</p>
+		</div>
 
-        </div>
+		<div class="col-md-4">
+			<h4>Last name:</h4>
+			<p>{{ user.last_name|title }}</p>
+		</div>
 
-    </div>
+	</div>
+    	<div class="row">
+
+		<div class="col-md-4">
+			<h4>User type:</h4>
+			<p>{{ user.user_type|title}}</p>
+		</div>
+
+		<div class="col-md-4">
+			<h4>Current LMS module :</h4>
+			<p>{{ user.human_readable_current_lms_module|title}}</p>
+		</div>
+
+	</div>
+	<div class="row">
+		<a class="btn btn-dark" href="{% url 'edit_profile' %}">Edit Profile</a>
+	</div>
+
+</div>
 {% endblock %}

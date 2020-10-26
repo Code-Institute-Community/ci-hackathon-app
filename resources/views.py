@@ -31,11 +31,11 @@ def add_resource(request):
         else:
             messages.error(request, 'Failed to add resource. Please ensure the form is valid.')
     else:
-        form = ResourceForm()
+        ResourceForm()
 
     template = 'resources/add_resource.html'
 
-    return render(request, template, {'form': form})
+    return render(request, template, {'form': ResourceForm()})
 
 
 @login_required
@@ -69,11 +69,11 @@ def edit_resource(request, resource_id):
             messages.error(request, 'Failed to update resource.\
                  Please ensure the form is valid.')
     else:
-        form = ResourceForm(instance=resource)
+        ResourceForm(instance=resource)
 
     template = 'resources/edit_resource.html'
     context = {
-        'form': form,
+        'form': ResourceForm(instance=resource),
         'resource': resource,
     }
 

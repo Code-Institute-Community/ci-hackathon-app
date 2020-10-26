@@ -71,6 +71,10 @@ main {
     color: var(--s-grey);
 }
 
+.button {
+    padding: 1px 5px;
+}
+
 /* FOOTER */
 footer {
     flex-shrink: 0;
@@ -133,16 +137,16 @@ footer ul li a {
 
 /* TEXT */
 .p-orange {
-    color: var(--p-orange);  
+    color: var(--p-orange);
 }
 
 .p-blue {
-    color: var(--p-blue);  
+    color: var(--p-blue);
 }
 
 /* CARDS */
 .card-link:hover {
-    color: rgba(0, 0, 0, .7); 
+    color: rgba(0, 0, 0, .7);
 }
 
 .card-title {
@@ -167,4 +171,42 @@ footer ul li a {
 
 .delete-resource-button {
     cursor: pointer;
+}
+/* EDIT PROFILE */
+.edit_form {
+    margin: auto;
+    padding: 2.5vh;
+    width: max-content;
+    margin-bottom: 5vh;
+    border: 1px solid #E84610;
+}
+
+.edit_title, .edit_form{
+    text-align: center;
+}
+
+.edit_title {
+    color: var(--p-grey);
+}
+.edit_form label {
+    width: 100%;
+}
+
+.edit_form label, .edit_title, .edit_form button {
+    padding: 1vh;
+}
+
+.edit_form select, .edit_form {
+    max-width: 100%;
+}
+
+.edit_form button {
+    margin-top: 2vh;
+    background-color: var(--p-orange);
+    border-color: var(--p-grey);
+    color: var(--s-grey);
+}
+
+.edit_form button:hover {
+    color: var(--p-grey);
 }

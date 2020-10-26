@@ -9,7 +9,6 @@ class ResourceForm(forms.ModelForm):
         model = Resource
         fields = '__all__'
 
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         labels = {
