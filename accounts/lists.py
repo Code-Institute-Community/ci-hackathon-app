@@ -1,6 +1,6 @@
 """
-    List of user types to be passed into dropdown of same name for each
-    user selection.
+List of user types to be passed into dropdown of same name for each
+user selection.
 """
 USER_TYPES_CHOICES = (
     ('', 'Select Post Category'),
@@ -10,8 +10,8 @@ USER_TYPES_CHOICES = (
 )
 
 """
-    List of CI LMS modules to be passed into dropdown of same name for each 
-    user selection.
+List of CI LMS modules to be passed into dropdown of same name for each 
+user selection.
 """
 LMS_MODULES_CHOICES = (
     ('', 'Select Learning Stage'),

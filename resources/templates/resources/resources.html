@@ -8,6 +8,15 @@
             <h1>Useful resources and links</h1>
             <hr class="divider-orange w-25 mt-4 d">
         </div>
+
+        {% if request.user.is_superuser %}
+        <div class="col-12 text-right">
+            <a class="btn btn-ci" href="{% url 'add_resource' %}">
+                <i class="fas fa-plus-circle mr-1"></i> Add a Resource
+            </a>
+        </div>
+        {% endif %}
+
         <div class="col-12 my-3 d-none d-md-block ">
             <!--Resources and Links Table (medium and larger devices)-->
             <table class="table table-striped">
@@ -27,6 +36,22 @@
                             </a>
                         </th>
                         <td class="w-75"> {{ resource.description}}</td>
+
+                        {% if request.user.is_superuser %}
+                        <!--Edit resource button-->
+                        <td>
+                            <a href="{% url 'edit_resource' resource.id %}" title="Edit"> 
+                                <i class="fas fa-edit text-info"></i>
+                            </a> 
+                        </td>
+                        <!--Delete resource button-->
+                        <td>
+                            <a class="delete-resource-button"
+                            data-toggle="modal" data-target="#deleteModal{{ forloop.counter }}" title="Delete">
+                                <i class="fas fa-trash-alt text-danger"></i>
+                            </a>
+                        </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -34,20 +59,61 @@
         </div>
     </div>
 
-    <div class="row mb-3">
-    {% for resource in resources %}
-        <div class="col-12 d-block d-md-none table border-top pt-2">
+{% for resource in resources %}
+<!--Resources and Links  (small devices)-->
+    <div class="row">
+        <div class="col-12 d-flex justify-content-between d-md-none table border-top  mb-3 pt-2">
         
-        <a href="{{ resource.link }}" target="_blank" rel="noopener" class="text-dark font-weight-bold lead">
-                            <i class="fas fa-link mr-2"></i>
-                            {{ resource.name }}
-                            </a>
+            <a href="{{ resource.link }}" target="_blank" rel="noopener" class="text-dark font-weight-bold lead">
+                <i class="fas fa-link mr-2"></i>
+                {{ resource.name }}
+            </a>
+            {% if request.user.is_superuser %}
+            <div>
+                <!--Edit button-->
+                <a href="{% url 'edit_resource' resource.id %}">
+                    <i class="fas fa-edit small"></i>
+                </a> 
+                <!--Delete button-->
+                <a class="delete-resource-button"
+                data-toggle="modal" data-target="#deleteModal{{ forloop.counter }}" title="Delete">
+                    <i class="fas fa-trash-alt small text-danger"></i>
+                </a>
+            </div>
+            {% endif %}
         </div>
-        <div class="col-12 d-block d-md-none table">
+        <div class="col-12 d-block d-md-none  mb-3 table">
         {{ resource.description }}
-        
-        </div>
-        {% endfor %}   
+        </div>   
     </div>
-    
+
+<!-- Delete resource Modal -->
+<div class="modal fade" id="deleteModal{{ forloop.counter }}" tabindex="-1" role="dialog" 
+     aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content text-center">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger font-weight-bold" id="deleteModalLabel">Delete Resource</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <p class="text-red">
+                <i class="fas fa-exclamation-circle text-danger"></i>
+                Are you sure you want to delete <br/><span class="font-weight-bold">{{ resource.name }}</span>?
+            </p>
+            <p class="small mt-2 mb-0"><span class="font-weight-bold">Note:</span>
+                It will be permanently removed from the database!
+            </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+        <a href="{% url 'delete_resource' resource.id %}" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
 {% endblock %}
