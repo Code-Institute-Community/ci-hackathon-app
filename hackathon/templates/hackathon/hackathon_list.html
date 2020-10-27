@@ -2,9 +2,9 @@
 {% load static %}
 {% block content %}
 <section class="h-100">
-    {% if page_obj %}
+    {% if hackathons %}
         <h2 class="p-orange text-center mb-4">Hackathons</h2>
-        {% for hackathon in page_obj %}
+        {% for hackathon in hackathons %}
             {% include 'hackathon/includes/hackathon_card.html' %}
             <hr>
         {% endfor %}
