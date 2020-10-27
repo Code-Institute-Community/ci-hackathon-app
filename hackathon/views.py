@@ -85,7 +85,12 @@ def update_hackathon(request, hackathon_id):
         template = "hackathon/create-event.html"
         form = HackathonForm(instance=hackathon)
 
-        return render(request, template, {"form": form})
+        context = {
+            "form": form,
+            "hackathon_id": hackathon_id,
+        }
+
+        return render(request, template, context)
 
     else:
         form = HackathonForm(request.POST, instance=hackathon)

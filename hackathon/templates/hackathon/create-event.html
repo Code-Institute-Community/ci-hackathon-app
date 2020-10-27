@@ -14,7 +14,11 @@
   <section class="h-100">
     <div class="row mb-3">
       <div class="col-12">
-        <h1>Create Hackathon</h1>
+        {% if hackathon_id %}
+          <h1>Edit Hackathon</h1>
+        {% else %}
+          <h1>Create Hackathon</h1>
+        {% endif %}
       </div>
     </div>
 
