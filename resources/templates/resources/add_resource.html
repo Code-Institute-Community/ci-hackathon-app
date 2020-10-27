@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="row my-4">
+    <div class="col-12 text-center mb-3">
+        <h1>Add a Resource</h1>
+        <hr class="divider-orange w-25 mt-4 d">
+    </div>
+</div>
+
+<div class="row mb-4 ">
+        <div class="col-12 col-lg-8 offset-lg-2">
+            <form method="POST" action="{% url 'add_resource' %}" class="form mb-2">
+                {% csrf_token %}
+                {% for field in form %}
+                    {{ field | as_crispy_field }}
+                {% endfor %}
+                <div class="text-right">
+                    <a class="btn btn-outline-secondary mr-2" href="{% url 'resources' %}">Cancel</a>
+                    <button class="btn btn-ci" type="submit">Add Resource</button>
+                </div>
+            </form>
+        </div>            
+    </div>
+{% endblock %}

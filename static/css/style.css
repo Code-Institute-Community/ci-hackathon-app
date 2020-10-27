@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 :root {
     /* P = Primary | S = Secondary | T = Tertiary */
     --p-orange: #E84610;
@@ -164,3 +165,217 @@ footer ul li a {
     height: 4px;
     border-radius: 100%;
 }
+=======
+:root {
+    /* P = Primary | S = Secondary | T = Tertiary */
+    --p-orange: #E84610;
+    --p-blue: #009FE3;
+    --p-grey: #4A4A4F;
+    --p-navy: #445261;
+    --p-red: #D63649;
+    --s-grey: #E6ECF0;
+    --s-yellow: #EFB920;
+    --s-pink: #FF5A60;
+    --s-teal: #23BBBB;
+    --t-grey: #E0E7FF;
+    --white: #FFFFFF;
+    --black: #000000;
+    --bg-grey: #F5F5F5;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: Montserrat, sans-serif;
+    background-color: var(--bg-grey);
+    color: var(--p-grey);
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: var(--white);
+    box-shadow: 0 2px 9px 0 rgba(0, 0, 0, .2);
+}
+
+.navbar-brand {
+    background: url("../img/ci-logo.svg") no-repeat center;
+    height: 40px;
+    width: 200px;
+}
+
+.navbar-nav .nav-item {
+    margin: 0 1em;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: var(--p-orange);
+}
+
+/* MAIN */
+main {
+    margin-top: 2em;
+    flex: 1 0 auto;
+}
+
+/* BUTTONS */
+.btn-ci {
+    background-color: transparent;
+    color: var(--p-orange);
+    border: 3px solid var(--p-orange);
+    transition: all .4s;
+}
+
+.btn-ci:hover {
+    background-color: var(--p-orange);
+    color: var(--s-grey);
+}
+
+.button {
+    padding: 1px 5px;
+}
+
+/* FOOTER */
+footer {
+    flex-shrink: 0;
+    color: var(--s-grey);
+    background-color: var(--p-grey);
+}
+
+footer h4 {
+    margin: 20px 0;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+footer p {
+    text-align: justify;
+}
+
+footer a:hover {
+    color: var(--p-orange);
+}
+
+footer ul {
+    padding: 0;
+    list-style: none;
+}
+
+footer ul li a {
+    color: var(--s-grey);
+}
+
+.github-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.copyright-wrapper {
+    margin: 5px 0;
+    text-align: center;
+}
+
+.copyright-wrapper p {
+    text-align: center;
+}
+
+.copyright-wrapper a {
+    color: var(--s-grey);
+}
+
+.fab {
+    font-size: 200%;
+    margin: 0 20px;
+    color: var(--s-grey);
+    transition: transform .4s;
+}
+
+.fab:hover {
+    transform: scale(1.3);
+}
+
+/* TEXT */
+.p-orange {
+    color: var(--p-orange);
+}
+
+.p-blue {
+    color: var(--p-blue);
+}
+
+/* CARDS */
+.card-link:hover {
+    color: rgba(0, 0, 0, .7);
+}
+
+.card-title {
+    font-family: Rubik, sans-serif;
+}
+
+/* PAGINATION */
+.page-item .page-link {
+    color: var(--p-orange);
+}
+
+.page-item.active .page-link {
+    background-color: var(--p-orange);
+    border-color: var(--p-orange);
+}
+
+.divider-orange{
+    background-image: radial-gradient(var(--p-orange), var(--p-red));
+    height: 4px;
+    border-radius: 100%;
+}
+
+.delete-resource-button {
+    cursor: pointer;
+}
+/* EDIT PROFILE */
+.edit_form {
+    margin: auto;
+    padding: 2.5vh;
+    width: max-content;
+    margin-bottom: 5vh;
+    border: 1px solid #E84610;
+}
+
+.edit_title, .edit_form{
+    text-align: center;
+}
+
+.edit_title {
+    color: var(--p-grey);
+}
+.edit_form label {
+    width: 100%;
+}
+
+.edit_form label, .edit_title, .edit_form button {
+    padding: 1vh;
+}
+
+.edit_form select, .edit_form {
+    max-width: 100%;
+}
+
+.edit_form button {
+    margin-top: 2vh;
+    background-color: var(--p-orange);
+    border-color: var(--p-grey);
+    color: var(--s-grey);
+}
+
+.edit_form button:hover {
+    color: var(--p-grey);
+}
+>>>>>>> 5cca7af4f50b8f9b5d79c934498ae624fde00eec
