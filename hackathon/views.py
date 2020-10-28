@@ -36,46 +36,40 @@ def judging(request, hack_id, team_id):
 
     # HackProjectScoreCategories:
     score_categories = HackProjectScoreCategory.objects.all()
+    
+    hackathon = get_object_or_404(Hackathon, pk=hack_id)
+    team = get_object_or_404(HackTeam, pk=team_id)
 
-    event = Hackathon.objects.filter(pk=hack_id)
-    team = HackTeam.objects.filter(pk=team_id)
-
-    # verify whether user is judge for the event
-    user_is_judge = False
-    for judge in event.values('judges'):
-        if judge['judges'] == request.user.id:
-            user_is_judge = True
-    if not user_is_judge:
+    # verify whether user is judge for the hackathon
+    if hackathon not in Hackathon.objects.filter(judges=request.user):
         messages.error(request, "You are not a judge for that event!")
-        template = 'home/index.html'
-        return render(request, template)
+        return render(request, 'home/index.html')
 
-    # verify if event is ready to be judged (finished)
-    finish = event.values('end_date')[0]['end_date']
-    now = timezone.now()
-    if finish > now:
-        messages.error(request, f"The event has not finished yet, check back after {finish}!")
-        template = 'home/index.html'
-        return render(request, template)
+    # verify if hackathon is ready to be judged (judging_status == 'open')
+    if hackathon.judging_status != 'open':
+        messages.error(request, f"Judging is not open! {hackathon.judging_status}!")
+        return render(request, 'home/index.html')
 
-    # verify that the selected team belongs to the selected event
-    team_belongs_to_event = False
-    for team in event.values('teams'):
-        if team['teams'] == int(team_id):
-            team_belongs_to_event = True
-    if not team_belongs_to_event:
+    # finish = hackathon.values('end_date')[0]['end_date']
+    # now = timezone.now()
+    # if finish > now:
+    #     messages.error(request, f"The event has not finished yet, check back after {finish}!")
+    #     return render(request, 'home/index.html')
+
+    # verify that the selected team belongs to the selected hackathon
+    if team.hackathon != hackathon:
         messages.error(request, f"Nice try! That team is not part of the event...")
-        template = 'home/index.html'
-        return render(request, template)
+        return render(request, 'home/index.html')
 
     # check if the judge has already scored the requested team's Project
-    the_event = get_object_or_404(Hackathon, pk=hack_id)
     project = get_object_or_404(HackTeam, pk=team_id).project
+    if not project:
+        messages.error(request, f"The team doesn't have a project yet, check back later...")
+        return render(request, 'home/index.html')
     judge_has_scored_this = False
     if HackProjectScore.objects.filter(judge=request.user, project=project):
         messages.error(request, f"Oooops, sorry! Something went wrong, you have already scored that team...")
-        template = 'home/index.html'
-        return render(request, template)
+        return render(request, 'home/index.html')
     
     if request.method == 'POST':
         # judge score submitted for a team
@@ -93,16 +87,15 @@ def judging(request, hack_id, team_id):
         return redirect("hackathon:hackathon-list")
 
     selected_team = get_object_or_404(HackTeam, pk=team_id)
-    selected_project = get_object_or_404(HackProject, pk=selected_team.project.id)
+    # selected_project = get_object_or_404(HackProject, pk=selected_team.project.id)
 
-    template = 'hackathon/judging.html'
     context = {
-        'hackathon': the_event,
+        'hackathon': hackathon,
         'score_categories': score_categories,
-        'team': selected_team,
-        'project': selected_project,
+        'team': team,
+        'project': project,
     }
-    return render(request, template, context)
+    return render(request, 'hackathon/judging.html', context)
 
 
 def create_hackathon(request):
