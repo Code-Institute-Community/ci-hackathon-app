@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<section class="h-100">
+    {% if page_obj %}
+        <h2 class="p-orange text-center mb-4">Hackathons</h2>
+        {% for hackathon in page_obj %}
+            {% include 'hackathon/includes/hackathon_card.html' %}
+            <hr>
+        {% endfor %}
+    {% else %}
+        <h2 class="text-center">There aren't any Hackathons at the moment!</h2>
+    {% endif %}
+    <!-- Pagination using Django's paginator. Options are disabled or hidden if unavailable. -->
+    <nav aria-label="Hackathon Page Navigation">
+        {% include 'hackathon/includes/paginator.html' %}
+    </nav>
+</section>
+{% endblock %}

@@ -1,9 +1,22 @@
-{% if messages %}
-<div>
-    {% for message in messages %}
-        <h1>{{ message }}</h1>
-        <!-- TO DO : help wanted -->
-        <small>TO DO : templates > includes > messages.html (styles)</small>
-    {% endfor %}
+<!-- This hold the toasts notifications in position on the page.
+Can be changed with the toast-position class.-->
+<div class="toast-position" aria-live="polite" aria-atomic="true">
+    <div class="toast-wrapper">
+        {% if messages %}
+        {% for message in messages %}
+        <!--Fires a toast message that stays for 5 seconds.-->
+        <div class="toast" data-delay="5000">
+            <div class="toast-header bg-p-blue">
+                <strong class="mr-auto text-white">{{ message.tags|title }}</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                {{ message.message }}
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
 </div>
-{% endif %}
