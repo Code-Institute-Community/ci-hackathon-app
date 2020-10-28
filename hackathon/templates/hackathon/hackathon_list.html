@@ -5,8 +5,12 @@
     {% if hackathons %}
         <h2 class="p-orange text-center mb-4">Hackathons</h2>
         {% for hackathon in hackathons %}
-            {% include 'hackathon/includes/hackathon_card.html' %}
-            <hr>
+        {% if hackathon.status == 'published' or user == hackathon.created_by %}
+            {% if not hackathon.status == 'deleted' %}
+                {% include 'hackathon/includes/hackathon_card.html' %}
+                <hr>
+            {% endif %}
+        {% endif %}
         {% endfor %}
     {% else %}
         <h2 class="text-center">There aren't any Hackathons at the moment!</h2>
