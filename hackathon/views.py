@@ -1,9 +1,10 @@
 from datetime import datetime
 
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponse
 
 from .models import Hackathon
 from .forms import HackathonForm
@@ -12,7 +13,7 @@ from .forms import HackathonForm
 class HackathonListView(ListView):
     """Renders a page with a list of Hackathons."""
     model = Hackathon
-    ordering = ['-created']
+    ordering = ["-created"]
     paginate_by = 8
 
     def get_context_data(self, **kwargs):
@@ -86,3 +87,33 @@ def delete_hackathon(request, hackathon_id):
 
     messages.success(request, f'{hackathon.display_name} has been successfully deleted!')
     return redirect("hackathon:hackathon-list")
+
+class HackathonDetailView(DetailView):
+    """Renders a page with Hackathon details."""
+    model = Hackathon
+    context_object_name = "hackathon"
+
+
+def ajax_enroll_toggle(request):
+    """Swaps between being enrolled as a judge and unenrolling."""
+    # Checks to make sure the user has the permissions to enroll
+    user = request.user
+    data = {}
+    if (request.method == "POST") and (user.is_staff):
+
+        # Gets the PK of the Hackathon and then the related Hackathon
+        hackathon_id = request.POST.get("hackathon-id")
+        hackathon = Hackathon.objects.get(pk=hackathon_id)
+
+        # Either enrolls or unenrolls a user from the judges
+        if user in hackathon.judges.all():
+            hackathon.judges.remove(user)
+            data["message"] = "You have withdrawn from judging."
+        else:
+            hackathon.judges.add(user)
+            data["message"] = "You have enrolled as a judge."
+
+        data["tag"] = "Success"
+        return JsonResponse(data)
+    else:
+        return HttpResponse(status=403)
