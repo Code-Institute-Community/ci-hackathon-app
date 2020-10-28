@@ -80,9 +80,6 @@ def judging(request, hack_id, team_id):
             
         return redirect("hackathon:hackathon-list")
 
-    selected_team = get_object_or_404(HackTeam, pk=team_id)
-    # selected_project = get_object_or_404(HackProject, pk=selected_team.project.id)
-
     context = {
         'hackathon': hackathon,
         'score_categories': score_categories,
