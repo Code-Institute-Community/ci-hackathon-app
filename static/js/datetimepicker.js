@@ -25,7 +25,7 @@ $(document).ready(function () {
     step: 30,
     minDate: defaultEndDate,
     defaultDate: defaultEndDate,
-    defaultTime: '08:00',
+    defaultTime: '17:00',
     minTime: '08:00',
     maxTime: '18:30',
     yearStart: today.getFullYear(),
