@@ -99,21 +99,34 @@ def ajax_enroll_toggle(request):
     # Checks to make sure the user has the permissions to enroll
     user = request.user
     data = {}
-    if (request.method == "POST") and (user.is_staff):
+    if (request.method == "POST"):
 
         # Gets the PK of the Hackathon and then the related Hackathon
         hackathon_id = request.POST.get("hackathon-id")
         hackathon = Hackathon.objects.get(pk=hackathon_id)
 
+        # Check if user is staff or participant
+        if user.is_staff:
         # Either enrolls or unenrolls a user from the judges
-        if user in hackathon.judges.all():
-            hackathon.judges.remove(user)
-            data["message"] = "You have withdrawn from judging."
+            if user in hackathon.judges.all():
+                hackathon.judges.remove(user)
+                data["message"] = "You have withdrawn from judging."
+            else:
+                hackathon.judges.add(user)
+                data["message"] = "You have enrolled as a judge."
+        
         else:
-            hackathon.judges.add(user)
-            data["message"] = "You have enrolled as a judge."
+            '''Check if user is already enrolled
+            and subsequently enroll or withdraw user''' 
+            if user in hackathon.participants.all():
+                hackathon.participants.remove(user)
+                data["message"] = "You have withdrawn from this Hackaton."
+            else:
+                hackathon.participants.add(user)
+                data["message"] = "You have enrolled successfully."
 
         data["tag"] = "Success"
         return JsonResponse(data)
+
     else:
         return HttpResponse(status=403)

@@ -11,11 +11,16 @@ function toastMessage(tag, message) {
                     <div class="toast-body">${message}</div>
                 </div>`
             );
-            if ($("#enroll-submit").text() === "Withdraw as Judge") {
-                $("#enroll-submit").text("Enroll as Judge")
+            if ($("#enroll-judge").text() === "Withdraw as Judge") {
+                $("#enroll-judge").text("Enroll as Judge")
+            } else if ($("#enroll-judge").text() === "Enroll as Judge") {
+                $("#enroll-judge").text("Withdraw as Judge")
+            } else if ($("#enroll-part").text() === "Enroll as Participant") {
+                $("#enroll-part").text("Withdraw from the Hackaton")
             } else {
-                $("#enroll-submit").text("Withdraw as Judge")
+                $("#enroll-part").text("Enroll as Participant")
             }
+
             // Fires the toast.
             $(".toast").toast("show");
         }
