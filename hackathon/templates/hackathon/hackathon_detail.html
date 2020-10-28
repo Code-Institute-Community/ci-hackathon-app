@@ -11,7 +11,7 @@
                 <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
             {% endif %}
             {% if request.user.is_staff %}
-                {% include 'hackathon/includes/enroll.html' %}
+                {% include 'hackathon/includes/enrollstaff.html' %}
             {% endif %}
             <a href="{% url 'hackathon:hackathon-list' %}" class="btn btn-ci">See other Hackathons</a>
         </div>
