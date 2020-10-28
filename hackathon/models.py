@@ -38,7 +38,7 @@ class Hackathon(models.Model):
     judges = models.ManyToManyField(User,
                                     blank=True,
                                     related_name='hackathon_judges')
-    # Hackathons can have multiple participants and
+    # Hackathons can have multiple participants judges and
     # users could be participating in more than one Hackathon: Many to Many
     participants = models.ManyToManyField(User,
                                     blank=True,
