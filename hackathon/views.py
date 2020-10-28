@@ -67,8 +67,6 @@ def create_hackathon(request):
             messages.success(request, 'Thanks for submitting a new Hackathon event!')
         return redirect("hackathon:hackathon-list")
 
-    pass
-
 
 @login_required
 def update_hackathon(request, hackathon_id):
@@ -79,10 +77,7 @@ def update_hackathon(request, hackathon_id):
         return redirect("hackathon:hackathon-list")
 
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
-
     if request.method == 'GET':
-
-        template = "hackathon/create-event.html"
         form = HackathonForm(instance=hackathon)
 
         context = {
@@ -90,7 +85,7 @@ def update_hackathon(request, hackathon_id):
             "hackathon_id": hackathon_id,
         }
 
-        return render(request, template, context)
+        return render(request, "hackathon/create-event.html", context)
 
     else:
         form = HackathonForm(request.POST, instance=hackathon)
@@ -115,8 +110,6 @@ def update_hackathon(request, hackathon_id):
             form.save()
             messages.success(request, f'Thanks, {hackathon.display_name} has been successfully updated!')
         return redirect("hackathon:hackathon-list")
-
-    pass
 
 
 @login_required

@@ -1,6 +1,8 @@
 from django.urls import path
 
-from .views import HackathonListView, create_hackathon, update_hackathon, delete_hackathon
+from .views import (
+    HackathonListView, create_hackathon, update_hackathon, delete_hackathon
+)
 
 urlpatterns = [
     path('', HackathonListView.as_view(), name='hackathon-list'),
