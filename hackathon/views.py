@@ -50,12 +50,6 @@ def judging(request, hack_id, team_id):
         messages.error(request, f"Judging is not open! {hackathon.judging_status}!")
         return render(request, 'home/index.html')
 
-    # finish = hackathon.values('end_date')[0]['end_date']
-    # now = timezone.now()
-    # if finish > now:
-    #     messages.error(request, f"The event has not finished yet, check back after {finish}!")
-    #     return render(request, 'home/index.html')
-
     # verify that the selected team belongs to the selected hackathon
     if team.hackathon != hackathon:
         messages.error(request, f"Nice try! That team is not part of the event...")
