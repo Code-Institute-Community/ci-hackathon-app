@@ -12,6 +12,8 @@
             {% endif %}
             {% if request.user.is_staff %}
                 {% include 'hackathon/includes/enrollstaff.html' %}
+            {% else %}
+                {% include 'hackathon/includes/enrollpart.html' %}
             {% endif %}
             <a href="{% url 'hackathon:hackathon-list' %}" class="btn btn-ci">See other Hackathons</a>
         </div>
