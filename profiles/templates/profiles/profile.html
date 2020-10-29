@@ -15,7 +15,7 @@
         <div class="row">
           <!-- User dashboard/menu -->
             <div id="user-dashboard" class="col-6 col-md-2 p-1 user-panel">
-              <div class="custom-menu">
+              <div id="dashboard-toggle" class="custom-menu">
                 <button type="button" id="sidebar-collapse" class="btn">
                   <i class="fa fa-bars"></i>
                   <span class="sr-only">Toggle Menu</span>
@@ -103,7 +103,6 @@
                     <h5>Current LMS module:</h5>
                     <p>{{ user.human_readable_current_lms_module|title}}</p>
                 </div>
-                <span class="mt-2">Form Includes Rendered Here</span>
             </div>
             <!-- User Hackathons -->
             <div class="col-12 col-md-3 text-center">
@@ -135,4 +134,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}
