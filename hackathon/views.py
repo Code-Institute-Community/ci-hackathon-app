@@ -68,7 +68,49 @@ def create_hackathon(request):
             messages.success(request, 'Thanks for submitting a new Hackathon event!')
         return redirect("hackathon:hackathon-list")
 
-    pass
+
+@login_required
+def update_hackathon(request, hackathon_id):
+    """ Allow users to edit hackathon event """
+
+    # Redirect user if they are not admin
+    if not request.user.is_superuser:
+        return redirect("hackathon:hackathon-list")
+
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    if request.method == 'GET':
+        form = HackathonForm(instance=hackathon)
+
+        context = {
+            "form": form,
+            "hackathon_id": hackathon_id,
+        }
+
+        return render(request, "hackathon/create-event.html", context)
+
+    else:
+        form = HackathonForm(request.POST, instance=hackathon)
+        # Convert start and end date strings to datetime and validate
+        start_date = datetime.strptime(request.POST.get('start_date'), '%d/%m/%Y %H:%M')
+        end_date = datetime.strptime(request.POST.get('end_date'), '%d/%m/%Y %H:%M')
+        now = datetime.now()
+
+        # Ensure start_date is a day in the future for hackathons that haven't started yet
+        if hackathon.start_date.date() > now.date() >= start_date.date():
+            messages.error(request, 'The start date must be a date in the future.')
+            return redirect("hackathon:update_hackathon", hackathon_id)
+
+        # Ensure end_date is after start_date
+        if end_date <= start_date:
+            messages.error(request, 'The end date must be at least one day after the start date.')
+            return redirect("hackathon:update_hackathon", hackathon_id)
+
+        # Submit form and save record
+        if form.is_valid():
+            form.instance.updated = now
+            form.save()
+            messages.success(request, f'Thanks, {hackathon.display_name} has been successfully updated!')
+        return redirect("hackathon:hackathon-list")
 
 
 @login_required

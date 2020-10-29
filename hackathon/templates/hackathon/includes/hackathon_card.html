@@ -8,8 +8,18 @@
     {% endif %}
     <a href="{% url 'hackathon:hackathon-detail' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
 
-    <!-- Delete button, only visible for admin users -->
+    <!-- Edit and Delete buttons, only visible for admin users -->
     {% if user.is_authenticated and user.is_superuser %}
+      <!-- Warn user if hackathon is ongoing or ended before loading edit form - trigger edit modal -->
+      {% if hackathon.start_date|date:"jS F Y H:i" <= today|date:"jS F Y H:i" %}
+        <button class="btn btn-ci mr-3" type="button" data-toggle="modal" data-target="#edit-modal-{{ hackathon.id }}">
+          Edit
+        </button>
+      {% else %}
+        <a href="{% url 'hackathon:update_hackathon' hackathon.id %}" class="btn btn-ci mr-3">
+          Edit
+        </a>
+      {% endif %}
       <button class="btn btn-ci" type="button" data-toggle="modal" data-target="#delete-modal-{{ hackathon.id }}">
         Delete Event
       </button>
@@ -17,7 +27,7 @@
   </div>
 </article>
 
-<!-- Modal - pass in hackathon id to modal id to enable rendering details and deleting correct hackathon event -->
+<!-- Delete modal - pass in hackathon id to modal id to enable rendering details and deleting correct hackathon event -->
 <div class="modal fade" id="delete-modal-{{ hackathon.id }}" tabindex="-1" aria-labelledby="delete-modal"
      aria-hidden="true">
   <div class="modal-dialog">
@@ -43,4 +53,31 @@
     </div>
   </div>
 </div>
-</article>
+
+<!-- Edit modal - pass in hackathon id to modal id to enable rendering details and editing correct hackathon event -->
+<div class="modal fade" id="edit-modal-{{ hackathon.id }}" tabindex="-1" aria-labelledby="edit-modal"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Hackathon</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Warn user if hackathon has started and is in progress - dates need to be formatted to work correctly -->
+        {% if hackathon.start_date|date:"jS F Y H:i" <= today|date:"jS F Y H:i" and hackathon.end_date|date:"jS F Y H:i" >= today|date:"jS F Y H:i" %}
+          {{ hackathon.display_name }} is currently ongoing, do you really want to update it?
+        {% else %}
+          <!-- Warn user if hackathon has ended - dates need to be formatted to work correctly -->
+          {{ hackathon.display_name }} has ended, do you really want to update it?
+        {% endif %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ci mr-3" data-dismiss="modal">No</button>
+        <a href="{% url 'hackathon:update_hackathon' hackathon.id %}" type="button" class="btn btn-ci">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
