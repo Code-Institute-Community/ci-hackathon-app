@@ -10,9 +10,9 @@
             {% if hackathon.organiser %}
                 <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
             {% endif %}
-            {% if request.user.is_staff %}
+            {% if request.user.is_staff and not is_ended %}
                 {% include 'hackathon/includes/enrollstaff.html' %}
-            {% else %}
+            {% elif request.user.is_participant and not is_ended %}
                 {% include 'hackathon/includes/enrollpart.html' %}
             {% endif %}
             <a href="{% url 'hackathon:hackathon-list' %}" class="btn btn-ci">See other Hackathons</a>
