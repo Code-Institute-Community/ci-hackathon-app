@@ -233,6 +233,11 @@ def update_hackathon(request, hackathon_id):
 
 
 @login_required
+def view_hackathon(request):
+    return render(request, "hackathon/hackathon-view.html")
+
+
+@login_required
 def delete_hackathon(request, hackathon_id):
     """ Allow users to 'soft delete' hackathon event - set status to 'deleted'
      to remove from frontend list """
