@@ -54,6 +54,7 @@
 
 /* Overwrite Bootstrap Card styles for the user-panel menu items */
 
+.user-info .card-header,
 .user-panel .text-center span,
 .card .card-header .btn,
 .card .card-body a {
@@ -67,11 +68,11 @@
 .card .card-body {
     display: flex;
     flex-direction: column;
-    /* justify-content: space-evenly; */
 }
 
 /* Overwrite Bootstrap Card styles for the Hackathon Card items */
 
+.card-body a,
 .hackathon-card {
     margin-bottom: 2px;
 }
@@ -179,12 +180,26 @@ button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disab
          2px 2px 9px var(--p-grey);
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 540px) {
     .user-panel {
-        margin-left: 0vw;
+        margin-left: -53vw;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .user-panel {
+        margin-left: 0;
     }
 
     #user-dashboard {
         position: relative;
+    }
+    
+    #user-dashboard .custom-menu button, 
+    #user-dashboard .custom-menu .btn i,
+    #user-dashboard .custom-menu .btn:after {
+        display: none;
+        pointer-events: none;
+        cursor: none;
     }
 }
