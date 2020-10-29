@@ -1,11 +1,45 @@
 <article class="card shadow">
-	<div class="card-body">
-		<h5 class="p-orange card-title">{{ hackathon.display_name }}</h5>
-		<h6 class="card-subtitle mb-2 text-muted">{{ hackathon.start_date }} - {{ hackathon.end_date }}</h6>
-		<p class="card-text">{{ hackathon.description }}</p>
-        {% if hackathon.organiser %}
-		<p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
-        {% endif %}
-		<a href="#" class="btn btn-ci">Read More</a>
-	</div>
+  <div class="card-body">
+    <h5 class="p-orange card-title">{{ hackathon.display_name }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{ hackathon.start_date }} - {{ hackathon.end_date }}</h6>
+    <p class="card-text">{{ hackathon.description }}</p>
+    {% if hackathon.organiser %}
+      <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
+    {% endif %}
+    <a href="#" class="btn btn-ci mr-3">Read More</a>
+
+    <!-- Delete button, only visible for admin users -->
+    {% if user.is_authenticated and user.is_superuser %}
+      <button class="btn btn-ci" type="button" data-toggle="modal" data-target="#delete-modal-{{ hackathon.id }}">
+        Delete Event
+      </button>
+    {% endif %}
+  </div>
 </article>
+
+<!-- Modal - pass in hackathon id to modal id to enable rendering details and deleting correct hackathon event -->
+<div class="modal fade" id="delete-modal-{{ hackathon.id }}" tabindex="-1" aria-labelledby="delete-modal"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Hackathon</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Warn user if hackathon has started and is in progress - dates need to be formatted to work correctly -->
+        {% if hackathon.start_date|date:"jS F Y H:i" <= today|date:"jS F Y H:i" and hackathon.end_date|date:"jS F Y H:i" >= today|date:"jS F Y H:i" %}
+          {{ hackathon.display_name }} is currently ongoing, do you really want to delete it?
+        {% else %}
+          Do you really want to delete {{ hackathon.display_name }}?
+        {% endif %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ci mr-3" data-dismiss="modal">No</button>
+        <a href="{% url 'hackathon:delete_hackathon' hackathon.id %}" type="button" class="btn btn-ci">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>

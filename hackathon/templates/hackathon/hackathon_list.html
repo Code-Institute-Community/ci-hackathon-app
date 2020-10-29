@@ -2,11 +2,15 @@
 {% load static %}
 {% block content %}
 <section class="h-100">
-    {% if page_obj %}
+    {% if hackathons %}
         <h2 class="p-orange text-center mb-4">Hackathons</h2>
-        {% for hackathon in page_obj %}
-            {% include 'hackathon/includes/hackathon_card.html' %}
-            <hr>
+        {% for hackathon in hackathons %}
+        {% if hackathon.status == 'published' or user == hackathon.created_by %}
+            {% if not hackathon.status == 'deleted' %}
+                {% include 'hackathon/includes/hackathon_card.html' %}
+                <hr>
+            {% endif %}
+        {% endif %}
         {% endfor %}
     {% else %}
         <h2 class="text-center">There aren't any Hackathons at the moment!</h2>
