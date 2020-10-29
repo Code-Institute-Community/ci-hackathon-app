@@ -1,27 +1,5 @@
 [
     {
-        "model": "accounts.customuser",
-        "pk": 1,
-        "fields": {
-            "password": "pbkdf2_sha256$216000$YaMMEj4FjnL4$YB1N7EJ4SdoaIeV8Fg/pIMj/gtBlVvwNBF3fAS5cPXE=",
-            "last_login": null,
-            "is_superuser": true,
-            "username": "admin",
-            "first_name": "",
-            "last_name": "",
-            "email": "admin@example.com",
-            "is_staff": true,
-            "is_active": true,
-            "date_joined": "2020-10-26T16:54:30.184Z",
-            "slack_display_name": "",
-            "user_type": "",
-            "current_lms_module": "",
-            "organisation": 1,
-            "groups": [],
-            "user_permissions": []
-        }
-    },
-    {
         "model":"accounts.customuser",
         "pk":2,
         "fields":{
