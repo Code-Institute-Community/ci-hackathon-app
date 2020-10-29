@@ -13,7 +13,7 @@
     <!-- TO DO : build profile page -->
     <div class="container">
         <div class="row">
-          <!-- <div class="dashboard-start"></div> -->
+          <!-- User dashboard/menu -->
             <div id="user-dashboard" class="col-6 col-md-2 p-1 user-panel">
               <div class="custom-menu">
                 <button type="button" id="sidebar-collapse" class="btn">
@@ -35,8 +35,8 @@
                       </div>                 
                       <div id="collapseProfile" class="collapse" aria-labelledby="dashboardProfile" data-parent="#accordion">
                         <div class="card-body">
-                            <a href="">Update Profile</a>
-                            <a href="">Change Password</a>
+                            <a href="{% url 'edit_profile' %}"><i class="fas fa-user-edit p-1"></i>Update Profile</a>
+                            <a href=""><i class="fas fa-edit p-1"></i>Change Password</a>
                         </div>
                       </div>
                     </div>
@@ -50,8 +50,8 @@
                       </div>
                       <div id="collapseHackathons" class="collapse" aria-labelledby="dashboardHackathons" data-parent="#accordion">
                         <div class="card-body">
-                          <a href="">Add New</a>
-                          <a href="">Update</a>
+                          <a href=""><i class="fas fa-pen-nib p-1"></i>Add New</a>
+                          <a href=""><i class="fas fa-wrench p-1"></i>Update</a>
                         </div>
                       </div>
                     </div>
@@ -65,8 +65,8 @@
                       </div>
                       <div id="collapseTeams" class="collapse" aria-labelledby="dashboardTeams" data-parent="#accordion">
                         <div class="card-body">
-                          <a href="">Team One</a>
-                          <a href="">Team Two</a>
+                          <a href=""><i class="far fa-arrow-alt-circle-right p-1"></i>Team One</a>
+                          <a href=""><i class="far fa-arrow-alt-circle-right p-1"></i>Team Two</a>
                         </div>
                       </div>
                     </div>
@@ -74,7 +74,7 @@
                       <div class="card-header" id="dashboardResources">
                         <h5 class="mb-0">
                           <a class="btn btn-link dropdown-toggle collapsed" data-toggle="collapse" data-target="#collapseResources" aria-expanded="false" aria-controls="collapseResources">
-                            Resources
+                            Extras
                           </a>
                         </h5>
                       </div>
@@ -87,9 +87,25 @@
                     </div>
                 </div>
             </div>
+            <!-- User Information -->
             <div class="col-12 col-md-7 text-center">
+                <div class="user-info mt-4">
+                    <h5>Slack Name:</h5>
+                    <p>{{ user.slack_display_name }}</p>
+                    <h5>Email:</h5>
+                    <p>{{ user.email }}</p>
+                    <h5>First Name:</h5>
+                    <p>{{ user.user.first_name|title }}</p>
+                    <h5>Last Name:</h5>
+                    <p>{{ user.user.last_name|title }}</p>
+                    <h5>User Type:</h5>
+                    <p>{{ user.user_type|title}}</p>
+                    <h5>Current LMS module:</h5>
+                    <p>{{ user.human_readable_current_lms_module|title}}</p>
+                </div>
                 <span class="mt-2">Form Includes Rendered Here</span>
             </div>
+            <!-- User Hackathons -->
             <div class="col-12 col-md-3 text-center">
                 <span class="mt-4">Hackath<span class="ci-orange">o</span>n Hall</span>
                 <div class="card hackathon-card">
@@ -119,68 +135,4 @@
             </div>
         </div>
     </div>
-    
-    <!-- <h1>Profile Page</h1>
-    <h2>You are logged in as:</h2> -->
-
-<!-- Profile display -->  
- 
-    <!-- <div class="container-fluid">
-        <div class="row">
-<h1>Profile Page</h1>
-<h2>You are logged in as:</h2>
-
-<!-- Profile display -->
-
-<div class="container-fluid">
-	<div class="row">
-
-		<div class="col-md-4">
-			<h4>Slack Name:</h4>
-			<p>{{ user.slack_display_name }}</p>
-		</div>
-
-		<div class="col-md-4">
-			<h4>Email Address:</h4>
-			<p>{{ user.email }}</p>
-		</div>
-
-	</div>
-
-	<div class="row">
-
-		<div class="col-md-4">
-			<h4>First name:</h4>
-			<p>{{ user.first_name|title }}</p>
-		</div>
-
-		<div class="col-md-4">
-			<h4>Last name:</h4>
-			<p>{{ user.last_name|title }}</p>
-		</div>
-
-<<<<<<< HEAD
-    </div> -->
 {% endblock %}
-=======
-	</div>
-    	<div class="row">
-
-		<div class="col-md-4">
-			<h4>User type:</h4>
-			<p>{{ user.user_type|title}}</p>
-		</div>
-
-		<div class="col-md-4">
-			<h4>Current LMS module :</h4>
-			<p>{{ user.human_readable_current_lms_module|title}}</p>
-		</div>
-
-	</div>
-	<div class="row">
-		<a class="btn btn-dark" href="{% url 'edit_profile' %}">Edit Profile</a>
-	</div>
-
-</div>
-{% endblock %}
->>>>>>> 5cca7af4f50b8f9b5d79c934498ae624fde00eec
