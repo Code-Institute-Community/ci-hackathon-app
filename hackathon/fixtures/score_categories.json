@@ -1,0 +1,62 @@
+[
+    {
+        "model":"hackathon.hackprojectscorecategory",
+        "pk":1,
+        "fields":{
+            "created":"2020-10-26T22:37:40.897Z",
+            "updated":"2020-10-26T22:37:40.897Z",
+            "created_by":1,
+            "category":"Presentation and Adherence to Theme",
+            "min_score":1,
+            "max_score":15
+        }
+    },
+    {
+        "model":"hackathon.hackprojectscorecategory",
+        "pk":2,
+        "fields":{
+            "created":"2020-10-26T22:38:11.532Z",
+            "updated":"2020-10-26T22:38:11.532Z",
+            "created_by":1,
+            "category":"Team Collaboration",
+            "min_score":1,
+            "max_score":15
+        }
+    },
+    {
+        "model":"hackathon.hackprojectscorecategory",
+        "pk":3,
+        "fields":{
+            "created":"2020-10-26T22:38:39.173Z",
+            "updated":"2020-10-26T22:38:39.173Z",
+            "created_by":1,
+            "category":"Usability and Practicality",
+            "min_score":1,
+            "max_score":10
+        }
+    },
+    {
+        "model":"hackathon.hackprojectscorecategory",
+        "pk":4,
+        "fields":{
+            "created":"2020-10-26T22:39:34.420Z",
+            "updated":"2020-10-26T22:39:34.420Z",
+            "created_by":1,
+            "category":"Awesomeness",
+            "min_score":1,
+            "max_score":10
+        }
+    },
+    {
+        "model":"hackathon.hackprojectscorecategory",
+        "pk":5,
+        "fields":{
+            "created":"2020-10-26T22:40:28.929Z",
+            "updated":"2020-10-26T23:15:52.996Z",
+            "created_by":1,
+            "category":"Effective Use of Course Knowledge",
+            "min_score":1,
+            "max_score":10
+        }
+    }
+]
