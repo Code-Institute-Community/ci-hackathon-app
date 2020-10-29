@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load my_tags %}<!-- for the usage of custom get_range tag -->
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" type="text/css">
+{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <section>
+        <h2>Judging Team {{ team }}</h2>
+        <div class="d-flex flex-wrap justify-content-around my-2 my-md-4">
+            <div>
+                <a href="{{ project.github_url }}" class="btn btn-outline-info mb-3 mb-md-0" target="_blank">View Project Repo</a>
+            </div>
+            <div>
+                <a href="{{ project.deployed_url }}" class="btn btn-outline-info mb-3 mb-md-0" target="_blank">View Deployed Site</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+    <!-- judging form -->
+        <form class="hack-score-form tex-center" action="{% url 'hackathon:judging' hackathon.id team.id %}" method="post">
+            {% csrf_token %}
+            <div class=" row justify-content-around" >
+            {% for category in score_categories %}
+                <div class="col-12 col-md-6 mb-3 mb-md-4 p-0 p-md-2">
+                    <div class="shadow p-3 bg-white rounded mx-3">
+                        <div class="row">
+                            <div class="col-32 order-12 col-md-3 order-md-1 mt-2 input-group">
+                                <select required class="custom-select" name="score_{{ category.id }}">
+                                    <option selected disabled value="">Score</option>
+                                    <!-- using custom get_range tag -->
+                                    {% for i in category.max_score|get_range:category.min_score %}
+                                    
+                                    <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                    
+                                </select>
+                            </div>
+                            <div class="col-12 order-1 col-md-9 order-md-12 text-left">
+                                <h5 class="hack-score-cat-name"><strong>{{ category }}</strong></h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-12 my-2 text-left">
+                            <p class="mb-0">some description here... probably something one liner or max two</p> 
+                            <p class="mb-0">
+                                <em><small> descr. field needed in ScoreCat model</small></em>
+                            </p>
+                        </div>
+                        </div>
+                        
+                        
+                        
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="mt-1 mb-5">
+                    <button class="btn-lg btn-ci mt-1" type="submit" value="Submit">Submit scores</button>
+                </div>
+            </div>
+            
+        </form>
+
+    </section>
+
+
+</div>
+{% endblock %}
