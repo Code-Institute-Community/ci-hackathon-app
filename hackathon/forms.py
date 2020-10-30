@@ -44,6 +44,7 @@ class HackathonForm(forms.ModelForm):
         input_formats=['%d/%m/%Y %H:%M'],
         required=True,
         widget=forms.DateTimeInput(
+            format='%d/%m/%Y %H:%M',
             attrs={
                 'placeholder': 'DD/MM/YYYY HH:MM',
                 'autocomplete': 'off'
@@ -55,6 +56,7 @@ class HackathonForm(forms.ModelForm):
         input_formats=['%d/%m/%Y %H:%M'],
         required=True,
         widget=forms.DateTimeInput(
+            format='%d/%m/%Y %H:%M',
             attrs={
                 'placeholder': 'DD/MM/YYYY HH:MM',
                 'autocomplete': 'off'
