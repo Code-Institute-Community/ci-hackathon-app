@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from datetime import datetime
 
 from accounts.models import CustomUser as User
 from accounts.models import Organisation
@@ -63,7 +64,6 @@ class Hackathon(models.Model):
 
     def __str__(self):
         return self.display_name
-
 
 class HackAwardCategory(models.Model):
     """Model representing a HackAwardCategory. It is connected by a foreign key to
