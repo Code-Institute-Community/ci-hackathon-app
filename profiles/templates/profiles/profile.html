@@ -13,82 +13,16 @@
     <!-- TO DO : build profile page -->
     <div class="container">
         <div class="row">
-          <!-- User dashboard/menu -->
-            <div id="user-dashboard" class="col-6 col-md-2 p-1 user-panel">
-              <div id="dashboard-toggle" class="custom-menu">
-                <button type="button" id="sidebar-collapse" class="btn">
-                  <i class="fa fa-bars"></i>
-                  <span class="sr-only">Toggle Menu</span>
-                </button>
-              </div>
+          <div class="col-12 col-md-3">
+            <div class="card">
+              <img class="card-img-top" src="{% static 'img/profiles/profile_cat.png' %}" alt="Card image cap">
               <div class="text-center">
                 <span class="mt-2">Welcome: {{ user.username }}</span>
               </div>
-                <div class="mt-2" id="accordion">
-                    <div class="card">
-                      <div class="card-header" id="dashboardProfile">
-                        <h5 class="mb-0">
-                          <a class="btn btn-link dropdown-toggle" data-toggle="collapse" data-target="#collapseProfile" aria-expanded="true" aria-controls="collapseProfile">
-                            Profile
-                          </a>
-                        </h5>
-                      </div>                 
-                      <div id="collapseProfile" class="collapse" aria-labelledby="dashboardProfile" data-parent="#accordion">
-                        <div class="card-body">
-                            <a href="{% url 'edit_profile' %}"><i class="fas fa-user-edit p-1"></i>Update Profile</a>
-                            <a href=""><i class="fas fa-edit p-1"></i>Change Password</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card">
-                      <div class="card-header" id="dashboardHackathons">
-                        <h5 class="mb-0">
-                          <a class="btn btn-link dropdown-toggle collapsed" data-toggle="collapse" data-target="#collapseHackathons" aria-expanded="false" aria-controls="collapseHackathons">
-                            Hackathons
-                          </a>
-                        </h5>
-                      </div>
-                      <div id="collapseHackathons" class="collapse" aria-labelledby="dashboardHackathons" data-parent="#accordion">
-                        <div class="card-body">
-                          <a href=""><i class="fas fa-pen-nib p-1"></i>Add New</a>
-                          <a href=""><i class="fas fa-wrench p-1"></i>Update</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card">
-                      <div class="card-header" id="dashboardTeams">
-                        <h5 class="mb-0">
-                          <a class="btn btn-link dropdown-toggle collapsed" data-toggle="collapse" data-target="#collapseTeams" aria-expanded="false" aria-controls="collapseTeams">
-                            Teams
-                          </a>
-                        </h5>
-                      </div>
-                      <div id="collapseTeams" class="collapse" aria-labelledby="dashboardTeams" data-parent="#accordion">
-                        <div class="card-body">
-                          <a href=""><i class="far fa-arrow-alt-circle-right p-1"></i>Team One</a>
-                          <a href=""><i class="far fa-arrow-alt-circle-right p-1"></i>Team Two</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card">
-                      <div class="card-header" id="dashboardResources">
-                        <h5 class="mb-0">
-                          <a class="btn btn-link dropdown-toggle collapsed" data-toggle="collapse" data-target="#collapseResources" aria-expanded="false" aria-controls="collapseResources">
-                            Extras
-                          </a>
-                        </h5>
-                      </div>
-                      <div id="collapseResources" class="collapse" aria-labelledby="dashboardResources" data-parent="#accordion">
-                        <div class="card-body">
-                          <a href="">Resource</a>
-                          <a href="">Resource</a>
-                        </div>
-                      </div>
-                    </div>
-                </div>
             </div>
+          </div>
             <!-- User Information -->
-            <div class="col-12 col-md-7 text-center">
+            <div class="col-12 col-md-5 text-center">
                 <div class="user-info mt-4">
                     <h5>Slack Name:</h5>
                     <p>{{ user.slack_display_name }}</p>
@@ -105,7 +39,7 @@
                 </div>
             </div>
             <!-- User Hackathons -->
-            <div class="col-12 col-md-3 text-center">
+            <div class="col-12 col-md-4 text-center">
                 <span class="mt-4">Hackath<span class="ci-orange">o</span>n Hall</span>
                 <div class="card hackathon-card">
                   <div class="card-body">
