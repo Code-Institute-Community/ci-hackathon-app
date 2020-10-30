@@ -27,6 +27,7 @@
     margin-bottom: 2px;
 }
 
+.user-info span,
 .card .hackathon-card .btn {
     color: var(--p-grey);
 }
@@ -34,4 +35,8 @@
 
 .ci-orange {
     color: var(--p-orange);
+}
+
+.dark-text {
+    text-shadow: 1px 1px 3px var(--p-grey);
 }
