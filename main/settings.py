@@ -9,7 +9,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = "DEVELOPMENT" in os.environ
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = []
 host = os.environ.get("SITE_NAME")
 if host:
     ALLOWED_HOSTS.append(host)
