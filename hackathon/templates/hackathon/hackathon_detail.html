@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load my_tags %}
 {% block content %}
 <section class="h-100">
     <h2 class="p-orange text-center">{{ hackathon.display_name }}</h2>
@@ -10,10 +11,12 @@
             {% if hackathon.organiser %}
                 <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
             {% endif %}
-            {% if request.user.is_staff and not is_ended %}
-                {% include 'hackathon/includes/enrollstaff.html' %}
-            {% elif request.user.is_participant and not is_ended %}
-                {% include 'hackathon/includes/enrollpart.html' %}
+            {% if hackathon.end_date|event_ended %}
+                {% if request.user.is_staff %}
+                    {% include 'hackathon/includes/enrollstaff.html' %}
+                {% else %}
+                    {% include 'hackathon/includes/enrollpart.html' %}
+                {% endif %}
             {% endif %}
             <a href="{% url 'hackathon:hackathon-list' %}" class="btn btn-ci">See other Hackathons</a>
         </div>
