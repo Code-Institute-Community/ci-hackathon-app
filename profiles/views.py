@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 
-# @login_required
+@login_required
 def profile(request):
     """ Display the user's profile. """
     # to do - help wanted
