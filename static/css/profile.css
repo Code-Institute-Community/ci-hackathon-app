@@ -40,3 +40,8 @@
 .dark-text {
     text-shadow: 1px 1px 3px var(--p-grey);
 }
+
+hr.thick {
+    border: 2px solid var(--p-orange);
+    border-radius: 2px;
+}
