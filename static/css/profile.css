@@ -1,0 +1,42 @@
+/* Overwrite Bootstrap Card styles for the user-panel menu items */
+
+.user-info .card-header,
+.user-panel .text-center span,
+.card .card-header .btn,
+.card .card-body a {
+    color: var(--s-grey);
+    text-decoration: none;
+    font-size: .75rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.card {
+    width: 100%;
+}
+
+.card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Overwrite Bootstrap Card styles for the Hackathon Card items */
+
+.card-body a,
+.hackathon-card {
+    margin-bottom: 2px;
+}
+
+.user-info span,
+.card .hackathon-card .btn {
+    color: var(--p-grey);
+}
+/* For specific color targeting of 'o' chars in keeping with the CI Logo */
+
+.ci-orange {
+    color: var(--p-orange);
+}
+
+.dark-text {
+    text-shadow: 1px 1px 3px var(--p-grey);
+}
