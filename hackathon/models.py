@@ -72,6 +72,7 @@ class Hackathon(models.Model):
     def __str__(self):
         return self.display_name
 
+
 class HackAwardCategory(models.Model):
     """Model representing a HackAwardCategory. It is connected by a foreign key to
     User, Hackathon and HackProject. Optional fields: winning_project."""
