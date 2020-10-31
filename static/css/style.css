@@ -178,13 +178,14 @@ footer ul li a {
 
 .card-header h2 .btn-link {
     text-decoration: none;
+    color: var(--p-grey);
     font-size: 1.15rem;
-    transition: transform .3s;
+    transition: .3s;
 }
 
 .card-header h2 .btn-link:hover {
     cursor: pointer;
-    transform: scale(1.1); 
+    color: var(--p-orange);
 }
 
 
