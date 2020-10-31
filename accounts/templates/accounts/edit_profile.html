@@ -23,8 +23,8 @@
 		{% csrf_token %}
 		{{ form.as_p }}
 		<hr class="w-100 mb-1">
-		<button class="btn btn-ci mt-3" type="submit">Submit</button>
-		<button class="btn btn-ci mt-3" href="{% url 'edit_profile' %}">Cancel</button>
+		<button class="btn btn-ci mt-3" type="submit" title="Submit your changes">Submit</button>
+		<button class="btn btn-ci mt-3" href="{% url 'edit_profile' %}" title="Back to profile">Cancel</button>
 		<hr class="w-100 thick mb-1">
 	</form>
 </div>
