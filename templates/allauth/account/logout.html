@@ -4,6 +4,13 @@
 
 {% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+<link rel="stylesheet" href="{% static 'css/allauthstyles.css' %}" />
+{% endblock %}
+
 {% block content %}
     <h1>{% trans "Sign Out" %}</h1>
     <p>{% trans 'Are you sure you want to sign out?' %}</p>
