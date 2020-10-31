@@ -15,9 +15,9 @@
                             <div class="card">
                                 <div class="card-header" id="heading-{{ hackathon.id }}">
                                 <h2 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ hackathon.id }}" aria-expanded="true" aria-controls="collapse-{{ hackathon.id }}">
-                                        <h5 class="p-orange card-title">{{ hackathon.display_name }}</h5>
-                                    </button>
+                                    <span class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ hackathon.id }}" aria-expanded="true" aria-controls="collapse-{{ hackathon.id }}">
+                                        <h5 class="card-title">{{ hackathon.display_name }}</h5>
+                                    </span>
                                 </h2>
                                 </div>
                                 <div id="collapse-{{ hackathon.id }}" class="collapse" aria-labelledby="heading-{{ hackathon.id }}" data-parent="#accordion-upcoming-hackathons">
