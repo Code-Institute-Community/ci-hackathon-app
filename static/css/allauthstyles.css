@@ -1,0 +1,30 @@
+/* Target form inputs and labels to override allauth standard styling */
+
+html form {
+    max-width: 30rem;
+}
+
+html input,
+html select {
+    border: 2px solid var(--s-grey);
+    border-radius: 5px;
+    padding: 4px 4px;
+    width: 100%;
+}
+
+html input[type="checkbox"] {
+    width: auto;
+}
+
+html form button {
+    background-color: transparent;
+    color: var(--p-orange);
+    border: 3px solid var(--p-orange);
+    transition: all .4s;
+    border-radius: 5px;
+}
+
+html form button:hover {
+    background-color: var(--p-orange);
+    color: var(--s-grey);
+}
