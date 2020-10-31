@@ -10,11 +10,7 @@ def index(request):
     """
     hackathons = Hackathon.objects.all()
 
-    context = {
-        'hackathons': hackathons,
-    }
-
-    return render(request, "home/index.html", context)
+    return render(request, "home/index.html",  {"hackathons": hackathons})
 
 
 def faq(request):
