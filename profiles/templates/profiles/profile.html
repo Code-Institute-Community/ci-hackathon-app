@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}User profile dashboard{% endblock %}
+{% block title %}User profile{% endblock %}
 
 {% load static %}
 
@@ -10,38 +10,50 @@
 
 {% block content %}
 
-    <!-- TO DO : build profile page -->
+    <!-- Profile Image -->
     <div class="container">
         <div class="row">
           <div class="col-12 col-md-3">
             <div class="card mt-4">
               <img class="card-img-top" src="{% static 'img/profiles/profile_cat.png' %}" alt="Card image cap">
               <div class="text-center">
-                <span class="mt-4">Welcome: <span class="dark-text">{{ user.username }}</span></span>
+                <p class="mt-2">Welcome: <span class="dark-text">{{ user.username }}</span></p>
+                <p><a class="btn btn-ci" href="{% url 'edit_profile' %}"><i class="fas fa-user-edit p-1"></i>Edit Profile</a></p>
               </div>
             </div>
           </div>
             <!-- User Information -->
             <div class="col-12 col-md-5">
+              <div class="edit-profile dark-text">
+                <!-- Edit Profile Form -->
+                {% block edit_profile %}
+                {% endblock %}
+              </div>
+              {% if '/accounts/edit_profile/' == request.path %}
+              {% else %}
+              <hr class="w-100 mb-1 thick mt-4">
                 <div class="user-info mt-4">
+
                     <h5>First Name: <span class="dark-text">{{ user.first_name|title }}</span></h5>
-                    <hr class="w-100 mb-1">
+                    <hr class="w-100 p-1">
 
                     <h5>Last Name: <span class="dark-text">{{ user.last_name|title }}</span></h5>
-                    <hr class="w-100 mb-1">
+                    <hr class="w-100 p-1">
 
                     <h5>Email: <span class="dark-text">{{ user.email }}</span></h5>
-                    <hr class="w-100 mb-1">
+                    <hr class="w-100 p-1">
 
                     <h5>Slack Name: <span class="dark-text">{{ user.slack_display_name }}</span></h5>
-                    <hr class="w-100 mb-1">
+                    <hr class="w-100 p-1">
 
                     <h5>User Type: <span class="dark-text">{{ user.user_type|title}}</span></h5>
-                    <hr class="w-100 mb-1">
+                    <hr class="w-100 p-1">
 
                     <h5>Current LMS module: <span class="dark-text">{{ user.human_readable_current_lms_module|title}}</span></h5>
-                    <hr class="w-100 mb-1">
+                    <hr class="w-100 thick mb-1">
+
                 </div>
+              {% endif %}
             </div>
             <!-- User Hackathons -->
             <div class="col-12 col-md-4 text-center">
