@@ -1,13 +1,14 @@
 from datetime import datetime
-
 from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
-from .models import Hackathon
+from .models import Hackathon, HackTeam, HackProject, HackProjectScore, HackProjectScoreCategory
 from .forms import HackathonForm
 
+# Create your views here.
 
 class HackathonListView(ListView):
     """Renders a page with a list of Hackathons."""
@@ -30,6 +31,65 @@ class HackathonListView(ListView):
 
 
 @login_required
+def judging(request, hack_id, team_id):
+    """Displays the judging page for the judge to save their scores
+    for the selected project - determined by hackathon id and team id"""
+
+    # HackProjectScoreCategories:
+    score_categories = HackProjectScoreCategory.objects.all()
+    
+    hackathon = get_object_or_404(Hackathon, pk=hack_id)
+    team = get_object_or_404(HackTeam, pk=team_id)
+
+    # verify whether user is judge for the hackathon
+    if hackathon not in Hackathon.objects.filter(judges=request.user):
+        messages.error(request, "You are not a judge for that event!")
+        return render(request, 'home/index.html')
+
+    # verify if hackathon is ready to be judged (judging_status == 'open')
+    if hackathon.judging_status != 'open':
+        messages.error(request, f"Judging is not open! {hackathon.judging_status}!")
+        return render(request, 'home/index.html')
+
+    # verify that the selected team belongs to the selected hackathon
+    if team.hackathon != hackathon:
+        messages.error(request, f"Nice try! That team is not part of the event...")
+        return render(request, 'home/index.html')
+
+    # check if the judge has already scored the requested team's Project
+    project = get_object_or_404(HackTeam, pk=team_id).project
+    if not project:
+        messages.error(request, f"The team doesn't have a project yet, check back later...")
+        return render(request, 'home/index.html')
+    judge_has_scored_this = False
+    if HackProjectScore.objects.filter(judge=request.user, project=project):
+        messages.error(request, f"Oooops, sorry! Something went wrong, you have already scored that team...")
+        return render(request, 'home/index.html')
+    
+    if request.method == 'POST':
+        # judge score submitted for a team
+        for score_category in score_categories:
+            score_cat_id = f"score_{score_category.id}"
+            team_score = HackProjectScore(
+                created_by = request.user,
+                judge = request.user,
+                project = get_object_or_404(HackTeam, pk=team_id).project,
+                score = request.POST.get(score_cat_id),
+                hack_project_score_category = score_category,
+            )
+            team_score.save()
+            
+        return redirect("hackathon:hackathon-list")
+
+    context = {
+        'hackathon': hackathon,
+        'score_categories': score_categories,
+        'team': team,
+        'project': project,
+    }
+    return render(request, 'hackathon/judging.html', context)
+
+
 def create_hackathon(request):
     """ Allow users to create hackathon event """
 
