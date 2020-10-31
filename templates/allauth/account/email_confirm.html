@@ -5,6 +5,13 @@
 
 {% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
 
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+<link rel="stylesheet" href="{% static 'css/allauthstyles.css' %}" />
+{% endblock %}
+
 {% block content %}
     <h1>{% trans "Confirm E-mail Address" %}</h1>
     {% if confirmation %}
