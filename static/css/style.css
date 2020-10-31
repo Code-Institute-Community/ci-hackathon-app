@@ -10,7 +10,7 @@
     --s-pink: #FF5A60;
     --s-teal: #23BBBB;
     --t-grey: #E0E7FF;
-    --t-orange: rgba(232, 70, 16, .3);
+    --t-orange: #E8461030;
     --white: #FFFFFF;
     --black: #000000;
     --bg-grey: #F5F5F5;
@@ -70,6 +70,11 @@ main {
 .btn-ci:hover {
     background-color: var(--p-orange);
     color: var(--s-grey);
+}
+
+.accordion.card button {
+    text-decoration: none;
+    border: none;
 }
 
 /* FOOTER */
@@ -172,14 +177,13 @@ footer ul li a {
 }
 
 .card-header h2 .btn-link {
-    color:var(--black);
+    text-decoration: none;
     font-size: 1.15rem;
     transition: transform .3s;
 }
 
 .card-header h2 .btn-link:hover {
     cursor: pointer;
-    text-decoration: none;
     transform: scale(1.1); 
 }
 
@@ -205,7 +209,6 @@ footer ul li a {
     height: auto;
     background-color:var(--t-orange);
     border-radius: 10px;
-    border-color: 2px black solid;
 }
 
 .list li{
