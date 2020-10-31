@@ -23,10 +23,10 @@
                                 <div id="collapse-{{ hackathon.id }}" class="collapse" aria-labelledby="heading-{{ hackathon.id }}" data-parent="#accordion-upcoming-hackathons">
                                     <div class="card-body">
                                     
-                                        <h6 class="card-subtitle mb-2 text-muted"><span class="dark-text-hkth">Start: </span>{{ hackathon.start_date }} - <span class="dark-text-hkth">End: </span>{{ hackathon.end_date }}</h6>
+                                        <h6 class="card-subtitle mb-2 text-muted"><span class="drk-txt-hkth">Start: </span>{{ hackathon.start_date }} - <span class="drk-txt-hkth">End: </span>{{ hackathon.end_date }}</h6>
                                             <p class="card-text">{{ hackathon.description }}</p>
                                         {% if hackathon.organiser %}
-                                        <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
+                                        <p><span class="drk-txt-hkth">Organiser: </span><a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
                                         {% endif %}
                                         <a href="#" class="btn btn-ci mr-3">Read More</a>
                                     </div>
