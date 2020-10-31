@@ -14,7 +14,7 @@
             "organiser":12,
             "organisation":1,
             "status":"draft",
-            "judging_status": "not_yet_started",
+            "judging_status":"not_yet_started",
             "judges":[
                 5,
                 8,
@@ -37,7 +37,7 @@
             "organiser":12,
             "organisation":1,
             "status":"deleted",
-            "judging_status": "not_yet_started",
+            "judging_status":"closed",
             "judges":[
                 8,
                 12
@@ -59,7 +59,7 @@
             "organiser":12,
             "organisation":1,
             "status":"published",
-            "judging_status": "not_yet_started",
+            "judging_status":"not_yet_started",
             "judges":[
                 5,
                 8,
@@ -82,7 +82,7 @@
             "organiser":12,
             "organisation":1,
             "status":"published",
-            "judging_status": "not_yet_started",
+            "judging_status":"open",
             "judges":[
                 5,
                 8,
