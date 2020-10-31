@@ -4,7 +4,10 @@ from hackathon.models import Hackathon
 
 
 def index(request):
-    """ A view to return the index page """
+    """ 
+    A view to return the index page
+    and upcoming Hackathon information
+    """
     hackathons = Hackathon.objects.all()
 
     context = {
