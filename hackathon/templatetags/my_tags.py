@@ -1,8 +1,10 @@
 
 # range snippet from: https://www.djangosnippets.org/snippets/1357/
 # adjusted to current project needs based on https://docs.djangoproject.com/en/3.1/howto/custom-template-tags/
-from django.template import Library
 import datetime
+
+from django.template import Library
+
 from django.conf import settings
 
 register = Library()
