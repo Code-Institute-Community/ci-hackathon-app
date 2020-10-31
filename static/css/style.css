@@ -172,6 +172,10 @@ footer ul li a {
     justify-items: center;
 }
 
+.dark-text-hkth {
+    text-shadow: 1px 1px 2px var(--p-grey);
+}
+
 .card-header {
     background-color: var(--t-orange);
 }
