@@ -5,50 +5,40 @@
 
     <div class="row landing-page">
         <div class = "col-12 col-sm-12  col-md-12 col-lg-6 " id="accordion-wrapper">
-            <h1 class=" text text-center">Upcoming Hackathons</h1>
+            <h1 class="text-center">Upcoming Hackathons</h1>
             <div class="accordion" id="accordion-upcoming-hackathons">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link btn-block text-center" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Hackathon title #1
-                        </button>
-                    </h2>
-                    </div>
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion-upcoming-hackathons">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingTwo">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link btn-block text-center collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Hackathon title #2
-                        </button>
-                    </h2>
-                    </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion-upcoming-hackathons">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="headingThree">
-                    <h2 class="mb-0">
-                        <button class="btn btn-link btn-block text-center collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Hackathon title #3
-                        </button>
-                    </h2>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion-upcoming-hackathons">
-                    <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                    </div>
-                    </div>
-                </div>
+                {% if hackathons %}
+                {% for hackathon in hackathons %}
+                    {% if hackathon.organisation == 'Code Institute' or hackathon.organisation == user.organisation %}
+                        {% if hackathon.status == 'published' or user == hackathon.created_by %}
+                            {% if not hackathon.status == 'deleted' %}
+                            <div class="card">
+                                <div class="card-header" id="heading-{{ hackathon.id }}">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ hackathon.id }}" aria-expanded="true" aria-controls="collapse-{{ hackathon.id }}">
+                                        <h5 class="p-orange card-title">{{ hackathon.display_name }}</h5>
+                                    </button>
+                                </h2>
+                                </div>
+                                <div id="collapse-{{ hackathon.id }}" class="collapse" aria-labelledby="heading-{{ hackathon.id }}" data-parent="#accordion-upcoming-hackathons">
+                                    <div class="card-body">
+                                    
+                                        <h6 class="card-subtitle mb-2 text-muted">{{ hackathon.start_date }} - {{ hackathon.end_date }}</h6>
+                                            <p class="card-text">{{ hackathon.description }}</p>
+                                        {% if hackathon.organiser %}
+                                        <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
+                                        {% endif %}
+                                        <a href="#" class="btn btn-ci mr-3">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% else %}
+                <h2 class="text-center">There aren't any Hackathons at the moment!</h2>
+                {% endif %}
             </div>
         </div>
         <div class = "col-12 col-sm-12 col-md-12 col-lg-6" id="carousel-wrapper">
