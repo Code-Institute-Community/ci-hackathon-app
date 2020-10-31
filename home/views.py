@@ -1,10 +1,17 @@
 from django.shortcuts import render
 
+from hackathon.models import Hackathon
+
 
 def index(request):
     """ A view to return the index page """
+    hackathons = Hackathon.objects.all()
 
-    return render(request, "home/index.html")
+    context = {
+        'hackathons': hackathons,
+    }
+
+    return render(request, "home/index.html", context)
 
 
 def faq(request):
