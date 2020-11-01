@@ -233,7 +233,7 @@ class HackathonDetailView(DetailView):
     context_object_name = "hackathon"
 
 
-def ajax_enroll_toggle(request):
+def enroll_toggle(request):
     user = request.user
     data = {}
     if request.method == "POST":

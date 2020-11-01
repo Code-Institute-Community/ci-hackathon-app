@@ -5,7 +5,7 @@ from .views import (
     update_hackathon,
     delete_hackathon,
     HackathonDetailView,
-    ajax_enroll_toggle,
+    enroll_toggle,
     judging
 )
 
@@ -17,6 +17,6 @@ urlpatterns = [
     path("<int:hackathon_id>/delete_hackathon", delete_hackathon, name="delete_hackathon"),
     path('<int:pk>/',
          HackathonDetailView.as_view(), name='hackathon-detail'),
-    path('ajax/enroll/', ajax_enroll_toggle, name='enroll-toggle')
+    path('enroll/', enroll_toggle, name='enroll-toggle')
 ]
 
