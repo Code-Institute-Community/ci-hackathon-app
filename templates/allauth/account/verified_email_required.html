@@ -4,6 +4,13 @@
 
 {% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
 
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+<link rel="stylesheet" href="{% static 'css/allauthstyles.css' %}" />
+{% endblock %}
+
 {% block content %}
     <h1>{% trans "Verify Your E-mail Address" %}</h1>
     {% url 'account_email' as email_url %}
