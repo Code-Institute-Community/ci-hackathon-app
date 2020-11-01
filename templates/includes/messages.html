@@ -1,9 +1,15 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/allauthstyles.css' %}" />
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+{% endblock %}
+
 {% if messages %}
 <div>
     {% for message in messages %}
-        <h1>{{ message }}</h1>
-        <!-- TO DO : help wanted -->
-        <small>TO DO : templates > includes > messages.html (styles)</small>
+        <h3>{{ message }}</h3>
+        <hr class="w-100 mb-1 thick mt-4">
     {% endfor %}
 </div>
 {% endif %}

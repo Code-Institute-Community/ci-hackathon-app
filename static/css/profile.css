@@ -4,7 +4,6 @@
 .user-panel .text-center span,
 .card .card-header .btn,
 .card .card-body a {
-    color: var(--s-grey);
     text-decoration: none;
     font-size: .75rem;
     font-weight: 400;
@@ -13,11 +12,6 @@
 
 .card {
     width: 100%;
-}
-
-.card .card-body {
-    display: flex;
-    flex-direction: column;
 }
 
 /* Overwrite Bootstrap Card styles for the Hackathon Card items */

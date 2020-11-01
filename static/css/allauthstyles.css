@@ -9,10 +9,14 @@ html select {
     border: 2px solid var(--s-grey);
     border-radius: 5px;
     padding: 4px 4px;
-    width: 100%;
+    width: 80%;
 }
 
-html input[type="checkbox"] {
+html form label {
+    display: none;
+}
+
+html form input[type="checkbox"] {
     width: auto;
 }
 
@@ -27,4 +31,14 @@ html form button {
 html form button:hover {
     background-color: var(--p-orange);
     color: var(--s-grey);
+}
+
+html .all-auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.all-auth-forms {
+    margin: auto;
 }

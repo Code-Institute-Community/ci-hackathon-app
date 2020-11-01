@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="{% static 'css/allauthstyles.css' %}" />
 {% endblock %}
 
-{% block content %}
+{% block allauth %}
 
     <h1>{% trans "Sign In" %}</h1>
 
@@ -37,6 +37,7 @@
             <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
     {% endif %}
 
+    
     <form class="login" method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
         {{ form.as_p }}
@@ -46,5 +47,10 @@
         <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
         <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
     </form>
+{% endblock %}
 
+{% block authhacklogo %}
+    <div class="card mt-4">
+        <img class="card-img-top" src="{% static 'img/ci-hacking-new-normal--square.png' %}" alt="Card image cap">
+    </div>
 {% endblock %}
