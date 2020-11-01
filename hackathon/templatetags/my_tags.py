@@ -1,4 +1,3 @@
-
 # range snippet from: https://www.djangosnippets.org/snippets/1357/
 # adjusted to current project needs based on https://docs.djangoproject.com/en/3.1/howto/custom-template-tags/
 import datetime
@@ -32,8 +31,8 @@ def get_range(value, start):
 
 @register.filter
 def event_ended(date_event):
-    '''Set a filter to check if hackaton has ended
+    """Set a filter to check if hackaton has ended
     In order to show the enroll button only for hackatons which are not ended
     Date can be updated if organisers want to put a deadline to enrol
-    Help provided in Stack overflow: https://stackoverflow.com/questions/64605335/comparing-dates-using-a-comparator-inside-django-template/64605785#64605785'''
+    Help provided in Stack overflow: https://stackoverflow.com/questions/64605335/comparing-dates-using-a-comparator-inside-django-template/64605785#64605785"""
     return date_event.date() >= datetime.date.today()
