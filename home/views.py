@@ -4,14 +4,13 @@ from hackathon.models import Hackathon
 
 
 def index(request):
-    """ A view to return the index page """
+    """ 
+    A view to return the index page
+    and upcoming Hackathon information
+    """
     hackathons = Hackathon.objects.all()
 
-    context = {
-        'hackathons': hackathons,
-    }
-
-    return render(request, "home/index.html", context)
+    return render(request, "home/index.html",  {"hackathons": hackathons})
 
 
 def faq(request):
