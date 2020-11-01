@@ -172,6 +172,18 @@ footer ul li a {
     justify-items: center;
 }
 
+.accordion .card-header {
+    background: var(--s-grey);
+}
+
+.accordion .card {
+    background: var(--bg-grey);
+}
+
+.card-header h2 .btn-link {
+    text-decoration: none;
+}
+
 .card-header {
     background-color: var(--t-orange);
 }
