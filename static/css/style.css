@@ -141,11 +141,11 @@ footer ul li a {
     color: var(--p-orange);  
 }
 
-.p-blue {
-    color: var(--p-blue);  
-}
-
 /* CARDS */
+.accordion .card .card-link {
+    text-decoration: none;
+    color: var(--p-grey);
+}
 .card-link:hover {
     color: rgba(0, 0, 0, .7); 
 }
@@ -172,8 +172,12 @@ footer ul li a {
     justify-items: center;
 }
 
-.card-header {
-    background-color: var(--t-orange);
+.accordion .card-header {
+    background: var(--s-grey);
+}
+
+.accordion .card {
+    background: var(--bg-grey);
 }
 
 .card-header h2 .btn-link {

@@ -15,18 +15,17 @@
                             <div class="card">
                                 <div class="card-header" id="heading-{{ hackathon.id }}">
                                 <h2 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ hackathon.id }}" aria-expanded="true" aria-controls="collapse-{{ hackathon.id }}">
+                                    <a class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ hackathon.id }}" aria-expanded="true" aria-controls="collapse-{{ hackathon.id }}">
                                         <h5 class="p-orange card-title">{{ hackathon.display_name }}</h5>
-                                    </button>
+                                    </a>
                                 </h2>
                                 </div>
                                 <div id="collapse-{{ hackathon.id }}" class="collapse" aria-labelledby="heading-{{ hackathon.id }}" data-parent="#accordion-upcoming-hackathons">
                                     <div class="card-body">
-                                    
-                                        <h6 class="card-subtitle mb-2 text-muted">{{ hackathon.start_date }} - {{ hackathon.end_date }}</h6>
-                                            <p class="card-text">{{ hackathon.description }}</p>
+                                        <h6 class="card-subtitle mb-2"><i class="far fa-calendar-alt p-2"></i> {{ hackathon.start_date }} - {{ hackathon.end_date }}</h6>
+                                        <p class="card-text"><i class="fas fa-info-circle p-2"></i>{{ hackathon.description }}</p>
                                         {% if hackathon.organiser %}
-                                        <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
+                                        <p><span class="p-2">Organiser:</span> <a href="#" class="card-link"><span class="dark-text">{{ hackathon.organiser }}</span></a></p>
                                         {% endif %}
                                         <a href="#" class="btn btn-ci mr-3">Read More</a>
                                     </div>
