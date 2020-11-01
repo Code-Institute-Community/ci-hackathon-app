@@ -16,7 +16,7 @@ urlpatterns = [
     path("<int:hackathon_id>/update_hackathon", update_hackathon, name="update_hackathon"),
     path("<int:hackathon_id>/delete_hackathon", delete_hackathon, name="delete_hackathon"),
     path('<int:pk>/',
-         HackathonDetailView.as_view(), name='hackathon-detail'),
-    path('enroll/', enroll_toggle, name='enroll-toggle')
+         HackathonDetailView.as_view(), name='hackathon_detail'),
+    path('enroll', enroll_toggle, name='enroll_toggle')
 ]
 
