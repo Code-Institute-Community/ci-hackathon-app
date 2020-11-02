@@ -1,8 +1,13 @@
 <article class="card shadow hack-card">
   <div class="card-body">
     <h5 class="p-orange card-title">{{ hackathon.display_name }}</h5>
+<<<<<<< HEAD
     <p class="card-subtitle mb-2 text-muted"><i class="far fa-calendar-alt p-2"></i> {{ hackathon.start_date }} - {{ hackathon.end_date }}</p>
     <p class="card-text"><i class="fas fa-info-circle p-2"></i> {{ hackathon.description }}</p>
+=======
+    <h6 class="card-subtitle mb-2 text-muted">{{ hackathon.start_date }} - {{ hackathon.end_date }}</h6>
+    <p class="card-text">{{ hackathon.description|truncatewords:20 }}</p>
+>>>>>>> hackathon.description template expression in hacakthon_card.html template truncated using truncatewords filter tag
     {% if hackathon.organiser %}
       <p><span class="pr-2">Organiser:</span> <a href="#" class="card-link"><span class="dark-text">{{ hackathon.organiser }}</span></a></p>
     {% endif %}
