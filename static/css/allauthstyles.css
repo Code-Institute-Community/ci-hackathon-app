@@ -18,7 +18,8 @@ html select {
 html form label[for^="id_email"],
 html form label[for^="id_current"], 
 html form label[for^="id_user"],
-html form label[for^="id_password"] {
+html form label[for^="id_password"],
+html form label[for^="id_login"] {
     display: none;
 }
 
