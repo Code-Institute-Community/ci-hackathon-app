@@ -113,8 +113,11 @@ def update_hackathon(request, hackathon_id):
 
 
 @login_required
-def view_hackathon(request):
-    return render(request, "hackathon/hackathon-view.html")
+def view_hackathon(request, hackathon_id):
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+
+    return render(request, "hackathon/hackathon-view.html",
+                  {'hackathon': hackathon})
 
 
 @login_required

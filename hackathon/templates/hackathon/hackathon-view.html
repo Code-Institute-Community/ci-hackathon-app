@@ -3,5 +3,8 @@
 {% load static %}
 
 {% block content %}
-    <h1>Welcome to the hackathon details view</h1>
+    {% if hackathon %}
+        {{ hackathon.id }}
+        {{ hackathon.display_name }}
+    {% endif %}
 {% endblock %}
