@@ -4,7 +4,20 @@
 
 {% block content %}
     {% if hackathon %}
-        {{ hackathon.id }}
-        {{ hackathon.display_name }}
+        <p>Display Name: {{ hackathon.display_name }} #{{ hackathon.id }}</p>
+        <p>Description: {{ hackathon.description|linebreaks }}</p>
+        <p>Theme: {{ hackathon.theme }}</p>
+        <p>Running: {{ hackathon.start_date }} - {{ hackathon.end_date }}</p>
+        <p>Organisation: {{ hackathon.organisation }}</p>
+        <div><h4>TEAMS:</h4>
+            {% for team in hackathon.teams.get_queryset %}
+                <h5>{{ team }}</h5>
+                {% for participant in team.participants.get_queryset %}
+                    <p>{{ participant.slack_display_name }}</p>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <p>Organiser: {{ hackathon.organiser }}</p>
+        <p>Status: {{ hackathon.status.capitalize }}</p>
     {% endif %}
 {% endblock %}
