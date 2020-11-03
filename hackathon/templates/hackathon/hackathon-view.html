@@ -38,7 +38,7 @@
     <!-- Render teams, if any -->
     <div class="row">
         <div class="col-sm-12 col-lg-8">
-            <h1 class="page-title">Teams:</h1>
+            <h1 class="page-title" id="teams">Teams:</h1>
         </div>
     </div>
     <div class="row teams-row">
@@ -83,7 +83,7 @@
                     <!-- Render "previous" icon for pagination set -->
                     {% if teams.has_previous %}
                         <li class="page-item">
-                            <a href="?page={{ teams.previous_page_number }}" class="page-link">
+                            <a href="?page={{ teams.previous_page_number }}#teams" class="page-link">
                                 <span><i class="fas fa-angle-double-left"></i></span>
                             </a>
                         </li>
@@ -102,7 +102,7 @@
                             </li>
                         {% else %}
                             <li class="page-item">
-                                <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                                <a href="?page={{ i }}#teams" class="page-link">{{ i }}</a>
                             </li>
                         {% endif %}
                     {% endfor %}
@@ -110,7 +110,7 @@
                     <!-- Render "next" icon for pagination set -->
                     {% if teams.has_next %}
                         <li class="page-item">
-                            <a href="?page={{ teams.next_page_number }}" class="page-link">
+                            <a href="?page={{ teams.next_page_number }}#teams" class="page-link">
                                 <span><i class="fas fa-angle-double-right"></i></span>
                             </a>
                         </li>
