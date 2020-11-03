@@ -350,9 +350,9 @@ h1.table_titles{
     justify-content: center;
 }
 
-    /* Set min-height of team-cards to suit for a minimum of 5 team members */
+    /* Set min-height of team-cards to suit for a minimum of 5 team members & submit project button */
 .team-card {
-    min-height: 340px;
+    min-height: 380px;
 }
 
 .card-title .team-name:after {
