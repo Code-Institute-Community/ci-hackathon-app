@@ -10,6 +10,7 @@
     --s-pink: #FF5A60;
     --s-teal: #23BBBB;
     --t-grey: #E0E7FF;
+    --t-orange: #E8461030;
     --white: #FFFFFF;
     --black: #000000;
     --bg-grey: #F5F5F5;
@@ -71,8 +72,9 @@ main {
     color: var(--s-grey);
 }
 
-.button {
-    padding: 1px 5px;
+.accordion.card button {
+    text-decoration: none;
+    border: none;
 }
 
 /* FOOTER */
@@ -134,19 +136,18 @@ footer ul li a {
 .fab:hover {
     transform: scale(1.3);
 }
-
 /* TEXT */
 .p-orange {
-    color: var(--p-orange);
+    color: var(--p-orange);  
 }
 
 .p-blue {
-    color: var(--p-blue);
+    color: var(--p-blue);  
 }
 
 /* CARDS */
 .card-link:hover {
-    color: rgba(0, 0, 0, .7);
+    color: rgba(0, 0, 0, .7); 
 }
 
 .card-title {
@@ -163,53 +164,64 @@ footer ul li a {
     border-color: var(--p-orange);
 }
 
-.divider-orange{
-    background-image: radial-gradient(var(--p-orange), var(--p-red));
-    height: 4px;
-    border-radius: 100%;
+/* Landing Page */
+
+.landing-page {
+    margin: 10px 10px 30px;
+    align-content: center;
+    justify-items: center;
 }
 
-.delete-resource-button {
+.drk-txt-hkth {
+    text-shadow: 1px 1px 2px var(--p-grey);
+}
+
+.card-header {
+    background-color: var(--t-orange);
+}
+
+.card-header .btn-link {
+    text-decoration: none;
+    color: var(--p-grey);
+    font-size: 1.15rem;
+    transition: .3s;
+}
+
+.card-header .btn-link:hover {
     cursor: pointer;
-}
-/* EDIT PROFILE */
-.edit_form {
-    margin: auto;
-    padding: 2.5vh;
-    width: max-content;
-    margin-bottom: 5vh;
-    border: 1px solid #E84610;
+    color: var(--p-orange);
 }
 
-.edit_title, .edit_form{
-    text-align: center;
+
+#accordion-wrapper>h1,
+#carousel-wrapper>h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color:var(--black);
 }
 
-.edit_title {
-    color: var(--p-grey);
+.project-list>ol{
+     margin: 20px;
+     font-size: 1.7rem;
+     text-align: left;
+     color: var(--black);
+     padding: 6px 6px;
+
 }
-.edit_form label {
+
+.project-list {
     width: 100%;
+    height: auto;
+    background-color:var(--t-orange);
+    border-radius: 10px;
 }
 
-.edit_form label, .edit_title, .edit_form button {
-    padding: 1vh;
+.list li{
+    font-size: 0.5em;
+    text-align: left;
+
 }
 
-.edit_form select, .edit_form {
-    max-width: 100%;
-}
-
-.edit_form button {
-    margin-top: 2vh;
-    background-color: var(--p-orange);
-    border-color: var(--p-grey);
-    color: var(--s-grey);
-}
-
-.edit_form button:hover {
-    color: var(--p-grey);
-}
 .bg-p-blue {
     background-color: var(--p-blue);  
 }
@@ -230,4 +242,27 @@ footer ul li a {
     right: 20px;
     min-height: 200px;
     z-index: 1021;
+}
+
+@media (max-width:453px) {
+    #accordion-wrapper>h1,
+    #carousel-wrapper>h1 {
+        font-size: 1.5rem;
+
+    }
+}
+
+@media (max-width:993px) {
+    #carousel-wrapper {
+        margin-top: 30px;
+    }
+    
+}
+
+@media (max-width:993px) {
+    
+    .card-header h2 .btn-link {
+    color:var(--black);
+    font-size: 1.1rem;
+}
 }
