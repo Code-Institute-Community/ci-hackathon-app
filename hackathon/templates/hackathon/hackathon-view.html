@@ -11,8 +11,8 @@
             <a href="#" class="btn btn-ci">Register to this Hackathon</a>
         </div>
     </div>
-    <div class="row my-3">
-        <div class="col-sm-12 col-lg-8">
+    <div class="row">
+        <div class="col-sm-12 col-lg-8 my-3">
             <div class="card">
                 <div class="card-body">
                     <p>{{ hackathon.description|linebreaks }}</p>
@@ -37,11 +37,11 @@
             <h1 class="page-title">Teams:</h1>
         </div>
     </div>
-    <div class="row mb-5">
-        {% if hackathon.teams.get_queryset %}
-            {% for team in hackathon.teams.get_queryset %}
-                <div class="col-sm-12 col-lg-4">
-                    <div class="card">
+    <div class="row teams-row">
+        {% if teams %}
+            {% for team in teams %}
+                <div class="col-sm-12 col-lg-4 my-3">
+                    <div class="card team-card">
                         <div class="card-body">
                             <div class="card-title text-center my-auto">
                                 <h3 class="team-name">{{ team }}</h3>
@@ -59,7 +59,53 @@
                 </div>
             {% endfor %}
         {% else %}
-            <p>No teams have registered for this yet! Be the first?</p>
+            <div class="col-sm-12">
+                <p>No teams have registered for this yet! Be the first?</p>
+            </div>
         {% endif %}
+    </div>
+    <!-- Pagination display if Hackathon contains more then 3 registered teams. -->
+    <div class="row">
+        <div class="col-sm-12">
+            {% if teams.has_other_pages %}
+                <ul class="pagination">
+                    {% if teams.has_previous %}
+                        <li class="page-item">
+                            <a href="?teams-page={{ teams.previous_page_number }}" class="page-link">
+                                <span><i class="fas fa-angle-double-left"></i></span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="disabled page-item">
+                            <span class="page-link"><i class="fas fa-angle-double-left"></i></span>
+                        </li>
+                    {% endif %}
+
+                    {% for i in teams.paginator.page_range %}
+                        {% if teams.number == i %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ i }}<span class="sr-only">(current)</span></span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if teams.has_next %}
+                        <li class="page-item">
+                            <a href="?page={{ teams.next_page_number }}" class="page-link">
+                                <span><i class="fas fa-angle-double-right"></i></span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link"><i class="fas fa-angle-double-right"></i></span>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
