@@ -58,6 +58,12 @@
                                     </p>
                                 {% endfor %}
                             </div>
+                            <!-- Render project submission button if user is participant of team -->
+                            {% if user in team.participants.get_queryset %}
+                                <div class="text-center">
+                                    <a href="#" class="btn btn-ci">Submit Project</a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -73,11 +79,11 @@
     <div class="row">
         <div class="col-sm-12">
             {% if teams.has_other_pages %}
-                <ul class="pagination">#
+                <ul class="pagination">
                     <!-- Render "previous" icon for pagination set -->
                     {% if teams.has_previous %}
                         <li class="page-item">
-                            <a href="?teams-page={{ teams.previous_page_number }}" class="page-link">
+                            <a href="?page={{ teams.previous_page_number }}" class="page-link">
                                 <span><i class="fas fa-angle-double-left"></i></span>
                             </a>
                         </li>
