@@ -1,4 +1,4 @@
-<form id="enroll-form" action="{% url 'hackathon:enroll-toggle' %}" method="POST">
+<form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
     {% csrf_token %}
     <!--It only sends the hackathon ID.-->
     <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
