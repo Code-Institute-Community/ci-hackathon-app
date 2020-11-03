@@ -115,9 +115,17 @@ def update_hackathon(request, hackathon_id):
 
 @login_required
 def view_hackathon(request, hackathon_id):
+    """
+    Login required decorator used to prevent user from navigating using URL
+    injection or by using browser back button etc, by redirecting user to
+    login page.
+
+    Render Hackathon details and teams registered for same.
+
+    If teams count > 3 show pagination for teams.
+    """
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
 
-    # teams pagination if more then 3 teams register to hackathon
     teams = HackTeam.objects.filter(hackathon_id=hackathon_id).order_by(
         '-display_name')
     paginator = Paginator(teams, 3)
