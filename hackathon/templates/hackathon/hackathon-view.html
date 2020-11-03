@@ -3,21 +3,63 @@
 {% load static %}
 
 {% block content %}
-    {% if hackathon %}
-        <p>Display Name: {{ hackathon.display_name }} #{{ hackathon.id }}</p>
-        <p>Description: {{ hackathon.description|linebreaks }}</p>
-        <p>Theme: {{ hackathon.theme }}</p>
-        <p>Running: {{ hackathon.start_date }} - {{ hackathon.end_date }}</p>
-        <p>Organisation: {{ hackathon.organisation }}</p>
-        <div><h4>TEAMS:</h4>
-            {% for team in hackathon.teams.get_queryset %}
-                <h5>{{ team }}</h5>
-                {% for participant in team.participants.get_queryset %}
-                    <p>{{ participant.slack_display_name }}</p>
-                {% endfor %}
-            {% endfor %}
+    <div class="row">
+        <div class="col-sm-12 col-lg-8">
+            <h1 class="page-title">{{ hackathon.display_name }} #{{ hackathon.id }}</h1>
         </div>
-        <p>Organiser: {{ hackathon.organiser }}</p>
-        <p>Status: {{ hackathon.status.capitalize }}</p>
-    {% endif %}
+        <div class="col-sm-12 col-lg-4 my-auto" id="hackathon-signup">
+            <a href="#" class="btn btn-ci">Register to this Hackathon</a>
+        </div>
+    </div>
+    <div class="row my-3">
+        <div class="col-sm-12 col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <p>{{ hackathon.description|linebreaks }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-4 my-auto">
+            <div class="card">
+                <div class="card-body text-center">
+                    <p class="hackathon-sub-details"><i class="fas fa-laptop"></i> Theme: {{ hackathon.theme.capitalize }}</p>
+                    <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{ hackathon.status }}</p>
+                    <p class="hackathon-sub-details"><i class="far fa-clock"></i> Start: {{ hackathon.start_date }}</p>
+                    <p class="hackathon-sub-details"><i class="fas fa-clock"></i> End: {{ hackathon.end_date }}</p>
+                    <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
+                    <p class="hackathon-sub-details"><i class="fas fa-school"></i> Organisation: {{ hackathon.organisation }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-lg-8">
+            <h1 class="page-title">Teams:</h1>
+        </div>
+    </div>
+    <div class="row mb-5">
+        {% if hackathon.teams.get_queryset %}
+            {% for team in hackathon.teams.get_queryset %}
+                <div class="col-sm-12 col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title text-center my-auto">
+                                <h3 class="team-name">{{ team }}</h3>
+                            </div>
+                            <div class="card-text">
+                                <p class="text-center card-text-title">Team members:</p>
+                                {% for participant in team.participants.get_queryset %}
+                                    <p><a href="#" class="user-github-icon" target="_blank"><i class="fab fa-github-square"></i></a>
+                                        {{ participant.slack_display_name }}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No teams have registered for this yet! Be the first?</p>
+        {% endif %}
+    </div>
 {% endblock %}
