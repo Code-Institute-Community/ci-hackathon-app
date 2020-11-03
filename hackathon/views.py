@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 
@@ -236,8 +237,19 @@ def update_hackathon(request, hackathon_id):
 def view_hackathon(request, hackathon_id):
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
 
-    return render(request, "hackathon/hackathon-view.html",
-                  {'hackathon': hackathon})
+    # teams pagination if more then 3 teams register to hackathon
+    teams = HackTeam.objects.filter(hackathon_id=hackathon_id).order_by(
+        '-display_name')
+    paginator = Paginator(teams, 3)
+    page = request.GET.get('page')
+    paged_teams = paginator.get_page(page)
+
+    context = {
+        'hackathon': hackathon,
+        'teams': paged_teams,
+    }
+
+    return render(request, "hackathon/hackathon-view.html", context)
 
 
 @login_required

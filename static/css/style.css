@@ -341,6 +341,18 @@ h1.table_titles{
     background: var(--s-grey);
 }
 
+    /* Ensure teams in paginated view are centered at all times even when odd number of
+     teams persist in the view. */
+.teams-row {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.team-card {
+    min-height: 340px;
+}
+
 .card-title .team-name:after {
     content: '';
     display: block;
@@ -360,6 +372,11 @@ h1.table_titles{
     margin: 0 0.5rem 0 0;
     color: var(--p-navy);
     transition: transform .4s;
+}
+
+.pagination {
+    margin: 1rem 0 2rem;
+    justify-content: center;
 }
 
 /* Media Queries */
