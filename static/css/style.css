@@ -264,6 +264,7 @@ html .all-auth-container {
 }
 
 /* View Hackathon Page */
+
 .page-title:after {
     content: '';
     display: block;
@@ -349,6 +350,7 @@ h1.table_titles{
     justify-content: center;
 }
 
+    /* Set min-height of team-cards to suit for a minimum of 5 team members */
 .team-card {
     min-height: 340px;
 }
@@ -390,6 +392,7 @@ h1.table_titles{
 }
 
 @media (min-width: 991px) {
+    /* Alignment control for Register to Hackathon button on hackathon-view.html template */
     #hackathon-signup {
         text-align: right;
     }

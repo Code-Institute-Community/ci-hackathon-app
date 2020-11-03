@@ -3,6 +3,7 @@
 {% load static %}
 
 {% block content %}
+    <!-- Render Hackathon details & Registration button -->
     <div class="row">
         <div class="col-sm-12 col-lg-8">
             <h1 class="page-title">{{ hackathon.display_name }} #{{ hackathon.id }}</h1>
@@ -32,6 +33,9 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Render teams, if any -->
     <div class="row">
         <div class="col-sm-12 col-lg-8">
             <h1 class="page-title">Teams:</h1>
@@ -64,11 +68,13 @@
             </div>
         {% endif %}
     </div>
+
     <!-- Pagination display if Hackathon contains more then 3 registered teams. -->
     <div class="row">
         <div class="col-sm-12">
             {% if teams.has_other_pages %}
-                <ul class="pagination">
+                <ul class="pagination">#
+                    <!-- Render "previous" icon for pagination set -->
                     {% if teams.has_previous %}
                         <li class="page-item">
                             <a href="?teams-page={{ teams.previous_page_number }}" class="page-link">
@@ -76,11 +82,13 @@
                             </a>
                         </li>
                     {% else %}
+                        <!-- Disable "previous" icon if on first page of pagination set -->
                         <li class="disabled page-item">
                             <span class="page-link"><i class="fas fa-angle-double-left"></i></span>
                         </li>
                     {% endif %}
 
+                    <!-- Render total number of pagination pages with active highlight -->
                     {% for i in teams.paginator.page_range %}
                         {% if teams.number == i %}
                             <li class="page-item active">
@@ -93,6 +101,7 @@
                         {% endif %}
                     {% endfor %}
 
+                    <!-- Render "next" icon for pagination set -->
                     {% if teams.has_next %}
                         <li class="page-item">
                             <a href="?page={{ teams.next_page_number }}" class="page-link">
@@ -100,6 +109,7 @@
                             </a>
                         </li>
                     {% else %}
+                        <!-- Disable "next" icon if on first page of pagination set -->
                         <li class="page-item disabled">
                             <span class="page-link"><i class="fas fa-angle-double-right"></i></span>
                         </li>
