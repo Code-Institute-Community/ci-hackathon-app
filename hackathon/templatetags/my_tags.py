@@ -7,6 +7,7 @@ from django.conf import settings
 
 register = Library()
 
+
 @register.filter
 def get_range(value, start):
     """
@@ -24,6 +25,7 @@ def get_range(value, start):
         Instead of 3 one may use the variable set in the views
     """
     return range(start, value+1, 1)
+
 
 @register.filter
 def event_ended(date_event):
