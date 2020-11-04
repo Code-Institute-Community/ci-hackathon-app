@@ -8,27 +8,26 @@
             <h1 class="text-center mt-4">Upcoming Hackathons</h1>
             <div class="accordion" id="accordion-upcoming-hackathons">
                 {% if hackathons %}
-                {% for hackathon in hackathons %}
-                    {% if hackathon.organisation.id == '1' or hackathon.organisation == user.organisation %}
+                    {% for hackathon in hackathons %}
                         {% if hackathon.status == 'published' or user == hackathon.created_by %}
-                            {% if not hackathon.status == 'deleted' %}
-                            <div class="card">
-                                
-                                <div class="card-header" id="heading-{{ hackathon.id }}">
-                                <h2 class="mb-0">
-                                    <a class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ hackathon.id }}" aria-expanded="true" aria-controls="collapse-{{ hackathon.id }}">
-                                        <h5 class="card-title"><i class="fas fa-caret-down mr-2"></i>{{ hackathon.display_name }}</h5>
-                                    </a>
-                                </h2>
-                                </div>
-                                <div id="collapse-{{ hackathon.id }}" class="collapse" aria-labelledby="heading-{{ hackathon.id }}" data-parent="#accordion-upcoming-hackathons">
-                                    <div class="card-body">
-                                        <h6 class="card-subtitle mb-2"><i class="far fa-calendar-alt p-2"></i> {{ hackathon.start_date }} - {{ hackathon.end_date }}</h6>
-                                        <p class="card-text"><i class="fas fa-info-circle p-2"></i>{{ hackathon.description }}</p>
-                                        {% if hackathon.organiser %}
-                                        <p><span class="p-2">Organiser:</span> <a href="#" class="card-link"><span class="dark-text">{{ hackathon.organiser }}</span></a></p>
-                                        {% endif %}
-                                        <a href="#" class="btn btn-ci mr-3">Read More</a>
+                            {% if hackathon.organisation.id == 1 or hackathon.organisation == user.organisation %}
+                                {% if not hackathon.status == 'deleted' %}
+                                <div class="card">
+                                    <div class="card-header" id="heading-{{ hackathon.id }}">
+                                        <span class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ hackathon.id }}" aria-expanded="true" aria-controls="collapse-{{ hackathon.id }}">
+                                            <h5 class="card-title"><i class="fas fa-caret-down"></i> {{ hackathon.display_name }}</h5>
+                                        </span>
+                                    </div>
+                                    <div id="collapse-{{ hackathon.id }}" class="collapse" aria-labelledby="heading-{{ hackathon.id }}" data-parent="#accordion-upcoming-hackathons">
+                                        <div class="card-body">
+                                        
+                                            <h6 class="card-subtitle mb-2 text-muted"><span class="drk-txt-hkth">Start: </span>{{ hackathon.start_date }} - <span class="drk-txt-hkth">End: </span>{{ hackathon.end_date }}</h6>
+                                                <p class="card-text">{{ hackathon.description }}</p>
+                                            {% if hackathon.organiser %}
+                                            <p><span class="drk-txt-hkth">Organiser: </span><a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
+                                            {% endif %}
+                                            <a href="{% url 'hackathon:view_hackathon' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
