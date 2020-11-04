@@ -7,3 +7,9 @@ STATUS_TYPES_CHOICES = (
     ('published', 'Published'),
     ('deleted', 'Deleted'),
 )
+
+JUDGING_STATUS_CHOICES = (
+    ('not_yet_started', "Hasn't started"),
+    ('open', "Open"),
+    ('closed', "Closed"),
+)
