@@ -39,7 +39,7 @@ a:hover {
     padding: 1.2rem;
     border-radius: .4rem;
     box-shadow:  5px 5px 9px #d8d8d8, 
-             -5px -5px 9px #ffffff;
+             -6px -6px 7px #ffffff;
 }
 
 /* NAVBAR */
@@ -173,10 +173,22 @@ footer ul li a {
     border-color: var(--p-orange);
 }
 
+
+/* Global allauth centering */
+html .all-auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.all-auth-forms {
+    margin: auto;
+}
+
 /* Landing Page */
 
 .landing-page {
-    margin: 10px 10px 30px;
+    
     align-content: center;
     justify-items: center;
 }
