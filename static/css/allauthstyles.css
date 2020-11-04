@@ -12,6 +12,7 @@ html select {
 }
 
 html p,
+html select,
 html input {
     width: 100%;
 }
