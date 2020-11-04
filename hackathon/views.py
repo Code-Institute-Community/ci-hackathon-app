@@ -247,7 +247,7 @@ def view_hackathon(request, hackathon_id):
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
 
     teams = HackTeam.objects.filter(hackathon_id=hackathon_id).order_by(
-        '-display_name')
+        'display_name')
     paginator = Paginator(teams, 3)
     page = request.GET.get('page')
     paged_teams = paginator.get_page(page)
