@@ -5,7 +5,7 @@
 
     <div class="row landing-page">
         <div class = "col-12 col-sm-12  col-md-12 col-lg-6 " id="accordion-wrapper">
-            <h1 class="text-center">Upcoming Hackathons</h1>
+            <h1 class="text-center mt-4">Upcoming Hackathons</h1>
             <div class="accordion" id="accordion-upcoming-hackathons">
                 {% if hackathons %}
                 {% for hackathon in hackathons %}
@@ -16,7 +16,7 @@
                                 <div class="card-header" id="heading-{{ hackathon.id }}">
                                 <h2 class="mb-0">
                                     <a class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ hackathon.id }}" aria-expanded="true" aria-controls="collapse-{{ hackathon.id }}">
-                                        <h5 class="card-title">{{ hackathon.display_name }}</h5>
+                                        <h5 class="card-title"><i class="fas fa-caret-down mr-2"></i>{{ hackathon.display_name }}</h5>
                                     </a>
                                 </h2>
                                 </div>
@@ -49,7 +49,7 @@
         </div>
         <div class = "col-12 col-sm-12 col-md-12 col-lg-6">
             
-            <div class="card">
+            <div class="card mt-4">
                 <img class="card-img-top" src="{% static 'img/ci-hacking-new-normal--square.png' %}" alt="Card image cap">
             </div>
         </div>
@@ -57,7 +57,8 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="mt-4" id="carousel-wrapper">
+            <div id="carousel-wrapper">
+                <hr class="w-100 mb-1 thick mt-4">
             <h1 class=" text text-center">Submission Showcases</h1>
                 <div id="carousel-project-showcase" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
