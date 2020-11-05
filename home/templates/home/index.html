@@ -9,10 +9,11 @@
             <div class="accordion" id="accordion-upcoming-hackathons">
                 {% if hackathons %}
                 {% for hackathon in hackathons %}
-                    {% if hackathon.organisation == 'Code Institute' or hackathon.organisation == user.organisation %}
+                    {% if hackathon.organisation.id == '1' or hackathon.organisation == user.organisation %}
                         {% if hackathon.status == 'published' or user == hackathon.created_by %}
                             {% if not hackathon.status == 'deleted' %}
                             <div class="card">
+                                
                                 <div class="card-header" id="heading-{{ hackathon.id }}">
                                 <h2 class="mb-0">
                                     <a class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ hackathon.id }}" aria-expanded="true" aria-controls="collapse-{{ hackathon.id }}">
