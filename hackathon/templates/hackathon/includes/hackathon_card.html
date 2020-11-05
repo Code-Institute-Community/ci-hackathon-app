@@ -6,7 +6,7 @@
     {% if hackathon.organiser %}
       <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
     {% endif %}
-    <a href="#" class="btn btn-ci mr-3">Read More</a>
+    <a href="{% url 'hackathon:hackathon_detail' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
 
     <!-- Edit and Delete buttons, only visible for admin users -->
     {% if user.is_authenticated and user.is_superuser %}

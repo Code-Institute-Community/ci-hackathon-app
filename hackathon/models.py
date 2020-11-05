@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from datetime import datetime
 
 from accounts.models import CustomUser as User
 from accounts.models import Organisation
@@ -38,6 +39,11 @@ class Hackathon(models.Model):
     judges = models.ManyToManyField(User,
                                     blank=True,
                                     related_name='hackathon_judges')
+    # Hackathons can have multiple participants judges and
+    # users could be participating in more than one Hackathon: Many to Many
+    participants = models.ManyToManyField(User,
+                                    blank=True,
+                                    related_name='hackathon_participants')
     # One organiser could organise more than one Hackathon: One To Many
     organiser = models.ForeignKey(User,
                                   null=True,
