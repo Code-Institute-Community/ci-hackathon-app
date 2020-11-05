@@ -1,8 +1,10 @@
 from datetime import datetime
-from django.views.generic import ListView
+
+from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 
 from .models import Hackathon, HackTeam, HackProject, HackProjectScore, HackProjectScoreCategory
@@ -12,7 +14,7 @@ from .forms import HackathonForm
 class HackathonListView(ListView):
     """Renders a page with a list of Hackathons."""
     model = Hackathon
-    ordering = ['-created']
+    ordering = ["-created"]
     paginate_by = 8
 
     def get_context_data(self, **kwargs):
@@ -224,3 +226,40 @@ def delete_hackathon(request, hackathon_id):
     messages.success(
         request, f'{hackathon.display_name} has been successfully deleted!')
     return redirect("hackathon:hackathon-list")
+
+class HackathonDetailView(DetailView):
+    """Renders a page with Hackathon details."""
+    model = Hackathon
+    context_object_name = "hackathon"
+
+
+def enroll_toggle(request):
+    user = request.user
+    data = {}
+    if request.method == "POST":
+
+        # Gets the PK of the Hackathon and then the related Hackathon
+        hackathon_id = request.POST.get("hackathon-id")
+        hackathon = Hackathon.objects.get(pk=hackathon_id)
+
+        if user.is_staff:
+            if user in hackathon.judges.all():
+                hackathon.judges.remove(user)
+                data["message"] = "You have withdrawn from judging."
+            else:
+                hackathon.judges.add(user)
+                data["message"] = "You have enrolled as a judge."
+        
+        else:
+            if user in hackathon.participants.all():
+                hackathon.participants.remove(user)
+                data["message"] = "You have withdrawn from this Hackaton."
+            else:
+                hackathon.participants.add(user)
+                data["message"] = "You have enrolled successfully."
+
+        data["tag"] = "Success"
+        return JsonResponse(data)
+
+    else:
+        return HttpResponse(status=403)
