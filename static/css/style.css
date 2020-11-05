@@ -34,7 +34,7 @@ a:hover {
 }
 
 /* Global content border/shadow */
-.neu-shadow {
+.main-content-shadow {
     margin-bottom: 3.2rem;
     padding: 1.2rem;
     border-radius: .4rem;
@@ -173,7 +173,6 @@ footer ul li a {
     border-color: var(--p-orange);
 }
 
-
 /* Global allauth centering */
 html .all-auth-container {
     display: flex;
@@ -186,7 +185,6 @@ html .all-auth-container {
 }
 
 /* Landing Page */
-
 .landing-page {
     
     align-content: center;
@@ -220,7 +218,6 @@ html .all-auth-container {
     cursor: pointer;
     color: var(--p-orange);
 }
-
 
 #accordion-wrapper>h1,
 #carousel-wrapper>h1 {
