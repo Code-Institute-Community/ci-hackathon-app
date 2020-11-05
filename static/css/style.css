@@ -2,10 +2,10 @@
     /* P = Primary | S = Secondary | T = Tertiary */
     --p-orange: #E84610;
     --p-blue: #009FE3;
-    --p-grey: #4a4a4f;
+    --p-grey: #4A4A4F;
     --p-navy: #445261;
     --p-red: #D63649;
-    --s-grey: #e6ecf0;
+    --s-grey: #E6ECF0;
     --s-yellow: #EFB920;
     --s-pink: #FF5A60;
     --s-teal: #23BBBB;
@@ -154,13 +154,10 @@ footer ul li a {
     color: var(--p-orange);
 }
 
-<<<<<<< HEAD
-=======
 .p-blue {
     color: var(--p-blue);
 }
 
->>>>>>> Hackathon view template structure definied with styles applied as per wireframe
 /* CARDS */
 .accordion .card .card-link {
     text-decoration: none;
@@ -202,7 +199,6 @@ html .all-auth-container {
     justify-items: center;
 }
 
-<<<<<<< HEAD
 .accordion .card-header {
     background: var(--s-grey);
 }
@@ -213,10 +209,10 @@ html .all-auth-container {
 
 .card-header h2 .btn-link {
     text-decoration: none;
-=======
+}
+
 .drk-txt-hkth {
     text-shadow: 1px 1px 2px var(--p-grey);
->>>>>>> Hackathon view template structure definied with styles applied as per wireframe
 }
 
 .card-header {
@@ -409,10 +405,5 @@ h1.table_titles{
     .card-header h2 .btn-link {
     color:var(--black);
     font-size: 1.1rem;
-<<<<<<< HEAD
-}
-}
-=======
     }
 }
->>>>>>> Hackathon view template structure definied with styles applied as per wireframe
