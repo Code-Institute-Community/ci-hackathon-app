@@ -6,16 +6,40 @@ html form {
 
 html input,
 html select {
-    border: 2px solid var(--s-grey);
+    border: 1px solid var(--p-grey);
     border-radius: 5px;
     padding: 4px 4px;
+}
+
+html p,
+html select,
+html input {
     width: 100%;
 }
 
-html input[type="checkbox"] {
+/* Sets auto width for input/submit styled as buttons */
+html form input[type^="submit"] {
     width: auto;
 }
 
+/* This would remove all labels from all allauth template forms
+   however this isn't the best solution so commenting out for now */
+
+html form label[for^="id_email"],
+html form label[for^="id_current"], 
+html form label[for^="id_user"],
+html form label[for^="id_password"],
+html form label[for^="id_login"] {
+    display: none;
+}
+
+/* Make sure checkboxes stay in original position */
+html form input[type="checkbox"] {
+    width: auto;
+}
+
+/* Apply universal btn-ci styling to buttons/submit on allauth form templates */
+html form input[type^="submit"],
 html form button {
     background-color: transparent;
     color: var(--p-orange);
@@ -24,7 +48,14 @@ html form button {
     border-radius: 5px;
 }
 
+html form input[type^="submit"]:hover,
 html form button:hover {
     background-color: var(--p-orange);
     color: var(--s-grey);
+}
+
+/* Override styles on the hackathon logo container on allauth pages*/
+
+.mt-4 {
+    margin-bottom: 3.2rem;
 }

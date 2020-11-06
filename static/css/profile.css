@@ -4,7 +4,6 @@
 .user-panel .text-center span,
 .card .card-header .btn,
 .card .card-body a {
-    color: var(--s-grey);
     text-decoration: none;
     font-size: .75rem;
     font-weight: 400;
@@ -13,11 +12,6 @@
 
 .card {
     width: 100%;
-}
-
-.card .card-body {
-    display: flex;
-    flex-direction: column;
 }
 
 /* Overwrite Bootstrap Card styles for the Hackathon Card items */
@@ -37,12 +31,14 @@
     color: var(--p-orange);
 }
 
-html label,
-.dark-text {
-    text-shadow: 1px 1px 3px var(--p-grey);
-}
-
 hr.thick {
     border: 2px solid var(--p-orange);
     border-radius: 2px;
+}
+
+/* Target specific text with heavier font weight */
+
+html form label,
+.dark-text {
+    font-weight: 700;
 }

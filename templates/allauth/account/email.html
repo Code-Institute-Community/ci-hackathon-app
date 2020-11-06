@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="{% static 'css/allauthstyles.css' %}" />
 {% endblock %}
 
-{% block content %}
+{% block allauth %}
     <h1>{% trans "E-mail Addresses" %}</h1>
     {% if user.emailaddress_set.all %}
         <p>
@@ -75,4 +75,10 @@
             }
         })();
     </script>
+{% endblock %}
+
+{% block authhacklogo %}
+    <div class="card mt-4">
+        <img class="card-img-top" src="{% static 'img/ci-hacking-new-normal--square.png' %}" alt="Code Institute Hackathon Logo">
+    </div>
 {% endblock %}

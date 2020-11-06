@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="{% static 'css/allauthstyles.css' %}" />
 {% endblock %}
 
-{% block content %}
+{% block allauth %}
     <h1>{% trans "Verify Your E-mail Address" %}</h1>
     {% url 'account_email' as email_url %}
     <p>{% blocktrans %}This part of the site requires us to verify that
@@ -25,4 +25,10 @@
     <p>{% blocktrans %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktrans %}
     </p>
 
+{% endblock %}
+
+{% block authhacklogo %}
+    <div class="card mt-4">
+        <img class="card-img-top" src="{% static 'img/ci-hacking-new-normal--square.png' %}" alt="Code Institute Hackathon Logo">
+    </div>
 {% endblock %}

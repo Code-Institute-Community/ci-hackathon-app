@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="{% static 'css/allauthstyles.css' %}" />
 {% endblock %}
 
-{% block content %}
+{% block allauth %}
     <h1>{% trans "Sign Out" %}</h1>
     <p>{% trans 'Are you sure you want to sign out?' %}</p>
 
@@ -23,4 +23,10 @@
         <button type="submit">{% trans 'Sign Out' %}</button>
     </form>
 
+{% endblock %}
+
+{% block authhacklogo %}
+    <div class="card mt-4">
+        <img class="card-img-top" src="{% static 'img/ci-hacking-new-normal--square.png' %}" alt="Code Institute Hackathon Logo">
+    </div>
 {% endblock %}

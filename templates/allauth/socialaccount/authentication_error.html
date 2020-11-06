@@ -4,7 +4,13 @@
 
 {% block head_title %}{% trans "Social Network Login Failure" %}{% endblock %}
 
-{% block content %}
+{% block allauth %}
     <h1>{% trans "Social Network Login Failure" %}</h1>
     <p>{% trans "An error occurred while attempting to login via your social network account." %}</p>
+{% endblock %}
+
+{% block authhacklogo %}
+    <div class="card mt-4">
+        <img class="card-img-top" src="{% static 'img/ci-hacking-new-normal--square.png' %}" alt="Card image cap">
+    </div>
 {% endblock %}

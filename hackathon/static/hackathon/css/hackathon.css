@@ -9,6 +9,10 @@
     margin-bottom: 0;
 }
 
+.hack-card {
+    margin-bottom: 3.2rem;
+}
+
 @media screen and (max-width: 720px) {
     .hack-score-cat-name {
         min-height: 30px;

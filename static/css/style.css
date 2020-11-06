@@ -33,6 +33,15 @@ a:hover {
     text-decoration: none;
 }
 
+/* Global content border/shadow */
+.main-content-shadow {
+    margin-bottom: 3.2rem;
+    padding: 1.2rem;
+    border-radius: .4rem;
+    box-shadow:  5px 5px 9px #d8d8d8, 
+             -6px -6px 7px #ffffff;
+}
+
 /* NAVBAR */
 .navbar {
     background-color: var(--white);
@@ -141,11 +150,11 @@ footer ul li a {
     color: var(--p-orange);  
 }
 
-.p-blue {
-    color: var(--p-blue);  
-}
-
 /* CARDS */
+.accordion .card .card-link {
+    text-decoration: none;
+    color: var(--p-grey);
+}
 .card-link:hover {
     color: rgba(0, 0, 0, .7); 
 }
@@ -164,16 +173,34 @@ footer ul li a {
     border-color: var(--p-orange);
 }
 
-/* Landing Page */
+/* Global allauth centering */
+html .all-auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.all-auth-forms {
+    margin: auto;
+}
+
+/* Landing Page */
 .landing-page {
-    margin: 10px 10px 30px;
+    
     align-content: center;
     justify-items: center;
 }
 
-.drk-txt-hkth {
-    text-shadow: 1px 1px 2px var(--p-grey);
+.accordion .card-header {
+    background: var(--s-grey);
+}
+
+.accordion .card {
+    background: var(--bg-grey);
+}
+
+.card-header h2 .btn-link {
+    text-decoration: none;
 }
 
 .card-header {
@@ -191,7 +218,6 @@ footer ul li a {
     cursor: pointer;
     color: var(--p-orange);
 }
-
 
 #accordion-wrapper>h1,
 #carousel-wrapper>h1 {

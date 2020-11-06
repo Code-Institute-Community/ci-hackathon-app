@@ -1,8 +1,15 @@
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/allauthstyles.css' %}" />
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+{% endblock %}
+
 <!-- This hold the toasts notifications in position on the page.
 Can be changed with the toast-position class.-->
+{% if messages %}
 <div class="toast-position" aria-live="polite" aria-atomic="true">
     <div class="toast-wrapper">
-        {% if messages %}
         {% for message in messages %}
         <!--Fires a toast message that stays for 5 seconds.-->
         <div class="toast" data-delay="5000">
@@ -17,6 +24,6 @@ Can be changed with the toast-position class.-->
             </div>
         </div>
         {% endfor %}
-        {% endif %}
     </div>
 </div>
+{% endif %}

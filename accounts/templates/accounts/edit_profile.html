@@ -19,7 +19,7 @@
 	{{ message }}
 </div>
 {% endfor %}
-<div class="edit_form mt-3">
+<div class="edit_form mt-3 mb-3">
 	<form method="post">
 		{% csrf_token %}
 		{{ form.as_p }}
@@ -28,7 +28,6 @@
 			<button class="btn btn-ci ml-3 mt-3" type="submit" title="Submit your changes">Submit</button>
 			<button class="btn btn-ci mt-3" href="{% url 'edit_profile' %}" title="Back to profile">Cancel</button>
 		</div>
-		<hr class="w-100 thick mb-1">
 	</form>
 </div>
 {% endblock %}
