@@ -221,6 +221,35 @@ footer ul li a {
     text-align: left;
 
 }
+/* Final Score page */
+
+.table_titles + tr {
+    background-color: var(--p-orange);
+    color: white;
+}
+
+.table_titles, .final_score_table {
+    text-align: center;
+}
+
+h1.table_titles{
+    margin-bottom: 5vh;
+    font-size: 6vh;
+}
+
+.final_score_table {
+    width: 75%;
+    margin: 5vh auto;
+    border: 1px solid var(--p-grey);
+}
+
+.final_score_table tr {
+    border-bottom: 1px solid var(--p-grey);
+}
+
+.final_score_table tr th {
+    padding: 2vh
+}
 
 @media (max-width:453px) {
     #accordion-wrapper>h1,
