@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" />
+{% endblock %}
+
 {% block content %}
 <section class="h-100">
     {% if hackathons %}
@@ -9,7 +13,6 @@
                 {% if hackathon.status == 'published' or user == hackathon.created_by %}
                     {% if not hackathon.status == 'deleted' %}
                         {% include 'hackathon/includes/hackathon_card.html' %}
-                        <hr>
                     {% endif %}
                 {% endif %}
             {% endif %}

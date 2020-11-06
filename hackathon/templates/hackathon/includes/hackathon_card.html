@@ -1,10 +1,10 @@
-<article class="card shadow">
+<article class="card shadow hack-card">
   <div class="card-body">
     <h5 class="p-orange card-title">{{ hackathon.display_name }}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">{{ hackathon.start_date }} - {{ hackathon.end_date }}</h6>
-    <p class="card-text">{{ hackathon.description }}</p>
+    <p class="card-subtitle mb-2 text-muted"><i class="far fa-calendar-alt p-2"></i> {{ hackathon.start_date }} - {{ hackathon.end_date }}</p>
+    <p class="card-text"><i class="fas fa-info-circle p-2"></i> {{ hackathon.description }}</p>
     {% if hackathon.organiser %}
-      <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
+      <p><span class="pr-2">Organiser:</span> <a href="#" class="card-link"><span class="dark-text">{{ hackathon.organiser }}</span></a></p>
     {% endif %}
     <a href="{% url 'hackathon:hackathon_detail' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
 
@@ -12,17 +12,17 @@
     {% if user.is_authenticated and user.is_superuser %}
       <!-- Warn user if hackathon is ongoing or ended before loading edit form - trigger edit modal -->
       {% if hackathon.start_date|date:"jS F Y H:i" <= today|date:"jS F Y H:i" %}
-        <button class="btn btn-ci mr-3" type="button" data-toggle="modal" data-target="#edit-modal-{{ hackathon.id }}">
+        <a class="btn btn-ci mr-3" type="button" data-toggle="modal" data-target="#edit-modal-{{ hackathon.id }}">
           Edit
-        </button>
+        </a>
       {% else %}
         <a href="{% url 'hackathon:update_hackathon' hackathon.id %}" class="btn btn-ci mr-3">
           Edit
         </a>
       {% endif %}
-      <button class="btn btn-ci" type="button" data-toggle="modal" data-target="#delete-modal-{{ hackathon.id }}">
+      <a class="btn btn-ci" type="button" data-toggle="modal" data-target="#delete-modal-{{ hackathon.id }}">
         Delete Event
-      </button>
+      </a>
     {% endif %}
   </div>
 </article>

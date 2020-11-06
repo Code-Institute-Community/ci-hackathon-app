@@ -11,7 +11,13 @@
 <link rel="stylesheet" href="{% static 'css/allauthstyles.css' %}" />
 {% endblock %}
 
-{% block content %}
+{% block allauth %}
     <h1>{% trans "Account Inactive" %}</h1>
     <p>{% trans "This account is inactive." %}</p>
+{% endblock %}
+
+{% block authhacklogo %}
+    <div class="card mt-4">
+        <img class="card-img-top" src="{% static 'img/ci-hacking-new-normal--square.png' %}" alt="Code Institute Hackathon Logo">
+    </div>
 {% endblock %}

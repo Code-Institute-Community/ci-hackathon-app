@@ -26,8 +26,21 @@
         {% include "includes/navbar.html" %}
     </header>
 
-    <main class="container">
-        {% include "includes/messages.html" %}
+    <main class="container main-content-shadow">
+        
+        <div class="all-auth-container">
+            {% include "includes/messages.html" %}
+            <div class="row">
+                <div class="all-auth-forms col-12 col-md-6">
+                    {% block allauth %}
+                    {% endblock %}
+                </div>
+                <div class="col-12 col-md-6">
+                    {% block authhacklogo %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
 
         {% block content %}
         {% endblock %}
