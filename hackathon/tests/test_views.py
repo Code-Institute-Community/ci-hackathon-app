@@ -34,3 +34,64 @@ class TestHackathonViews(TestCase):
         self.assertQuerysetEqual(response.context['page_obj'],
                                  Hackathon.objects.all().order_by('-created'),
                                  transform=lambda x: x)
+
+    def test_render_hackathon_detail(self):
+        """Tests the correct rendering of the hackathon detail page,
+        including contexts."""
+
+        response = self.client.get('/hackathon/1/')
+
+        # Confirms the correct template, context items
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'hackathon/hackathon_detail.html')
+        self.assertTemplateNotUsed(response,
+                                   'hackathon/includes/enroll.html')
+        self.assertTrue(response.context['hackathon'])
+        self.assertEqual(response.context['hackathon'],
+                         Hackathon.objects.get(pk=1))
+
+        # Confirms the "enroll.html" template shows only for staff.
+        user = User.objects.get(pk=1)
+        user.is_staff = True
+        user.save()
+        self.client.force_login(user)
+
+        response = self.client.get('/hackathon/1/')
+        self.assertTemplateUsed(response,
+                                'hackathon/includes/enroll.html')
+
+    def test_judge_enroll_toggle(self):
+        """Tests that judges can correctly enroll and withdraw"""
+
+        user = User.objects.get(pk=1)
+        self.client.force_login(user)
+
+        response = self.client.post('/hackathon/ajax/enroll/',
+                                    {'hackathon-id': 1},
+                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        hackathon = Hackathon.objects.get(pk=1)
+
+        # Confirms a non-staff user is refused
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(user in hackathon.judges.all())
+
+        # confirms staff can be enrolled as a judge
+        user.is_staff = True
+        user.save()
+        self.client.force_login(user)
+
+        response = self.client.post('/hackathon/ajax/enroll/',
+                                    {'hackathon-id': 1},
+                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(user in hackathon.judges.all())
+
+        # Confirms staff can withdraw
+        response = self.client.post('/hackathon/ajax/enroll/',
+                                    {'hackathon-id': 1},
+                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(user in hackathon.judges.all())

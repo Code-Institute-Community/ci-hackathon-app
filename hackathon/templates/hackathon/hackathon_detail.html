@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% load my_tags %}
+{% block content %}
+<section class="h-100">
+    <h2 class="p-orange text-center">{{ hackathon.display_name }}</h2>
+    <article class="card shadow mb-3">
+        <div class="card-body">
+            <p class="card-text">{{ hackathon.description }}</p>
+            <h6 class="card-subtitle mb-2 text-muted"><strong>From</strong> {{ hackathon.start_date }} <strong>to</strong> {{ hackathon.end_date }}</h6>
+            {% if hackathon.organiser %}
+                <p>Organiser: <a href="#" class="p-blue card-link">{{ hackathon.organiser }}</a></p>
+            {% endif %}
+            {% if hackathon.end_date|event_ended %}
+                {% if request.user.is_staff %}
+                    {% include 'hackathon/includes/enrollstaff.html' %}
+                {% else %}
+                    {% include 'hackathon/includes/enrollpart.html' %}
+                {% endif %}
+            {% endif %}
+            <a href="{% url 'hackathon:hackathon-list' %}" class="btn btn-ci">See other Hackathons</a>
+        </div>
+    </article>
+</section>
+{% endblock %}
+
+{% if request.user %}
+{% block postloadjs %}
+    <script src="{% static 'js/script.js' %}"></script>
+
+{% endblock %}
+{% endif %}
