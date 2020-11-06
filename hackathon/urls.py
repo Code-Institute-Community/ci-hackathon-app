@@ -24,4 +24,3 @@ urlpatterns = [
          name="delete_hackathon"),
     path('enroll/', enroll_toggle, name='enroll_toggle'),
 ]
-
