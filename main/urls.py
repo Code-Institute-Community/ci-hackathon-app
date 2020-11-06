@@ -11,4 +11,5 @@ urlpatterns = [
     path("hackathon/", include(("hackathon.urls", "hackathon"),
                                namespace='hackathon')),
     path("submission/", include("submissions.urls")),
+    path("teams/"), inlude("teams.urls")),
 ]
