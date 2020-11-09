@@ -77,8 +77,20 @@ By contributing to Code Institute, you agree that your contributions will be lic
 
 **WE :heart: CONTRIBUTIONS!**
 
-Thank You to our contributors:
+Thank You to our contributors (_listed in order of total commits_):
+
+||||||
+|:---:|:---:|:---:|:--:|:--:|
+|![TravelTimN](https://avatars0.githubusercontent.com/u/41592028?s=100)<br>[Tim Nelson](https://github.com/TravelTimN)|![stefdworschak](https://avatars3.githubusercontent.com/u/31205982?s=100)<br>[Stefan Dworschak](https://github.com/stefdworschak)|![Jays-T](https://avatars3.githubusercontent.com/u/59046774?s=100)<br>[John Traas](https://github.com/Jays-T)|![Sarosim](https://avatars3.githubusercontent.com/u/44575078?s=100)<br>[Miklos Sarosi](https://github.com/Sarosim)|![natalijabujevic0708](https://avatars0.githubusercontent.com/u/583231?s=100)<br>[Natalija Bujevic](https://github.com/natalijabujevic0708)|
+
+||||||
+|:---:|:---:|:---:|:---:|:---:|
+|![auxfuse](https://avatars0.githubusercontent.com/u/48055438?s=100)<br>[Anthony O'Brien](https://github.com/auxfuse)|![hebs87](https://avatars1.githubusercontent.com/u/47008122?s=100)<br>[Sunny Hebbar](https://github.com/hebs87)|![Ri-Dearg](https://avatars1.githubusercontent.com/u/44118951?s=100)<br>[Rory Patrick Sheridan](https://github.com/Ri-Dearg)|![irinatu17](https://avatars3.githubusercontent.com/u/47981780?s=100)<br>[Irina Tushina](https://github.com/irinatu17)|![JimLynx](https://avatars3.githubusercontent.com/u/65254741?s=100)<br>[Jim Morel](https://github.com/JimLynx)|
+
+||||||
+|:---:|:---:|:---:|:---:|:---:|
+|![Eventyret](https://avatars1.githubusercontent.com/u/977232?s=100)<br>[Simen Daehlin](https://github.com/Eventyret)|![nazarja](https://avatars0.githubusercontent.com/u/25235189?s=100)<br>[Sean Murphy](https://github.com/nazarja)|![ClaireLally8](https://avatars0.githubusercontent.com/u/38299093?s=100)<br>[Claire Lally](https://github.com/ClaireLally8)|![mkuti](https://avatars2.githubusercontent.com/u/51210547?s=100)<br>[Maripia Kuti](https://github.com/mkuti)|![alexeykuz-sys](https://avatars0.githubusercontent.com/u/583231?s=100)<br>[Alexey Kuzmis](https://github.com/alexeykuz-sys)|
 
 ||||
 |:---:|:---:|:---:|
-|![TravelTimN](https://avatars0.githubusercontent.com/u/41592028?s=100)<br>[Tim Nelson](https://github.com/TravelTimN)|![stefdworschak](https://avatars3.githubusercontent.com/u/31205982?s=100)<br>[Stefan Dworschak](https://github.com/stefdworschak)|![Your Name Here](https://avatars0.githubusercontent.com/u/583231?s=100)<br>Your Name Here|
+|![andrewdempsey2018](https://avatars3.githubusercontent.com/u/38543181?s=100)<br>[Andrew Dempsey](https://github.com/andrewdempsey2018)|![aticodein](https://avatars3.githubusercontent.com/u/45002010?s=100)<br>[Attila Szaloki](https://github.com/aticodein)|![Your Name Here](https://avatars0.githubusercontent.com/u/583231?s=100)<br>Your Name Here|
