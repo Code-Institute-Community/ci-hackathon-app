@@ -4,18 +4,23 @@
 <h1 class="table_titles"> {{ hackathon }} <br> Final Scores </h1>
 	{% if sorted_teams_scores %}
 	<table class="final_score_table">
-		<tr class="table_titles">
-			<th> Project </th>
-			<th> Score </th>
-		</tr>
-		{% for team in sorted_teams_scores %}
-		<tr>
-			<td>{{ team.0}}</td>
-			<td>{{ team.1 }}</td>
-		</tr>
-		{% endfor %}
+		<thead>
+			<tr class="table_titles">
+				<th> Project </th>
+				<th> Score </th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for team in sorted_teams_scores %}
+			<tr>
+				<td>{{ team.0 }}</td>
+				<td>{{ team.1 }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
 	</table>
 	{% else %}
 	<strong>There are no final scores for this Hackathon.</strong>
 	{% endif %}
 	{% endblock %}
+    

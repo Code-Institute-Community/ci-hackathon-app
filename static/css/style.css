@@ -249,9 +249,9 @@ html .all-auth-container {
 }
 /* Final Score page */
 
-.table_titles + tr {
+tbody >:first-child {
     background-color: var(--p-orange);
-    color: white;
+    color: var(--white);
 }
 
 .table_titles, .final_score_table {
