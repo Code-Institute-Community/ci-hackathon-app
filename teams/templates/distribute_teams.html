@@ -2,10 +2,26 @@
 {% load static %}
 {% block content %}
 
-{% if participants %}
+<div class="h-100">
+    <article class="card shadow">
+        <div class="card-body">
+        {% if participants %}
 
-{% for participant in participants}
+        {% for participant in participants %}
+        <section class="card shadow">
+            <div class="card-body">
+                <ol>
+                    <li>{{participant.username}}</li>
+                    <li>{{participant.current_lms_module}}</li>
+                </ol>
+            </div>
+        </section>
+        {% endfor%}
+    
+        {% endif %}
+        </div>
+    </article>
+</div>
 
-{% endif %}
 
 {% endblock %}

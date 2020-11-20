@@ -4,10 +4,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pylint = "*"
-pylint-django = "*"
-pep8 = "*"
-autopep8 = "*"
 
 [packages]
 asgiref = "==3.2.10"
@@ -25,8 +21,12 @@ requests = "==2.24.0"
 requests-oauthlib = "==1.3.0"
 sqlparse = "==0.3.1"
 urllib3 = "==1.25.10"
+<<<<<<< HEAD
 Django = "==3.1.1"
 dj-database-url = "==0.5.0"
+=======
+Django = "==2.2.13"
+>>>>>>> Adding further team distribution logic
 
 [requires]
 python_version = "3.8"

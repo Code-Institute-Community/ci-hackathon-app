@@ -67,7 +67,6 @@ class Hackathon(models.Model):
         default='not_yet_started',
         choices=JUDGING_STATUS_CHOICES
     )
-    
 
     def __str__(self):
         return self.display_name
