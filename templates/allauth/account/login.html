@@ -5,7 +5,14 @@
 
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
-{% block content %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+<link rel="stylesheet" href="{% static 'css/allauthstyles.css' %}" />
+{% endblock %}
+
+{% block allauth %}
 
     <h1>{% trans "Sign In" %}</h1>
 
@@ -39,5 +46,10 @@
         <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
         <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
     </form>
+{% endblock %}
 
+{% block authhacklogo %}
+    <div class="card mt-4">
+        <img class="card-img-top" src="{% static 'img/ci-hacking-new-normal--square.png' %}" alt="Code Institute Hackathon Logo">
+    </div>
 {% endblock %}

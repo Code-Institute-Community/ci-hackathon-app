@@ -26,8 +26,21 @@
         {% include "includes/navbar.html" %}
     </header>
 
-    <main class="container">
-        {% include "includes/messages.html" %}
+    <main class="container main-content-shadow">
+        
+        <div class="all-auth-container">
+            {% include "includes/messages.html" %}
+            <div class="row">
+                <div class="all-auth-forms col-12 col-md-6">
+                    {% block allauth %}
+                    {% endblock %}
+                </div>
+                <div class="col-12 col-md-6">
+                    {% block authhacklogo %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
 
         {% block content %}
         {% endblock %}
@@ -48,9 +61,13 @@
         integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous">
     </script>
 {% block js %}
+<script>
+// Fires toast popups if there are messages
+{% if messages %}
+    $(".toast").toast("show")
+{% endif %}
+</script>
 {% endblock %}
 <script src="{% static 'js/script.js' %}"></script>
-
 </body>
-
 </html>
