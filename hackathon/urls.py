@@ -6,12 +6,14 @@ from .views import (
     delete_hackathon,
     HackathonDetailView,
     enroll_toggle,
-    judging
+    judging,
+    check_projects_scores
 )
 
 urlpatterns = [
     path('', HackathonListView.as_view(), name="hackathon-list"),
     path("<int:hack_id>/team/<int:team_id>/judging/", judging, name="judging"),
+    path("<int:hack_id>/final_score", check_projects_scores, name="final_score"),
     path("create_hackathon", create_hackathon, name='create_hackathon'),
     path("<int:hackathon_id>/update_hackathon", update_hackathon, name="update_hackathon"),
     path("<int:hackathon_id>/delete_hackathon", delete_hackathon, name="delete_hackathon"),

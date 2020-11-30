@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 
-from .models import Hackathon, HackTeam, HackProject, HackProjectScore, HackProjectScoreCategory
+from .models import Hackathon, HackTeam, HackProject, HackProjectScore, HackProjectScoreCategory, HackAwardCategory
 from .forms import HackathonForm
 
 
@@ -84,7 +84,7 @@ def judging(request, hack_id, team_id):
                 hack_project_score_category=score_category,
             )
             team_score.save()
-            check_projects_scores(hackathon, score_categories)
+        return check_projects_scores(request, hack_id)
 
     context = {
         'hackathon': hackathon,
@@ -95,11 +95,20 @@ def judging(request, hack_id, team_id):
     return render(request, 'hackathon/judging.html', context)
 
 
-def check_projects_scores(hackathon, score_categories):
+@login_required
+def check_projects_scores(request, hack_id):
     """ When a judge submits the score, check if all projects in the Hackathon
     were scored by all the judges in all the categories by comparing the number of 
-    objects in HackProjectScore for each projects to the required number of objects """
+    objects in HackProjectScore for each projects to the required number of objects.
 
+    If all projects weren't scored, render final_score.html without the score table.
+
+    If all the projects were scored, calculate the total score for each team, sort the teams by scores
+    and render final_score.html with the score table.
+
+    """
+    score_categories = HackProjectScoreCategory.objects.all()
+    hackathon = get_object_or_404(Hackathon, pk=hack_id)
     judges = hackathon.judges.count()
     number_categories = score_categories.count()
     projects = list(HackTeam.objects.filter(
@@ -109,12 +118,26 @@ def check_projects_scores(hackathon, score_categories):
     number_of_objects = judges * number_categories
 
     for project in projects:
-        if HackProjectScore.objects.filter(project=project).count() == number_of_objects:
-            continue
-        else:
-            return redirect("hackathon:hackathon-list")
+        if HackProjectScore.objects.filter(project=project).count() != number_of_objects:
+            return render(request, 'hackathon/final_score.html', {"hackathon": hackathon.display_name})
 
-    # Call a function to calculate the scores and redirect to a view that will show a list of all of the projects ranked by their score
+    # Calculate total score for each team
+    scores_list = []
+    for project in projects:
+        total_score = sum(list(HackProjectScore.objects.filter(
+            project=project).values_list("score", flat=True)))
+        scores_list.append(total_score)
+
+    # Pair the teams with the total score
+    team_scores = {}
+    for i, score in enumerate(scores_list):
+        team_scores[str(HackProject.objects.get(id=projects[i]))] = score
+
+    # Sort the teams by score
+    sorted_teams_scores = sorted(
+        team_scores.items(), key=lambda x: x[1], reverse=True)
+
+    return render(request, 'hackathon/final_score.html', {'sorted_teams_scores': sorted_teams_scores, "hackathon": hackathon.display_name})
 
 
 def create_hackathon(request):
