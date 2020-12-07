@@ -1,3 +1,4 @@
+from copy import deepcopy
 import math
 
 from django.core.management import call_command
@@ -8,7 +9,9 @@ from hackathon.models import Hackathon
 from .helpers import (find_all_combinations, pick_from_participants,
                       pick_teams, group_participants, choose_team_sizes,
                       find_team_combinations, combine, dupe_combinations,
-                      find_combinations)
+                      find_combinations, choose_team_levels,
+                      find_combinations_with_duplicates,
+                      distribute_participants_to_teams)
 
 
 class TeamsTestCase(TestCase):
@@ -145,45 +148,27 @@ class TeamsTestCase(TestCase):
         end_result = [[1, 4], [1, 2, 3]]
 
     def test_dupe_combinations(self):
-        choices = [1, 1, 1, 1, 1, 5, 3, 3, 3, 3, 6, 6, 6, 6, 6, 2, 2, 2, 4]
-        hackathon_level = sum(choices)
-        teamsize = 3
-        num_teams = math.floor(len(self.participants) / teamsize)
-        participants, team_progression_level = group_participants(
-            self.participants, num_teams)
-
-
-        missing = hackathon_level - (num_teams * team_progression_level)
-        team_sizes = [4, 3]
-        combos = []
-        for level in range(team_progression_level, team_progression_level + missing + 1):
-            for team_size in team_sizes:
-                combos += find_combinations(choices, team_size, level)
-        combos_without_dupes  = list(
-                set(set(tuple(i) for i in combos)))
+        team_sizes = [3, 3, 3, 3, 3, 4]
+        combos_without_dupes = find_combinations_with_duplicates(
+            self.participants, team_sizes)
         print(combos_without_dupes)
-        self.assertTrue(combinations_at_right_length).
+        self.assertTrue(combos_without_dupes)
 
     def test_get_teams(self):
-        participant_levels = [1, 1, 1, 1, 1, 5, 3, 3, 3, 3, 6, 6, 6, 6, 6, 2, 2, 2, 4]
-        hackathon_level = sum(choices)
         teamsize = 3
-        num_teams = math.floor(len(self.participants) / teamsize)
-        team_level = math.floor(hackathon_level / num_teams)
-        team_sizes = [3, 3, 3, 3, 3, 4]
-        combos = [
-            (5, 3, 3), (1, 1, 5, 3), (1, 5, 4), (1, 1, 6, 4), (5, 2, 4),
-            (1, 3, 6), (1, 5, 2, 2), (5, 3, 2, 2), (1, 6, 2, 2), (3, 2, 2, 4),
-            (3, 3, 2, 4), (5, 3, 2), (3, 3, 3, 3), (1, 5, 3, 3), (1, 5, 6),
-            (1, 3, 3, 4), (1, 5, 2, 4), (3, 3, 4), (6, 2, 2), (3, 3, 3, 2),
-            (5, 2, 2, 2), (1, 6, 4), (5, 3, 4), (1, 1, 6, 2), (1, 1, 5, 4),
-            (1, 5, 3, 2), (1, 3, 6, 2), (1, 3, 3, 3), (1, 3, 2, 4),
-            (1, 1, 3, 6), (3, 3, 6), (6, 2, 4), (6, 2, 2, 2), (3, 6, 2),
-            (3, 3, 2, 2), (2, 2, 2, 4)
-        ]
-        teams = []
-        team_size = team_sizes.pop()
-        while team_size:
-            combos_to_pick_from = [c for c in combos
-                                   if sum(c) == team_level]
-
+        team_sizes = sorted(choose_team_sizes(self.participants, teamsize))
+        grouped_participants, hackathon_level = group_participants(self.participants, len(team_sizes))
+        team_levels = sorted(choose_team_levels(len(team_sizes), hackathon_level))
+        combos_without_dupes = find_combinations_with_duplicates(
+            self.participants, team_sizes)
+        teams, leftover_participants = distribute_participants_to_teams(
+            team_sizes, team_levels, grouped_participants,
+            combos_without_dupes)
+        self.assertTrue(teams)
+            
+    def test_choose_team_levels(self):
+        hackathon_level = 62
+        num_teams = 6
+        team_scores = choose_team_levels(num_teams, hackathon_level)
+        print(team_scores)
+        self.assertTrue(team_scores)
