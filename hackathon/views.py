@@ -297,17 +297,22 @@ def enroll_toggle(request):
             if user in hackathon.judges.all():
                 hackathon.judges.remove(user)
                 data["message"] = "You have withdrawn from judging."
+                messages.success(request, "You have withdrawn from judging.")
             else:
                 hackathon.judges.add(user)
                 data["message"] = "You have enrolled as a judge."
+                messages.success(request, "You have enrolled as a judge.")
         
         else:
             if user in hackathon.participants.all():
                 hackathon.participants.remove(user)
                 data["message"] = "You have withdrawn from this Hackaton."
+                messages.success(request,
+                                 "You have withdrawn from this Hackaton.")
             else:
                 hackathon.participants.add(user)
                 data["message"] = "You have enrolled successfully."
+                messages.success(request, "You have enrolled successfully.")
 
         data["tag"] = "Success"
         return JsonResponse(data)

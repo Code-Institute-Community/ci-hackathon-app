@@ -3,6 +3,57 @@
 {% block content %}
     <!-- Render Hackathon details & Registration button -->
     <div class="row">
+        <div class="col-md-12 col-lg-4">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col p-0">
+                        <img width="100%" 
+                            src="https://3er1viui9wo30pkxh1v2nh4w-wpengine.netdna-ssl.com/wp-content/uploads/prod/sites/433/2020/08/Hackathon-2020-2.png" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col p-0">
+                        {% if user.is_superuser %}
+                        <div class="dropdown mt-4 mb-2 ">
+                            <button class="btn btn-ci dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Admin Actions
+                            </button>
+                            <div id="judge-dropdown" class="dropdown-menu judge-dropdown" aria-labelledby="dropdownMenuButton">
+                                <!-- <a class="dropdown-item" href="#">Enroll as</a> -->
+                                {% include 'hackathon/includes/enrollstaff.html' %}
+                                <a class="dropdown-item" href="#">Distribute Teams</a>
+                                <a class="dropdown-item" href="#">Change Hackathon Status</a>
+                                <a class="dropdown-item" href="#">Judge Teams</a>
+                            </div>
+                        </div>
+                        {% else %}
+                            {% include 'hackathon/includes/enrollpart.html' %}
+                        <!-- <a href="#" class="btn btn-ci mt-4 mb-2 form-control">Register to this Hackathon</a> -->
+                        {% endif %}
+                    </div>  
+                </div>
+
+                <div class="row">
+                    <div class="col p-0">
+
+                        <div class="card my-3">
+                            <div class="card-body text-left hackathon-detailed-items">
+                                <p class="hackathon-sub-details"><i class="fas fa-laptop"></i> Theme: {{ hackathon.theme.capitalize }}</p>
+                                <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{ hackathon.status }}</p>
+                                <p class="hackathon-sub-details"><i class="far fa-clock"></i> Start: {{ hackathon.start_date }}</p>
+                                <p class="hackathon-sub-details"><i class="fas fa-clock"></i> End: {{ hackathon.end_date }}</p>
+                                <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
+                                <p class="hackathon-sub-details"><i class="fas fa-school"></i> Organisation: {{ hackathon.organisation }}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <div class="col-sm-12 col-lg-8">
             <h1 class="page-title">{{ hackathon.display_name }} #{{ hackathon.id }}</h1>
         </div>
@@ -123,3 +174,9 @@
         </div>
     </div>
 {% endblock %}
+
+{% if request.user %}
+{% block postloadjs %}
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
+{% endif %}

@@ -377,6 +377,26 @@ h1.table_titles{
     justify-content: center;
 }
 
+.dropdown-menu.judge-dropdown {
+    width: 100%;
+    border: 3px solid var(--p-orange);
+}
+
+.dropdown-menu.judge-dropdown .dropdown-item:hover {
+    width: 100%;
+    background: var(--p-orange);
+    color: white;
+    border-radius: 0px;
+}
+
+.card-body.text-left.hackathon-detailed-items {
+    padding: 2rem;
+}
+.card-body.text-left.hackathon-detailed-items i {
+    width: 30px;
+    text-align: left;
+}
+
 /* Media Queries */
 
 @media (max-width:453px) {

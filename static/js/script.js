@@ -11,18 +11,23 @@ function toastMessage(tag, message) {
             <div class="toast-body">${message}</div>
         </div>`
     );
-    if ($("#enroll-judge").text() === "Withdraw as Judge") {
-        $("#enroll-judge").text("Enroll as Judge")
-    } else if ($("#enroll-judge").text() === "Enroll as Judge") {
-        $("#enroll-judge").text("Withdraw as Judge")
-    } else if ($("#enroll-part").text() === "Enroll as Participant") {
-        $("#enroll-part").text("Withdraw from the Hackaton")
+    
+    let enrollJudgeLabel = $("#enroll-judge").text().trim();
+    let enrollPartLabel = $("#enroll-judge").text().trim();
+    
+    if (enrollJudgeLabel === "Withdraw as Judge") {
+        $("#enroll-judge").text("Enroll as Judge");
+    } else if (enrollJudgeLabel === "Enroll as Judge") {
+        $("#enroll-judge").text("Withdraw as Judge");
+    } else if (enrollPartLabel === "Enroll as Participant") {
+        $("#enroll-part").text("Withdraw from the Hackaton");
     } else {
-        $("#enroll-part").text("Enroll as Participant")
+        $("#enroll-part").text("Enroll as Participant");
     }
+    $('#judge-dropdown').dropdown('toggle')
 
-    // Fires the toast.
-    $(".toast").toast("show");
+    // Reloads the page and shows the toast
+    window.location.href=window.location.href;
 }
         
 // Sends the enrollment form with fetch.
@@ -46,11 +51,9 @@ function enroll(formData, formUrl) {
     // Catches any errors and displays their text message
     .catch(error => toastMessage("Error", error))
 }
-            
 
-// Watches the form for submission, then fires the Fetch function
-$("#enroll-form").on("submit", function (ev) {
-    // stops form from sending
+function enrollmentSubmission(ev) {
+        // stops form from sending
     ev.preventDefault();
     
     // The data sent in the form POST request.
@@ -61,4 +64,10 @@ $("#enroll-form").on("submit", function (ev) {
 
     // Fires the main fetch function
     enroll(formData, formUrl);
+}
+
+$(document).ready(function(){
+    // Watches the form for submission, then fires the Fetch function
+    $("#enroll-form").on("submit", enrollmentSubmission);
+    $( "#accordion" ).accordion();
 });
