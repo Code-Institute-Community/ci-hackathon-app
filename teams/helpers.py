@@ -53,6 +53,7 @@ def choose_team_sizes(participants, teamsize):
             return teams
     return [teamsize for team in range(num_teams+1)]
 
+
 def choose_team_levels(num_teams, hackathon_level):
     """ Calculates the average experience level per team and distributes any
     remaining difference among some of the teams evenly
@@ -104,10 +105,11 @@ def find_group_combinations(group_levels, team_size, team_level):
             if sum(pair) == team_level]
 
 
-def find_combinations_with_duplicates(participants, team_sizes):
-    """ 
+def find_all_combinations(participants, team_sizes):
+    """ Finds all possible experience level combinations for specific team
+    sizes with duplicated experience levels (e.g. (1, 1, 2))
 
-    """
+    Returns a list of tuples representing all the possible combinations """
     num_teams = len(team_sizes)
     participant_levels = [LMS_LEVELS[participant.current_lms_module] 
                           for participant in participants]
@@ -122,13 +124,19 @@ def find_combinations_with_duplicates(participants, team_sizes):
                                               level)
     # to remove differently sorted combinations with the same elements
     sorted_combinations = [sorted(combo) for combo in combos]
-    combos_without_dupes  = list(set(set(tuple(i) for i in sorted_combinations)))
+    combos_without_dupes  = list(set(set(tuple(i)
+                                     for i in sorted_combinations)))
     return combos_without_dupes
 
 
 def distribute_participants_to_teams(team_sizes, team_levels,
                                      participants, combos):
+    """ Selects participants based on their skill level and distributes them
+    to a team based on the wanted team size and combined experience level per
+    team
 
+    Returns a dict with the teams and any participants who could not be
+    distributed to a team to be distributed manually """
     teams = {}
     team_num = 1
     distributed_level = 0 
