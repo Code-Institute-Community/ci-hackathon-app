@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" />
+{% endblock %}
+
+{% block content %}
+<section class="h-100">
+    <h2 class="p-orange text-center mb-4">Team {{team.display_name}}</h2>
+    
+</section>
+{% endblock %}

@@ -182,7 +182,7 @@ def create_hackathon(request):
             form.save()
             messages.success(
                 request, 'Thanks for submitting a new Hackathon event!')
-        return redirect("hackathon:hackathon-list-scores")
+        return redirect("hackathon:hackathon-list")
 
 
 @login_required
