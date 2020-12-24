@@ -12,7 +12,7 @@
         <section class="card shadow">
             <div class="card-header">{{team_name}}  <span style="float:right">Team Score: {{ team_members|calculate_team_level }}</span></div>
             <div class="card-body">
-                <ol ondrop="drop(event)" ondragover="allowDrop(event)">
+                <ol id="{{team_name}}" ondrop="drop(event)" ondragover="allowDrop(event)">
                     {% for member in team_members %}
                     <li id="{{team_name}}-{{ forloop.counter0 }}" draggable="true" ondragstart="drag(event)">{{member.name}} (level: {{member.level}})</li>
                     {% endfor %}
@@ -28,7 +28,7 @@
             <div class="card-body">
                 <ol ondrop="drop(event)" ondragover="allowDrop(event)">
                     {% for participant in leftover_participants %}
-                    <li id="leftover_participants_{{ forloop.counter0 }}" draggable="true" ondragstart="drag(event)">{{participant.name}} (level: {{participant.level}})</li>
+                    <li id="leftover_participants-{{ forloop.counter0 }}" draggable="true" ondragstart="drag(event)">{{participant.name}} (level: {{participant.level}})</li>
                     {% endfor %}
                 </ol>
             </div>
