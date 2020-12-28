@@ -3,6 +3,9 @@ from itertools import combinations
 import json
 import math
 
+from accounts.models import CustomUser
+from hackathon.models import Hackathon, HackTeam
+
 LMS_LEVELS = {
     "programme_preliminaries": 1,
     "programming_paradigms": 1,
@@ -87,6 +90,7 @@ def group_participants(participants, num_teams):
         hackathon_level += participant_level
         participant_groups.setdefault(participant_level, [])
         participant_groups[participant_level].append({
+                'userid': participant.id,
                 'name': participant.username,
                 'level': participant_level
                 })
@@ -167,3 +171,32 @@ def distribute_participants_to_teams(team_sizes, team_levels,
         team_level = team_levels.pop(0)
 
     return teams, participants
+
+
+def create_new_team_and_add_participants(created_by_user, team_name,
+                                         team_members, hackathon):
+    """ """
+    hack_team = HackTeam(
+        created_by=created_by_user,
+        display_name=team_name,
+        hackathon=hackathon
+    )
+    hack_team.save()
+    hack_team.participants.set(get_users_from_ids(team_members))
+    return hack_team
+
+
+def get_users_from_ids(team_members):
+    """ """
+    user_ids = [user.get('userid') for user in team_members]
+    return CustomUser.objects.filter(id__in=user_ids)
+
+def create_teams_in_view(request_user, teams, hackathon_id):
+    """ """
+    for team_name, team_members in teams.items():
+        create_new_team_and_add_participants(
+            created_by_user=request_user,
+            team_name=team_name,
+            team_members=team_members,
+            hackathon=Hackathon.objects.get(id=hackathon_id)
+        )

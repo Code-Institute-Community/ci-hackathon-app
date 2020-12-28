@@ -329,8 +329,13 @@ h1.table_titles{
     margin: 0.8rem 0 0;
 }
 
+/* Distribute teams page */
 ol.team-drop-area {
     min-height: 50px;
+}
+
+form.distribute-teams-form {
+    display: inline-block;
 }
 
 .hackathon-sub-details::after {

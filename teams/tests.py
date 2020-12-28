@@ -5,11 +5,13 @@ from django.core.management import call_command
 from django.test import TestCase
 
 from accounts.models import CustomUser
-from hackathon.models import Hackathon
+from hackathon.models import Hackathon, HackTeam
 from .helpers import choose_team_sizes, choose_team_levels,\
                      group_participants, find_group_combinations,\
                      find_all_combinations,\
-                     distribute_participants_to_teams
+                     distribute_participants_to_teams, get_users_from_ids,\
+                     create_new_team_and_add_participants,\
+                     create_teams_in_view
 
 
 class TeamsTestCase(TestCase):
@@ -80,3 +82,47 @@ class TeamsTestCase(TestCase):
             team_sizes, team_levels, grouped_participants,
             combos_without_dupes)
         self.assertTrue(teams)
+
+    def test_create_new_team_and_add_participants(self):
+        created_by_user = CustomUser.objects.first()
+        team_name = 'team_1'
+        team_members = [
+            {'userid': 13, 'name': 'Palpatine@test.com', 'level': 4},
+            {'userid': 3, 'name': 'C-3PO@test.com', 'level': 5}
+        ]
+        hackathon = Hackathon.objects.first()
+
+        new_hack_team = create_new_team_and_add_participants(
+            created_by_user, team_name, team_members, hackathon)
+        
+        self.assertTrue(isinstance(new_hack_team, HackTeam))
+        self.assertEqual(len(new_hack_team.participants.all()), 2)
+        
+    
+    def test_get_users_from_ids(self):
+        team_members = [
+            {'userid': 13, 'name': 'Palpatine@test.com', 'level': 4},
+            {'userid': 3, 'name': 'C-3PO@test.com', 'level': 5}
+        ]
+        users = get_users_from_ids(team_members)
+        self.assertEqual(len(users), 2)
+        self.assertTrue(all([isinstance(user, CustomUser) for user in users]))
+
+    def test_create_teams_in_view(self):
+        request_user = CustomUser.objects.first()
+        hackathon = Hackathon.objects.filter(teams__isnull=True).first()
+        teams = {
+            'team_1': [
+                {'userid': 13, 'name': 'Palpatine@test.com', 'level': 4},
+                {'userid': 3, 'name': 'C-3PO@test.com', 'level': 5},
+            ],
+            'team_2': [
+                {'userid': 20, 'name': 'Shmi.Skywalker@test.com', 'level': 3},
+                {'userid': 14, 'name': 'Boba.Fett@test.com', 'level': 3},
+                {'userid': 11, 'name': 'Han.Solo@test.com', 'level': 3},
+            ]
+        }
+        create_teams_in_view(request_user=request_user,
+                             teams=teams,
+                             hackathon_id=hackathon.id)
+        self.assertEqual(len(hackathon.teams.all()), 2)
