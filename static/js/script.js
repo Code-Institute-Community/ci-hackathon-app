@@ -62,7 +62,3 @@ $("#enroll-form").on("submit", function (ev) {
     // Fires the main fetch function
     enroll(formData, formUrl);
 });
-
-$(document).ready(function(){
-    $( "#accordion" ).accordion();
-});

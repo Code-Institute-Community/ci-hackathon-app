@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 if os.path.exists(".env"):
     from dotenv import load_dotenv
     load_dotenv()
@@ -91,7 +92,7 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 ACCOUNT_SIGNUP_FORM_CLASS = "accounts.forms.SignupForm"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_EMAIL_REQUIRED=True
+ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
@@ -143,7 +144,7 @@ USE_TZ = True
 
 STATICFILES_LOCATION = "static"
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIAFILES_LOCATION = "media"
