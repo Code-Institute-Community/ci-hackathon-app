@@ -153,11 +153,14 @@ def distribute_participants_to_teams(team_sizes, team_levels,
             exists = sum([1 for c in combo 
                         if participants[c]])
             if exists == team_size:
-                members = [participants[c].pop() for c in combo]
-                teams[f'team_{team_num}'] = members
-                distributed_level += exists
-                team_num += 1
-                break
+                try:
+                    members = [participants[c].pop() for c in combo]
+                    teams[f'team_{team_num}'] = members
+                    distributed_level += exists
+                    team_num += 1
+                    break
+                except:
+                    break
         if not team_sizes:
             break
         team_size = team_sizes.pop(0)

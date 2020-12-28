@@ -12,6 +12,9 @@ def distribute_teams(request, hackathon_id):
     participants = Hackathon.objects.get(id=hackathon_id).participants.all()
     teamsize = 3
     team_sizes = sorted(choose_team_sizes(participants, teamsize))
+    if len(team_sizes) == 0:
+        return render(request, 'distribute_teams.html',
+                      {'num_participants': len(participants)})
     grouped_participants, hackathon_level = group_participants(
         participants, len(team_sizes))
     team_levels = sorted(choose_team_levels(len(team_sizes), hackathon_level))
@@ -21,16 +24,18 @@ def distribute_teams(request, hackathon_id):
         team_sizes, team_levels, grouped_participants,
         combos_without_dupes)
     # For testing only
-    leftover_participants[1].append({'name': 'Tester 1', 'level': 1})
-    leftover_participants[2].append({'name': 'Tester 1', 'level': 2})
-    leftover_participants[3].append({'name': 'Tester 1', 'level': 3})
-    leftover_participants[5].append({'name': 'Tester 1', 'level': 5})
+    # leftover_participants[1].append({'name': 'Tester 1', 'level': 1})
+    # leftover_participants[2].append({'name': 'Tester 1', 'level': 2})
+    # leftover_participants[3].append({'name': 'Tester 1', 'level': 3})
+    # leftover_participants[5].append({'name': 'Tester 1', 'level': 5})
     participants_still_to_distribute = [
         participant for participant_groups in leftover_participants.values()
         for participant in participant_groups]
-    return render(request, 'distribute_teams.html',
-                  {'teams': teams,
-                   'leftover_participants': participants_still_to_distribute})
+    return render(request, 'distribute_teams.html', {
+        'num_participants': len(participants), 
+        'teams': teams,
+        'leftover_participants': participants_still_to_distribute
+        })
 
 
 def view_team(request, team_id):

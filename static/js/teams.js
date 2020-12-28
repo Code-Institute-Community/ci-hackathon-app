@@ -21,6 +21,7 @@ function drop(ev) {
         targetElement = ev.target.id;
         ev.target.appendChild(document.getElementById(data));
     }
+<<<<<<< HEAD
     moveTeamData(data, targetElement)
 }
 
@@ -35,4 +36,26 @@ function moveTeamData(movedElement, targetElement){
         let a = leftover_participants.splice(fromIndex, 1);
         console.log(leftover_participants)
     }
+=======
+    moveTeamData(data, targetElement);
+}
+
+function moveTeamData(movedElementId, targetElementId){
+    let movedElement = document.getElementById(movedElementId);
+    let targetElement = document.getElementById(targetElementId);
+    console.log(`Moved Element: ${movedElement.id}`)
+    console.log(`Dropped into Element: ${targetElement.id}`)
+    
+    /*let movedLevel = parseInt(movedElement.dataset.level);
+    console.log(movedLevel)
+    let teamScoreSpan = document.getElementById(targetElement+'_score');
+    teamScoreSpan.innerText = parseInt(teamScoreSpan.innerText) + movedLevel;
+    if(movedElement.id.includes('team')) {
+        console.log("Moved from team")
+        let removeScoreFromTeam = movedElement.parentNode.id;
+        console.log(removeScoreFromTeam)
+        let removeScoreSpan = document.getElementById(removeScoreFromTeam+'_score');
+        removeScoreSpan.innerText = parseInt(removeScoreSpan.innerText) - movedLevel;
+    }*/
+>>>>>>> Adding team distribution template and javascript
 }

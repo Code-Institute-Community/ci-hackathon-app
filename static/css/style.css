@@ -329,6 +329,10 @@ h1.table_titles{
     margin: 0.8rem 0 0;
 }
 
+ol.team-drop-area {
+    min-height: 50px;
+}
+
 .hackathon-sub-details::after {
     content: '';
     display: block;

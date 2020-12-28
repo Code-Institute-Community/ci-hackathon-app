@@ -3,41 +3,49 @@
 {% load teams_tags %}
 {% block content %}
 
-<div class="h-100">
-    <article class="card shadow">
-        <div class="card-body">
-
-        {% if teams %}
-        {% for team_name, team_members in teams.items %}
-        <section class="card shadow">
-            <div class="card-header">{{team_name}}  <span style="float:right">Team Score: {{ team_members|calculate_team_level }}</span></div>
-            <div class="card-body">
-                <ol id="{{team_name}}" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    {% for member in team_members %}
-                    <li id="{{team_name}}-{{ forloop.counter0 }}" draggable="true" ondragstart="drag(event)">{{member.name}} (level: {{member.level}})</li>
-                    {% endfor %}
-                </ol>
-            </div>
-        </section>
-        {% endfor%}
-        {% endif %}
-
-        {% if leftover_participants %}
-        <section class="card shadow">
-            <div class="card-header">Leftover Participants</div>
-            <div class="card-body">
-                <ol ondrop="drop(event)" ondragover="allowDrop(event)">
-                    {% for participant in leftover_participants %}
-                    <li id="leftover_participants-{{ forloop.counter0 }}" draggable="true" ondragstart="drag(event)">{{participant.name}} (level: {{participant.level}})</li>
-                    {% endfor %}
-                </ol>
-            </div>
-        </section>
-        {% endif%}
+    {% include 'includes/menu.html' %}
+    
+    {% if not teams and not leftover_participants %}
+        <p>Not enough participants have registered yet.</p>
         
+        <p>Current number of registrations: {{num_participants}}</p>
+    {% endif %}
+
+    {% if teams %}
+    {% for team_name, team_members in teams.items %}
+    <section class="card shadow mb-3 mt-3">
+        <!-- <div class="card-header">{{team_name}}  <span style="float:right">Team Score: {{ team_members|calculate_team_level }}</span></div> -->
+        <div class="card-body">
+            <h5 class="p-orange card-title">{{team_name}} <span style="float:right">Team Score: <span id="{{team_name}}_score">{{ team_members|calculate_team_level }}</span></span></h5>
+            <ol class="team-drop-area" id="{{team_name}}" ondrop="drop(event)" ondragover="allowDrop(event)">
+                {% for member in team_members %}
+                <li id="{{team_name}}-{{ forloop.counter0 }}"
+                    data-level={{member.level}}
+                    draggable="true" ondragstart="drag(event)">{{member.name}} (level: {{member.level}})</li>
+                {% endfor %}
+            </ol>
         </div>
-    </article>
-</div>
+    </section>
+    {% endfor%}
+    {% endif %}
+
+    {% if leftover_participants %}
+    <section class="card shadow mb-3 mt-3">
+        <div class="card-body">
+            <h5 class="p-orange card-title">Leftover Participants</h5>
+            <ol class="team-drop-area" ondrop="drop(event)" ondragover="allowDrop(event)">
+                {% for participant in leftover_participants %}
+                <li id="leftover_participants-{{ forloop.counter0 }}" 
+                    data-level={{participant.level}}
+                    draggable="true" ondragstart="drag(event)">{{participant.name}} (level: {{participant.level}})</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </section>
+    {% endif%}
+    
+    {% include 'includes/menu.html' %}
+
 {% endblock %}
 
 {% block js %}
