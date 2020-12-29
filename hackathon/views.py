@@ -150,12 +150,13 @@ def create_hackathon(request):
             return redirect("hackathon:hackathon-list")
 
         template = "hackathon/create-event.html"
-        form = HackathonForm()
+        form = HackathonForm(initial={'organisation': 1})
 
         return render(request, template, {"form": form})
 
     else:
         form = HackathonForm(request.POST)
+        
         # Convert start and end date strings to datetime and validate
         start_date = datetime.strptime(
             request.POST.get('start_date'), '%d/%m/%Y %H:%M')
@@ -178,6 +179,7 @@ def create_hackathon(request):
         # Submit form and save record
         if form.is_valid():
             form.instance.created_by = request.user
+            form.instance.organiser = request.user
             form.save()
             messages.success(
                 request, 'Thanks for submitting a new Hackathon event!')
