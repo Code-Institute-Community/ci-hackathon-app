@@ -50,13 +50,10 @@ def create_teams(request):
         data = request.POST
         teams = json.loads(data.get('teams'))
         hackathon_id = data.get('hackathon_id')
-        print(teams)
-        # with transaction.atomic():
-        #     create_teams_in_view(request.user, teams, hackathon_id)
-        for team_name, team_members in teams.items():
-            print(team_name)
-            print(len(team_members))
-        return redirect(reverse('hackathon:hackathon-list'))
+        with transaction.atomic():
+            create_teams_in_view(request.user, teams, hackathon_id)
+        return redirect(reverse('hackathon:hackathon_detail',
+                                kwargs={'pk': hackathon_id}))
     else: 
         return redirect(reverse('hackathon:hackathon-list'))
 

@@ -191,9 +191,13 @@ def get_users_from_ids(team_members):
     user_ids = [user.get('userid') for user in team_members]
     return CustomUser.objects.filter(id__in=user_ids)
 
+
 def create_teams_in_view(request_user, teams, hackathon_id):
     """ """
     for team_name, team_members in teams.items():
+        if len(team_members) == 0:
+            continue
+
         create_new_team_and_add_participants(
             created_by_user=request_user,
             team_name=team_name,

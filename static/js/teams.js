@@ -2,6 +2,7 @@ let teams = JSON.parse(document.getElementById('_teams').textContent);
 let leftover_participants = JSON.parse(document.getElementById('_leftover_participants').textContent);
 
 addNewTeam();
+distributeTeams();
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -31,24 +32,18 @@ function drop(ev) {
 
 function changeTeamScores(movedElement, movedElementParentId, targetElementId){
     let movedLevel = parseInt(movedElement.dataset.level);
-
     if (targetElementId != 'leftover_participants'){
         let teamScoreSpan = document.getElementById(targetElementId +'_score');
         teamScoreSpan.innerText = parseInt(teamScoreSpan.innerText) + movedLevel;
     }
 
-    if(movedElement.id.includes('team')) {
+    if(movedElementParentId.includes('team')) {
         let removeScoreSpan = document.getElementById(movedElementParentId +'_score');
         removeScoreSpan.innerText = parseInt(removeScoreSpan.innerText) - movedLevel;
     }
 }
 
 function changeTeamData(movedElement, movedElementParentId, targetElementId){
-    /*
-    1) Get user from original team or leftover_participants
-    2) Add it to new team
-    3) Remove it from old team
-    */
     let team = movedElementParentId.includes('team') ? teams[movedElementParentId] : leftover_participants;
     let targetTeam = targetElementId.includes('team') ? teams[targetElementId] : leftover_participants;
     let userid = movedElement.dataset.userid;
@@ -60,6 +55,7 @@ function changeTeamData(movedElement, movedElementParentId, targetElementId){
     } else {
         leftover_participants = leftover_participants.filter(x => x.userid != userid);
     }
+    $('input[name="teams"]').val(JSON.stringify(teams));
 }
 
 function addNewTeam(){
@@ -79,7 +75,12 @@ function addNewTeam(){
 }
 
 function distributeTeams(){
-    $('.distribute-teams').click(function(){
-        
+    $('.distribute-teams-form').on('submit', function(event){
+        if(leftover_participants.length > 0) {
+            confirmation = window.confirm('Some participants have not been assigned to a team. Do you still want to proceed?');
+            if(!confirmation){
+                event.preventDefault();
+            }
+        }
     });
 }
