@@ -334,7 +334,7 @@ ol.team-drop-area {
     min-height: 50px;
 }
 
-form.distribute-teams-form {
+form.distribute-teams-form, form.clear-teams-form {
     display: inline-block;
 }
 

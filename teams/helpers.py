@@ -3,24 +3,9 @@ from itertools import combinations
 import json
 import math
 
+from .lists import LMS_LEVELS
 from accounts.models import CustomUser
 from hackathon.models import Hackathon, HackTeam
-
-LMS_LEVELS = {
-    "programme_preliminaries": 1,
-    "programming_paradigms": 1,
-    "html_fundamentals": 1,
-    "css_fundamentals": 1,
-    "user_centric_frontend_development": 1,
-    "javascript_fundamentals": 2,
-    "interactive_frontend_development": 2,
-    "python_fundamentals": 3,
-    "practical_python": 3,
-    "data_centric_development": 3,
-    "full_stack_frameworks with django": 4,
-    "alumni": 5,
-    "staff": 6,
-}
 
 
 def choose_team_sizes(participants, teamsize):
@@ -54,7 +39,7 @@ def choose_team_sizes(participants, teamsize):
                     continue
                 teams.append(teamsize)
             return teams
-    return [teamsize for team in range(num_teams+1)]
+    return [teamsize for team in range(num_teams)]
 
 
 def choose_team_levels(num_teams, hackathon_level):
@@ -143,8 +128,6 @@ def distribute_participants_to_teams(team_sizes, team_levels,
     distributed to a team to be distributed manually """
     teams = {}
     team_num = 1
-    distributed_level = 0 
-    
     num_teams = len(team_sizes)
     team_size = team_sizes.pop(0)
     team_level = team_levels.pop(0)
@@ -154,17 +137,19 @@ def distribute_participants_to_teams(team_sizes, team_levels,
                                 if sum(c) == team_level
                                 and len(c) == team_size]
         for combo in combos_to_pick_from:
-            exists = sum([1 for c in combo 
-                        if participants[c]])
-            if exists == team_size:
-                try:
-                    members = [participants[c].pop() for c in combo]
-                    teams[f'team_{team_num}'] = members
-                    distributed_level += exists
-                    team_num += 1
-                    break
-                except:
-                    break
+            # Try to pick the participants from a copy of the participants
+            # if there are not enough participants for the combo skip
+            # otherwise pick them from the actual participants dict
+            participants_copy = deepcopy(participants)
+            try:
+                members = [participants_copy[c].pop() for c in combo]
+            except IndexError:
+                continue
+            
+            members = [participants[c].pop() for c in combo]
+            teams[f'team_{team_num}'] = members
+            team_num += 1
+
         if not team_sizes:
             break
         team_size = team_sizes.pop(0)
@@ -175,7 +160,7 @@ def distribute_participants_to_teams(team_sizes, team_levels,
 
 def create_new_team_and_add_participants(created_by_user, team_name,
                                          team_members, hackathon):
-    """ """
+    """ Creates a new team and assigns the team members as participants """
     hack_team = HackTeam(
         created_by=created_by_user,
         display_name=team_name,
@@ -187,13 +172,15 @@ def create_new_team_and_add_participants(created_by_user, team_name,
 
 
 def get_users_from_ids(team_members):
-    """ """
-    user_ids = [user.get('userid') for user in team_members]
+    """ Retrieves the list of custom users based on their user ids """
+    user_ids = [user.get('userid') for user in team_members
+                if user is not None]
     return CustomUser.objects.filter(id__in=user_ids)
 
 
 def create_teams_in_view(request_user, teams, hackathon_id):
-    """ """
+    """ Creates a new HackTeam for each team and assigns the team members as
+    participants """
     for team_name, team_members in teams.items():
         if len(team_members) == 0:
             continue
@@ -204,3 +191,21 @@ def create_teams_in_view(request_user, teams, hackathon_id):
             team_members=team_members,
             hackathon=Hackathon.objects.get(id=hackathon_id)
         )
+
+
+def update_team_participants(created_by_user, teams, hackathon_id):
+    """ Finds each existing HackTeam for each team and assigns the team
+    members as participants """
+    for team_name, team_members in teams.items():
+        if len(team_members) == 0:
+            continue
+        hack_team = HackTeam.objects.filter(
+            display_name=team_name,
+            hackathon=Hackathon.objects.get(id=hackathon_id)
+        )
+        if hack_team:
+            hack_team.first().participants.set(get_users_from_ids(team_members))
+        else:
+            create_new_team_and_add_participants(created_by_user, team_name,
+                                         team_members, hackathon)
+

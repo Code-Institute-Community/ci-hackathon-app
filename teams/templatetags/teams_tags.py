@@ -14,8 +14,9 @@ def calculate_team_level(team):
 
 @register.filter
 def format_team_name(team_name):
-    return team_name.split('_')[0][0].upper() + team_name.split('_')[0][1:] + ' ' + team_name.split('_')[1]
-
+    if '_' not in team_name:
+        return team_name
+    return ' '.join([word[0].upper() + word[1:] for word in team_name.split('_')])
 
 @register.filter
 def dump_json(teams):

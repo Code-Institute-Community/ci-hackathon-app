@@ -4,8 +4,18 @@
     <button class="btn btn-primary add-team">Add Team</button>
     <form class="distribute-teams-form" action="/teams/create/" method="POST">
         {% csrf_token %}
+        {% if edit %}
+        <input type="hidden" name="_method" value="put" />
+        {% else %}
+        <input type="hidden" name="_method" value="post" />
+        {% endif %}
         <input type="hidden" name="hackathon_id" value="{{hackathon_id}}" />
         <input type="hidden" name="teams" value="{{teams|dump_json}}" />
-        <button type="submit" class="btn btn-primary distribute-team">Distribute Teams</button>
+        <button type="submit" class="btn btn-success distribute-team">Save Teams</button>
+    </form>
+    <form class="clear-teams-form" action="/teams/clear/" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="hackathon_id" value="{{hackathon_id}}" />
+        <button type="submit" class="btn btn-danger distribute-team">Clear Teams</button>
     </form>
 </div>

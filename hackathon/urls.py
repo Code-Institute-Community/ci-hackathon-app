@@ -10,6 +10,7 @@ from .views import (
     check_projects_scores,
     view_hackathon
 )
+from teams.views import change_teams
 
 urlpatterns = [
     path('', HackathonListView.as_view(), name="hackathon-list"),

@@ -1,0 +1,15 @@
+LMS_LEVELS = {
+    "programme_preliminaries": 1,
+    "programming_paradigms": 1,
+    "html_fundamentals": 1,
+    "css_fundamentals": 1,
+    "user_centric_frontend_development": 1,
+    "javascript_fundamentals": 2,
+    "interactive_frontend_development": 2,
+    "python_fundamentals": 3,
+    "practical_python": 3,
+    "data_centric_development": 3,
+    "full_stack_frameworks with django": 4,
+    "alumni": 5,
+    "staff": 6,
+}
