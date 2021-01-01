@@ -42,10 +42,6 @@ def change_teams(request, hackathon_id):
         teams, leftover_participants = distribute_participants_to_teams(
             team_sizes, team_levels, grouped_participants,
             combos_without_dupes)
-        print("TEAMS")
-        print(teams)
-        print("LEFTOVERS")
-        print(leftover_participants)
         participants_still_to_distribute = [
             participant for participant_groups in leftover_participants.values()
             for participant in participant_groups]
