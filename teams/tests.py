@@ -150,7 +150,6 @@ class TeamsViewsTestCase(TestCase):
         self.admin_user.is_superuser = True
         self.admin_user.save()
 
-
     def test_view_change_teams_with_participant_user(self):
         """ Test to see if non-staff can access the view to change teams """
         self.client.force_login(self.participant_user)
