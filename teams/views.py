@@ -17,10 +17,10 @@ from teams.helpers import choose_team_sizes, group_participants,\
 def change_teams(request, hackathon_id):
     """ Page that handles the logic of automatically distributing the teams
     for a hackathon and allows for the admin to re-arrange the team members """
-     # Redirect user if they are not admin
+    # Redirect user if they are not admin
     if not request.user.is_superuser:
-        return redirect(reverse('hackathon:hackathon',
-                                kwargs={'hackathon_id': hackathon_id}))
+        return redirect(reverse('hackathon:hackathon_detail',
+                                kwargs={'pk': hackathon_id}))
 
     edit = False
     hackathon = Hackathon.objects.get(id=hackathon_id)

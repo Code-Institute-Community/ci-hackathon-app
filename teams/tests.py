@@ -2,7 +2,7 @@ from copy import deepcopy
 import math
 
 from django.core.management import call_command
-from django.test import TestCase
+from django.test import TestCase, tag
 
 from accounts.models import CustomUser
 from hackathon.models import Hackathon, HackTeam
@@ -13,8 +13,8 @@ from .helpers import choose_team_sizes, choose_team_levels,\
                      create_new_team_and_add_participants,\
                      create_teams_in_view
 
-
-class TeamsTestCase(TestCase):
+@tag('unit')
+class TeamsHelpersTestCase(TestCase):
     def setUp(self):
         call_command('loaddata', 'organisation', verbosity=0)
         call_command('loaddata', 'accounts', verbosity=0)
@@ -126,3 +126,40 @@ class TeamsTestCase(TestCase):
                              teams=teams,
                              hackathon_id=hackathon.id)
         self.assertEqual(len(hackathon.teams.all()), 2)
+
+
+@tag('end-to-end')
+class TeamsViewsTestCase(TestCase):
+    def setUp(self):
+        call_command('loaddata', 'organisation', verbosity=0)
+        call_command('loaddata', 'accounts', verbosity=0)
+        call_command('loaddata', 'resources', verbosity=0)
+        call_command('loaddata', 'profiles', verbosity=0)
+        call_command('loaddata', 'emailaddresses', verbosity=0)
+        call_command('loaddata', 'hackathons', verbosity=0)
+
+        hackathon_id = 3
+        users = CustomUser.objects.all().exclude(username="admin")
+        hackathon = Hackathon.objects.get(id=hackathon_id)
+        for user in users:
+            hackathon.participants.add(user)
+        self.participants = hackathon.participants.all()
+
+        self.participant_user = CustomUser.objects.get(pk=2)
+        self.admin_user = CustomUser.objects.get(pk=1)
+        self.admin_user.is_superuser = True
+        self.admin_user.save()
+
+
+    def test_view_change_teams_with_participant_user(self):
+        """ Test to see if non-staff can access the view to change teams """
+        self.client.force_login(self.participant_user)
+        response = self.client.get('/hackathon/1/change_teams/')
+        self.assertEqual(302, response.status_code)
+    
+    def test_view_change_teams_with_admin_user(self):
+        """ Test to see if staff can access the view to change teams """
+        login = self.client.force_login(self.admin_user)
+        response = self.client.get('/hackathon/1/change_teams/')
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed('change_teams.html')
