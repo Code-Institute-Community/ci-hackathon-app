@@ -156,7 +156,6 @@ def create_hackathon(request):
 
     else:
         form = HackathonForm(request.POST)
-        
         # Convert start and end date strings to datetime and validate
         start_date = datetime.strptime(
             request.POST.get('start_date'), '%d/%m/%Y %H:%M')
