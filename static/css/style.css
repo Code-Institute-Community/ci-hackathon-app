@@ -261,7 +261,7 @@ html .all-auth-container {
 
 /* View Hackathon Page */
 
-.page-title:after {
+.page-title::after {
     content: '';
     display: block;
     height: 2px;
@@ -329,7 +329,7 @@ h1.table_titles{
     margin: 0.8rem 0 0;
 }
 
-.hackathon-sub-details:after {
+.hackathon-sub-details::after {
     content: '';
     display: block;
     height: 2px;
@@ -351,7 +351,7 @@ h1.table_titles{
     min-height: 380px;
 }
 
-.card-title .team-name:after {
+.card-title .team-name::after {
     content: '';
     display: block;
     height: 2px;
