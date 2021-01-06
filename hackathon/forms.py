@@ -1,6 +1,8 @@
 from django import forms
-from .models import Hackathon
 
+from accounts.models import Organisation
+from .models import Hackathon
+from .lists import STATUS_TYPES_CHOICES, JUDGING_STATUS_CHOICES
 
 class HackathonForm(forms.ModelForm):
     """ A form to enable users to add hackathon events via the frontend site.
@@ -25,8 +27,7 @@ class HackathonForm(forms.ModelForm):
                 'rows': 3,
                 'placeholder': 'Tell us more about this event...'
             }
-        ),
-        required=True
+        )
     )
     theme = forms.CharField(
         label='Theme',
@@ -63,7 +64,27 @@ class HackathonForm(forms.ModelForm):
             }
         ),
     )
+    status = forms.CharField(
+        label="Status",
+        required=True,
+        widget=forms.Select(choices=STATUS_TYPES_CHOICES),
+    ),
+    judging_status = forms.CharField(
+        label="Judging Status",
+        required=True,
+        widget=forms.Select(choices=JUDGING_STATUS_CHOICES),
+    ),
+    organisation = forms.ModelChoiceField(
+        label="Organisation",
+        queryset=Organisation.objects.order_by('display_name'),
+    ),
 
     class Meta:
         model = Hackathon
-        fields = ['display_name', 'description', 'theme', 'start_date', 'end_date']
+        fields = ['display_name', 'description', 'theme', 'start_date',
+                  'end_date', 'status', 'judging_status', 'organisation',
+                  ]
+
+    def __init__(self, *args, **kwargs):
+        super(HackathonForm, self).__init__(*args, **kwargs)
+        self.fields['organisation'].empty_label = None
