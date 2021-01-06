@@ -4,6 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pylint = "*"
+pylint-django = "*"
+pep8 = "*"
+autopep8 = "*"
 
 [packages]
 asgiref = "==3.2.10"

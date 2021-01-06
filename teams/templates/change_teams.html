@@ -15,7 +15,7 @@
     <section class="card shadow mb-3 mt-3">
         <!-- <div class="card-header">{{team_name}}  <span style="float:right">Team Score: {{ team_members|calculate_team_level }}</span></div> -->
         <div class="card-body">
-            <h5 class="p-orange card-title">{{team_name|format_team_name}} <span class="team-score-container">Team Score: <span id="{{team_name}}_score">{{ team_members|calculate_team_level }}</span></span></h5>
+            <h5 class="p-orange card-title">{{team_name|format_team_name}}<span class="team-score-container">Team Score: <span id="{{team_name}}_score">{{ team_members|calculate_team_level }}</span></span></h5>
             <ol class="team team-drop-area" id="{{team_name}}" ondrop="drop(event)" ondragover="allowDrop(event)">
                 {% for member in team_members %}
                 <li id="{{team_name}}-{{ forloop.counter0 }}"
@@ -55,6 +55,3 @@
 {{ leftover_participants|json_script:"_leftover_participants" }}
 <script src="{% static 'js/teams.js' %}"></script>
 {% endblock %}
-
-
-
