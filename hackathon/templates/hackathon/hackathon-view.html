@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Render Hackathon details & Registration button -->
+    <div class="row">
+        <div class="col-md-12 col-lg-4">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col p-0">
+                        <img class="hackathon-detail-image" 
+                            src="{% static 'img/ci-hackathon--square.png' %}" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col p-0">
+                        {% if user.is_superuser %}
+                        <div class="dropdown mt-4 mb-2 ">
+                            <button class="btn btn-ci dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Admin Actions
+                            </button>
+                            <div id="judge-dropdown" class="dropdown-menu judge-dropdown" aria-labelledby="dropdownMenuButton">
+                                {% include 'hackathon/includes/enrollstaff.html' %}
+                                <a class="dropdown-item" href="#">Distribute Teams</a>
+                                <a class="dropdown-item" href="#">Change Hackathon Status</a>
+                                <a class="dropdown-item" href="#">Judge Teams</a>
+                            </div>
+                        </div>
+                        {% else %}
+                            {% include 'hackathon/includes/enrollpart.html' %}
+                        {% endif %}
+                    </div>  
+                </div>
+
+                <div class="row">
+                    <div class="col p-0">
+
+                        <div class="card my-3">
+                            <div class="card-body text-left hackathon-detailed-items">
+                                <p class="hackathon-sub-details"><i class="fas fa-laptop"></i> Theme: {{ hackathon.theme }}</p>
+                                <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{ hackathon.status }}</p>
+                                <p class="hackathon-sub-details"><i class="far fa-clock"></i> Start: {{ hackathon.start_date }}</p>
+                                <p class="hackathon-sub-details"><i class="fas fa-clock"></i> End: {{ hackathon.end_date }}</p>
+                                <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
+                                <p class="hackathon-sub-details"><i class="fas fa-school"></i> Organisation: {{ hackathon.organisation }}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-12 col-lg-8">
+            <h1 class="page-title">{{ hackathon.display_name }} #{{ hackathon.id }}</h1>
+            <div class="card my-3 hackathon-detail-description">
+                <div class="card-body">
+                    <p>{{ hackathon.description|linebreaks }}</p>
+                </div>
+            </div>
+
+            <h1 class="page-title" id="teams">Teams:</h1>
+            <div class="row teams-row">
+                {% if teams %}
+                    {% for team in teams %}
+                        <div class="col-sm-12 col-lg-4 my-3">
+                            <div class="card team-card">
+                                <div class="card-body">
+                                    <div class="card-title text-left my-auto">
+                                        <h3 class="team-name">{{ team }}</h3>
+                                    </div>
+                                    <div class="card-text">
+                                        <p class="text-left card-text-title">Team members:</p>
+                                        {% for participant in team.participants.get_queryset %}
+                                            <p><a href="#" class="user-github-icon" target="_blank"><i class="fab fa-github-square"></i></a>
+                                                {{ participant.slack_display_name }}
+                                            </p>
+                                        {% endfor %}
+                                    </div>
+                                    <!-- Render project submission button if user is participant of team -->
+                                    {% if user in team.participants.get_queryset %}
+                                        <div class="text-left">
+                                            <a href="#" class="btn btn-ci">Submit Project</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-sm-12">
+                        <p>No teams have registered for this yet! Be the first?</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    {% if teams.has_other_pages %}
+                        <ul class="pagination">
+                            <!-- Render "previous" icon for pagination set -->
+                            {% if teams.has_previous %}
+                                <li class="page-item">
+                                    <a href="?page={{ teams.previous_page_number }}#teams" class="page-link">
+                                        <span><i class="fas fa-angle-double-left"></i></span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <!-- Disable "previous" icon if on first page of pagination set -->
+                                <li class="disabled page-item">
+                                    <span class="page-link"><i class="fas fa-angle-double-left"></i></span>
+                                </li>
+                            {% endif %}
+        
+                            <!-- Render total number of pagination pages with active highlight -->
+                            {% for i in teams.paginator.page_range %}
+                                {% if teams.number == i %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ i }}<span class="sr-only">(current)</span></span>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a href="?page={{ i }}#teams" class="page-link">{{ i }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+        
+                            <!-- Render "next" icon for pagination set -->
+                            {% if teams.has_next %}
+                                <li class="page-item">
+                                    <a href="?page={{ teams.next_page_number }}#teams" class="page-link">
+                                        <span><i class="fas fa-angle-double-right"></i></span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <!-- Disable "next" icon if on first page of pagination set -->
+                                <li class="page-item disabled">
+                                    <span class="page-link"><i class="fas fa-angle-double-right"></i></span>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% if request.user %}
+{% block postloadjs %}
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
+{% endif %}

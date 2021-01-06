@@ -4,5 +4,12 @@
     <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
     <!-- Must be one long string for the JS script to switch words correctly.
     An alternative would be to have two different buttons.-->
-    <button id="enroll-part" type="submit" class="btn btn-ci mb-2">{% if user in HackTeam.participants.all %}Withdraw from the Hackaton{% else %}Enroll as Participant{% endif %}</button>
+    <button id="enroll-part" type="submit" 
+        class="btn btn-ci mt-4 mb-2 form-control">
+        {% if user in hackathon.participants.all %}
+            Withdraw from the Hackaton
+        {% else %}
+            Enroll as Participant
+        {% endif %}
+    </button>
 </form>

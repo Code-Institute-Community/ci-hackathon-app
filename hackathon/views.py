@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 
@@ -233,6 +234,33 @@ def update_hackathon(request, hackathon_id):
 
 
 @login_required
+def view_hackathon(request, hackathon_id):
+    """
+    Login required decorator used to prevent user from navigating using URL
+    injection or by using browser back button etc, by redirecting user to
+    login page.
+
+    Render Hackathon details and teams registered for same.
+
+    If teams count > 3 show pagination for teams.
+    """
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+
+    teams = HackTeam.objects.filter(hackathon_id=hackathon_id).order_by(
+        'display_name')
+    paginator = Paginator(teams, 3)
+    page = request.GET.get('page')
+    paged_teams = paginator.get_page(page)
+
+    context = {
+        'hackathon': hackathon,
+        'teams': paged_teams,
+    }
+
+    return render(request, "hackathon/hackathon-view.html", context)
+
+
+@login_required
 def delete_hackathon(request, hackathon_id):
     """ Allow users to 'soft delete' hackathon event - set status to 'deleted'
      to remove from frontend list """
@@ -269,17 +297,22 @@ def enroll_toggle(request):
             if user in hackathon.judges.all():
                 hackathon.judges.remove(user)
                 data["message"] = "You have withdrawn from judging."
+                messages.success(request, "You have withdrawn from judging.")
             else:
                 hackathon.judges.add(user)
                 data["message"] = "You have enrolled as a judge."
+                messages.success(request, "You have enrolled as a judge.")
         
         else:
             if user in hackathon.participants.all():
                 hackathon.participants.remove(user)
                 data["message"] = "You have withdrawn from this Hackaton."
+                messages.success(request,
+                                 "You have withdrawn from this Hackaton.")
             else:
                 hackathon.participants.add(user)
                 data["message"] = "You have enrolled successfully."
+                messages.success(request, "You have enrolled successfully.")
 
         data["tag"] = "Success"
         return JsonResponse(data)
