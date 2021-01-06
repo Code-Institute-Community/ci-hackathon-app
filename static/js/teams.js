@@ -10,7 +10,7 @@ function allowDrop(ev) {
   }
   
 function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
+    ev.dataTransfer.setData('text', ev.target.id);
 }
 
 function drop(ev) {
@@ -18,7 +18,7 @@ function drop(ev) {
     team object used to create or edit the teams */
     let targetElement;
     ev.preventDefault();
-    let data = ev.dataTransfer.getData("text");
+    let data = ev.dataTransfer.getData('text');
     let movingElement = document.getElementById(data);
     let movingElementParent = movingElement.parentElement;
     if(ev.target.nodeName == 'LI') {
@@ -96,7 +96,7 @@ function distributeTeams(){
     $('.distribute-teams-form').on('submit', function(event){
         if(leftover_participants.length > 0) {
             let confirm_msg = 'Some participants have not been assigned to a team. Do you still want to proceed?';
-            let confirmation = window.confirmconfirm_msg();
+            let confirmation = window.confirmconfirm_msg(confirm_msg);
             if(!confirmation){
                 event.preventDefault();
             }

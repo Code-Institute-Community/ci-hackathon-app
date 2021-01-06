@@ -338,6 +338,10 @@ form.distribute-teams-form, form.clear-teams-form {
     display: inline-block;
 }
 
+.team-score-container {
+    float:right
+}
+
 .hackathon-sub-details::after {
     content: '';
     display: block;

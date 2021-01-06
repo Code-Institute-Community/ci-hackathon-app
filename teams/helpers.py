@@ -113,8 +113,8 @@ def find_all_combinations(participants, team_sizes):
                                               level)
     # to remove differently sorted combinations with the same elements
     sorted_combinations = [sorted(combo) for combo in combos]
-    combos_without_dupes  = list(set(set(tuple(i)
-                                     for i in sorted_combinations)))
+    combos_without_dupes = list(set(set(tuple(i)
+                                    for i in sorted_combinations)))
     return combos_without_dupes
 
 
