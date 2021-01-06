@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% load teams_tags %}
+{% block content %}
+
+    {% include 'includes/menu.html' %}
+    {% if not teams and not leftover_participants %}
+        <p>Not enough participants have registered yet.</p>
+        
+        <p>Current number of registrations: {{ num_participants }}</p>
+    {% endif %}
+    <div id="team-list">
+    {% if teams %}
+    {% for team_name, team_members in teams.items %}
+    <section class="card shadow mb-3 mt-3">
+        <div class="card-body">
+            <h5 class="p-orange card-title">{{ team_name|format_team_name }}<span class="team-score-container">Team Score: <span id="{{ team_name }}_score">{{ team_members|calculate_team_level }}</span></span></h5>
+            <ol class="team team-drop-area" id="{{ team_name }}" ondrop="drop(event)" ondragover="allowDrop(event)">
+                {% for member in team_members %}
+                <li id="{{team_name}}-{{ forloop.counter0 }}"
+                    data-level={{member.level}}
+                    data-userid={{member.userid}}
+                    draggable="true" ondragstart="drag(event)">{{ member.name }} (level: {{ member.level }})</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </section>
+    {% endfor %}
+    {% endif %}
+    </div>
+
+    {% if leftover_participants %}
+    <section class="card shadow mb-3 mt-3">
+        <div class="card-body">
+            <h5 class="p-orange card-title">Leftover Participants</h5>
+            <ol class="team-drop-area" id="leftover_participants" ondrop="drop(event)" ondragover="allowDrop(event)">
+                {% for participant in leftover_participants %}
+                <li id="leftover_participants-{{ forloop.counter0 }}" 
+                    data-level={{ participant.level }}
+                    data-userid={{ participant.userid }}
+                    draggable="true" ondragstart="drag(event)">{{ participant.name }} (level: {{ participant.level }})</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </section>
+    {% endif %}
+    
+    {% include 'includes/menu.html' %}
+
+{% endblock %}
+
+{% block js %}
+{{ teams|json_script:"_teams" }}
+{{ leftover_participants|json_script:"_leftover_participants" }}
+<script src="{% static 'js/teams.js' %}"></script>
+{% endblock %}

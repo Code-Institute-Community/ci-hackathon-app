@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
+from teams.lists import LMS_LEVELS
 
 
 class Organisation(models.Model):
@@ -44,6 +45,10 @@ class CustomUser(AbstractUser):
         default=Organisation.DEFAULT_PK
     )
 
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
     def __str__(self):
         """  Return Class object to string via the user email value  """
         return self.username
@@ -51,6 +56,9 @@ class CustomUser(AbstractUser):
     def human_readable_current_lms_module(self):
         return self.current_lms_module.replace('_', ' ')
 
-    class Meta:
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
+    def to_team_member(self):
+        return {
+            'userid': self.id,
+            'name': self.username,
+            'level': LMS_LEVELS[self.current_lms_module]
+        }

@@ -67,7 +67,6 @@ class Hackathon(models.Model):
         default='not_yet_started',
         choices=JUDGING_STATUS_CHOICES
     )
-    
 
     def __str__(self):
         return self.display_name
@@ -132,6 +131,11 @@ class HackTeam(models.Model):
 
     def __str__(self):
         return self.display_name
+    
+    class Meta:
+        verbose_name = 'Hack Team'
+        verbose_name_plural = 'Hack Teams'
+        unique_together = ['display_name', 'hackathon']
 
 
 class HackProject(models.Model):
