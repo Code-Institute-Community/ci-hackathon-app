@@ -7,7 +7,8 @@ from .views import (
     HackathonDetailView,
     enroll_toggle,
     judging,
-    check_projects_scores
+    check_projects_scores,
+    view_hackathon
 )
 
 urlpatterns = [
