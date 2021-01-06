@@ -19,8 +19,8 @@ def change_teams(request, hackathon_id):
     for a hackathon and allows for the admin to re-arrange the team members """
     # Redirect user if they are not admin
     if not request.user.is_superuser:
-        return redirect(reverse('hackathon:hackathon_detail',
-                                kwargs={'pk': hackathon_id}))
+        return redirect(reverse('hackathon:view_hackathon',
+                                kwargs={'hackathon_id': hackathon_id}))
 
     edit = False
     hackathon = Hackathon.objects.get(id=hackathon_id)
@@ -80,14 +80,14 @@ def create_teams(request):
             with transaction.atomic():
                 create_teams_in_view(request.user, teams, hackathon_id)
                 messages.success(request, "Teams assigned successfully!")
-            return redirect(reverse('hackathon:hackathon_detail',
-                                    kwargs={'pk': hackathon_id}))
+            return redirect(reverse('hackathon:view_hackathon',
+                                    kwargs={'hackathon_id': hackathon_id}))
         else:
             with transaction.atomic():
                 update_team_participants(request.user, teams, hackathon_id)
                 messages.success(request, "Teams updated successfully!")
-            return redirect(reverse('hackathon:hackathon_detail',
-                                    kwargs={'pk': hackathon_id}))
+            return redirect(reverse('hackathon:view_hackathon',
+                                    kwargs={'hackathon_id': hackathon_id}))
     else: 
         return redirect(reverse('hackathon:hackathon-list'))
 
