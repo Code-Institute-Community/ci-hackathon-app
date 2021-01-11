@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.views.generic import ListView, DetailView
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -258,7 +258,7 @@ def view_hackathon(request, hackathon_id):
         'teams': paged_teams,
     }
 
-    return render(request, "hackathon/hackathon-view.html", context)
+    return render(request, "hackathon/hackathon_view.html", context)
 
 
 @login_required
@@ -285,38 +285,30 @@ class HackathonDetailView(DetailView):
     context_object_name = "hackathon"
 
 
+@login_required
 def enroll_toggle(request):
     user = request.user
     data = {}
     if request.method == "POST":
-
         # Gets the PK of the Hackathon and then the related Hackathon
         hackathon_id = request.POST.get("hackathon-id")
         hackathon = Hackathon.objects.get(pk=hackathon_id)
-
         if user.is_staff:
             if user in hackathon.judges.all():
                 hackathon.judges.remove(user)
-                data["message"] = "You have withdrawn from judging."
                 messages.success(request, "You have withdrawn from judging.")
             else:
                 hackathon.judges.add(user)
-                data["message"] = "You have enrolled as a judge."
                 messages.success(request, "You have enrolled as a judge.")
-        
         else:
             if user in hackathon.participants.all():
                 hackathon.participants.remove(user)
-                data["message"] = "You have withdrawn from this Hackaton."
                 messages.success(request,
                                  "You have withdrawn from this Hackaton.")
             else:
                 hackathon.participants.add(user)
-                data["message"] = "You have enrolled successfully."
                 messages.success(request, "You have enrolled successfully.")
-
-        data["tag"] = "Success"
-        return JsonResponse(data)
-
+        return redirect(reverse('hackathon:view_hackathon',
+                                kwargs={'hackathon_id': hackathon_id}))
     else:
         return HttpResponse(status=403)

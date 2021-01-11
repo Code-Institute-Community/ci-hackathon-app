@@ -426,7 +426,7 @@ form.distribute-teams-form, form.clear-teams-form {
 }
 
 @media (min-width: 991px) {
-    /* Alignment control for Register to Hackathon button on hackathon-view.html template */
+    /* Alignment control for Register to Hackathon button on hackathon_view.html template */
     #hackathon-signup {
         text-align: right;
     }

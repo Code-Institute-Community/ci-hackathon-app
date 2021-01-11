@@ -52,7 +52,7 @@ class TestHackathonViews(TestCase):
 
         response = self.client.get('/hackathon/1/')
         self.assertTemplateUsed(response,
-                                'hackathon/hackathon-view.html')
+                                'hackathon/hackathon_view.html')
 
     def test_judge_enroll_toggle(self):
         """Tests that judges can correctly enroll and withdraw"""
