@@ -67,7 +67,7 @@
             "date_joined":"2020-10-26T21:45:59.264Z",
             "slack_display_name":"R2-D2",
             "user_type":"participant",
-            "current_lms_module":"python_fundamentals",
+            "current_lms_module":"python_essentials",
             "organisation":1,
             "groups":[
                 
@@ -119,7 +119,7 @@
             "date_joined":"2020-10-26T21:53:11.458Z",
             "slack_display_name":"Leia_Organa",
             "user_type":"participant",
-            "current_lms_module":"javascript_fundamentals",
+            "current_lms_module":"javascript_essentials",
             "organisation":1,
             "groups":[
                 
@@ -145,7 +145,7 @@
             "date_joined":"2020-10-26T21:54:54.941Z",
             "slack_display_name":"Owen_Lars",
             "user_type":"participant",
-            "current_lms_module":"html_fundamentals",
+            "current_lms_module":"html_essentials",
             "organisation":1,
             "groups":[
                 
@@ -223,7 +223,7 @@
             "date_joined":"2020-10-26T22:02:30.940Z",
             "slack_display_name":"Chewbacca",
             "user_type":"participant",
-            "current_lms_module":"css_fundamentals",
+            "current_lms_module":"css_essentials",
             "organisation":1,
             "groups":[
                 
@@ -301,7 +301,7 @@
             "date_joined":"2020-10-26T22:08:52.279Z",
             "slack_display_name":"Palpatine",
             "user_type":"participant",
-            "current_lms_module":"full_stack_frameworks with django",
+            "current_lms_module":"full_stack_frameworks_with_django",
             "organisation":1,
             "groups":[
                 
@@ -327,7 +327,7 @@
             "date_joined":"2020-10-26T22:10:28.037Z",
             "slack_display_name":"Boba_Fett",
             "user_type":"participant",
-            "current_lms_module":"python_fundamentals",
+            "current_lms_module":"python_essentials",
             "organisation":1,
             "groups":[
                 
