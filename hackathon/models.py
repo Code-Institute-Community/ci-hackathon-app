@@ -56,7 +56,7 @@ class Hackathon(models.Model):
                                      on_delete=models.SET_NULL,
                                      related_name='hackathon_organisation')
     status = models.CharField(
-        max_length=10,
+        max_length=20,
         blank=False,
         default='draft',
         choices=STATUS_TYPES_CHOICES
