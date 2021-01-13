@@ -273,6 +273,11 @@ html .all-auth-container {
     text-align: left;
     margin: 5px 0;
 }
+
+.enrollments-closed {
+    border-radius: 5px;
+    border: 2px solid var(--p-orange);
+}
 /* Final Score page */
 
 tbody >:first-child {

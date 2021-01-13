@@ -22,8 +22,10 @@
                             </button>
                             <div id="judge-dropdown" class="dropdown-menu judge-dropdown" aria-labelledby="dropdownMenuButton">
                                 {% include 'hackathon/includes/enrollstaff.html' %}
-                                <a class="dropdown-item" href="#">Distribute Teams</a>
-                                <a class="dropdown-item" href="#">Change Hackathon Status</a>
+                                <a class="dropdown-item" href="change_teams">
+                                    {% if hackathon.teams.all|length == 0 %}Distribute{% else %}Change{% endif %} Teams
+                                </a>
+                                <a role="button" class="dropdown-item" id="change-hack-status" data-toggle="modal" data-target="#changeStatusModal">Change Hackathon Status</a>
                                 <a class="dropdown-item" href="#">Judge Teams</a>
                             </div>
                         </div>
@@ -146,6 +148,8 @@
 
         </div>
     </div>
+
+    {% include 'hackathon/includes/change_status.html' %}
 {% endblock %}
 
 {% if request.user %}

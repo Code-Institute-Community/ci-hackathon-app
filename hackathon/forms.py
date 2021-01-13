@@ -68,16 +68,16 @@ class HackathonForm(forms.ModelForm):
         label="Status",
         required=True,
         widget=forms.Select(choices=STATUS_TYPES_CHOICES),
-    ),
+    )
     judging_status = forms.CharField(
         label="Judging Status",
         required=True,
         widget=forms.Select(choices=JUDGING_STATUS_CHOICES),
-    ),
+    )
     organisation = forms.ModelChoiceField(
         label="Organisation",
         queryset=Organisation.objects.order_by('display_name'),
-    ),
+    )
 
     class Meta:
         model = Hackathon
@@ -88,3 +88,19 @@ class HackathonForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(HackathonForm, self).__init__(*args, **kwargs)
         self.fields['organisation'].empty_label = None
+
+
+class ChangeHackathonStatusForm(forms.ModelForm):
+    status = forms.CharField(
+        label="Status",
+        required=True,
+        widget=forms.Select(choices=STATUS_TYPES_CHOICES),
+    )
+
+    class Meta:
+        model = Hackathon
+        fields = ['start_date', 'end_date', 'status']
+        widgets = {
+            'start_date': forms.HiddenInput(),
+            'end_date': forms.HiddenInput()
+            }

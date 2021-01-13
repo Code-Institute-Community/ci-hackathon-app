@@ -1,3 +1,4 @@
+{% if hackathon.status == 'registration_open' %}
 <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
     {% csrf_token %}
     <!--It only sends the hackathon ID.-->
@@ -13,3 +14,8 @@
         {% endif %}
     </button>
 </form>
+{% else %}
+<div class="enrollments-closed mt-4 mb-2 p-3">
+    Registrations for this hackathon are currently not open.
+</div>
+{% endif %}

@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from dateutil.parser import parse
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import messages
@@ -9,7 +10,7 @@ from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 
 from .models import Hackathon, HackTeam, HackProject, HackProjectScore, HackProjectScoreCategory, HackAwardCategory
-from .forms import HackathonForm
+from .forms import HackathonForm, ChangeHackathonStatusForm
 
 
 class HackathonListView(ListView):
@@ -157,10 +158,8 @@ def create_hackathon(request):
     else:
         form = HackathonForm(request.POST)
         # Convert start and end date strings to datetime and validate
-        start_date = datetime.strptime(
-            request.POST.get('start_date'), '%d/%m/%Y %H:%M')
-        end_date = datetime.strptime(
-            request.POST.get('end_date'), '%d/%m/%Y %H:%M')
+        start_date = parse(request.POST.get('start_date'))
+        end_date = parse(request.POST.get('end_date'))
         now = datetime.now()
 
         # Ensure start_date is a day in the future
@@ -207,10 +206,8 @@ def update_hackathon(request, hackathon_id):
     else:
         form = HackathonForm(request.POST, instance=hackathon)
         # Convert start and end date strings to datetime and validate
-        start_date = datetime.strptime(
-            request.POST.get('start_date'), '%d/%m/%Y %H:%M')
-        end_date = datetime.strptime(
-            request.POST.get('end_date'), '%d/%m/%Y %H:%M')
+        start_date = parse(request.POST.get('start_date'))
+        end_date = parse(request.POST.get('end_date'))
         now = datetime.now()
 
         # Ensure start_date is a day in the future for hackathons that haven't started yet
@@ -235,6 +232,23 @@ def update_hackathon(request, hackathon_id):
 
 
 @login_required
+def update_hackathon_status(request, hackathon_id):
+    # Redirect user if they are not admin
+    if not request.user.is_superuser:
+        return redirect("hackathon:hackathon-list")
+    
+    if request.method == 'POST':
+        hackathon = get_object_or_404(Hackathon, id=hackathon_id)
+        hackathon.status = request.POST.get('status')
+        hackathon.save()
+        messages.success(request, 'Hackathon status updated successfully.')
+        return redirect(reverse('hackathon:view_hackathon',
+                                kwargs={'hackathon_id': hackathon_id}))
+    else:
+        return redirect("hackathon:hackathon-list") 
+
+
+@login_required
 def view_hackathon(request, hackathon_id):
     """
     Login required decorator used to prevent user from navigating using URL
@@ -256,6 +270,7 @@ def view_hackathon(request, hackathon_id):
     context = {
         'hackathon': hackathon,
         'teams': paged_teams,
+        'change_status_form': ChangeHackathonStatusForm(instance=hackathon),
     }
 
     return render(request, "hackathon/hackathon_view.html", context)
