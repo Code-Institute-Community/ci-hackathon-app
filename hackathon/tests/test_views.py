@@ -36,6 +36,23 @@ class TestHackathonViews(TestCase):
                                  Hackathon.objects.all().order_by('-created'),
                                  transform=lambda x: x)
 
+    def test_update_hackathon_status(self):
+        """ Tests that the status changes """
+        user = CustomUser.objects.get(pk=1)
+        user.is_superuser = True
+        user.save()
+
+        self.client.force_login(user)
+
+        hackathon = Hackathon.objects.get(pk=1)
+        status_before = hackathon.status
+        response = self.client.post('/hackathon/1/update_hackathon_status',
+                                    {'status': 'finished'},
+                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        hackathon = Hackathon.objects.get(pk=1)
+        self.assertNotEqual(status_before, hackathon.status)
+
     def test_view_hackathon(self):
         """Tests the correct rendering of the hackathon detail page,
         including contexts."""
@@ -67,7 +84,7 @@ class TestHackathonViews(TestCase):
         hackathon = Hackathon.objects.get(pk=1)
 
         # Confirms a non-staff user is refused
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(user in hackathon.participants.all())
         self.assertFalse(user in hackathon.judges.all())
 
@@ -80,7 +97,7 @@ class TestHackathonViews(TestCase):
                                     {'hackathon-id': 1},
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest')
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(user in hackathon.judges.all())
 
         # Confirms staff can withdraw
@@ -88,5 +105,5 @@ class TestHackathonViews(TestCase):
                                     {'hackathon-id': 1},
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest')
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertFalse(user in hackathon.judges.all())
