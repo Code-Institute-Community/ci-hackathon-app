@@ -4,7 +4,11 @@
     <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
     <!-- Must be one long string for the JS script to switch words correctly.
     An alternative would be to have two different buttons.-->
-    <button id="enroll-judge" type="submit" class="dropdown-item" {% if hackathon.status == 'finished' or hackathon.status == 'deleted' %}disabled{% endif %}>
+    <button id="enroll-judge" type="submit" class="dropdown-item" 
+        {% if hackathon.status == 'finished' or hackathon.status == 'deleted' %}
+            disabled
+        {% endif %}
+    >
         {% if user in hackathon.judges.all %}
             Withdraw as Judge
         {% else %}
