@@ -70,7 +70,11 @@
                             <div class="card team-card">
                                 <div class="card-body">
                                     <div class="card-title text-left my-auto">
-                                        <h3 class="team-name">{{ team }}</h3>
+                                        <a href="{% url 'view_team' team_id=team.id %}">
+                                            <h3 class="team-name">
+                                                {{ team }}
+                                            </h3>
+                                        </a>
                                     </div>
                                     <div class="card-text">
                                         <p class="text-left card-text-title">Team members:</p>

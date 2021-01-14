@@ -1,12 +1,31 @@
 {% extends "base.html" %}
 {% load static %}
+{% load teams_tags %}
+
 {% block css %}
 <link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" />
 {% endblock %}
 
 {% block content %}
-<section class="h-100">
-    <h2 class="p-orange text-center mb-4">Team {{team.display_name}}</h2>
-    
-</section>
+<div class="row">
+    <div class="col teams-page">
+
+        <div class="container-fluid">
+            <div class="row teams-header" style="background-image:url({% static '/img/ci-hackathon--horizontal.png' %})">
+                <div class="team-name">
+                    <h2>Team: <i>{{team}}</i></h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 {% endblock %}

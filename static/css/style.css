@@ -36,10 +36,6 @@ a:hover {
 /* Global content border/shadow */
 .main-content-shadow {
     margin-bottom: 3.2rem;
-    padding: 1.2rem;
-    border-radius: .4rem;
-    box-shadow:  5px 5px 9px #d8d8d8, 
-             -6px -6px 7px #ffffff;
 }
 
 /* NAVBAR */
@@ -356,15 +352,35 @@ form.distribute-teams-form, form.clear-teams-form {
     background: var(--s-grey);
 }
 
-    /* Ensure teams in paginated view are centered at all times even when odd number of
-     teams persist in the view. */
+/* Teams page */
+.teams-page {
+    padding: 0px;
+    background: white;
+}
+
+.teams-header {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+}
+
+.team-name {
+    border:2px solid black;
+    background: white;
+    padding: 2px 10px;
+    height:fit-content;
+    border-radius: 0px 0px 15px 0px;
+}
+
+/* Ensure teams in paginated view are centered at all times even when odd number of
+    teams persist in the view. */
 .teams-row {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
 }
 
-    /* Set min-height of team-cards to suit for a minimum of 5 team members & submit project button */
+/* Set min-height of team-cards to suit for a minimum of 5 team members & submit project button */
 .team-card {
     min-height: 380px;
 }

@@ -23,3 +23,7 @@ def dump_json(teams):
     if isinstance(teams, dict):
         return json.dumps(teams)
     return teams
+
+@register.filter
+def modulo(num, val):
+    return num % val == 0
