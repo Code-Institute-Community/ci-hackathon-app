@@ -1,26 +1,9 @@
 {% load static %}
-<div class="card card-no-border team-member-card">
-    {% if member.website_url %}
-    <h5 class="card-text text-center mb-3">
-        {{member.slack_display_name}}
-    </h5>
-    {% else %}
-    <a href="{{member.website_url}}" target="_blank"><h5 class="card-text text-center mb-3">
+
+<div class="card card-no-border team-member-card ml-auto mr-auto">
+
+    <a href="{% url 'show_profile' user_id=member.id %}"><h5 class="card-text text-center mb-3">
         {{member.slack_display_name}}
     </h5></a>
-    {% endif %}
 <img class="card-img-top team-member-img" src="{% static 'img/profiles/profile_cat.png' %}" alt="Profile Image">
-<div class="card-body">
-
-    <p class="text-center mt-2 mb-0"><strong>About</strong></p>
-    {% if member.about %}
-    <p class="text-center">
-        {{member.about}}
-    </p>
-    {% else %}
-    <p class="text-center">
-        Code Instute Student
-    </p>
-    {% endif %}
-</div>
 </div>

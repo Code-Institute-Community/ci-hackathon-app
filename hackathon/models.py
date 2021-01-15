@@ -153,6 +153,7 @@ class HackProject(models.Model):
         related_name="hackproject",)
     display_name = models.CharField(default="", max_length=255)
     description = models.TextField(max_length=500)
+    technologies_used = models.CharField(default="", max_length=1024)
     github_url = models.URLField(default="", max_length=255)
     deployed_url = models.URLField(default="", max_length=255)
     submission_time = models.DateTimeField(auto_now_add=True)

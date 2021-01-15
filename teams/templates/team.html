@@ -17,18 +17,17 @@
                 </div>
             </div>
             
-            <div class="row mt-3">              
-                {% for member in team.participants.all %}
-                    <div class="col-sm-12 col-lg-3 my-3">
+            <div class="row mt-3 team-members-display">              
+                    <div class="col my-3 text-center">
+                        {% for member in team.participants.all %}
                         {% include 'includes/member.html' %}
+                        {% endfor %}
                     </div>
-                    {% if forloop.counter|modulo:4 %}
-                </div>
-                    <div class="row mt-3">  
-                    {% endif %}
                     
-                {% endfor %}
             </div>
+            
+            {% include 'includes/project.html' %}
+
         </div>
 
     </div>

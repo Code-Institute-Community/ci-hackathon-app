@@ -372,6 +372,13 @@ form.distribute-teams-form, form.clear-teams-form {
     border-radius: 0px 0px 15px 0px;
 }
 
+.team-members-display div.col {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-y: auto;
+    margin: 0rem 2rem;
+}
+
 .team-member-img {
     margin-left: auto;
     margin-right: auto;
@@ -381,7 +388,8 @@ form.distribute-teams-form, form.clear-teams-form {
 }
 
 .team-member-card {
-    max-width: 200px;
+    max-width: 150px;
+    display: inline-block;
 }
 
 .team-member-card-body {
