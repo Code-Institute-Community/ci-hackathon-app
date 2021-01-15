@@ -32,7 +32,7 @@ class CustomUser(AbstractUser):
     )
 
     current_lms_module = models.CharField(
-        max_length=35,
+        max_length=55,
         blank=False,
         default='',
         choices=LMS_MODULES_CHOICES
