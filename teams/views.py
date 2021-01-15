@@ -113,4 +113,7 @@ def clear_teams(request):
 def view_team(request, team_id):
     """ View the detailed team information for a HackTeam """
     team = get_object_or_404(HackTeam, id=team_id)
-    return render(request, 'team.html', {'team': team})
+
+    return render(request, 'team.html', {
+        'team': team,
+        })

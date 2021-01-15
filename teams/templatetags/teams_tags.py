@@ -27,3 +27,7 @@ def dump_json(teams):
 @register.filter
 def modulo(num, val):
     return num % val == 0
+
+@register.filter
+def divided_by(num, val):
+    return int(num / val)

@@ -372,6 +372,26 @@ form.distribute-teams-form, form.clear-teams-form {
     border-radius: 0px 0px 15px 0px;
 }
 
+.team-member-img {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    border-radius: 50%;
+    border: 1px solid lightgray;
+}
+
+.team-member-card {
+    max-width: 200px;
+}
+
+.team-member-card-body {
+    border-top: 1px solid lightgray
+}
+
+.card-no-border {
+    border: none;
+}
+
 /* Ensure teams in paginated view are centered at all times even when odd number of
     teams persist in the view. */
 .teams-row {
