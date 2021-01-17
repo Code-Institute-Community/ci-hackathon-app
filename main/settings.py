@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "accounts",
     "hackathon",
     "home",
+    "images",
     "profiles",
     "resources",
     "submissions",

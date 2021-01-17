@@ -15,7 +15,17 @@
         <div class="row">
           <div class="col-12 col-md-3">
             <div class="card mt-4">
-              <img class="card-img-top" src="{% static 'img/profiles/profile_cat.png' %}" alt="Card image cap">
+              <div class="p-3">
+                <button class="btn btn-secondary btn-sm edit-image"
+                  data-image-type="profile_image"
+                  data-toggle="modal" data-target="#uploadImageModal">
+                  <i class="fas fa-pen mr-2"></i>Edit</button>
+                  {% if user.profile_image %}
+                    <img class="card-img-top profile-image" src="{{user.profile_image}}" alt="Profile image">
+                  {% else %}
+                    <img class="card-img-top profile-image" src="{% static 'img/profiles/profile_cat.png' %}" alt="Profile image">
+                  {% endif %}
+              </div>
               <div class="text-center">
                 <p class="mt-2">Welcome: <span class="dark-text">{{ user.username }}</span></p>
                 {% if editable %}
@@ -86,8 +96,11 @@
             </div>
         </div>
     </div>
+
+    {% include 'upload_image.html' %}
+
 {% endblock %}
 
 {% block js %}
-<script src="{% static 'js/profile.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

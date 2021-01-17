@@ -352,6 +352,18 @@ form.distribute-teams-form, form.clear-teams-form {
     background: var(--s-grey);
 }
 
+/* Profile image */
+.profile-image {
+    border-radius: 50%;
+}
+
+/* Edit image*/
+.edit-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
 /* Teams page */
 .teams-page {
     padding: 0px;
@@ -361,7 +373,7 @@ form.distribute-teams-form, form.clear-teams-form {
 .teams-header {
     height: 250px;
     background-size: cover;
-    background-position: center;
+    background-position: center center;
 }
 
 .team-name {
@@ -394,6 +406,14 @@ form.distribute-teams-form, form.clear-teams-form {
 
 .team-member-card-body {
     border-top: 1px solid lightgray
+}
+
+.project-screenshot {
+    width: 100%;
+}
+
+.card .card-body a.teams-link {
+    font-size: 1rem;
 }
 
 .card-no-border {

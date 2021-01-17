@@ -61,7 +61,32 @@ class CustomUser(AbstractUser):
         max_length=255,
         blank=False,
         default='',
-        help_text=('Website, GitHub or Linkedin URL.')
+        help_text=('Website, GitHub or Linkedin URL')
+    )
+
+    profile_image = models.TextField(
+        default='',
+        blank=True,
+        help_text=('Text field to store base64 encoded profile image content.')
+    )
+
+    profile_is_public = models.BooleanField(
+        default=False,
+        help_text=("Enabling this will let other users see your profile "
+                   "inlcuding your name, about, website, where you are on the "
+                   "course")
+    )
+
+    email_is_public = models.BooleanField(
+        default=False,
+        help_text=("Enabling this will let other users see your email address; "
+                   "profile needs to be set to public as well")
+    )
+
+    slack_display_name_is_public = models.BooleanField(
+        default=False,
+        help_text=("Enabling this will let other users see your Slack display "
+                   "name; profile needs to be set to public as well")
     )
 
     class Meta:
