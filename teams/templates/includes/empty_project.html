@@ -1,0 +1,20 @@
+{% load static %}
+
+<div class="row mt-3 mb-2 mt-4 ml-4"> 
+    <div class="col">
+        <h3>Project: {{ team.project.display_name}}</h3>
+    </div>
+</div>
+
+<div class="row mt-3 mb-5 ml-4 mr-4"> 
+    <div class="col">
+        <div class="card p-3">
+            <div class="card-body">
+                No Project submitted yet. <a href="#" class="teams-link">Add project details now!</a>
+                <p class="empty-project-subtitle mt-2 mb-0">
+                    <i>Project details can always be edited until the judging starts.</i>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

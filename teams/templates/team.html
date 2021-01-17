@@ -11,27 +11,51 @@
     <div class="col teams-page">
 
         <div class="container-fluid">
-            <div class="row teams-header" style="background-image:url({% static '/img/ci-hackathon--horizontal.png' %})">
+            {% if  team.header_image %}
+            <div class="row teams-header" 
+                style="background-image:url('{{ team.header_image }}')">
+            {% else %}
+            <div class="row teams-header" 
+                style="background-image:url({% static '/img/ci-hackathon--horizontal.png' %})">
+            {% endif %}
                 <div class="team-name">
+                    <button class="btn btn-secondary btn-sm edit-image"
+                        data-image-type="header_image"
+                        data-identifier="{{team.id}}"
+                        data-toggle="modal" data-target="#uploadImageModal">
+                        <i class="fas fa-pen mr-2"></i>Edit</button>
                     <h2>Team: <i>{{team}}</i></h2>
                 </div>
             </div>
-            
+
+            <div class="row mt-3 mb-2 mt-5 ml-4"> 
+                <div class="col">
+                    <h3>About the team</h3>
+                </div>
+            </div>
+
             <div class="row mt-3 team-members-display">              
-                    <div class="col my-3 text-center">
-                        {% for member in team.participants.all %}
-                        {% include 'includes/member.html' %}
-                        {% endfor %}
-                    </div>
-                    
+                <div class="col my-3 text-center">
+                    {% for member in team.participants.all %}
+                    {% include 'includes/member.html' %}
+                    {% endfor %}
+                </div>
             </div>
             
-            {% include 'includes/project.html' %}
-
+            {% if team.project %}
+                {% include 'includes/project.html' %}
+            {% else %}
+                {% include 'includes/empty_project.html' %}
+            {% endif %}
         </div>
 
     </div>
 </div>
 
+{% include 'upload_image.html' %}
 
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}
