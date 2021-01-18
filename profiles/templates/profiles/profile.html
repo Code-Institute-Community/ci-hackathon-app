@@ -40,7 +40,7 @@
             </div>
           </div>
             <!-- User Information -->
-            <div class="col-12 col-md-5">
+            <div class="col-12 col-md-9">
               <div class="card">
                 <div class="card-body">
                   
@@ -52,32 +52,44 @@
                   {% if '/accounts/edit_profile/' == request.path %}
                   {% else %}
                     {% if is_owner or request.user.is_staff or user.profile_is_public %}
-                    <hr class="w-100 mb-1 thick mt-4">
-                      <div class="user-info mt-4">
-                          <h5>Name: <span class="dark-text">{{ user.full_name|title }}</span></h5>
-                          <hr class="w-100 p-1">
+                    <div class="user-info">
 
-                          <h5>Slack Name: <span class="dark-text">{{ user.slack_display_name }}</span></h5>
-                          <hr class="w-100 p-1">
-                        
-                          <h5>About: </h5>
-                          <p>
-                            {{ user.about|title }}
-                          </p>
-                          <hr class="w-100 p-1">
+                      <label for="fullName">Name</label>
+                      <p id="fullName">
+                        {{ user.full_name|title }}
+                      </p>
 
-                          <h5>Website: <span class="dark-text"><a href="{{ user.website_url }}" target="_blank">{{ user.website_url }}</a></span></h5>
-                          <hr class="w-100 p-1">
+                      <label for="slackName">Slack Name</label>
+                      <p id="slackName">
+                        {{ user.slack_display_name|title }}
+                      </p>
+
+                      <label for="about">About</label>
+                      <p id="about" class="profile-about">{% if user.about %}{{ user.about|title }}{% else %}N/A{% endif %}</p>
+
+                      <label for="latestModule">Latest Module</label>
+                      <p id="latestModule">
+                        {{ user.human_readable_current_lms_module|title }}
+                      </p>
+
+                      <label for="website">Website</label>
+                      <p id="website" class="profile-website-url">
+                        {% if user.website_url %}
+                        <a href="{{ user.website_url }}" target="_blank">
+                          {{ user.website_url|title }}
+                        </a>
+                        {% else %}N/A{% endif %}
+                      </p>
+
+                      {% if is_owner or request.user.is_staff or user.email_is_public %}
+                      <label for="email">Email</label>
+                      <p id="email">
+                        {{ user.email }}
+                      </p>
+                      {% endif %}
                           
-                          {% if is_owner or request.user.is_staff or user.email_is_public %}
-                          <h5>Email: <span class="dark-text">{{ user.email }}</span></h5>
-                          <hr class="w-100 p-1">
-                          {% endif %}
-      
-                          <h5>Current LMS module: <span class="dark-text">{{ user.human_readable_current_lms_module|title}}</span></h5>
-                      </div>
+                    </div>
                     {% else %}
-                    <hr class="w-100 mb-1 thick mt-4">
                     <div class="user-info mt-4">
                       This profile is not public
                     </div>
@@ -88,34 +100,6 @@
               </div>
             </div>
 
-            <!-- User Hackathons -->
-            <div class="col-12 col-md-4 text-center">
-                <div class="user-hack-hall">Hackath<span class="ci-orange">o</span>n Hall</div>
-                <div class="card hackathon-card">
-                  <div class="card-body">
-                    <h5 class="card-title">Hackath<span class="ci-orange">o</span>n #1</h5>
-                    <a href="#" class="btn btn-ci">Go somewhere</a>
-                  </div>
-                </div>
-                <div class="card hackathon-card">
-                  <div class="card-body">
-                    <h5 class="card-title">Hackath<span class="ci-orange">o</span>n #2</h5>
-                    <a href="#" class="btn btn-ci">Go somewhere</a>
-                  </div>
-                </div>
-                <div class="card hackathon-card">
-                  <div class="card-body">
-                    <h5 class="card-title">Hackath<span class="ci-orange">o</span>n #3</h5>
-                    <a href="#" class="btn btn-ci">Go somewhere</a>
-                  </div>
-                </div>
-                <div class="card hackathon-card">
-                  <div class="card-body">
-                    <h5 class="card-title">Hackath<span class="ci-orange">o</span>n #4</h5>
-                    <a href="#" class="btn btn-ci">Go somewhere</a>
-                  </div>
-                </div>
-            </div>
         </div>
     </div>
 

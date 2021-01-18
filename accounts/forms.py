@@ -46,6 +46,9 @@ class EditProfileForm(forms.ModelForm):
     """ 
         Using ModelForm to directly convert the CustomUser model into the EditProfileForm form.
     """
+    about = forms.CharField(widget=forms.Textarea(), required=False)
+    website_url = forms.CharField(required=False)
+
     class Meta:
         model = CustomUser
         fields = (
