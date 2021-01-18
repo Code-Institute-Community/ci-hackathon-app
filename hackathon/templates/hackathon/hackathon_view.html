@@ -15,18 +15,20 @@
 
                 <div class="row">
                     <div class="col p-0">
-                        {% if user.is_superuser %}
+                        {% if user.is_staff %}
                         <div class="dropdown mt-4 mb-2 ">
                             <button class="btn btn-ci dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               Admin Actions
                             </button>
                             <div id="judge-dropdown" class="dropdown-menu judge-dropdown" aria-labelledby="dropdownMenuButton">
+
                                 {% include 'hackathon/includes/enrollstaff.html' %}
+                                {% if user.is_superuser %}
                                 <a class="dropdown-item" href="change_teams">
                                     {% if hackathon.teams.all|length == 0 %}Distribute{% else %}Change{% endif %} Teams
                                 </a>
                                 <a role="button" class="dropdown-item" id="change-hack-status" data-toggle="modal" data-target="#changeStatusModal">Change Hackathon Status</a>
-                                <a class="dropdown-item" href="#">Judge Teams</a>
+                                {% endif %}
                             </div>
                         </div>
                         {% else %}
@@ -87,8 +89,14 @@
                                     <!-- Render project submission button if user is participant of team -->
                                     {% if user in team.participants.get_queryset %}
                                         <div class="text-left">
-                                            <a href="#" class="btn btn-ci">Submit Project</a>
+                                            <a href="/teams/{{team.id}}/project/" class="btn btn-ci">Edit Project</a>
                                         </div>
+                                    {% elif user in hackathon.judges.all %}
+                                        {% if hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
+                                        <div class="text-left">
+                                            <a href="/hackathon/{{hackathon.id}}/team/{{team.id}}/judging/" class="btn btn-ci">Edit Scores</a>
+                                        </div>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                             </div>
