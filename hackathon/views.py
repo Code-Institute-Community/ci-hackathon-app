@@ -48,31 +48,31 @@ def judging(request, hack_id, team_id):
     # verify whether user is judge for the hackathon
     if hackathon not in Hackathon.objects.filter(judges=request.user):
         messages.error(request, "You are not a judge for that event!")
-        return render(request, 'home/index.html')
+        return redirect(reverse('home'))
 
-    # verify if hackathon is ready to be judged (judging_status == 'open')
-    if hackathon.judging_status != 'open':
+    # verify if hackathon is ready to be judged
+    if hackathon.status not in ['hack_in_progress', 'judging']:
         messages.error(
-            request, f"Judging is not open! {hackathon.judging_status}!")
-        return render(request, 'home/index.html')
+            request, f"Judging is not open! {hackathon.status}!")
+        return redirect(reverse('home'))
 
     # verify that the selected team belongs to the selected hackathon
     if team.hackathon != hackathon:
         messages.error(
             request, f"Nice try! That team is not part of the event...")
-        return render(request, 'home/index.html')
+        return redirect(reverse('home'))
 
     # check if the judge has already scored the requested team's Project
     project = get_object_or_404(HackTeam, pk=team_id).project
     if not project:
         messages.error(
             request, f"The team doesn't have a project yet, check back later...")
-        return render(request, 'home/index.html')
+        return redirect(reverse('home'))
     judge_has_scored_this = False
     if HackProjectScore.objects.filter(judge=request.user, project=project):
         messages.error(
             request, f"Oooops, sorry! Something went wrong, you have already scored that team...")
-        return render(request, 'home/index.html')
+        return redirect(reverse('home'))
 
     if request.method == 'POST':
         # judge score submitted for a team
