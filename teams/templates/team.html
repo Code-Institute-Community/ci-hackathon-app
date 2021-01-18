@@ -19,11 +19,13 @@
                 style="background-image:url({% static '/img/ci-hackathon--horizontal.png' %})">
             {% endif %}
                 <div class="team-name">
+                    {% if request.user in team.participants.all %}
                     <button class="btn btn-secondary btn-sm edit-image"
                         data-image-type="header_image"
                         data-identifier="{{team.id}}"
                         data-toggle="modal" data-target="#uploadImageModal">
                         <i class="fas fa-pen mr-2"></i>Edit</button>
+                    {% endif %}
                     <h2>Team: <i>{{team}}</i></h2>
                 </div>
             </div>
@@ -43,7 +45,11 @@
             </div>
             
             {% if team.project %}
+                {% if team.project.share_permission or request.user.is_staff or request.user in team.participants.all %}
                 {% include 'includes/project.html' %}
+                {% else %}
+                {% include 'includes/project_not_visible.html' %}
+                {% endif %}
             {% else %}
                 {% include 'includes/empty_project.html' %}
             {% endif %}

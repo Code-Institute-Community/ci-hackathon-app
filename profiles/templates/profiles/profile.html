@@ -16,10 +16,12 @@
           <div class="col-12 col-md-3">
             <div class="card mt-4">
               <div class="p-3">
-                <button class="btn btn-secondary btn-sm edit-image"
-                  data-image-type="profile_image"
-                  data-toggle="modal" data-target="#uploadImageModal">
-                  <i class="fas fa-pen mr-2"></i>Edit</button>
+                  {% if editable %}
+                  <button class="btn btn-secondary btn-sm edit-image"
+                    data-image-type="profile_image"
+                    data-toggle="modal" data-target="#uploadImageModal">
+                    <i class="fas fa-pen mr-2"></i>Edit</button>
+                  {% endif %}
                   {% if user.profile_image %}
                     <img class="card-img-top profile-image" src="{{user.profile_image}}" alt="Profile image">
                   {% else %}

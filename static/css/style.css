@@ -364,6 +364,29 @@ form.distribute-teams-form, form.clear-teams-form {
     right: 5px;
 }
 
+.edit-image.screenshot-image {
+    position: relative;
+    top: 0px;
+    right: 0px;
+}
+
+/* Create Project */
+.create-project-card * {
+    width: 100%;
+    max-width: none;
+}
+
+
+.card .card-body div.project-form-buttons a,
+.card .card-body div.project-form-buttons button {
+    display: inline-block;
+    font-size: 1em;
+    line-height: 1.5em;
+    width: fit-content;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
 /* Teams page */
 .teams-page {
     padding: 0px;

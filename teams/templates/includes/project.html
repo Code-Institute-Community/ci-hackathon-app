@@ -9,15 +9,20 @@
 <div class="row mt-3 mb-5 ml-4 mr-4"> 
     <div class="col-md-12 col-lg-3">
         <div class="card">
+            {% if request.user in team.participants.all %}
             <button class="btn btn-secondary btn-sm edit-image" 
                 data-image-type="project_image"
                 data-identifier="{{team.project.id}}"
                 data-toggle="modal" data-target="#uploadImageModal">
                 <i class="fas fa-pen mr-2"></i>Edit</button>
+            {% endif %}
             {% if team.project.project_image %}
                 <img src="{{team.project.project_image}}" onerror="this.src = {% static 'img/ci-hackathon--square.png' %}" width="100%" />
             {% else %}
                 <img src="{% static 'img/ci-hackathon--square.png' %}" width="100%" />
+            {% endif %}
+            {% if request.user in team.participants.all %}
+            <a role="button" class="btn btn-ci mt-2" href="project/">Edit Project</a>
             {% endif %}
         </div>
     </div>
@@ -74,11 +79,20 @@
 
             <div class="card-body">
                 <div class="card-title">
-                    <h4>Screenshot</h4>
+                    
+                    <h4>Screenshot
+                        {% if request.user in team.participants.all %}
+                        <button class="btn btn-secondary btn-sm edit-image screenshot-image" 
+                        data-image-type="screenshot"
+                        data-identifier="{{team.project.id}}"
+                        data-toggle="modal" data-target="#uploadImageModal">
+                        <i class="fas fa-pen mr-2"></i>Edit</button>
+                        {% endif %}
+                    </h4>
                 </div>
                 <div class="card-text">
-                    {% if team.project.screenshot_url %}
-                        <img src="{{team.project.screenshot_url}}" class="project-screenshot" />
+                    {% if team.project.screenshot %}
+                        <img src="{{team.project.screenshot}}" class="project-screenshot" />
                     {% else %}
                         N/A
                     {% endif %}

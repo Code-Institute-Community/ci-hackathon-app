@@ -1,7 +1,7 @@
 from django import forms
 
 from accounts.models import Organisation
-from .models import Hackathon
+from .models import Hackathon, HackProject
 from .lists import STATUS_TYPES_CHOICES, JUDGING_STATUS_CHOICES
 
 class HackathonForm(forms.ModelForm):

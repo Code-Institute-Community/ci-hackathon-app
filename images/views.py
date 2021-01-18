@@ -8,7 +8,8 @@ from .helpers import image_to_base64str
 from accounts.models import CustomUser
 from hackathon.models import HackTeam, HackProject
 
-VALID_UPLOAD_TYPES = ['profile_image', 'header_image', 'project_image']
+VALID_UPLOAD_TYPES = ['profile_image', 'header_image', 'project_image',
+                      'screenshot']
 
 
 def save_image(request):
@@ -33,13 +34,16 @@ def save_image(request):
             user.profile_image = image_to_base64str(upload_file)
             user.save()
         elif upload_type == 'header_image':
-            print(upload_id)
             team = HackTeam.objects.get(id=upload_id)
             team.header_image = image_to_base64str(upload_file)
             team.save()
         elif upload_type == 'project_image':
             project = HackProject.objects.get(id=upload_id)
             project.project_image = image_to_base64str(upload_file)
+            project.save()
+        elif upload_type == 'screenshot':
+            project = HackProject.objects.get(id=upload_id)
+            project.screenshot = image_to_base64str(upload_file)
             project.save()
 
         messages.success(request, 'Image uploaded successfully.')

@@ -158,7 +158,9 @@ class HackProject(models.Model):
         related_name="hackproject",)
     display_name = models.CharField(default="", max_length=255)
     description = models.TextField(max_length=500)
-    technologies_used = models.CharField(default="", max_length=1024)
+    technologies_used = models.CharField(
+        default="", max_length=1024, 
+        help_text=("Add any technologies that were used for this project"))
     project_image = models.TextField(
         default="",
         blank=True,
