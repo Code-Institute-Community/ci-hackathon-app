@@ -9,8 +9,8 @@
     {% if hackathons %}
         <h2 class="p-orange text-center mb-4">Hackathons</h2>
         {% for hackathon in hackathons %}
-            {% if hackathon.organisation == 'Code Institute' or hackathon.organisation == user.organisation %}
-                {% if hackathon.status == 'published' or user == hackathon.created_by %}
+            {% if hackathon.organisation == 1 or hackathon.organisation == user.organisation %}
+                {% if hackathon.status != 'draft' or user == hackathon.created_by %}
                     {% if not hackathon.status == 'deleted' %}
                         {% include 'hackathon/includes/hackathon_card.html' %}
                     {% endif %}

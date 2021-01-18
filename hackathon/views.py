@@ -1,7 +1,8 @@
 from datetime import datetime
 
+from dateutil.parser import parse
 from django.views.generic import ListView, DetailView
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -9,7 +10,7 @@ from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 
 from .models import Hackathon, HackTeam, HackProject, HackProjectScore, HackProjectScoreCategory, HackAwardCategory
-from .forms import HackathonForm
+from .forms import HackathonForm, ChangeHackathonStatusForm
 
 
 class HackathonListView(ListView):
@@ -157,10 +158,8 @@ def create_hackathon(request):
     else:
         form = HackathonForm(request.POST)
         # Convert start and end date strings to datetime and validate
-        start_date = datetime.strptime(
-            request.POST.get('start_date'), '%d/%m/%Y %H:%M')
-        end_date = datetime.strptime(
-            request.POST.get('end_date'), '%d/%m/%Y %H:%M')
+        start_date = parse(request.POST.get('start_date'))
+        end_date = parse(request.POST.get('end_date'))
         now = datetime.now()
 
         # Ensure start_date is a day in the future
@@ -207,10 +206,8 @@ def update_hackathon(request, hackathon_id):
     else:
         form = HackathonForm(request.POST, instance=hackathon)
         # Convert start and end date strings to datetime and validate
-        start_date = datetime.strptime(
-            request.POST.get('start_date'), '%d/%m/%Y %H:%M')
-        end_date = datetime.strptime(
-            request.POST.get('end_date'), '%d/%m/%Y %H:%M')
+        start_date = parse(request.POST.get('start_date'))
+        end_date = parse(request.POST.get('end_date'))
         now = datetime.now()
 
         # Ensure start_date is a day in the future for hackathons that haven't started yet
@@ -235,6 +232,23 @@ def update_hackathon(request, hackathon_id):
 
 
 @login_required
+def update_hackathon_status(request, hackathon_id):
+    # Redirect user if they are not admin
+    if not request.user.is_superuser:
+        return redirect("hackathon:hackathon-list")
+    
+    if request.method == 'POST':
+        hackathon = get_object_or_404(Hackathon, id=hackathon_id)
+        hackathon.status = request.POST.get('status')
+        hackathon.save()
+        messages.success(request, 'Hackathon status updated successfully.')
+        return redirect(reverse('hackathon:view_hackathon',
+                                kwargs={'hackathon_id': hackathon_id}))
+    else:
+        return redirect("hackathon:hackathon-list") 
+
+
+@login_required
 def view_hackathon(request, hackathon_id):
     """
     Login required decorator used to prevent user from navigating using URL
@@ -256,9 +270,10 @@ def view_hackathon(request, hackathon_id):
     context = {
         'hackathon': hackathon,
         'teams': paged_teams,
+        'change_status_form': ChangeHackathonStatusForm(instance=hackathon),
     }
 
-    return render(request, "hackathon/hackathon-view.html", context)
+    return render(request, "hackathon/hackathon_view.html", context)
 
 
 @login_required
@@ -285,38 +300,30 @@ class HackathonDetailView(DetailView):
     context_object_name = "hackathon"
 
 
+@login_required
 def enroll_toggle(request):
     user = request.user
     data = {}
     if request.method == "POST":
-
         # Gets the PK of the Hackathon and then the related Hackathon
         hackathon_id = request.POST.get("hackathon-id")
         hackathon = Hackathon.objects.get(pk=hackathon_id)
-
         if user.is_staff:
             if user in hackathon.judges.all():
                 hackathon.judges.remove(user)
-                data["message"] = "You have withdrawn from judging."
                 messages.success(request, "You have withdrawn from judging.")
             else:
                 hackathon.judges.add(user)
-                data["message"] = "You have enrolled as a judge."
                 messages.success(request, "You have enrolled as a judge.")
-        
         else:
             if user in hackathon.participants.all():
                 hackathon.participants.remove(user)
-                data["message"] = "You have withdrawn from this Hackaton."
                 messages.success(request,
                                  "You have withdrawn from this Hackaton.")
             else:
                 hackathon.participants.add(user)
-                data["message"] = "You have enrolled successfully."
                 messages.success(request, "You have enrolled successfully.")
-
-        data["tag"] = "Success"
-        return JsonResponse(data)
-
+        return redirect(reverse('hackathon:view_hackathon',
+                                kwargs={'hackathon_id': hackathon_id}))
     else:
         return HttpResponse(status=403)

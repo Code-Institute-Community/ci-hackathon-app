@@ -8,7 +8,8 @@ from .views import (
     enroll_toggle,
     judging,
     check_projects_scores,
-    view_hackathon
+    view_hackathon,
+    update_hackathon_status,
 )
 from teams.views import change_teams
 
@@ -22,6 +23,8 @@ urlpatterns = [
          name='view_hackathon'),
     path("<int:hackathon_id>/update", update_hackathon,
          name="update_hackathon"),
+     path("<int:hackathon_id>/update_hackathon_status", update_hackathon_status,
+         name="update_hackathon_status"),
     path("<int:hackathon_id>/delete", delete_hackathon,
          name="delete_hackathon"),
     path('enroll/', enroll_toggle, name='enroll_toggle'),

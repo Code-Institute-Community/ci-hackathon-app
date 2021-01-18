@@ -273,6 +273,11 @@ html .all-auth-container {
     text-align: left;
     margin: 5px 0;
 }
+
+.enrollments-closed {
+    border-radius: 5px;
+    border: 2px solid var(--p-orange);
+}
 /* Final Score page */
 
 tbody >:first-child {
@@ -426,7 +431,7 @@ form.distribute-teams-form, form.clear-teams-form {
 }
 
 @media (min-width: 991px) {
-    /* Alignment control for Register to Hackathon button on hackathon-view.html template */
+    /* Alignment control for Register to Hackathon button on hackathon_view.html template */
     #hackathon-signup {
         text-align: right;
     }
