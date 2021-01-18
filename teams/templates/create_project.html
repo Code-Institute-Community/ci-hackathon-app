@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body create-project-card">
+                <div class="card-title">
+                    <h4>Project Details</h4>
+                </div>
+                <div class="card-text">
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.display_name|as_crispy_field }}
+                        {{ form.description|as_crispy_field }}
+                        {{ form.technologies_used|as_crispy_field }}
+                        {{ form.github_url|as_crispy_field }}
+                        {{ form.deployed_url|as_crispy_field }}
+                        {{ form.speaker_name|as_crispy_field }}
+                        {{ form.share_permission|as_crispy_field }}
+                        <div class="project-form-buttons">
+                            <button class="btn btn-primary">Save</button>
+                            <a role="button" class="btn btn-danger"
+                                href="/teams/{{team_id}}">Back</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

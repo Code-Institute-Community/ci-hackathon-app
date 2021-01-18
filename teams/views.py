@@ -6,11 +6,12 @@ from django.db import transaction
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from accounts.models import CustomUser
-from hackathon.models import Hackathon, HackTeam
+from hackathon.models import Hackathon, HackTeam, HackProject
 from teams.helpers import choose_team_sizes, group_participants,\
                           choose_team_levels, find_all_combinations,\
                           distribute_participants_to_teams,\
                           create_teams_in_view, update_team_participants
+from teams.forms import HackProjectForm
 
 
 @login_required
@@ -110,6 +111,7 @@ def clear_teams(request):
         return redirect(reverse('hackathon:hackathon-list'))
 
 
+@login_required
 def view_team(request, team_id):
     """ View the detailed team information for a HackTeam """
     team = get_object_or_404(HackTeam, id=team_id)
@@ -117,3 +119,28 @@ def view_team(request, team_id):
     return render(request, 'team.html', {
         'team': team,
         })
+
+
+@login_required
+def create_project(request, team_id):
+    """ Create a new HackProject for a team """
+    hack_team = get_object_or_404(HackTeam, id=team_id)
+    hack_project = HackProject.objects.filter(hackteam=hack_team)
+
+    if request.method == 'POST':
+        form = HackProjectForm(request.POST, instance=hack_project.get())
+        if form.is_valid():
+            hack_project = form.save()
+            hack_team.project = hack_project
+            hack_team.save()
+
+            return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+    else:
+        if hack_project:
+            form = HackProjectForm(instance=hack_project.get())
+        else:
+            form = HackProjectForm()
+    return render(request, 'create_project.html', {
+        'form': form,
+        'team_id': team_id
+    })
