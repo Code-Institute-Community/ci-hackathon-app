@@ -46,12 +46,15 @@ class EditProfileForm(forms.ModelForm):
     """ 
         Using ModelForm to directly convert the CustomUser model into the EditProfileForm form.
     """
-
     class Meta:
         model = CustomUser
         fields = (
             'email',
             'full_name',
+            'about',
             'slack_display_name',
-            'current_lms_module'
+            'current_lms_module',
+            'website_url',
+            'profile_is_public',
+            'email_is_public',
         )

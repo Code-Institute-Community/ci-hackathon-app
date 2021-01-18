@@ -14,9 +14,9 @@
     <div class="container">
         <div class="row">
           <div class="col-12 col-md-3">
-            <div class="card mt-4">
+            <div class="card">
               <div class="p-3">
-                  {% if editable %}
+                  {% if is_owner %}
                   <button class="btn btn-secondary btn-sm edit-image"
                     data-image-type="profile_image"
                     data-toggle="modal" data-target="#uploadImageModal">
@@ -29,45 +29,65 @@
                   {% endif %}
               </div>
               <div class="text-center">
-                <p class="mt-2">Welcome: <span class="dark-text">{{ user.username }}</span></p>
-                {% if editable %}
+                {% if is_owner %}
+                <p class="mt-2">Welcome: <span class="dark-text">{{ user.slack_display_name }}</span></p>
                 <p><a class="btn btn-ci" href="{% url 'edit_profile' %}"><i class="fas fa-user-edit p-1"></i>Edit Profile</a></p>
                 <p><a class="btn btn-ci" href="{% url 'account_change_password' %}"><i class="fas fa-key p-1"></i></i>Change Password</a></p>
+                {% else %}
+                <p class="mt-2"><span class="dark-text">{{ user.slack_display_name }}</span></p>
                 {% endif %}
               </div>
             </div>
           </div>
             <!-- User Information -->
             <div class="col-12 col-md-5">
-              <div class="edit-profile dark-text">
-                <!-- Edit Profile Form -->
-                {% block edit_profile %}
-                {% endblock %}
-              </div>
-              {% if '/accounts/edit_profile/' == request.path %}
-              {% else %}
-              <hr class="w-100 mb-1 thick mt-4">
-                <div class="user-info mt-4">
+              <div class="card">
+                <div class="card-body">
+                  
+                  <div class="edit-profile dark-text">
+                    <!-- Edit Profile Form -->
+                    {% block edit_profile %}
+                    {% endblock %}
+                  </div>
+                  {% if '/accounts/edit_profile/' == request.path %}
+                  {% else %}
+                    {% if is_owner or request.user.is_staff or user.profile_is_public %}
+                    <hr class="w-100 mb-1 thick mt-4">
+                      <div class="user-info mt-4">
+                          <h5>Name: <span class="dark-text">{{ user.full_name|title }}</span></h5>
+                          <hr class="w-100 p-1">
 
-                    <h5>First Name: <span class="dark-text">{{ user.first_name|title }}</span></h5>
-                    <hr class="w-100 p-1">
+                          <h5>Slack Name: <span class="dark-text">{{ user.slack_display_name }}</span></h5>
+                          <hr class="w-100 p-1">
+                        
+                          <h5>About: </h5>
+                          <p>
+                            {{ user.about|title }}
+                          </p>
+                          <hr class="w-100 p-1">
 
-                    <h5>Last Name: <span class="dark-text">{{ user.last_name|title }}</span></h5>
-                    <hr class="w-100 p-1">
+                          <h5>Website: <span class="dark-text"><a href="{{ user.website_url }}" target="_blank">{{ user.website_url }}</a></span></h5>
+                          <hr class="w-100 p-1">
+                          
+                          {% if is_owner or request.user.is_staff or user.email_is_public %}
+                          <h5>Email: <span class="dark-text">{{ user.email }}</span></h5>
+                          <hr class="w-100 p-1">
+                          {% endif %}
+      
+                          <h5>Current LMS module: <span class="dark-text">{{ user.human_readable_current_lms_module|title}}</span></h5>
+                      </div>
+                    {% else %}
+                    <hr class="w-100 mb-1 thick mt-4">
+                    <div class="user-info mt-4">
+                      This profile is not public
+                    </div>
+                    {% endif %}
+                  {% endif %}
 
-                    <h5>Email: <span class="dark-text">{{ user.email }}</span></h5>
-                    <hr class="w-100 p-1">
-
-                    <h5>Slack Name: <span class="dark-text">{{ user.slack_display_name }}</span></h5>
-                    <hr class="w-100 p-1">
-
-                    <h5>User Type: <span class="dark-text">{{ user.user_type|title}}</span></h5>
-                    <hr class="w-100 p-1">
-
-                    <h5>Current LMS module: <span class="dark-text">{{ user.human_readable_current_lms_module|title}}</span></h5>
                 </div>
-              {% endif %}
+              </div>
             </div>
+
             <!-- User Hackathons -->
             <div class="col-12 col-md-4 text-center">
                 <div class="user-hack-hall">Hackath<span class="ci-orange">o</span>n Hall</div>

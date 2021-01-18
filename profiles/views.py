@@ -9,7 +9,7 @@ from accounts.models import CustomUser
 def profile(request, user_id=None):
     """ Display the user's profile. """
     context = {
-        'editable': True,
+        'is_owner': True,
     }
     
     if user_id is not None:
@@ -21,7 +21,9 @@ def profile(request, user_id=None):
                 or user.organisation == request.user.organisation
                 or request.user.is_staff):
             context['user'] = user
-            context['editable'] = False
+        else:
+            return 
+        context['is_owner'] = False
 
     template = "profiles/profile.html"
     return render(request, template, context)

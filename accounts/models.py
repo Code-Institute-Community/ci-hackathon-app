@@ -83,12 +83,6 @@ class CustomUser(AbstractUser):
                    "profile needs to be set to public as well")
     )
 
-    slack_display_name_is_public = models.BooleanField(
-        default=False,
-        help_text=("Enabling this will let other users see your Slack display "
-                   "name; profile needs to be set to public as well")
-    )
-
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
