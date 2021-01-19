@@ -136,6 +136,7 @@ def check_projects_scores(request, hack_id):
             print(hack_awards_formset.errors)
             pass
         return redirect(reverse('hackathon:final_score', kwargs={'hack_id': hack_id}))
+
     else:
         team_scores = {}
         score_categories = HackProjectScoreCategory.objects.all()
@@ -144,6 +145,25 @@ def check_projects_scores(request, hack_id):
             project_id__in=hackathon_projects).all()
         judges = hackathon.judges.all()
 
+        # Creating scores data structure
+        # {
+        #   team_name: {
+        #       team_name: 'Team',
+        #       project_name: 'Project',
+        #       scores: {
+        #           judge_1: {
+        #               'Score Category 1': 1,
+        #               ...
+        #               'Score Category n': 1,
+        #               'Total': 2
+        #           },
+        #           judge_n: {
+        #               ...
+        #           }
+        #       },
+        #       total_score: 5
+        #   }
+        # }
         for score in scores:
             judge_name = score.judge.slack_display_name
             team_name = score.project.hackteam.display_name
