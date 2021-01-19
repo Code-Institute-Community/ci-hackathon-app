@@ -304,6 +304,10 @@ h1.table_titles{
     padding: 2vh
 }
 
+.card .card-body form.hack-award-submission {
+    max-width: none;
+}
+
 .bg-p-blue {
     background-color: var(--p-blue);  
 }

@@ -90,10 +90,10 @@ class HackAwardCategory(models.Model):
                                   on_delete=models.CASCADE,
                                   related_name="awards")
     # One category can have one winner: One to One
-    winning_project = models.OneToOneField("HackProject",
-                                           null=True,
-                                           blank=True,
-                                           on_delete=models.SET_NULL)
+    winning_project = models.ForeignKey("HackProject",
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.display_name
@@ -222,6 +222,10 @@ class HackProjectScoreCategory(models.Model):
                                    on_delete=models.CASCADE,
                                    related_name="hackprojectscorecategories")
     category = models.CharField(default="", max_length=255)
+    hackathon = models.ForeignKey(Hackathon,
+                                  null=True, blank=True,
+                                  on_delete=models.SET_NULL,
+                                  related_name="hackprojectscorecategories")
     # Score Categories can have different score range (e.g. 1-10, 1-15)
     # these fields set the scale
     min_score = models.IntegerField(default=1)

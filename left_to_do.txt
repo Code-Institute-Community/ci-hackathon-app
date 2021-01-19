@@ -1,0 +1,3 @@
+- Discuss if we want to exclude judges who have not scored all teams from the scoring
+- Add view to edit awards for hackathon / add it to create form
+- Add field and upload for hackathon image

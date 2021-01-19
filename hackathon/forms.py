@@ -1,7 +1,8 @@
 from django import forms
+from django.forms import BaseModelFormSet
 
 from accounts.models import Organisation
-from .models import Hackathon, HackProject
+from .models import Hackathon, HackProject, HackAwardCategory
 from .lists import STATUS_TYPES_CHOICES, JUDGING_STATUS_CHOICES
 
 class HackathonForm(forms.ModelForm):
@@ -104,3 +105,24 @@ class ChangeHackathonStatusForm(forms.ModelForm):
             'start_date': forms.HiddenInput(),
             'end_date': forms.HiddenInput()
             }
+
+
+class HackAwardCategoryForm(forms.ModelForm):
+
+    display_name = forms.CharField(
+        label='Award Category Name',
+        widget=forms.TextInput(
+            attrs={
+                'readonly': True
+            }
+        ),
+        required=True
+    )
+
+    class Meta:
+        model = HackAwardCategory
+        fields = ('id', 'display_name', 'winning_project')
+
+    def __init__(self, *args, **kwargs):
+        super(HackAwardCategoryForm, self).__init__(*args, **kwargs)
+        self.fields['display_name'].widget.attrs['readonly'] = True
