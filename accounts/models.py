@@ -18,6 +18,13 @@ class Organisation(models.Model):
 
 class CustomUser(AbstractUser):
     """ Custom user model extending the basic AbstractUser model """
+
+    full_name = models.CharField(
+        max_length=255,
+        blank=False,
+        default=''
+    )
+
     slack_display_name = models.CharField(
         max_length=80,
         blank=False,
@@ -27,7 +34,7 @@ class CustomUser(AbstractUser):
     user_type = models.CharField(
         max_length=20,
         blank=False,
-        default='',
+        default='participant',
         choices=USER_TYPES_CHOICES
     )
 
@@ -43,6 +50,37 @@ class CustomUser(AbstractUser):
         on_delete=models.CASCADE,
         related_name='user_organisation',
         default=Organisation.DEFAULT_PK
+    )
+
+    about = models.TextField(
+        default='',
+        help_text=('A short description of yourself')
+    )
+
+    website_url = models.URLField(
+        max_length=255,
+        blank=False,
+        default='',
+        help_text=('Website, GitHub or Linkedin URL')
+    )
+
+    profile_image = models.TextField(
+        default='',
+        blank=True,
+        help_text=('Text field to store base64 encoded profile image content.')
+    )
+
+    profile_is_public = models.BooleanField(
+        default=False,
+        help_text=("Enabling this will let other users see your profile "
+                   "inlcuding your name, about, website, where you are on the "
+                   "course")
+    )
+
+    email_is_public = models.BooleanField(
+        default=False,
+        help_text=("Enabling this will let other users see your email address; "
+                   "profile needs to be set to public as well")
     )
 
     class Meta:

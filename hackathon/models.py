@@ -112,12 +112,17 @@ class HackTeam(models.Model):
                                    on_delete=models.CASCADE,
                                    related_name="hackteams")
     display_name = models.CharField(default="", max_length=254)
+    header_image = models.TextField(
+        default="",
+        blank=True,
+        help_text=("Image displayed at the top of the team's page.")
+    )
     # users could be the participants of more than one Hackathon, on different
     # teams and a team is made of a number of participants - Many to Many
     # Issue is that a user could join more than one team on the same Hackathon.
     # Could use a custom save method to prevent it.
     participants = models.ManyToManyField(User,
-                                          related_name='hackteam')
+                                          related_name="hackteam")
     # A team participates in one Hackathon and
     # a Hackathon has numerous teams: One to Many.
     hackathon = models.ForeignKey(Hackathon,
@@ -133,9 +138,9 @@ class HackTeam(models.Model):
         return self.display_name
     
     class Meta:
-        verbose_name = 'Hack Team'
-        verbose_name_plural = 'Hack Teams'
-        unique_together = ['display_name', 'hackathon']
+        verbose_name = "Hack Team"
+        verbose_name_plural = "Hack Teams"
+        unique_together = ["display_name", "hackathon"]
 
 
 class HackProject(models.Model):
@@ -153,6 +158,20 @@ class HackProject(models.Model):
         related_name="hackproject",)
     display_name = models.CharField(default="", max_length=255)
     description = models.TextField(max_length=500)
+    technologies_used = models.CharField(
+        default="", max_length=1024, 
+        help_text=("Add any technologies that were used for this project"))
+    project_image = models.TextField(
+        default="",
+        blank=True,
+        help_text=("Image displayed next to the project on the team's page.")
+    )
+    screenshot = models.TextField(
+        default="",
+        blank=True,
+        help_text=("Project screenshot displayed on the team's page "
+                   "underneath the project information")
+    )
     github_url = models.URLField(default="", max_length=255)
     deployed_url = models.URLField(default="", max_length=255)
     submission_time = models.DateTimeField(auto_now_add=True)

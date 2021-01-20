@@ -36,10 +36,6 @@ a:hover {
 /* Global content border/shadow */
 .main-content-shadow {
     margin-bottom: 3.2rem;
-    padding: 1.2rem;
-    border-radius: .4rem;
-    box-shadow:  5px 5px 9px #d8d8d8, 
-             -6px -6px 7px #ffffff;
 }
 
 /* NAVBAR */
@@ -356,15 +352,106 @@ form.distribute-teams-form, form.clear-teams-form {
     background: var(--s-grey);
 }
 
-    /* Ensure teams in paginated view are centered at all times even when odd number of
-     teams persist in the view. */
+/* Profile image */
+.profile-image {
+    border-radius: 50%;
+}
+
+/* Edit image*/
+.edit-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.edit-image.screenshot-image {
+    position: relative;
+    top: 0px;
+    right: 0px;
+}
+
+/* Create Project */
+.create-project-card * {
+    width: 100%;
+    max-width: none;
+}
+
+
+.card .card-body div.project-form-buttons a,
+.card .card-body div.project-form-buttons button {
+    display: inline-block;
+    font-size: 1em;
+    line-height: 1.5em;
+    width: fit-content;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+/* Teams page */
+.teams-page {
+    padding: 0px;
+    background: white;
+}
+
+.teams-header {
+    height: 250px;
+    background-size: cover;
+    background-position: center center;
+}
+
+.team-name {
+    border:2px solid black;
+    background: white;
+    padding: 2px 10px;
+    height:fit-content;
+    border-radius: 0px 0px 15px 0px;
+}
+
+.team-members-display div.col {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-y: auto;
+    margin: 0rem 2rem;
+}
+
+.team-member-img {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    border-radius: 50%;
+    border: 1px solid lightgray;
+}
+
+.team-member-card {
+    max-width: 150px;
+    display: inline-block;
+}
+
+.team-member-card-body {
+    border-top: 1px solid lightgray
+}
+
+.project-screenshot {
+    width: 100%;
+}
+
+.card .card-body a.teams-link {
+    font-size: 1rem;
+}
+
+.card-no-border {
+    border: none;
+}
+
+/* Ensure teams in paginated view are centered at all times even when odd number of
+    teams persist in the view. */
 .teams-row {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
 }
 
-    /* Set min-height of team-cards to suit for a minimum of 5 team members & submit project button */
+/* Set min-height of team-cards to suit for a minimum of 5 team members & submit project button */
 .team-card {
     min-height: 380px;
 }
