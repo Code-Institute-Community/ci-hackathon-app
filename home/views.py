@@ -19,7 +19,6 @@ def home(request):
     A view to return the index page
     and upcoming Hackathon information
     """
-
     hackathons = Hackathon.objects.all()
 
     return render(request, "home/index.html",  {"hackathons": hackathons})
