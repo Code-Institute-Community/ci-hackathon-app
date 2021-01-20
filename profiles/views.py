@@ -22,7 +22,7 @@ def profile(request, user_id=None):
                 or request.user.is_staff):
             context['user'] = user
         else:
-            return 
+            context['user'] = None
         context['is_owner'] = False
 
     template = "profiles/profile.html"
