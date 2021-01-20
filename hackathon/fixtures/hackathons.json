@@ -275,5 +275,83 @@
             "min_score":1,
             "max_score":10
         }
+    },
+    {
+        "model": "hackathon.hackawardcategory",
+        "pk": 1,
+        "fields": {
+            "created": "2021-01-18T23:22:27.172Z",
+            "updated": "2021-01-18T23:22:27.172Z",
+            "created_by": 1,
+            "display_name": "Best Project",
+            "description": "The project with the best score overall.",
+            "hackathon": 4,
+            "winning_project": null
+        }
+    },
+    {
+        "model": "hackathon.hackawardcategory",
+        "pk": 2,
+        "fields": {
+            "created": "2021-01-18T23:23:11.556Z",
+            "updated": "2021-01-18T23:23:11.556Z",
+            "created_by": 1,
+            "display_name": "Best Project (1st Runners Up)",
+            "description": "The project with the second best score overall.",
+            "hackathon": 4,
+            "winning_project": null
+        }
+    },
+    {
+        "model": "hackathon.hackawardcategory",
+        "pk": 3,
+        "fields": {
+            "created": "2021-01-18T23:23:35.718Z",
+            "updated": "2021-01-18T23:23:35.718Z",
+            "created_by": 1,
+            "display_name": "Best Project (2nd Runners Up)",
+            "description": "The project with the third best score overall.",
+            "hackathon": 4,
+            "winning_project": null
+        }
+    },
+    {
+        "model": "hackathon.hackawardcategory",
+        "pk": 4,
+        "fields": {
+            "created": "2021-01-18T23:25:31.644Z",
+            "updated": "2021-01-18T23:25:31.644Z",
+            "created_by": 1,
+            "display_name": "Most Innovative Project",
+            "description": "The project using the most innovative technology, approach or architecture.",
+            "hackathon": 4,
+            "winning_project": null
+        }
+    },
+    {
+        "model": "hackathon.hackawardcategory",
+        "pk": 5,
+        "fields": {
+            "created": "2021-01-18T23:26:34.100Z",
+            "updated": "2021-01-18T23:26:34.100Z",
+            "created_by": 1,
+            "display_name": "Best Commercial Application",
+            "description": "The project which shows be the best commercial application and is the closest to be market ready.",
+            "hackathon": 4,
+            "winning_project": null
+        }
+    },
+    {
+        "model": "hackathon.hackawardcategory",
+        "pk": 6,
+        "fields": {
+            "created": "2021-01-18T23:27:06.554Z",
+            "updated": "2021-01-18T23:27:06.554Z",
+            "created_by": 1,
+            "display_name": "Most Creative Project",
+            "description": "The project with the most creative idea.",
+            "hackathon": 4,
+            "winning_project": null
+        }
     }
 ]

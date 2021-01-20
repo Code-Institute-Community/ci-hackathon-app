@@ -1,6 +1,8 @@
 
 # range snippet from: https://www.djangosnippets.org/snippets/1357/
 # adjusted to current project needs based on https://docs.djangoproject.com/en/3.1/howto/custom-template-tags/
+from operator import itemgetter
+
 from django.template import Library
 import datetime
 from django.conf import settings
@@ -34,3 +36,33 @@ def event_ended(date_event):
     Date can be updated if organisers want to put a deadline to enrol
     Help provided in Stack overflow: https://stackoverflow.com/questions/64605335/comparing-dates-using-a-comparator-inside-django-template/64605785#64605785'''
     return date_event.date() >= datetime.date.today()
+
+
+@register.filter
+def get_value_from_dict(data, key):
+    """ Retrieves a value from a dict based on a given key """
+    if key:
+        return data.get(key)
+
+
+@register.filter
+def to_list(data):
+    return list(data)
+
+
+@register.filter
+def sort_list(data):
+    return sorted(list(data))
+
+
+@register.filter
+def place_identifier(num):
+    num_str = str(num)
+    if num_str[-1] == '1':
+        return num_str + 'st'
+    elif num_str[-1] == '2':
+        return num_str + 'nd'
+    elif num_str[-1] == '3':
+        return num_str + 'rd'
+    else:
+        return num_str + 'th'

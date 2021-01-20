@@ -44,6 +44,12 @@ class Hackathon(models.Model):
     participants = models.ManyToManyField(User,
                                     blank=True,
                                     related_name='hackathon_participants')
+    # Hackathons can have multiple score categories and score categories
+    # Can belong to multiple hackahtons: Many to Many
+    score_categories = models.ManyToManyField(
+        'HackProjectScoreCategory',
+        blank=True,
+        related_name='hackathon_score_categories')
     # One organiser could organise more than one Hackathon: One To Many
     organiser = models.ForeignKey(User,
                                   null=True,
@@ -90,10 +96,10 @@ class HackAwardCategory(models.Model):
                                   on_delete=models.CASCADE,
                                   related_name="awards")
     # One category can have one winner: One to One
-    winning_project = models.OneToOneField("HackProject",
-                                           null=True,
-                                           blank=True,
-                                           on_delete=models.SET_NULL)
+    winning_project = models.ForeignKey("HackProject",
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.display_name

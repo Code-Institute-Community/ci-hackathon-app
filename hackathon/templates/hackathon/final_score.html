@@ -1,26 +1,109 @@
 {% extends "base.html" %}
 {% load static %}
+{% load my_tags %}
 {% block content %}
-<h1 class="table_titles"> {{ hackathon }} <br> Final Scores </h1>
-	{% if sorted_teams_scores %}
-	<table class="final_score_table">
-		<thead>
-			<tr class="table_titles">
-				<th> Project </th>
-				<th> Score </th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for team in sorted_teams_scores %}
-			<tr>
-				<td>{{ team.0 }}</td>
-				<td>{{ team.1 }}</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	{% else %}
-	<strong>There are no final scores for this Hackathon.</strong>
-	{% endif %}
-	{% endblock %}
-    
+
+{% if hack_awards_formset.get_queryset|length == 0 %}
+<div class="alert alert-danger" role="alert">
+    This Hackathon does not have any awards. Please create at least one award to determine a winner.
+    <button class="btn btn-primary btn-sm">Add Now</button>
+</div>
+{% endif %}
+
+<h3 class="table_titles"> {{ hackathon }} Scores </h3>
+{% if sorted_teams_scores %}
+<table class="final_score_table">
+    <thead>
+        <tr class="table_titles">
+            <th scope="col"> Team / Project </th>
+            {% for judge in sorted_teams_scores.0.scores.keys %}
+            <th scope="col"> {{ judge }} </th>
+            {% endfor %}
+            <th scope="col"> Total Score </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for project in sorted_teams_scores %}
+        <tr>
+            <td>{{ project.team_name}} - {{ project.project_name}}</td>
+            {% for judge in project.scores %}
+            {% with judge_score=project.scores|get_value_from_dict:judge %}
+            <td>{{ judge_score.Total }}</td>
+            {% endwith %}
+            {% endfor %}
+            <td scope="row">{{ project.total_score }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if category_scores %}
+<table class="final_score_table">
+    <thead>
+        <tr class="table_titles">
+            <th scope="col">
+                Team / Project
+            </th>
+            {% with categories=category_scores.values|to_list|first %}
+            {% for category in categories.keys %}
+            <th>
+                {{category}}
+            </th>
+            {% endfor %}
+            {% endwith %}
+        </tr>
+    </thead>
+    <tbody>
+        {% with teams=category_scores.keys|sort_list %}
+        {% for team in teams %}
+            <tr>
+               
+                {% with team_scores=category_scores|get_value_from_dict:team %}
+                <td>{{team}}</td>
+                {% for category, score in team_scores.items %}
+                <td title="Score: {{score.score}}">
+                    {{score.place|place_identifier}}
+                </td>
+                {% endfor %}
+                {% endwith %}
+            </tr>
+        {% endfor %}
+        {% endwith %}
+    </tbody>
+</table>
+{% endif %}
+
+{% if hack_awards_formset.get_queryset|length > 0 %}
+<div class="card">
+    <div class="card-body">
+        
+        <form method="POST" class="hack-award-submission p-3">
+            {% csrf_token %}
+            {{ hack_awards_formset.management_form }}
+            {% for form in hack_awards_formset %}
+            <div class="row">
+                <div class="col-md-12 col-lg-6">
+                    {{ form.id|as_crispy_field }}
+                    {{ form.display_name|as_crispy_field }}
+                </div>
+                <div class="col-md-12 col-lg-6">
+                    {{ form.winning_project|as_crispy_field }}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-primary pl-5 pr-5">Save Awards</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endif %}
+
+{% else %}
+<strong>No scores added yet.</strong>
+{% endif %}
+
+{% endblock %}
