@@ -2,7 +2,8 @@ from django import forms
 from django.forms import BaseModelFormSet
 
 from accounts.models import Organisation
-from .models import Hackathon, HackProject, HackAwardCategory
+from .models import Hackathon, HackProject, HackAwardCategory,\
+                    HackProjectScoreCategory
 from .lists import STATUS_TYPES_CHOICES, JUDGING_STATUS_CHOICES
 
 class HackathonForm(forms.ModelForm):
@@ -25,7 +26,7 @@ class HackathonForm(forms.ModelForm):
         max_length=3000,
         widget=forms.Textarea(
             attrs={
-                'rows': 3,
+                'rows': 4,
                 'placeholder': 'Tell us more about this event...'
             }
         )
@@ -79,11 +80,18 @@ class HackathonForm(forms.ModelForm):
         label="Organisation",
         queryset=Organisation.objects.order_by('display_name'),
     )
+    score_categories = forms.ModelMultipleChoiceField(
+        queryset=HackProjectScoreCategory.objects.all(),
+        widget=forms.SelectMultiple(attrs={
+            'size': '5'
+        })
+    )
 
     class Meta:
         model = Hackathon
         fields = ['display_name', 'description', 'theme', 'start_date',
                   'end_date', 'status', 'judging_status', 'organisation',
+                  'score_categories',
                   ]
 
     def __init__(self, *args, **kwargs):

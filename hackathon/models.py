@@ -44,6 +44,12 @@ class Hackathon(models.Model):
     participants = models.ManyToManyField(User,
                                     blank=True,
                                     related_name='hackathon_participants')
+    # Hackathons can have multiple score categories and score categories
+    # Can belong to multiple hackahtons: Many to Many
+    score_categories = models.ManyToManyField(
+        'HackProjectScoreCategory',
+        blank=True,
+        related_name='hackathon_score_categories')
     # One organiser could organise more than one Hackathon: One To Many
     organiser = models.ForeignKey(User,
                                   null=True,
@@ -222,10 +228,6 @@ class HackProjectScoreCategory(models.Model):
                                    on_delete=models.CASCADE,
                                    related_name="hackprojectscorecategories")
     category = models.CharField(default="", max_length=255)
-    hackathon = models.ForeignKey(Hackathon,
-                                  null=True, blank=True,
-                                  on_delete=models.SET_NULL,
-                                  related_name="hackprojectscorecategories")
     # Score Categories can have different score range (e.g. 1-10, 1-15)
     # these fields set the scale
     min_score = models.IntegerField(default=1)
