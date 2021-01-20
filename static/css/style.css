@@ -70,6 +70,8 @@ main {
     color: var(--p-orange);
     border: 3px solid var(--p-orange);
     transition: all .4s;
+    padding: 4px 10px;
+    border-radius: 5px;
 }
 
 .btn-ci:hover {
@@ -225,6 +227,15 @@ html .all-auth-container {
 .card-header .btn-link:hover {
     cursor: pointer;
     color: var(--p-orange);
+}
+
+.enroll-hackathon-card, .enroll-hackathon-card form {
+    width: fit-content;
+    display: inline-block;
+}
+.enroll-hackathon-card form button#enroll-part {
+    margin: 0px!important;
+    font-size: .75rem;
 }
 
 #accordion-wrapper>h1,

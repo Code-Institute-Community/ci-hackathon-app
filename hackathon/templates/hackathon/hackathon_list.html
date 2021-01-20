@@ -9,7 +9,7 @@
     {% if hackathons %}
         <h2 class="p-orange text-center mb-4">Hackathons</h2>
         {% for hackathon in hackathons %}
-            {% if hackathon.organisation == 1 or hackathon.organisation == user.organisation %}
+            {% if hackathon.organisation.id == 1 or hackathon.organisation == user.organisation or user.is_staff %}
                 {% if hackathon.status != 'draft' or user == hackathon.created_by %}
                     {% if not hackathon.status == 'deleted' %}
                         {% include 'hackathon/includes/hackathon_card.html' %}
