@@ -15,19 +15,16 @@
 {% block allauth %}
 
     <h1>{% trans "Sign In" %}</h1>
-
     {% get_providers as socialaccount_providers %}
 
     {% if socialaccount_providers %}
-        <p>{% blocktrans with site.name as site_name %}Please sign in with one
-            of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-            for a {{ site_name }} account and sign in below:{% endblocktrans %}
+        <p>{% blocktrans with site.name as site_name %}
+                Please sign in with your Code Institute Slack!<br />
+                <span class="slack-workspace">(Workspace name: <span class="slack-workspace-name">code-institiute-room</span></span>)
+            {% endblocktrans %}
         </p>
         <div class="socialaccount_ballot">
-            <ul class="socialaccount_providers">
-                {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-            </ul>
-            <div class="login-or">{% trans 'or' %}</div>
+            {% include "socialaccount/snippets/slack_signin.html" with process="login" %}
         </div>
 
         {% include "socialaccount/snippets/login_extra.html" %}
@@ -35,7 +32,7 @@
     {% else %}
         <p>{% blocktrans %}If you have not created an account yet, then please
             <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-    {% endif %}
+    
 
     <form class="login" method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
@@ -46,6 +43,7 @@
         <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
         <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
     </form>
+    {% endif %}
 {% endblock %}
 
 {% block authhacklogo %}

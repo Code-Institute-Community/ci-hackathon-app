@@ -1,13 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 
 from hackathon.models import Hackathon
 
 
 def index(request):
+    """ The view to be redirected to after login which will check if the
+    user's full name is present, if it is not redirect to edit profile,
+    otherwise redirect to home
+    """
+    if request.user.full_name:
+        return redirect(reverse('home'))
+
+    return redirect(reverse('edit_profile'))
+
+
+def home(request):
     """ 
     A view to return the index page
     and upcoming Hackathon information
     """
+
     hackathons = Hackathon.objects.all()
 
     return render(request, "home/index.html",  {"hackathons": hackathons})

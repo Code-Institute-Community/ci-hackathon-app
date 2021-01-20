@@ -42,6 +42,10 @@
     white-space: pre-wrap;
 }
 
+.edit-profile div form p label {
+    display: block;
+}
+
 .card .card-body p.profile-website-url a {
     text-transform: lowercase;
     font-size: 1rem;
