@@ -10,9 +10,9 @@
     <form action="/images/" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="modal-body">
-            <input type="hidden" name="image-upload-type" id="image-upload-type" />
-            <input type="hidden" name="image-upload-identifier" id="image-upload-identifier" />
-            <input type="file" name="image" />
+            <input type="hidden" name="image-upload-type" id="image-upload-type">
+            <input type="hidden" name="image-upload-identifier" id="image-upload-identifier">
+            <input type="file" name="image">
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
