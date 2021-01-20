@@ -234,7 +234,7 @@ html .all-auth-container {
     display: inline-block;
 }
 .enroll-hackathon-card form button#enroll-part {
-    margin: 0px!important;
+    margin: 0 !important;
     font-size: .75rem;
 }
 
