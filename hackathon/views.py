@@ -328,9 +328,6 @@ def update_hackathon(request, hackathon_id):
         if form.is_valid():
             form.instance.updated = now
             form.save()
-            # saved_form = form.save(commit=False)
-            # saved_form.save()
-            # form.save_m2m()
             messages.success(
                 request, f'Thanks, {hackathon.display_name} has been successfully updated!')
         return redirect("hackathon:hackathon-list")
@@ -432,13 +429,3 @@ def enroll_toggle(request):
                                 kwargs={'hackathon_id': hackathon_id}))
     else:
         return HttpResponse(status=403)
-
-
-# @login_required
-# def update_hack_awards(request):
-#     if request.method == 'POST':
-#         pass
-#     else:
-#         HackAwardCategoryFormSet = modelformset_factory(
-#             HackAwardCategory, fields=('display_name', 'project'),
-#             formset=HackAwardCategoryFormSet)
