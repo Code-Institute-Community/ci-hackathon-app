@@ -93,13 +93,14 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 AUTH_USER_MODEL = "accounts.CustomUser"
 ACCOUNT_SIGNUP_FORM_CLASS = "accounts.forms.SignupForm"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'slack_display_name'
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = "/accounts/login/"
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/post_login/"
 
 
 WSGI_APPLICATION = "main.wsgi.application"
@@ -151,3 +152,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIAFILES_LOCATION = "media"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+if os.environ.get("SLACK_ENABLED") == 'True':
+    INSTALLED_APPS += ['allauth.socialaccount.providers.slack']
+    SOCIALACCOUNT_PROVIDERS = {
+        'slack': {
+            'SCOPE':['identity.basic', 'identity.email'],
+        }
+    }
