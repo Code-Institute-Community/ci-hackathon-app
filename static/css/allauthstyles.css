@@ -59,3 +59,12 @@ html form button:hover {
 .mt-4 {
     margin-bottom: 3.2rem;
 }
+
+.slack-workspace {
+    font-size: .75rem;
+}
+
+.slack-workspace .slack-workspace-name {
+    font-style: italic;
+    color: var(--p-orange);
+}
