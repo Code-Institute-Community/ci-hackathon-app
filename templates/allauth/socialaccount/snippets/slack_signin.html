@@ -6,7 +6,7 @@
     {% if provider.name == 'Slack' %}
     <a title="{{ provider.name }}" class="socialaccount_provider {{ provider.id }}"
         href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
-        <img src="https://api.slack.com/img/sign_in_with_slack.png" />
+        <img src="https://api.slack.com/img/sign_in_with_slack.png">
     </a>
     {% endif %}
 {% endfor %}
