@@ -183,6 +183,10 @@ class HackProject(models.Model):
     submission_time = models.DateTimeField(auto_now_add=True)
     speaker_name = models.CharField(default="", max_length=225)
     share_permission = models.BooleanField(default=True)
+    include_in_showcase = models.BooleanField(default=True,
+        help_text="This will make the project and the team page publicly "
+                  "visible. If the profile has a website added, the team "
+                  "member will link to that website.")
     # A project has one mentor, a mentor has numerous projects: One to Many.
     mentor = models.ForeignKey(User,
                                null=True,
