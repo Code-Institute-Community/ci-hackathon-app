@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "images",
     "profiles",
     "resources",
+    "showcase",
     "submissions",
     "teams",
 ]
