@@ -1,27 +1,35 @@
 <article class="card hack-card">
   <div class="card-body">
-    <h5 class="p-orange card-title">{{ hackathon.display_name }} {% if user.user_type != 'participant' %}<span class="badge badge-secondary ml-2">{{hackathon.status}}</span> {% endif %}</h5>
+    <h5 class="p-orange card-title">{{ hackathon.display_name }}
+      {% if user.is_staff %}<span class="badge badge-secondary ml-2">{{hackathon.status}}</span>{% endif %}
+    </h5>
     <p class="card-subtitle mb-2 text-muted"><i class="far fa-calendar-alt p-2"></i> {{ hackathon.start_date }} - {{ hackathon.end_date }}</p>
-    <p class="card-subtitle mb-2 text-muted"><i class="fas fa-building p-2"></i> Open to all {{ hackathon.organisation }} students</p>
-    {% if hackathon.end_date|date:"jS F Y H:i" <= today|date:"jS F Y H:i" or hackathon.status == 'finished' %}
-      {% if request.user in hackathon.participants.all %}
-        <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user p-2"></i>You participated in this hackathon</p>
+    {% if request.user.is_authenticated %}
+      <p class="card-subtitle mb-2 text-muted"><i class="fas fa-building p-2"></i> Open to all {{ hackathon.organisation }} students</p>
+      {% if hackathon.end_date|date:"jS F Y H:i" <= today|date:"jS F Y H:i" or hackathon.status == 'finished' %}
+        {% if request.user in hackathon.participants.all %}
+          <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user p-2"></i>You participated in this hackathon</p>
+        {% else %}
+          <p class="card-subtitle mb-2 text-muted"><i class="fas fa-user-plus p-2"></i>Registration closed for this hackathon</p>
+        {% endif %}
       {% else %}
-        <p class="card-subtitle mb-2 text-muted"><i class="fas fa-user-plus p-2"></i>Registration closed for this hackathon</p>
-      {% endif %}
-    {% else %}
-      {% if hackathon.status == 'registration_open' and request.user not in hackathon.participants.all %}
-        <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Registrations open!</p>
-      {% elif hackathon.status == 'registration_open' and request.user in hackathon.participants.all %}
-        <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user p-2"></i>You are enrolled in this hackathon!</p>
-      {% elif hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
-        <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>You are participating in this hackathon</p>
-      {% else %}
-        <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Registrations starting soon!</p>
+        {% if hackathon.status == 'registration_open' and request.user not in hackathon.participants.all %}
+          <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Registrations open!</p>
+        {% elif hackathon.status == 'registration_open' and request.user in hackathon.participants.all %}
+          <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user p-2"></i>You are enrolled in this hackathon!</p>
+        {% elif hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
+          <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>You are participating in this hackathon</p>
+        {% else %}
+          <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Registrations starting soon!</p>
+        {% endif %}
       {% endif %}
     {% endif %}
+
+    <p class="card-subtitle mb-2">
+      <i class="fas fa-info-circle p-2"></i>{{hackathon.description}}
+    </p>
     
-    {% if user.user_type != 'participant' %}
+    {% if user.is_staff %}
     <p class="card-subtitle mb-2">
       <i class="fas fa-users p-2"></i>Participants: {{ hackathon.participants.all|length }} / Teams: {{ hackathon.teams.all|length }}</p>
     {% endif %}
@@ -29,6 +37,8 @@
     {% if hackathon.status == 'registration_open' and not request.user.is_staff and request.user not in hackathon.participants.all %}
       <div class="enroll-hackathon-card">{% include 'hackathon/includes/enrollpart.html' %}</div>
     {% endif %}
+
+    
 
     <!-- Edit and Delete buttons, only visible for admin users -->
     {% if user.is_authenticated and user.is_superuser %}

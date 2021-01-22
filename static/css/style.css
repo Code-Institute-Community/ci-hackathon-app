@@ -522,6 +522,18 @@ form.distribute-teams-form, form.clear-teams-form {
     width: 100%;
 }
 
+/* Showcase */
+.carousel.slide {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.carousel-item a img {
+    max-height: 500px;
+    min-width: auto;
+}
+
 /* Media Queries */
 
 @media (max-width:453px) {
