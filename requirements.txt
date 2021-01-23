@@ -31,3 +31,4 @@ sqlparse==0.3.1
 traitlets==5.0.5
 urllib3==1.25.10
 wcwidth==0.2.5
+whitenoise==5.2.0
