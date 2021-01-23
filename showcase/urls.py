@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import showcase
+from .views import view_showcases, view_showcase
 
 urlpatterns = [
-    path("", showcase, name="showcase"),
+    path("", view_showcases, name="view_showcases"),
+    path("<int:showcase_id>/", view_showcase, name="view_showcase"),
 ]

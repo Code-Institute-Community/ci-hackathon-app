@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="display_name" value="{{project.display_name}}" />
+    {{form.hack_project}}
+    {{form.showcase_participants|as_crispy_field}}
+    {{form.is_public|as_crispy_field}}
+
+    {% if showcase_image %}
+    <div class="card showcase-image-edit">
+        <div class="card-body">
+            <div class="card-title">
+                Current Showcase Image
+            </div>
+            <div class="card-text">
+                <img src="{{showcase_image}}" alt="Showcase Display Image">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <input type="file" name="image">
+
+    <button class="ci-btn mt-3" type="submit">Publish Project</button>
+</form>
+
+{% endblock %}
