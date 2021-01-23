@@ -49,6 +49,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = "main.urls"
@@ -145,10 +146,14 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATICFILES_LOCATION = "static"
-STATIC_URL = "/static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 MEDIAFILES_LOCATION = "media"
 MEDIA_URL = "/media/"
@@ -161,3 +166,6 @@ if os.environ.get("SLACK_ENABLED") == 'True':
             'SCOPE':['identity.basic', 'identity.email'],
         }
     }
+
+SHOWCASE_SPOTLIGHT_NUMBER = int(os.environ.get('SHOWCASE_SPOTLIGHT_NUMBER')
+                                or 0)

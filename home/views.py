@@ -53,3 +53,14 @@ def useful_resources(request):
 
     return render(request, "useful-resources.html")
 
+
+def test_500(request):
+    response = render(request, '500.html')
+    response.status_code = 500
+    return response
+
+
+def test_404(request):
+    response = render(request, '404.html')
+    response.status_code = 404
+    return response

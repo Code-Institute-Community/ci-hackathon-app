@@ -89,7 +89,7 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         """  Return Class object to string via the user email value  """
-        return self.username
+        return self.slack_display_name
 
     def human_readable_current_lms_module(self):
         return self.current_lms_module.replace('_', ' ')
