@@ -11,7 +11,7 @@
     <div class="col teams-page">
 
         <div class="container-fluid">
-            {% if  team.header_image %}
+            {% if team.header_image %}
             <div class="row teams-header" 
                 style="background-image:url('{{ team.header_image }}')">
             {% else %}
@@ -19,7 +19,7 @@
                 style="background-image:url({% static '/img/ci-hackathon--horizontal.png' %})">
             {% endif %}
                 <div class="team-name">
-                    {% if request.user in team.participants.all %}
+                    {% if request.user in team.participants.all and not showcase %}
                     <button class="btn btn-secondary btn-sm edit-image"
                         data-image-type="header_image"
                         data-identifier="{{team.id}}"
@@ -38,9 +38,23 @@
 
             <div class="row mt-3 team-members-display">              
                 <div class="col my-3 text-center">
-                    {% for member in team.participants.all %}
-                    {% include 'includes/member.html' %}
-                    {% endfor %}
+                    {% if showcase %}
+
+                        {% for member in showcase.showcase_participants.all %}
+                        {% include 'includes/showcase_member.html' %}
+                        {% endfor %}
+
+                        {% for anon in anon_members %}
+                        {% include 'includes/anon_member.html' %}
+                        {% endfor %}
+                    
+                    {% else %}
+
+                        {% for member in team.participants.all %}
+                        {% include 'includes/member.html' %}
+                        {% endfor %}
+
+                    {% endif %}
                 </div>
             </div>
             

@@ -128,7 +128,11 @@ def create_project(request, team_id):
     hack_project = HackProject.objects.filter(hackteam=hack_team)
 
     if request.method == 'POST':
-        form = HackProjectForm(request.POST, instance=hack_project.get())
+        if hack_project: 
+            form = HackProjectForm(request.POST, instance=hack_project.get())
+        else:
+            form = HackProjectForm(request.POST)
+
         if form.is_valid():
             hack_project = form.save()
             hack_team.project = hack_project
