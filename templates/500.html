@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <div class="card p-5 error-500">
+            <div class="card-body text-center">
+                <div class="card-title">
+                    <h1>500 - An unexpected error occurred</h1>
+                </div>
+                <div class="card-body">
+                    <img src="{% static 'img/undraw_server_down_s4lk.svg' %}" alt="500 Error Graphic" class="w-50">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
