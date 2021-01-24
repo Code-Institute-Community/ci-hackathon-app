@@ -546,6 +546,25 @@ img.showcase-image-edit {
     width: 350px;
 }
 
+.showcase-placeholder {
+    width: 100%;
+    max-height: 500px;
+    /* background-image: linear-gradient(to right bottom, #ff5900, #ff7029, #ff8444, #ff965f, #ffa879); */
+    background: url('/static/img/ci-hacking-new-normal--horizontal-center.png') center center;
+}
+
+.showcase-project-name {
+    position: absolute;
+    width: fit-content;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 50px;
+    background: var(--p-navy);
+    color: var(--white);
+}
+
+
 /* Media Queries */
 
 @media (max-width:453px) {
@@ -554,6 +573,7 @@ img.showcase-image-edit {
         font-size: 1.5rem;
 
     }
+
     /* Error pages */
     .card.p-5.error-500 {
         padding: .5rem!important;
@@ -563,6 +583,11 @@ img.showcase-image-edit {
         font-size: 1.5rem;
     }
     .error-500 div div img {
+        width: 100%!important;
+    }
+
+    /* Showcase page */
+    .no-showcases img {
         width: 100%!important;
     }
 }

@@ -3,35 +3,60 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col-12">
+{% if all_showcases %}
+    <div class="row">
+        <div class="col-12">
 
-        <h1 class="text-center">Featured Projects</h1>
-        <div id="carousel-project-showcase" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                {% for top_result in top_results %}
-                <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
-                    <a href="/showcase/{{ top_result.id }}">
+            <h1 class="text-center">Featured Projects</h1>
+            <div id="carousel-project-showcase" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for top_result in top_results %}
+                    <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                        {% if top_result.showcase_image %}
                         <img src="{{ top_result.showcase_image }}" class="d-block w-100" alt="{{ top_result.display_name }} Showcase Image">
-                    </a>
+                        {% else %}
+                        <canvas class="showcase-placeholder"></canvas>
+                        {% endif%}
+                        <a href="/showcase/{{ top_result.id }}">
+                            <div class="showcase-project-name"><h1>{{top_result.display_name}}</h1></div>
+                        </a>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+                <a class="carousel-control-prev" href="#carousel-project-showcase" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="carousel-control-next" href="#carousel-project-showcase" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                <ol class="carousel-indicators">
+                    {% for top_result in top_results %}
+                    <li data-target="#carousel-project-showcase" data-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %}class="active"{% endif %}></li>
+                    {% endfor %}
+                </ol>
             </div>
-            <ol class="carousel-indicators">
-                {% for top_result in top_results %}
-                <li data-target="#myCarousel" data-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %}class="active"{% endif %}></li>
-                {% endfor %}
-             </ol>
+            
         </div>
-        
     </div>
-</div>
 
-<div class="row">
-    <div class="col-12">
-        {% for showcase in all_showcases %}
-        {% endfor %}
+    <div class="row">
+        <div class="col-12">
+            {% for showcase in all_showcases %}
+            {% endfor %}
+        </div>
     </div>
-</div>
+{% else %}
+    <div class="row">
+        <div class="col-12 text-center no-showcases">
+
+            <h1 class="text-center mb-5">There are currently no projects to showcase</h1>
+            <img src="{% static 'img/undraw_blank_canvas_3rbb.svg' %}" class="w-50">
+
+        </div>
+    </div>
+
+{% endif %}
 
 {% endblock %}

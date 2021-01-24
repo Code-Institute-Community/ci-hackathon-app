@@ -13,11 +13,10 @@ class ShowcaseForm(forms.ModelForm):
                   'display_name']
 
     def __init__(self,*args,**kwargs):
-        # call standard __init__
         team_id = kwargs.pop('team_id', None)
-        super(ShowcaseForm, self).__init__(*args, **kwargs)
-        team_id = 4
         team = HackTeam.objects.filter(id=team_id).first()
+        # call standard __init__
+        super(ShowcaseForm, self).__init__(*args, **kwargs)
         self.fields['showcase_participants'] = forms.ModelMultipleChoiceField(
             queryset=team.participants.all(),
             widget=forms.SelectMultiple(attrs={
