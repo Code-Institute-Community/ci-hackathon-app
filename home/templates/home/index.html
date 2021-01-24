@@ -3,10 +3,15 @@
 
 {% block content %}
 
+<div class="row">
+    <div class = "col-12 col-sm-12 col-md-12 col-lg-6">
+        <h1 class="mb-4">Upcoming Hackathons</h1>
+    </div>
+</div>
+
 <div class="row landing-page">
 
     <div class = "col-12 col-sm-12 col-md-12 col-lg-6">
-        <h1 class="mb-4">Upcoming Hackathons</h1>
         {% if hackathons %}
         {% for hackathon in hackathons %}
             {% if hackathon.status == 'published' %}
