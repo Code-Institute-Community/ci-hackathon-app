@@ -16,11 +16,9 @@ SHOWCASE_SPOTLIGHT_NUMBER = settings.SHOWCASE_SPOTLIGHT_NUMBER
 def view_showcases(request):
     """ Shows the project showcase page """
     all_showcases = Showcase.objects.order_by('display_name')
-    print(all_showcases)
-    print(SHOWCASE_SPOTLIGHT_NUMBER)
     top_results = Showcase.objects.all().order_by('?')[
         :SHOWCASE_SPOTLIGHT_NUMBER]
-    print(top_results)
+
     return render(request, 'showcase.html', {
         'top_results': top_results,
         'all_showcases': all_showcases,
@@ -74,10 +72,13 @@ def create_or_update_showcase(request, team_id):
                 form.save_m2m()
             else:
                 form.save()
-
+            
+            messages.success(request, "Project showcase created successfully.")
             return redirect(reverse('create_or_update_showcase',
                                     kwargs={'team_id': team_id}))
         else:
+            messages.error(request, ("An error occurred creating the project "
+                                     "showcase. Please try again."))
             return redirect(reverse('create_or_update_showcase',
                                     kwargs={'team_id': team_id}))
 
