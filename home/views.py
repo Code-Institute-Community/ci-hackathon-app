@@ -1,7 +1,11 @@
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, reverse
 
 from hackathon.models import Hackathon
+
+PUBLIC_STATUSES = [
+    'published', 'registration_opne', 'hack_in_progress', 'judging']
 
 
 def index(request):
@@ -18,12 +22,17 @@ def index(request):
 
 def home(request):
     """ 
-    A view to return the index page
-    and upcoming Hackathon information
+    A view to return the index page and upcoming Hackathon information 
+    for any public hackathons (e.g. future and ongoing with CI as organisation)
     """
-    hackathons = Hackathon.objects.all()
+    hackathons = Hackathon.objects.filter(
+        status__in=PUBLIC_STATUSES,
+        organisation=1).all()
+    paginator = Paginator(hackathons, 2)
+    page = request.GET.get('page')
+    paged_hackathons = paginator.get_page(page)
 
-    return render(request, "home/index.html",  {"hackathons": hackathons})
+    return render(request, "home/index.html",  {"hackathons": paged_hackathons})
 
 
 def faq(request):

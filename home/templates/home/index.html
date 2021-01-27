@@ -14,14 +14,9 @@
     <div class = "col-12 col-sm-12 col-md-12 col-lg-6">
         {% if hackathons %}
         {% for hackathon in hackathons %}
-            {% if hackathon.status == 'published' %}
-                {% if hackathon.organisation.id == 1 or request.user.organisation == hackathon.organisation %}
-
-                {% include 'hackathon/includes/hackathon_card.html' %}
-
-                {% endif %}
-            {% endif %}
+            {% include 'hackathon/includes/hackathon_card.html' %}
         {% endfor %}
+        {% include 'home/includes/paginator.html' %}
         {% else %}
         <div class="card">
             <div class="card-body">
