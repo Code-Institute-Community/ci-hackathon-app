@@ -145,8 +145,8 @@ def create_project(request, team_id):
             messages.success(request, 'Project updated successfully.')
             return redirect(reverse('view_team', kwargs={'team_id': team_id}))
         else:
-            messages.error(request, ('An unexpected error occurred updating ')
-                                    ('the project. Please try again.'))
+            messages.error(request, ('An unexpected error occurred updating '
+                                     'the project. Please try again.'))
             return redirect(reverse('view_team', kwargs={'team_id': team_id}))
     else:
         if hack_project:
