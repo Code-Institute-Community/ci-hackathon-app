@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect, reverse
 
 from hackathon.models import Hackathon
@@ -8,10 +9,11 @@ def index(request):
     user's full name is present, if it is not redirect to edit profile,
     otherwise redirect to home
     """
-    if request.user.full_name:
-        return redirect(reverse('home'))
-
-    return redirect(reverse('edit_profile'))
+    if not request.user.full_name:
+        messages.warning(request, 'Please fill in your profile.')
+        return redirect(reverse('edit_profile'))
+    
+    return redirect(reverse('home'))
 
 
 def home(request):
