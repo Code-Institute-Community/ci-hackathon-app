@@ -44,6 +44,32 @@
     <div class="row">
         <div class="col-12">
             {% for showcase in all_showcases %}
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-img">
+                        {% if showcase.showcase_image %}
+                        <img src="{{showcase.showcase_image}}" alt="Showcase image">
+                        {% else %}
+                        <img src="{% static 'img/ci-hackathon--square.png' %}" alt="Showcase image">
+                        {% endif %}
+                    </div>
+                    <div class="card-title"><h4>{{showcase.display_name}}</h4></div>
+                    <div class="card-text">
+                        <label for="showcase_description"><strong>Description</strong></label>
+                        <p id="showcase_description">
+                            {{showcase.hack_project.description}}
+                        </p>
+                        {% if showcase.hack_project.technologies_used %}
+                        <label for="showcase_technologies_used"><strong>Technologies used</strong></label>
+                        <p id="showcase_technologies_used">
+                            {{showcase.hack_project.technologies_used}}
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
             {% endfor %}
         </div>
     </div>
