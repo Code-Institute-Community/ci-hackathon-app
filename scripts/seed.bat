@@ -5,3 +5,4 @@ python manage.py loaddata resources
 python manage.py loaddata profiles
 python manage.py loaddata emailaddresses
 python manage.py loaddata hackathons
+python manage.py loaddata showcase

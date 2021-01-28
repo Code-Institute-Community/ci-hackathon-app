@@ -1,2 +1,144 @@
-Postgres DATABASE_URL not found, using db.sqlite3
-[{"model": "showcase.showcase", "pk": 3, "fields": {"created": "2021-01-24T18:00:57.048Z", "updated": "2021-01-24T18:00:57.073Z", "created_by": 1, "display_name": "Droid", "hack_project": 1, "showcase_image": "", "is_public": true, "showcase_participants": [14, 19, 20]}}, {"model": "showcase.showcase", "pk": 4, "fields": {"created": "2021-01-24T18:00:57.081Z", "updated": "2021-01-24T18:00:57.095Z", "created_by": 1, "display_name": "Wookie", "hack_project": 2, "showcase_image": "", "is_public": true, "showcase_participants": [10, 12, 18]}}, {"model": "showcase.showcase", "pk": 5, "fields": {"created": "2021-01-24T18:00:57.101Z", "updated": "2021-01-24T18:00:57.120Z", "created_by": 1, "display_name": "Order 66", "hack_project": 3, "showcase_image": "", "is_public": true, "showcase_participants": [9, 12, 14]}}, {"model": "showcase.showcase", "pk": 6, "fields": {"created": "2021-01-24T18:00:57.131Z", "updated": "2021-01-24T18:00:57.143Z", "created_by": 1, "display_name": "Blaster", "hack_project": 4, "showcase_image": "", "is_public": true, "showcase_participants": [15, 16, 19]}}, {"model": "showcase.showcase", "pk": 7, "fields": {"created": "2021-01-24T18:00:57.148Z", "updated": "2021-01-24T18:00:57.160Z", "created_by": 1, "display_name": "General Grievous", "hack_project": 5, "showcase_image": "", "is_public": true, "showcase_participants": [3, 10, 13]}}, {"model": "showcase.showcase", "pk": 8, "fields": {"created": "2021-01-24T18:00:57.166Z", "updated": "2021-01-25T23:20:32.480Z", "created_by": 1, "display_name": "The 501st Legion", "hack_project": 6, "showcase_image": "", "is_public": true, "showcase_participants": [18]}}, {"model": "showcase.showcase", "pk": 9, "fields": {"created": "2021-01-24T18:00:57.186Z", "updated": "2021-01-24T18:00:57.201Z", "created_by": 1, "display_name": "Republic Music", "hack_project": 7, "showcase_image": "", "is_public": true, "showcase_participants": [2, 4, 5]}}, {"model": "showcase.showcase", "pk": 10, "fields": {"created": "2021-01-24T18:00:57.206Z", "updated": "2021-01-24T18:00:57.221Z", "created_by": 1, "display_name": "Rebel Alliance", "hack_project": 8, "showcase_image": "", "is_public": true, "showcase_participants": [3, 9, 11]}}]
+[
+    {
+        "model": "showcase.showcase",
+        "pk": 3,
+        "fields": {
+            "created": "2021-01-24T18:00:57.048Z",
+            "updated": "2021-01-24T18:00:57.073Z",
+            "created_by": 1,
+            "display_name": "Droid",
+            "hack_project": 1,
+            "showcase_image": "",
+            "is_public": true,
+            "showcase_participants": [
+                14,
+                19,
+                20
+            ]
+        }
+    },
+    {
+        "model": "showcase.showcase",
+        "pk": 4,
+        "fields": {
+            "created": "2021-01-24T18:00:57.081Z",
+            "updated": "2021-01-24T18:00:57.095Z",
+            "created_by": 1,
+            "display_name": "Wookie",
+            "hack_project": 2,
+            "showcase_image": "",
+            "is_public": true,
+            "showcase_participants": [
+                10,
+                12,
+                18
+            ]
+        }
+    },
+    {
+        "model": "showcase.showcase",
+        "pk": 5,
+        "fields": {
+            "created": "2021-01-24T18:00:57.101Z",
+            "updated": "2021-01-24T18:00:57.120Z",
+            "created_by": 1,
+            "display_name": "Order 66",
+            "hack_project": 3,
+            "showcase_image": "",
+            "is_public": true,
+            "showcase_participants": [
+                9,
+                12,
+                14
+            ]
+        }
+    },
+    {
+        "model": "showcase.showcase",
+        "pk": 6,
+        "fields": {
+            "created": "2021-01-24T18:00:57.131Z",
+            "updated": "2021-01-24T18:00:57.143Z",
+            "created_by": 1,
+            "display_name": "Blaster",
+            "hack_project": 4,
+            "showcase_image": "",
+            "is_public": true,
+            "showcase_participants": [
+                15,
+                16,
+                19
+            ]
+        }
+    },
+    {
+        "model": "showcase.showcase",
+        "pk": 7,
+        "fields": {
+            "created": "2021-01-24T18:00:57.148Z",
+            "updated": "2021-01-24T18:00:57.160Z",
+            "created_by": 1,
+            "display_name": "General Grievous",
+            "hack_project": 5,
+            "showcase_image": "",
+            "is_public": true,
+            "showcase_participants": [
+                3,
+                10,
+                13
+            ]
+        }
+    },
+    {
+        "model": "showcase.showcase",
+        "pk": 8,
+        "fields": {
+            "created": "2021-01-24T18:00:57.166Z",
+            "updated": "2021-01-25T23:20:32.480Z",
+            "created_by": 1,
+            "display_name": "The 501st Legion",
+            "hack_project": 6,
+            "showcase_image": "",
+            "is_public": true,
+            "showcase_participants": [
+                18
+            ]
+        }
+    },
+    {
+        "model": "showcase.showcase",
+        "pk": 9,
+        "fields": {
+            "created": "2021-01-24T18:00:57.186Z",
+            "updated": "2021-01-24T18:00:57.201Z",
+            "created_by": 1,
+            "display_name": "Republic Music",
+            "hack_project": 7,
+            "showcase_image": "",
+            "is_public": true,
+            "showcase_participants": [
+                2,
+                4,
+                5
+            ]
+        }
+    },
+    {
+        "model": "showcase.showcase",
+        "pk": 10,
+        "fields": {
+            "created": "2021-01-24T18:00:57.206Z",
+            "updated": "2021-01-24T18:00:57.221Z",
+            "created_by": 1,
+            "display_name": "Rebel Alliance",
+            "hack_project": 8,
+            "showcase_image": "",
+            "is_public": true,
+            "showcase_participants": [
+                3,
+                9,
+                11
+            ]
+        }
+    }
+]
