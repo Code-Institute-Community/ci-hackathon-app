@@ -1,7 +1,9 @@
 import random
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 
@@ -19,9 +21,13 @@ def view_showcases(request):
     top_results = Showcase.objects.all().order_by('?')[
         :SHOWCASE_SPOTLIGHT_NUMBER]
 
+    paginator = Paginator(all_showcases, 5)
+    page = request.GET.get('page')
+    paginated_showcases = paginator.get_page(page)
+    
     return render(request, 'showcase.html', {
         'top_results': top_results,
-        'all_showcases': all_showcases,
+        'all_showcases': paginated_showcases,
     })
 
 
@@ -54,7 +60,8 @@ def create_or_update_showcase(request, team_id):
         if showcase:
             form = ShowcaseForm(team_id=team_id, instance=showcase)
         else:
-            form = ShowcaseForm(team_id=team_id, initial={"hack_project": 1})
+            form = ShowcaseForm(team_id=team_id, 
+                                initial={"hack_project": team.project.id})
     else:
         data = request.POST
         image = request.FILES.get('image')
@@ -71,7 +78,10 @@ def create_or_update_showcase(request, team_id):
                 f.save()
                 form.save_m2m()
             else:
-                form.save()
+                f = form.save(commit=False)
+                f.created_by = request.user
+                f.save()
+                form.save_m2m()
             
             messages.success(request, "Project showcase created successfully.")
             return redirect(reverse('create_or_update_showcase',

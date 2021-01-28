@@ -538,18 +538,24 @@ form.distribute-teams-form, form.clear-teams-form {
     min-width: auto;
 }
 
-/* .carousel-control-next, .carousel-control-prev {
-    border: 1px solid gray;
-    background-color: rgba(150, 150, 150, .2);
-    width: 30px;
-} */
-
 .carousel-control-next:hover {
     background: linear-gradient(270deg, rgba(54,54,54,1) 0%, rgba(122,122,122,0.5270483193277311) 48%, rgba(255,255,255,0) 100%);
 }
 
 .carousel-control-prev:hover {
     background: linear-gradient(90deg, rgba(54,54,54,1) 0%, rgba(122,122,122,0.5270483193277311) 48%, rgba(255,255,255,0) 100%);
+}
+
+.card-showcase-img img {
+    width: 100%;
+    margin: .5rem;
+    object-fit: cover;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 2px;
+}
+
+.card-title.showcase-card-title h4 a {
+    font-size: 1.5rem;
 }
 
 .card.showcase-image-edit .card-body .card-text img {
@@ -564,7 +570,7 @@ img.showcase-image-edit {
     width: 100%;
     max-height: 500px;
     /* background-image: linear-gradient(to right bottom, #ff5900, #ff7029, #ff8444, #ff965f, #ffa879); */
-    background: url('/static/img/ci-hacking-new-normal--horizontal-center.png') center center;
+    background: url('/static/img/hackathon-bg.png') center center;
 }
 
 .showcase-project-name {

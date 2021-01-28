@@ -4,7 +4,7 @@
     {% if member.website_url %}
     <a href="{{member.website_url}}" target="_blank"><h6 class="card-text text-center mb-3">{{member.full_name}}</h6></a>
     {% else %}
-    <h6 class="card-text text-center mb-3">{{member.full_name}}</h6>
+    <h6 class="card-text text-center mb-3">{% if not member.full_name %}{{member.slack_display_name}}{% else %}{{member.full_name}}{% endif %}</h6>
     {% endif %}
     {% if member.profile_image %}
         <img class="card-img-top team-member-img"

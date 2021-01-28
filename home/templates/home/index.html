@@ -16,7 +16,10 @@
         {% for hackathon in hackathons %}
             {% include 'hackathon/includes/hackathon_card.html' %}
         {% endfor %}
-        {% include 'home/includes/paginator.html' %}
+        <!-- Pagination using Django's paginator. Options are disabled or hidden if unavailable. -->
+        <nav aria-label="Hackathon Page Navigation">
+            {% include 'hackathon/includes/paginator.html' with page_obj=hackathons %}
+        </nav>
         {% else %}
         <div class="card">
             <div class="card-body">

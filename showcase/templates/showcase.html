@@ -4,73 +4,92 @@
 {% block content %}
 
 {% if all_showcases %}
-    <div class="row">
+    <div class="row mb-5">
         <div class="col-12">
 
-            <h1 class="text-center">Featured Projects</h1>
-            <div id="carousel-project-showcase" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    {% for top_result in top_results %}
-                    <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
-                        {% if top_result.showcase_image %}
-                        <img src="{{ top_result.showcase_image }}" class="d-block w-100" alt="{{ top_result.display_name }} Showcase Image">
-                        {% else %}
-                        <canvas class="showcase-placeholder"></canvas>
-                        {% endif%}
-                        <a href="/showcase/{{ top_result.id }}">
-                            <div class="showcase-project-name"><h1>{{top_result.display_name}}</h1></div>
+            
+                <h1 class="text-center">Featured Projects</h1>
+                    <div id="carousel-project-showcase" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for top_result in top_results %}
+                            <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                {% if top_result.showcase_image %}
+                                <img src="{{ top_result.showcase_image }}" class="d-block w-100" alt="{{ top_result.display_name }} Showcase Image">
+                                {% else %}
+                                <canvas class="showcase-placeholder"></canvas>
+                                {% endif%}
+                                <a href="/showcase/{{ top_result.id }}">
+                                    <div class="showcase-project-name"><h1>{{top_result.display_name}}</h1></div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#carousel-project-showcase" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
                         </a>
+                        <a class="carousel-control-next" href="#carousel-project-showcase" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                        <ol class="carousel-indicators">
+                            {% for top_result in top_results %}
+                            <li data-target="#carousel-project-showcase" data-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %}class="active"{% endif %}></li>
+                            {% endfor %}
+                        </ol>
                     </div>
-                    {% endfor %}
-                </div>
-                <a class="carousel-control-prev" href="#carousel-project-showcase" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                  <a class="carousel-control-next" href="#carousel-project-showcase" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                  </a>
-                <ol class="carousel-indicators">
-                    {% for top_result in top_results %}
-                    <li data-target="#carousel-project-showcase" data-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %}class="active"{% endif %}></li>
-                    {% endfor %}
-                </ol>
-            </div>
+
             
         </div>
     </div>
 
     <div class="row">
         <div class="col-12">
-            {% for showcase in all_showcases %}
+            <h3 class="text-center mb-3">All Showcased Projects</h3>
 
-            <div class="card">
+            {% for showcase in all_showcases %}
+            <div class="card mb-3">
                 <div class="card-body">
-                    <div class="card-img">
-                        {% if showcase.showcase_image %}
-                        <img src="{{showcase.showcase_image}}" alt="Showcase image">
-                        {% else %}
-                        <img src="{% static 'img/ci-hackathon--square.png' %}" alt="Showcase image">
-                        {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-3">
+
+                            <div class="card-showcase-img">
+                                {% if showcase.showcase_image %}
+                                <img src="{{showcase.showcase_image}}" viewBox='0 0 1 1' class="w-30" alt="Showcase image">
+                                {% else %}
+                                <img src="{% static 'img/ci-hackathon--square.png' %}" class="w-30" alt="Showcase image">
+                                {% endif %}
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-12 col-lg-9">
+
+                            <div class="card-title showcase-card-title"><h4><a href="/showcase/{{showcase.id}}">{{showcase.display_name}}</a></h4></div>
+                            <div class="card-text">
+                                <label for="showcase_description"><strong>Description</strong></label>
+                                <p id="showcase_description">
+                                    {{showcase.hack_project.description}}
+                                </p>
+                                {% if showcase.hack_project.technologies_used %}
+                                <label for="showcase_technologies_used"><strong>Technologies used</strong></label>
+                                <p id="showcase_technologies_used">
+                                    {{showcase.hack_project.technologies_used}}
+                                </p>
+                                {% endif %}
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="card-title"><h4>{{showcase.display_name}}</h4></div>
-                    <div class="card-text">
-                        <label for="showcase_description"><strong>Description</strong></label>
-                        <p id="showcase_description">
-                            {{showcase.hack_project.description}}
-                        </p>
-                        {% if showcase.hack_project.technologies_used %}
-                        <label for="showcase_technologies_used"><strong>Technologies used</strong></label>
-                        <p id="showcase_technologies_used">
-                            {{showcase.hack_project.technologies_used}}
-                        </p>
-                        {% endif %}
-                    </div>
+                    
                 </div>
             </div>
-
             {% endfor %}
+
+            <!-- Pagination using Django's paginator. Options are disabled or hidden if unavailable. -->
+            <nav aria-label="Hackathon Page Navigation">
+                {% include 'hackathon/includes/paginator.html' with page_obj=all_showcases %}
+            </nav>
         </div>
     </div>
 {% else %}
