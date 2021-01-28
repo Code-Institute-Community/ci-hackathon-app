@@ -6,7 +6,6 @@ from hackathon.models import HackTeam, HackProject
 
 class ShowcaseForm(forms.ModelForm):
     """ Form to create or update Showcase """
-
     class Meta:
         model = Showcase
         fields = ['hack_project', 'showcase_participants', 'is_public',
