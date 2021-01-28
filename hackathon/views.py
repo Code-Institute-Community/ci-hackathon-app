@@ -19,6 +19,8 @@ from .models import Hackathon, HackTeam, HackProject, HackProjectScore,\
 from .forms import HackathonForm, ChangeHackathonStatusForm,\
                    HackAwardForm
 from .lists import AWARD_CATEGORIES
+from .helpers import create_team_judge_category_construct,\
+                     create_category_team_construct
 
 DEFAULT_SCORES = {
     'team_name': '',
@@ -55,11 +57,9 @@ class HackathonListView(ListView):
 def judging(request, hack_id, team_id):
     """Displays the judging page for the judge to save their scores
     for the selected project - determined by hackathon id and team id"""
-
-    # HackProjectScoreCategories:
-    score_categories = HackProjectScoreCategory.objects.all()
-
     hackathon = get_object_or_404(Hackathon, pk=hack_id)
+    score_categories = HackProjectScoreCategory.objects.filter(
+        hackathon=hackathon).all()
     team = get_object_or_404(HackTeam, pk=team_id)
 
     # verify whether user is judge for the hackathon
@@ -140,6 +140,7 @@ def check_projects_scores(request, hack_id):
     if request.method == 'POST':
         hack_awards_formset = HackAwardFormSet(
             request.POST,
+            form_kwargs={'hackathon_id': hack_id},
             queryset=HackAward.objects.filter(hackathon=hackathon))
         if hack_awards_formset.is_valid():
             try:
@@ -164,63 +165,35 @@ def check_projects_scores(request, hack_id):
     else:
         team_scores = {}
         category_scores_per_team = {}
-        score_categories = HackProjectScoreCategory.objects.all()
+        score_categories = HackProjectScoreCategory.objects.filter(
+            category__in=list(hackathon.score_categories.all())).all()
         hackathon_projects = [team.project.id for team in hackathon.teams.all()
                               if team.project]
         scores = HackProjectScore.objects.filter(
             project_id__in=hackathon_projects).all()
         judges = hackathon.judges.all()
+        team_scores = create_team_judge_category_construct(
+            hackathon.teams.all(), judges, score_categories)
+        category_scores_per_team = create_category_team_construct(
+            hackathon.teams.all(), score_categories)
 
-        # Creating scores data structure
-        # {
-        #   team_name: {
-        #       team_name: 'Team',
-        #       project_name: 'Project',
-        #       scores: {
-        #           judge_1: {
-        #               'Score Category 1': 1,
-        #               ...
-        #               'Score Category n': 1,
-        #               'Total': 2
-        #           },
-        #           judge_n: {
-        #               ...
-        #           }
-        #       },
-        #       total_score: 5
-        #   }
-        # }
         for score in scores:
             judge_name = score.judge.slack_display_name
             team_name = score.project.hackteam.display_name
             project_name = score.project.display_name
             score_category = score.hack_project_score_category.category
-            team_scores.setdefault(team_name, deepcopy(DEFAULT_SCORES))
-            team_scores[team_name]['team_name'] = team_name
-            team_scores[team_name]['project_name'] = project_name
-            team_scores[team_name]['scores'].setdefault(judge_name, {})
-            team_scores[team_name]['scores'][judge_name].setdefault('Total', 0)
-            team_scores[team_name]['scores'][judge_name][score_category] = (
-                score.score)
-            team_scores[team_name]['total_score'] += score.score
-            team_scores[team_name]['scores'][judge_name][
-                'Total'] += score.score
+            score = score.score
+            team_scores[team_name]['scores'][judge_name][score_category] = score
+            team_scores[team_name]['total_score'] += score
+            team_scores[team_name]['scores'][judge_name]['Total'] += score
 
             category_scores_per_team.setdefault(score_category, {})
             category_scores_per_team[score_category].setdefault(team_name, 0)
-            category_scores_per_team[score_category][team_name] += score.score
-        
-        # Fill empty totals for any judges who have not submitted scores
-        for team, team_score in team_scores.items():
-            for judge in judges:
-                if judge.slack_display_name not in team_score['scores']:
-                    team_score['scores'][judge.slack_display_name] = {
-                        'Total': 0}
+            category_scores_per_team[score_category][team_name] += score
 
         sorted_team_scores = sorted(team_scores.values(),
                                     key=itemgetter('total_score'),
                                     reverse=True)
-
         # Ordering scores per category
         category_scores_per_category = {}
         for category, scores in category_scores_per_team.items():
@@ -231,18 +204,27 @@ def check_projects_scores(request, hack_id):
                 reverse=True)
         
         # Grouping back into teams
+        projects = {team.display_name: team.project.display_name 
+                    for team in hackathon.teams.all()}
         category_scores = {team.display_name : {} for team in hackathon.teams.all()}
         for category, teams in category_scores_per_category.items():
             max_score = max([team['score'] for team in teams])
             place = 1
             for team in teams:
+                category_scores[team['team_name']][
+                    'project_name'] = projects[team['team_name']]
                 category_scores[team['team_name']].setdefault(category, {})
-                category_scores[team['team_name']][category]['score'] = team['score']
+                category_scores[team['team_name']][category][
+                    'score'] = team['score']
                 if team['score'] < max_score:
                     place += 1
+                    max_score = team['score']
                 category_scores[team['team_name']][category]['place'] = place
+                if team['score'] == 0: 
+                    category_scores[team['team_name']][category]['place'] = ''
 
         hack_awards_formset = HackAwardFormSet(
+            form_kwargs={'hackathon_id': hack_id},
             queryset=HackAward.objects.filter(hackathon=hackathon))
 
         return render(request, 'hackathon/final_score.html', {
@@ -471,14 +453,44 @@ def enroll_toggle(request):
 def change_awards(request, hack_id):
     hackathon = get_object_or_404(Hackathon, pk=hack_id)
     awards = hackathon.awards.all()
-    form = HackAwardForm()
 
     if request.method == 'GET':
+        form = HackAwardForm()
         return render(request, 'hackathon/change_awards.html', {
             'hackathon': hackathon,
             'awards': awards,
             'form': form,
         })
     else: 
-        pass
-        return redirect(reverse('hackathon:awards', kwargs={'hack_id': hack_id}))
+        if request.POST.get('update_type') == 'delete':
+            hack_award = get_object_or_404(HackAward, id=request.POST.get('id'))
+            if hack_award.winning_project:
+                messages.error(request,
+                               ("You cannot remove this award since it already "
+                               "has a winner assigned to it."))
+                return redirect(reverse('hackathon:awards',
+                                kwargs={'hack_id': hack_id}))
+            hack_award.delete()
+            messages.success(request, "Award removed added.")
+        else:
+            form = HackAwardForm(request.POST)
+            existing_awards = HackAward.objects.filter(
+                hackathon=hackathon,
+                hack_award_category__in=request.POST.get(
+                    'hack_award_category')).all()
+
+            if existing_awards:
+                messages.error(request, ("Each award category can only be "
+                                         "added once to a hackathon."))
+            elif form.is_valid():
+                f = form.save(commit=False)
+                f.created_by = request.user
+                f.hackathon = hackathon
+                form.save()
+                messages.success(request, "Award successfully added.")
+            else:
+                logger.exception(form.errors)
+                messages.error(request,
+                               "An unexpected error occurred. Please try again")
+        return redirect(reverse('hackathon:awards',
+                                kwargs={'hack_id': hack_id}))

@@ -14,6 +14,7 @@
                 <div class="card-text">
                     <form method="POST">
                         {% csrf_token %}
+                        <input type="hidden" name="update_type" value="add">
                         {{form.hack_award_category|as_crispy_field}}
                         <button type="submit" class="btn btn-primary">Add Award</button>
                     </form>
@@ -37,13 +38,22 @@
                     {% for award in awards %}
                     <div class="card mb-2">
                         <div class="card-body p-2">
-                    
+                            
+                            {% if not award.winning_project %}
                             <form method="POST" class="edit-awards-form">
                                 {% csrf_token %}
-                                {{award.hack_award_category }}
+                                <input type="hidden" name="id" value="{{award.id}}">
+                                <input type="hidden" name="update_type" value="delete">
+                                <strong>{{award.hack_award_category }}</strong>
                                 <button class="btn btn-danger btn-sm float-right">X</button>
                             </form>
-
+                            {% endif %}
+                            {% if award.winning_project %}
+                            <strong>{{award.hack_award_category }}</strong><br>
+                            Winner: {{ award.winning_project }}
+                            {% else %}
+                            No winner assigned yet.
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}

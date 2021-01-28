@@ -1063,8 +1063,8 @@
         "fields": {
             "created": "2021-01-18T21:21:36.420Z",
             "updated": "2021-01-18T21:21:36.420Z",
-            "created_by": 21,
-            "judge": 21,
+            "created_by": 1,
+            "judge": 1,
             "project": 1,
             "score": 11,
             "hack_project_score_category": 1
@@ -1076,8 +1076,8 @@
         "fields": {
             "created": "2021-01-18T21:21:36.435Z",
             "updated": "2021-01-18T21:21:36.435Z",
-            "created_by": 21,
-            "judge": 21,
+            "created_by": 1,
+            "judge": 1,
             "project": 1,
             "score": 3,
             "hack_project_score_category": 2
@@ -1089,8 +1089,8 @@
         "fields": {
             "created": "2021-01-18T21:21:36.445Z",
             "updated": "2021-01-18T21:21:36.445Z",
-            "created_by": 21,
-            "judge": 21,
+            "created_by": 1,
+            "judge": 1,
             "project": 1,
             "score": 5,
             "hack_project_score_category": 3
@@ -1102,8 +1102,8 @@
         "fields": {
             "created": "2021-01-18T21:21:36.452Z",
             "updated": "2021-01-18T21:21:36.453Z",
-            "created_by": 21,
-            "judge": 21,
+            "created_by": 1,
+            "judge": 1,
             "project": 1,
             "score": 9,
             "hack_project_score_category": 4
@@ -1115,8 +1115,8 @@
         "fields": {
             "created": "2021-01-18T21:21:36.459Z",
             "updated": "2021-01-18T21:21:36.459Z",
-            "created_by": 21,
-            "judge": 21,
+            "created_by": 1,
+            "judge": 1,
             "project": 1,
             "score": 9,
             "hack_project_score_category": 5
@@ -1128,8 +1128,8 @@
         "fields": {
             "created": "2021-01-18T21:21:51.959Z",
             "updated": "2021-01-18T21:21:51.959Z",
-            "created_by": 21,
-            "judge": 21,
+            "created_by": 1,
+            "judge": 1,
             "project": 2,
             "score": 5,
             "hack_project_score_category": 1
@@ -1141,8 +1141,8 @@
         "fields": {
             "created": "2021-01-18T21:21:51.968Z",
             "updated": "2021-01-18T21:21:51.968Z",
-            "created_by": 21,
-            "judge": 21,
+            "created_by": 1,
+            "judge": 1,
             "project": 2,
             "score": 12,
             "hack_project_score_category": 2
@@ -1154,8 +1154,8 @@
         "fields": {
             "created": "2021-01-18T21:21:51.975Z",
             "updated": "2021-01-18T21:21:51.975Z",
-            "created_by": 21,
-            "judge": 21,
+            "created_by": 1,
+            "judge": 1,
             "project": 2,
             "score": 6,
             "hack_project_score_category": 3
@@ -1167,8 +1167,8 @@
         "fields": {
             "created": "2021-01-18T21:21:51.982Z",
             "updated": "2021-01-18T21:21:51.982Z",
-            "created_by": 21,
-            "judge": 21,
+            "created_by": 1,
+            "judge": 1,
             "project": 2,
             "score": 5,
             "hack_project_score_category": 4
@@ -1180,8 +1180,8 @@
         "fields": {
             "created": "2021-01-18T21:21:51.988Z",
             "updated": "2021-01-18T21:21:51.988Z",
-            "created_by": 21,
-            "judge": 21,
+            "created_by": 1,
+            "judge": 1,
             "project": 2,
             "score": 5,
             "hack_project_score_category": 5

@@ -41,6 +41,8 @@ def event_ended(date_event):
 @register.filter
 def get_value_from_dict(data, key):
     """ Retrieves a value from a dict based on a given key """
+    print(data)
+    print(key)
     if key:
         return data.get(key)
 
@@ -58,6 +60,9 @@ def sort_list(data):
 @register.filter
 def place_identifier(num):
     num_str = str(num)
+    if not isinstance(num, int):
+        # no score
+        return ''
     if num_str[-1] == '1':
         return num_str + 'st'
     elif num_str[-1] == '2':

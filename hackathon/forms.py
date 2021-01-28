@@ -116,17 +116,38 @@ class ChangeHackathonStatusForm(forms.ModelForm):
 
 
 class HackAwardForm(forms.ModelForm):
-
+    """ Form to create or edit HackAwards """
     hack_award_category = forms.ModelChoiceField(
         label="Award Type",
         queryset=HackAwardCategory.objects.order_by('display_name'),
         required=True,
     )
 
+    winning_project = forms.ModelChoiceField(
+        label="Winning Project",
+        queryset=HackProject.objects.order_by('display_name'),
+        required=False
+    )
+
     class Meta:
         model = HackAward
-        fields = ('id', 'hack_award_category')
+        fields = ('id', 'hack_award_category', 'winning_project')
 
     def __init__(self, *args, **kwargs):
+        hackathon_id = kwargs.pop('hackathon_id', None)
+        hackathon = Hackathon.objects.filter(id=hackathon_id).first()
         super(HackAwardForm, self).__init__(*args, **kwargs)
-        #self.fields['display_name'].widget.attrs['readonly'] = True
+        # Prepopulate dropdowns so only hackathon specific award categories and
+        # winning_projects can be chosen if a hackathon_id is specified
+        if hackathon:
+            hack_projects = HackProject.objects.filter(
+                    hackteam__in=hackathon.teams.all()).order_by('display_name')
+            hack_award_categories = HackAwardCategory.objects.filter(
+                    award__in=hackathon.awards.all()).order_by(
+                        'display_name')
+            self.fields['hack_award_category'] = forms.ModelChoiceField(
+                # queryset=hackathon.hackaward.hack_award_categories.all())
+                queryset=hack_award_categories)
+            self.fields['winning_project'] = forms.ModelChoiceField(
+                queryset=hack_projects)
+            self.fields['winning_project'].required = False
