@@ -584,6 +584,9 @@ img.showcase-image-edit {
     color: var(--white);
 }
 
+.showcase-public-text {
+    font-size: .75rem;
+}
 
 /* Media Queries */
 

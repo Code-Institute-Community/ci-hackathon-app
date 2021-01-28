@@ -17,8 +17,10 @@ SHOWCASE_SPOTLIGHT_NUMBER = settings.SHOWCASE_SPOTLIGHT_NUMBER
 
 def view_showcases(request):
     """ Shows the project showcase page """
-    all_showcases = Showcase.objects.order_by('display_name')
-    top_results = Showcase.objects.all().order_by('?')[
+    all_showcases = Showcase.objects.filter(
+        is_public=True).order_by('display_name')
+    top_results = Showcase.objects.filter(
+        is_public=True).order_by('?')[
         :SHOWCASE_SPOTLIGHT_NUMBER]
 
     paginator = Paginator(all_showcases, 5)
@@ -75,6 +77,7 @@ def create_or_update_showcase(request, team_id):
             if image:
                 f = form.save(commit=False)
                 f.showcase_image = image_to_base64str(image)
+                f.created_by = request.user
                 f.save()
                 form.save_m2m()
             else:
