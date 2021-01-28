@@ -69,7 +69,7 @@ class TeamsHelpersTestCase(TestCase):
         team_sizes = sorted(choose_team_sizes(self.participants, teamsize))
         combos_without_dupes = find_all_combinations(
             self.participants, team_sizes)
-        self.assertEqual(len(combos_without_dupes), 28)
+        self.assertEqual(len(combos_without_dupes), 18)
 
     def test_distribute_participants_to_teams(self):
         teamsize = 3
