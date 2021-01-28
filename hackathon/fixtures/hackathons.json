@@ -231,7 +231,7 @@
             "updated": "2021-01-25T23:34:29.687Z",
             "created_by": 1,
             "display_name": "Hacktoberfest 2022",
-            "description": "Something about the event",
+            "description": "Open source is changing the world - one pull request at a time.\r\nSupport open source and pick a limited edition T-shirt or plant a tree.\r\n\r\nHacktoberfest 2020 has ended. Keep contributing to open source & we'll see you next year!",
             "theme": "Open Source",
             "start_date": "2022-10-01T08:00:00Z",
             "end_date": "2022-10-09T17:00:00Z",
@@ -251,6 +251,50 @@
         }
     },
     {
+        "model": "hackathon.hackathon",
+        "pk": 12,
+        "fields": {
+            "created": "2021-01-28T17:37:53.269Z",
+            "updated": "2021-01-28T17:46:27.319Z",
+            "created_by": 1,
+            "display_name": "Fullstack Frameworks With Django",
+            "description": "Hackathon event geared towards Django skills",
+            "theme": "Django",
+            "start_date": "2021-01-29T08:00:00Z",
+            "end_date": "2021-01-31T17:00:00Z",
+            "organiser": 1,
+            "organisation": 1,
+            "status": "hack_in_progress",
+            "judging_status": "not_yet_started",
+            "judges": [
+                3,
+                9,
+                10,
+                14
+            ],
+            "participants": [
+                3,
+                5,
+                6,
+                8,
+                9,
+                10,
+                11,
+                14,
+                17,
+                18,
+                19
+            ],
+            "score_categories": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ]
+        }
+    },
+    {
         "model": "hackathon.hackawardcategory",
         "pk": 1,
         "fields": {
@@ -259,8 +303,7 @@
             "created_by": 1,
             "display_name": "Best Project",
             "description": "The project with the best score overall.",
-            "hackathon": 4,
-            "winning_project": null
+            "ranking": null
         }
     },
     {
@@ -272,8 +315,7 @@
             "created_by": 1,
             "display_name": "Best Project (1st Runners Up)",
             "description": "The project with the second best score overall.",
-            "hackathon": 4,
-            "winning_project": null
+            "ranking": null
         }
     },
     {
@@ -285,8 +327,7 @@
             "created_by": 1,
             "display_name": "Best Project (2nd Runners Up)",
             "description": "The project with the third best score overall.",
-            "hackathon": 4,
-            "winning_project": null
+            "ranking": null
         }
     },
     {
@@ -298,8 +339,7 @@
             "created_by": 1,
             "display_name": "Most Innovative Project",
             "description": "The project using the most innovative technology, approach or architecture.",
-            "hackathon": 4,
-            "winning_project": null
+            "ranking": null
         }
     },
     {
@@ -311,8 +351,7 @@
             "created_by": 1,
             "display_name": "Best Commercial Application",
             "description": "The project which shows be the best commercial application and is the closest to be market ready.",
-            "hackathon": 4,
-            "winning_project": null
+            "ranking": null
         }
     },
     {
@@ -324,46 +363,42 @@
             "created_by": 1,
             "display_name": "Most Creative Project",
             "description": "The project with the most creative idea.",
-            "hackathon": 4,
+            "ranking": null
+        }
+    },
+    {
+        "model": "hackathon.hackaward",
+        "pk": 1,
+        "fields": {
+            "created": "2021-01-28T17:37:53.278Z",
+            "updated": "2021-01-28T17:48:27.144Z",
+            "created_by": 1,
+            "hackathon": 5,
+            "hack_award_category": 1,
             "winning_project": null
         }
     },
     {
-        "model": "hackathon.hackawardcategory",
-        "pk": 10,
+        "model": "hackathon.hackaward",
+        "pk": 2,
         "fields": {
-            "created": "2021-01-25T23:34:29.703Z",
-            "updated": "2021-01-25T23:34:29.703Z",
+            "created": "2021-01-28T17:37:53.281Z",
+            "updated": "2021-01-28T17:48:24.249Z",
             "created_by": 1,
-            "display_name": "Best Project",
-            "description": "The project with the best score overall.",
-            "hackathon": 10,
+            "hackathon": 5,
+            "hack_award_category": 2,
             "winning_project": null
         }
     },
     {
-        "model": "hackathon.hackawardcategory",
-        "pk": 11,
+        "model": "hackathon.hackaward",
+        "pk": 3,
         "fields": {
-            "created": "2021-01-25T23:34:29.715Z",
-            "updated": "2021-01-25T23:34:29.715Z",
+            "created": "2021-01-28T17:37:53.284Z",
+            "updated": "2021-01-28T17:48:30.906Z",
             "created_by": 1,
-            "display_name": "Best Project (1st Runners Up)",
-            "description": "The project with the second best score overall.",
-            "hackathon": 10,
-            "winning_project": null
-        }
-    },
-    {
-        "model": "hackathon.hackawardcategory",
-        "pk": 12,
-        "fields": {
-            "created": "2021-01-25T23:34:29.730Z",
-            "updated": "2021-01-25T23:34:29.730Z",
-            "created_by": 1,
-            "display_name": "Best Project (2nd Runners Up)",
-            "description": "The project with the third best score overall.",
-            "hackathon": 10,
+            "hackathon": 5,
+            "hack_award_category": 3,
             "winning_project": null
         }
     },
@@ -550,6 +585,149 @@
         }
     },
     {
+        "model": "hackathon.hackteam",
+        "pk": 16,
+        "fields": {
+            "created": "2021-01-28T12:33:44.222Z",
+            "updated": "2021-01-28T16:30:19.156Z",
+            "created_by": 1,
+            "display_name": "Arkham",
+            "header_image": "",
+            "hackathon": 3,
+            "project": 10,
+            "participants": [
+                1,
+                17,
+                20
+            ]
+        }
+    },
+    {
+        "model": "hackathon.hackteam",
+        "pk": 17,
+        "fields": {
+            "created": "2021-01-28T12:33:44.235Z",
+            "updated": "2021-01-28T12:33:44.235Z",
+            "created_by": 1,
+            "display_name": "team_2",
+            "header_image": "",
+            "hackathon": 3,
+            "project": null,
+            "participants": [
+                12,
+                16,
+                19
+            ]
+        }
+    },
+    {
+        "model": "hackathon.hackteam",
+        "pk": 18,
+        "fields": {
+            "created": "2021-01-28T12:33:44.242Z",
+            "updated": "2021-01-28T12:33:44.242Z",
+            "created_by": 1,
+            "display_name": "team_3",
+            "header_image": "",
+            "hackathon": 3,
+            "project": null,
+            "participants": [
+                3,
+                6,
+                14
+            ]
+        }
+    },
+    {
+        "model": "hackathon.hackteam",
+        "pk": 19,
+        "fields": {
+            "created": "2021-01-28T12:33:44.245Z",
+            "updated": "2021-01-28T12:33:44.245Z",
+            "created_by": 1,
+            "display_name": "team_4",
+            "header_image": "",
+            "hackathon": 3,
+            "project": null,
+            "participants": [
+                2,
+                4,
+                8
+            ]
+        }
+    },
+    {
+        "model": "hackathon.hackteam",
+        "pk": 20,
+        "fields": {
+            "created": "2021-01-28T17:46:37.870Z",
+            "updated": "2021-01-28T17:46:37.870Z",
+            "created_by": 1,
+            "display_name": "team_1",
+            "header_image": "",
+            "hackathon": 12,
+            "project": null,
+            "participants": [
+                14,
+                17
+            ]
+        }
+    },
+    {
+        "model": "hackathon.hackteam",
+        "pk": 21,
+        "fields": {
+            "created": "2021-01-28T17:46:37.876Z",
+            "updated": "2021-01-28T17:46:37.876Z",
+            "created_by": 1,
+            "display_name": "team_2",
+            "header_image": "",
+            "hackathon": 12,
+            "project": null,
+            "participants": [
+                8,
+                18,
+                19
+            ]
+        }
+    },
+    {
+        "model": "hackathon.hackteam",
+        "pk": 22,
+        "fields": {
+            "created": "2021-01-28T17:46:37.880Z",
+            "updated": "2021-01-28T17:46:37.880Z",
+            "created_by": 1,
+            "display_name": "team_3",
+            "header_image": "",
+            "hackathon": 12,
+            "project": null,
+            "participants": [
+                3,
+                10,
+                11
+            ]
+        }
+    },
+    {
+        "model": "hackathon.hackteam",
+        "pk": 23,
+        "fields": {
+            "created": "2021-01-28T17:46:37.882Z",
+            "updated": "2021-01-28T17:46:37.882Z",
+            "created_by": 1,
+            "display_name": "team_4",
+            "header_image": "",
+            "hackathon": 12,
+            "project": null,
+            "participants": [
+                5,
+                6,
+                9
+            ]
+        }
+    },
+    {
         "model": "hackathon.hackproject",
         "pk": 1,
         "fields": {
@@ -725,6 +903,26 @@
             "deployed_url": "http://ewok-patrol.com",
             "submission_time": "2021-01-24T18:04:14.073Z",
             "speaker_name": "Admin User",
+            "share_permission": true,
+            "mentor": null
+        }
+    },
+    {
+        "model": "hackathon.hackproject",
+        "pk": 10,
+        "fields": {
+            "created": "2021-01-28T13:33:46.109Z",
+            "updated": "2021-01-28T13:33:46.109Z",
+            "created_by": null,
+            "display_name": "Arkham",
+            "description": "An application to help manage the patient records and doctor appointments.",
+            "technologies_used": "HTML, CSS, jQuery, Python",
+            "project_image": "",
+            "screenshot": "",
+            "github_url": "http://github.com/arkham",
+            "deployed_url": "http://arkham.com",
+            "submission_time": "2021-01-28T13:33:46.109Z",
+            "speaker_name": "admin_ci",
             "share_permission": true,
             "mentor": null
         }
