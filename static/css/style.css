@@ -587,6 +587,12 @@ img.showcase-image-edit {
     font-size: .75rem;
 }
 
+/* Awards */
+.edit-awards-form {
+    width: 100%;
+    max-width: none;
+}
+
 /* Media Queries */
 
 @media (max-width:453px) {

@@ -26,7 +26,9 @@
                         data-toggle="modal" data-target="#uploadImageModal">
                         <i class="fas fa-pen mr-2"></i>Edit</button>
                     {% endif %}
-                    <h2>Team: <i>{{team}}</i></h2>
+                    <h2>Team: <i>{{team}}</i> <a role="button" data-toggle="modal" data-target="#renameTeamModal">
+                        <i class="fas fa-pen ml-3" title="Rename team"></i></a>
+                    </h2>
                 </div>
             </div>
 
@@ -73,6 +75,7 @@
 </div>
 
 {% include 'upload_image.html' %}
+{% include 'includes/rename_team.html' %}
 
 {% endblock %}
 

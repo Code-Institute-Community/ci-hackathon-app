@@ -1,8 +1,10 @@
 from copy import deepcopy
 from datetime import datetime
 from operator import itemgetter
+import logging
 
 from dateutil.parser import parse
+from django.db import transaction, IntegrityError
 from django.forms import modelformset_factory
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404, redirect, reverse
@@ -12,9 +14,10 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 
-from .models import Hackathon, HackTeam, HackProject, HackProjectScore, HackProjectScoreCategory, HackAwardCategory
+from .models import Hackathon, HackTeam, HackProject, HackProjectScore,\
+                    HackProjectScoreCategory, HackAwardCategory, HackAward
 from .forms import HackathonForm, ChangeHackathonStatusForm,\
-                   HackAwardCategoryForm
+                   HackAwardForm
 from .lists import AWARD_CATEGORIES
 
 DEFAULT_SCORES = {
@@ -23,6 +26,8 @@ DEFAULT_SCORES = {
     'scores': {},
     'total_score': 0,
 }
+
+logger = logging.getLogger(__name__)
 
 
 class HackathonListView(ListView):
@@ -78,12 +83,14 @@ def judging(request, hack_id, team_id):
     project = get_object_or_404(HackTeam, pk=team_id).project
     if not project:
         messages.error(
-            request, f"The team doesn't have a project yet, check back later...")
+            request, ("The team doesn't have a project yet, check back "
+                      "later..."))
         return redirect(reverse('home'))
     judge_has_scored_this = False
     if HackProjectScore.objects.filter(judge=request.user, project=project):
         messages.error(
-            request, f"Oooops, sorry! Something went wrong, you have already scored that team...")
+            request, ("Oooops, sorry! Something went wrong, you have already "
+                      "scored that team..."))
         return redirect(reverse('home'))
 
     if request.method == 'POST':
@@ -113,30 +120,46 @@ def judging(request, hack_id, team_id):
 @login_required
 def check_projects_scores(request, hack_id):
     """ When a judge submits the score, check if all projects in the Hackathon
-    were scored by all the judges in all the categories by comparing the number of 
-    objects in HackProjectScore for each projects to the required number of objects.
+    were scored by all the judges in all the categories by comparing the
+    number of objects in HackProjectScore for each projects to the required
+    number of objects.
 
-    If all projects weren't scored, render final_score.html without the score table.
+    If all projects weren't scored, render final_score.html without the
+    score table.
 
-    If all the projects were scored, calculate the total score for each team, sort the teams by scores
+    If all the projects were scored, calculate the total score for each team,
+    sort the teams by scores
     and render final_score.html with the score table.
 
     """
     hackathon = get_object_or_404(Hackathon, pk=hack_id)
-    HackAwardCategoryFormSet = modelformset_factory(
-                HackAwardCategory, fields=('id', 'display_name', 'winning_project'),
-                form=HackAwardCategoryForm, extra=0)
+    HackAwardFormSet = modelformset_factory(
+                HackAward, fields=('id', 'hack_award_category', 'winning_project'),
+                form=HackAwardForm, extra=0)
 
     if request.method == 'POST':
-        hack_awards_formset = HackAwardCategoryFormSet(
+        hack_awards_formset = HackAwardFormSet(
             request.POST,
-            queryset=HackAwardCategory.objects.filter(hackathon=hackathon))
+            queryset=HackAward.objects.filter(hackathon=hackathon))
         if hack_awards_formset.is_valid():
-            hack_awards_formset.save()
-            messages.success(request, "Awards saved successfully.")
+            try:
+                with transaction.atomic():
+                    hack_awards_formset.save()
+            except IntegrityError as e:
+                if 'UNIQUE' in str(e):
+                    messages.error(request, 
+                                   ("Each award category can only be added "
+                                    "once to a hackathon."))
+                else: 
+                    logger.exception(e)
+                    messages.error(request, 
+                                   ("An unexpected error occurred. Please "
+                                    "try again."))
         else:
-            messages.error(request, "An unexpected error occurred.")
-        return redirect(reverse('hackathon:final_score', kwargs={'hack_id': hack_id}))
+            messages.error(request, 
+                           "An unexpected error occurred. Please try again.")
+        return redirect(reverse('hackathon:final_score',
+                                kwargs={'hack_id': hack_id}))
 
     else:
         team_scores = {}
@@ -219,8 +242,8 @@ def check_projects_scores(request, hack_id):
                     place += 1
                 category_scores[team['team_name']][category]['place'] = place
 
-        hack_awards_formset = HackAwardCategoryFormSet(
-            queryset=HackAwardCategory.objects.filter(hackathon=hackathon))
+        hack_awards_formset = HackAwardFormSet(
+            queryset=HackAward.objects.filter(hackathon=hackathon))
 
         return render(request, 'hackathon/final_score.html', {
             'sorted_teams_scores': sorted_team_scores,
@@ -230,7 +253,7 @@ def check_projects_scores(request, hack_id):
             'hack_awards_formset': hack_awards_formset,
         })
 
-
+@login_required
 def create_hackathon(request):
     """ Allow users to create hackathon event """
 
@@ -262,7 +285,8 @@ def create_hackathon(request):
         # Ensure end_date is after start_date
         if end_date <= start_date:
             messages.error(
-                request, 'The end date must be at least one day after the start date.')
+                request, ('The end date must be at least one day after the '
+                         'start date.'))
             return redirect("hackathon:create_hackathon")
 
         # Submit form and save record
@@ -271,15 +295,15 @@ def create_hackathon(request):
             form.instance.organiser = request.user
             form.save()
             # Taking the first 3 award categories and creating them for the
-            # newly created hackathon
-            for award_category in AWARD_CATEGORIES[:3]:
-                hack_award = HackAwardCategory.objects.filter(
-                    display_name=award_category).first()
-                if not hack_award:
-                    continue
-                hack_award.pk = None
-                hack_award.created_by = request.user
-                hack_award.hackathon = form.instance
+            # newly created hackathon.
+            hack_award_categories = HackAwardCategory.objects.filter(
+                display_name__in=AWARD_CATEGORIES[:3])
+            for award_category in hack_award_categories:
+                hack_award = HackAward(
+                    created_by = request.user,
+                    hackathon = form.instance,
+                    hack_award_category=award_category,
+                )
                 hack_award.save()
             messages.success(
                 request, 'Thanks for submitting a new Hackathon event!')
@@ -315,7 +339,8 @@ def update_hackathon(request, hackathon_id):
         end_date = parse(request.POST.get('end_date'))
         now = datetime.now()
 
-        # Ensure start_date is a day in the future for hackathons that haven't started yet
+        # Ensure start_date is a day in the future for hackathons that haven't
+        # started yet
         if hackathon.start_date.date() > now.date() >= start_date.date():
             messages.error(
                 request, 'The start date must be a date in the future.')
@@ -324,7 +349,8 @@ def update_hackathon(request, hackathon_id):
         # Ensure end_date is after start_date
         if end_date <= start_date:
             messages.error(
-                request, 'The end date must be at least one day after the start date.')
+                request, ('The end date must be at least one day after the '
+                         'start date.'))
             return redirect("hackathon:update_hackathon", hackathon_id)
 
         # Submit form and save record
@@ -332,7 +358,8 @@ def update_hackathon(request, hackathon_id):
             form.instance.updated = now
             form.save()
             messages.success(
-                request, f'Thanks, {hackathon.display_name} has been successfully updated!')
+                request, (f'Thanks, {hackathon.display_name} has been '
+                          f'successfully updated!'))
         else:
             messages.error(request, ("An error occurred updating the event. "
                                      "Please try again."))
@@ -395,7 +422,8 @@ def delete_hackathon(request, hackathon_id):
     if not request.user.is_superuser:
         return redirect("hackathon:hackathon-list")
 
-    # Get selected hackathon and set status to deleted to remove from frontend list
+    # Get selected hackathon and set status to deleted to remove from
+    # frontend list
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     hackathon.status = 'deleted'
     hackathon.save()
@@ -437,3 +465,20 @@ def enroll_toggle(request):
                                 kwargs={'hackathon_id': hackathon_id}))
     else:
         return HttpResponse(status=403)
+
+
+@login_required
+def change_awards(request, hack_id):
+    hackathon = get_object_or_404(Hackathon, pk=hack_id)
+    awards = hackathon.awards.all()
+    form = HackAwardForm()
+
+    if request.method == 'GET':
+        return render(request, 'hackathon/change_awards.html', {
+            'hackathon': hackathon,
+            'awards': awards,
+            'form': form,
+        })
+    else: 
+        pass
+        return redirect(reverse('hackathon:awards', kwargs={'hack_id': hack_id}))

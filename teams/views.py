@@ -11,7 +11,7 @@ from teams.helpers import choose_team_sizes, group_participants,\
                           choose_team_levels, find_all_combinations,\
                           distribute_participants_to_teams,\
                           create_teams_in_view, update_team_participants
-from teams.forms import HackProjectForm
+from teams.forms import HackProjectForm, EditTeamName
 
 
 @login_required
@@ -119,9 +119,11 @@ def clear_teams(request):
 def view_team(request, team_id):
     """ View the detailed team information for a HackTeam """
     team = get_object_or_404(HackTeam, id=team_id)
+    rename_team_form = EditTeamName(instance=team)
 
     return render(request, 'team.html', {
         'team': team,
+        'rename_team_form': rename_team_form,
         })
 
 
@@ -158,3 +160,25 @@ def create_project(request, team_id):
         'form': form,
         'team_id': team_id
     })
+
+
+@login_required
+def rename_team(request, team_id):
+    """ Change the name of a HackTeam """
+    hack_team = get_object_or_404(HackTeam, id=team_id)
+
+    if (not request.user.is_staff 
+            and request.user not in hack_team.participants.all()):
+        messages.error(request,
+                       'You do not have access to rename this team')
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+    
+    form = EditTeamName(request.POST, instance=hack_team)
+    if form.is_valid():
+        form.save()
+        messages.success(request,
+                         'Team renamed successfully.')
+    else:
+        messages.error(request,
+                       'An unexpected error occurred.')
+    return redirect(reverse('view_team', kwargs={'team_id': team_id}))

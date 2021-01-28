@@ -4,6 +4,7 @@ from accounts.models import CustomUser, Organisation
 
 from hackathon.models import (Hackathon,
                               HackTeam,
+                              HackAward,
                               HackAwardCategory,
                               HackProject,
                               HackProjectScore,
@@ -31,11 +32,16 @@ class HackathonTests(TestCase):
             hackathon=hackathon)
         team.participants.set([user])
 
-        HackAwardCategory.objects.create(
+        award_category = HackAwardCategory.objects.create(
             created_by=user,
             display_name="testaward",
-            description="lorem ipsum",
-            hackathon=hackathon)
+            description="lorem ipsum")
+        
+        hack_award = HackAward.objects.create(
+            created_by=user,
+            hack_award_category=award_category,
+            hackathon=hackathon,
+        )
 
         project = HackProject.objects.create(
             created_by=user,
@@ -70,6 +76,11 @@ class HackathonTests(TestCase):
         """Tests the string method on the hackathon."""
         self.assertEqual(str(HackAwardCategory.objects.get(pk=1)),
                          ('testaward'))
+    
+    def test_hackaward_str(self):
+        """Tests the string method on the hackathon."""
+        self.assertEqual(str(HackAward.objects.get(pk=1)),
+                         ('testaward', 'hacktest'))
 
     def test_hackproject_str(self):
         """Tests the string method on the hackathon."""

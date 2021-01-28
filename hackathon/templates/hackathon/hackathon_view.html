@@ -27,7 +27,8 @@
                                 <a class="dropdown-item" href="change_teams">
                                     {% if hackathon.teams.all|length == 0 %}Distribute{% else %}Change{% endif %} Teams
                                 </a>
-                                <a role="button" class="dropdown-item" id="change-hack-status" data-toggle="modal" data-target="#changeStatusModal">Change Hackathon Status</a>
+                                <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/awards/">Change Awards</a>
+                                <a role="button" class="dropdown-item" id="change-hack-status" data-toggle="modal" data-target="#changeStatusModal">Change Status</a>
                                 <a class="dropdown-item" href="final_score">View Scores</a>
                                 {% endif %}
                             </div>

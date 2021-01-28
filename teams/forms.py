@@ -1,6 +1,6 @@
 from django import forms
 
-from hackathon.models import HackProject
+from hackathon.models import HackProject, HackTeam
 
 
 class HackProjectForm(forms.ModelForm):
@@ -42,3 +42,9 @@ class HackProjectForm(forms.ModelForm):
                   'github_url', 'deployed_url', 'speaker_name',
                   'share_permission',
                   ]
+
+
+class EditTeamName(forms.ModelForm):
+    class Meta:
+        model = HackTeam
+        fields = ['display_name']

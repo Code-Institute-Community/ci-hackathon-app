@@ -22,7 +22,7 @@ class Hackathon(models.Model):
     """Model representing a Hackathon. It is connected by a foreign key to
     User, HackAwards and HackTeam. Optional Fields: judges, organiser.
     "awards" and "teams" are related tables. They have been moved to
-    HackAwardCategory and HackTeam respectively. Please see comments there."""
+    HackAward and HackTeam respectively. Please see comments there."""
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
@@ -77,10 +77,14 @@ class Hackathon(models.Model):
     def __str__(self):
         return self.display_name
 
+    class Meta:
+        verbose_name = "Hackathon"
+        verbose_name_plural = "Hackathons"
+
 
 class HackAwardCategory(models.Model):
-    """Model representing a HackAwardCategory. It is connected by a foreign key to
-    User, Hackathon and HackProject. Optional fields: winning_project."""
+    """Model representing a HackAwardCategory which represents a type of award
+    that can be won at a hackathon"""
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
@@ -89,23 +93,46 @@ class HackAwardCategory(models.Model):
                                    related_name="hackawardcategories")
     display_name = models.CharField(default="", max_length=254)
     description = models.TextField()
+    ranking = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.display_name
+
+    class Meta:
+        verbose_name = "Hack Award Category"
+        verbose_name_plural = "Hack Award Categories"
+
+
+class HackAward(models.Model):
+    """Model representing a HackAward. This is the connection between the
+    Hackathon, HackAwardCategory and (winning) HackProject"""
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    # Each model can only be created by one user: One To Many
+    created_by = models.ForeignKey(User,
+                                   on_delete=models.CASCADE,
+                                   related_name="hackawards")
     # a Category will only apply to one Hackathon and
     # a Hackathon has numerous categories: One to Many.
     # If the category was going to be reused, instead, use Many to Many.
     hackathon = models.ForeignKey(Hackathon,
                                   on_delete=models.CASCADE,
                                   related_name="awards")
+    hack_award_category = models.ForeignKey(HackAwardCategory,
+                                            on_delete=models.CASCADE,
+                                            related_name="award")
     # One category can have one winner: One to One
     winning_project = models.ForeignKey("HackProject",
                                         null=True,
                                         blank=True,
                                         on_delete=models.SET_NULL)
-
     def __str__(self):
-        return self.display_name
-
+        return f'{self.hack_award_category}, {self.hackathon}'
+    
     class Meta:
-        verbose_name_plural = "Hack award categories"
+        unique_together = ['hackathon', 'hack_award_category']
+        verbose_name = "Hack Award"
+        verbose_name_plural = "Hack Awards"
 
 
 class HackTeam(models.Model):

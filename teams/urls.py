@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import view_team, create_teams, clear_teams, create_project
+from .views import view_team, create_teams, clear_teams, create_project,\
+                   rename_team
 from showcase.views import create_or_update_showcase
 
 urlpatterns = [
@@ -9,6 +10,7 @@ urlpatterns = [
      path("<int:team_id>/project/", create_project, name="create_project"),
      path("<int:team_id>/showcase/",
           create_or_update_showcase, name="create_or_update_showcase"),
+     path("<int:team_id>/rename/", rename_team, name="rename_team"),
      path("create/", create_teams, name="create_teams"),
      path("clear/", clear_teams, name="clear_teams"),
 ]
