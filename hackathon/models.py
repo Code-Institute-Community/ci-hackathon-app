@@ -131,9 +131,10 @@ class HackAward(models.Model):
                                         null=True,
                                         blank=True,
                                         on_delete=models.SET_NULL)
+
     def __str__(self):
         return f'{self.hack_award_category}, {self.hackathon}'
-    
+
     class Meta:
         unique_together = ['hackathon', 'hack_award_category']
         verbose_name = "Hack Award"

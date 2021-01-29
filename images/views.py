@@ -25,7 +25,6 @@ def save_image(request):
         upload_type = data['image-upload-type']
         upload_file = request.FILES['image']
         upload_id = data['image-upload-identifier']
-        print(data)
 
         if upload_type not in VALID_UPLOAD_TYPES:
             messages.error(request, 'Wrong upload type used.')
