@@ -2,7 +2,8 @@ from django.test import TestCase
 from django.utils import timezone
 
 from hackathon.helpers import create_team_judge_category_construct,\
-                              create_category_team_construct
+                              create_category_team_construct,\
+                              count_judges_scores
 from accounts.models import CustomUser, Organisation
 from hackathon.models import (Hackathon,
                               HackTeam,
@@ -16,7 +17,9 @@ from hackathon.models import (Hackathon,
 class HackathonUnitTestCase(TestCase):
     def setUp(self):
         self.organisation = Organisation.objects.create()
-        self.user = CustomUser.objects.create(slack_display_name="testuser")
+        self.user = CustomUser.objects.create(
+            username="testuser",
+            slack_display_name="testuser")
         self.hackathon = Hackathon.objects.create(
             created_by=self.user,
             display_name="hacktest",
@@ -77,6 +80,7 @@ class HackathonUnitTestCase(TestCase):
                         'deployement': 0,
                         'theme': 0,
                         'Total': 0,
+                        'count_scores': False,
                     }
                 },
                 'total_score': 0,
@@ -107,3 +111,17 @@ class HackathonUnitTestCase(TestCase):
         categories_teams_construct = create_category_team_construct(
             hackathon.teams.all(), categories)
         self.assertEqual(categories_teams_construct, expected_result)
+    
+    def test_count_judges_scores(self):
+        expected_results = {
+            'testuser': True,
+            'testuser2': False
+        }
+        hackathon = Hackathon.objects.filter(display_name='hacktest').first()
+        user = CustomUser.objects.create(
+            username="testuser2",
+            slack_display_name="testuser2")
+        hackathon.judges.add(user)
+        hackathon.save()
+        counted_judges_scores = count_judges_scores(hackathon.judges.all(), 1)
+        self.assertEqual(counted_judges_scores, expected_results)

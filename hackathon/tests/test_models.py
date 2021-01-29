@@ -80,7 +80,7 @@ class HackathonTests(TestCase):
     def test_hackaward_str(self):
         """Tests the string method on the hackathon."""
         self.assertEqual(str(HackAward.objects.get(pk=1)),
-                         ('testaward', 'hacktest'))
+                         'testaward, hacktest')
 
     def test_hackproject_str(self):
         """Tests the string method on the hackathon."""

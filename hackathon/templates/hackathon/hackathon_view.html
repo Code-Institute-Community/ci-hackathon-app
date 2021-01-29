@@ -96,7 +96,9 @@
                                     {% elif user in hackathon.judges.all %}
                                         {% if hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
                                         <div class="text-left">
-                                            <a href="/hackathon/{{hackathon.id}}/team/{{team.id}}/judging/" class="btn btn-ci">Edit Scores</a>
+                                            <a href="/hackathon/{{hackathon.id}}/team/{{team.id}}/judging/"
+                                                class="btn btn-ci {% if not team.project%}disabled-link{% endif %}">Edit Scores</a>
+                                            <p class="btn-subtitle p-1">{% if not team.project %}No project submitted yet.{% endif %}</p>
                                         </div>
                                         {% endif %}
                                     {% endif %}

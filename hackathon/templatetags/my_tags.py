@@ -41,8 +41,6 @@ def event_ended(date_event):
 @register.filter
 def get_value_from_dict(data, key):
     """ Retrieves a value from a dict based on a given key """
-    print(data)
-    print(key)
     if key:
         return data.get(key)
 
