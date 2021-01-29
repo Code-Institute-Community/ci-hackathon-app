@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.conf import settings
 from django.shortcuts import render, redirect, reverse
 
 from hackathon.models import Hackathon
@@ -37,8 +38,9 @@ def home(request):
 
 def faq(request):
     """ A view to return the FAQ page """
+    support_email = settings.SUPPORT_EMAIL
 
-    return render(request, "faq.html")
+    return render(request, "faq.html", {'support_email': support_email})
 
 
 def judging_criteria(request):
