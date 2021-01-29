@@ -73,6 +73,11 @@ class Hackathon(models.Model):
         default='not_yet_started',
         choices=JUDGING_STATUS_CHOICES
     )
+    hackathon_image = models.TextField(
+        default="",
+        blank=True,
+        help_text=("Hackathon image.")
+    )
 
     def __str__(self):
         return self.display_name

@@ -8,8 +8,18 @@
             <div class="container">
                 <div class="row">
                     <div class="col p-0">
+                        {% if hackathon.hackathon_image %}
+                        <img class="hackathon-detail-image" 
+                            src="{{ hackathon.hackathon_image }}" />
+                        {% else %}
                         <img class="hackathon-detail-image" 
                             src="{% static 'img/ci-hackathon--square.png' %}" />
+                        {% endif %}
+                        <button class="btn btn-secondary btn-sm edit-image" 
+                            data-image-type="hackathon_image"
+                            data-identifier="{{hackathon.id}}"
+                            data-toggle="modal" data-target="#uploadImageModal">
+                            <i class="fas fa-pen mr-2"></i>Edit</button>
                     </div>
                 </div>
 
@@ -165,11 +175,6 @@
         </div>
     </div>
 
+    {% include 'upload_image.html' %}
     {% include 'hackathon/includes/change_status.html' %}
 {% endblock %}
-
-{% if request.user %}
-{% block postloadjs %}
-    <script src="{% static 'js/script.js' %}"></script>
-{% endblock %}
-{% endif %}

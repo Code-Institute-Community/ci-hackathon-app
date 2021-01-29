@@ -6,10 +6,11 @@ from django.core.files.base import ContentFile
 
 from .helpers import image_to_base64str
 from accounts.models import CustomUser
-from hackathon.models import HackTeam, HackProject
+from hackathon.models import HackTeam, HackProject, Hackathon
 
 VALID_UPLOAD_TYPES = ['profile_image', 'header_image', 'project_image',
-                      'screenshot']
+                      'screenshot', 'hackathon_image',
+                      ]
 
 
 def save_image(request):
@@ -24,6 +25,7 @@ def save_image(request):
         upload_type = data['image-upload-type']
         upload_file = request.FILES['image']
         upload_id = data['image-upload-identifier']
+        print(data)
 
         if upload_type not in VALID_UPLOAD_TYPES:
             messages.error(request, 'Wrong upload type used.')
@@ -45,6 +47,10 @@ def save_image(request):
             project = HackProject.objects.get(id=upload_id)
             project.screenshot = image_to_base64str(upload_file)
             project.save()
+        elif upload_type == 'hackathon_image':
+            hackathon = Hackathon.objects.get(id=upload_id)
+            hackathon.hackathon_image = image_to_base64str(upload_file)
+            hackathon.save()
 
         messages.success(request, 'Image uploaded successfully.')
         return redirect(request.META.get('HTTP_REFERER'))
