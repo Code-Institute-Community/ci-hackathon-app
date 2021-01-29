@@ -15,6 +15,7 @@
             "organisation": 1,
             "status": "draft",
             "judging_status": "not_yet_started",
+            "hackathon_image": "",
             "judges": [
                 1,
                 21
@@ -45,6 +46,7 @@
             "organisation": 1,
             "status": "deleted",
             "judging_status": "closed",
+            "hackathon_image": "",
             "judges": [
                 7,
                 8,
@@ -87,6 +89,7 @@
             "organisation": 1,
             "status": "published",
             "judging_status": "not_yet_started",
+            "hackathon_image": "",
             "judges": [
                 3,
                 5,
@@ -132,6 +135,7 @@
             "organisation": 1,
             "status": "published",
             "judging_status": "open",
+            "hackathon_image": "",
             "judges": [
                 5,
                 8,
@@ -167,7 +171,7 @@
         "pk": 5,
         "fields": {
             "created": "2021-01-18T20:59:00.501Z",
-            "updated": "2021-01-27T22:46:42.255Z",
+            "updated": "2021-01-29T00:41:31.695Z",
             "created_by": 1,
             "display_name": "Hacktoberfest 2020",
             "description": "Open source is changing the world - one pull request at a time.\r\nSupport open source and pick a limited edition T-shirt or plant a tree.\r\n\r\nHacktoberfest 2020 has ended. Keep contributing to open source & we'll see you next year!",
@@ -178,7 +182,11 @@
             "organisation": 2,
             "status": "hack_in_progress",
             "judging_status": "not_yet_started",
-            "judges": [],
+            "hackathon_image": "",
+            "judges": [
+                1,
+                17
+            ],
             "participants": [
                 2,
                 3,
@@ -218,6 +226,7 @@
             "organisation": 1,
             "status": "published",
             "judging_status": "not_yet_started",
+            "hackathon_image": "",
             "judges": [],
             "participants": [],
             "score_categories": []
@@ -239,6 +248,7 @@
             "organisation": 1,
             "status": "published",
             "judging_status": "not_yet_started",
+            "hackathon_image": "",
             "judges": [],
             "participants": [],
             "score_categories": [
@@ -266,6 +276,7 @@
             "organisation": 1,
             "status": "hack_in_progress",
             "judging_status": "not_yet_started",
+            "hackathon_image": "",
             "judges": [
                 3,
                 9,
@@ -371,11 +382,11 @@
         "pk": 1,
         "fields": {
             "created": "2021-01-28T17:37:53.278Z",
-            "updated": "2021-01-28T17:48:27.144Z",
+            "updated": "2021-01-28T20:31:45.184Z",
             "created_by": 1,
             "hackathon": 5,
             "hack_award_category": 1,
-            "winning_project": null
+            "winning_project": 1
         }
     },
     {
@@ -383,22 +394,34 @@
         "pk": 2,
         "fields": {
             "created": "2021-01-28T17:37:53.281Z",
-            "updated": "2021-01-28T17:48:24.249Z",
+            "updated": "2021-01-28T19:45:53.833Z",
             "created_by": 1,
             "hackathon": 5,
             "hack_award_category": 2,
-            "winning_project": null
+            "winning_project": 2
         }
     },
     {
         "model": "hackathon.hackaward",
-        "pk": 3,
+        "pk": 8,
         "fields": {
-            "created": "2021-01-28T17:37:53.284Z",
-            "updated": "2021-01-28T17:48:30.906Z",
+            "created": "2021-01-28T20:14:14.117Z",
+            "updated": "2021-01-28T20:37:57.188Z",
             "created_by": 1,
             "hackathon": 5,
-            "hack_award_category": 3,
+            "hack_award_category": 6,
+            "winning_project": 8
+        }
+    },
+    {
+        "model": "hackathon.hackaward",
+        "pk": 9,
+        "fields": {
+            "created": "2021-01-28T20:37:37.178Z",
+            "updated": "2021-01-28T20:38:06.108Z",
+            "created_by": 1,
+            "hackathon": 5,
+            "hack_award_category": 5,
             "winning_project": null
         }
     },
@@ -466,7 +489,7 @@
             "display_name": "Sith Lords",
             "header_image": "",
             "hackathon": 5,
-            "project": 7,
+            "project": null,
             "participants": [
                 2,
                 4,
@@ -849,26 +872,6 @@
     },
     {
         "model": "hackathon.hackproject",
-        "pk": 7,
-        "fields": {
-            "created": "2021-01-23T20:03:15.490Z",
-            "updated": "2021-01-23T20:03:15.490Z",
-            "created_by": 7,
-            "display_name": "Republic Music",
-            "description": "Republic Music is a web application that allows musicians to find other\r\nmusicians in order to join a band. It also allows galactic venues to connect with bands for\r\nbooking purposes. The application includes a chat system, geolocation search,\r\nrecommendations and a rating system.",
-            "technologies_used": "HTML, CSS, Javascript, Python",
-            "project_image": "",
-            "screenshot": "",
-            "github_url": "http://github.com/republic_music",
-            "deployed_url": "http://republic-music.com",
-            "submission_time": "2021-01-23T20:03:15.490Z",
-            "speaker_name": "Owen Lars",
-            "share_permission": true,
-            "mentor": 20
-        }
-    },
-    {
-        "model": "hackathon.hackproject",
         "pk": 8,
         "fields": {
             "created": "2021-01-23T22:03:50.676Z",
@@ -1059,136 +1062,6 @@
     },
     {
         "model": "hackathon.hackprojectscore",
-        "pk": 11,
-        "fields": {
-            "created": "2021-01-18T21:21:36.420Z",
-            "updated": "2021-01-18T21:21:36.420Z",
-            "created_by": 1,
-            "judge": 1,
-            "project": 1,
-            "score": 11,
-            "hack_project_score_category": 1
-        }
-    },
-    {
-        "model": "hackathon.hackprojectscore",
-        "pk": 12,
-        "fields": {
-            "created": "2021-01-18T21:21:36.435Z",
-            "updated": "2021-01-18T21:21:36.435Z",
-            "created_by": 1,
-            "judge": 1,
-            "project": 1,
-            "score": 3,
-            "hack_project_score_category": 2
-        }
-    },
-    {
-        "model": "hackathon.hackprojectscore",
-        "pk": 13,
-        "fields": {
-            "created": "2021-01-18T21:21:36.445Z",
-            "updated": "2021-01-18T21:21:36.445Z",
-            "created_by": 1,
-            "judge": 1,
-            "project": 1,
-            "score": 5,
-            "hack_project_score_category": 3
-        }
-    },
-    {
-        "model": "hackathon.hackprojectscore",
-        "pk": 14,
-        "fields": {
-            "created": "2021-01-18T21:21:36.452Z",
-            "updated": "2021-01-18T21:21:36.453Z",
-            "created_by": 1,
-            "judge": 1,
-            "project": 1,
-            "score": 9,
-            "hack_project_score_category": 4
-        }
-    },
-    {
-        "model": "hackathon.hackprojectscore",
-        "pk": 15,
-        "fields": {
-            "created": "2021-01-18T21:21:36.459Z",
-            "updated": "2021-01-18T21:21:36.459Z",
-            "created_by": 1,
-            "judge": 1,
-            "project": 1,
-            "score": 9,
-            "hack_project_score_category": 5
-        }
-    },
-    {
-        "model": "hackathon.hackprojectscore",
-        "pk": 16,
-        "fields": {
-            "created": "2021-01-18T21:21:51.959Z",
-            "updated": "2021-01-18T21:21:51.959Z",
-            "created_by": 1,
-            "judge": 1,
-            "project": 2,
-            "score": 5,
-            "hack_project_score_category": 1
-        }
-    },
-    {
-        "model": "hackathon.hackprojectscore",
-        "pk": 17,
-        "fields": {
-            "created": "2021-01-18T21:21:51.968Z",
-            "updated": "2021-01-18T21:21:51.968Z",
-            "created_by": 1,
-            "judge": 1,
-            "project": 2,
-            "score": 12,
-            "hack_project_score_category": 2
-        }
-    },
-    {
-        "model": "hackathon.hackprojectscore",
-        "pk": 18,
-        "fields": {
-            "created": "2021-01-18T21:21:51.975Z",
-            "updated": "2021-01-18T21:21:51.975Z",
-            "created_by": 1,
-            "judge": 1,
-            "project": 2,
-            "score": 6,
-            "hack_project_score_category": 3
-        }
-    },
-    {
-        "model": "hackathon.hackprojectscore",
-        "pk": 19,
-        "fields": {
-            "created": "2021-01-18T21:21:51.982Z",
-            "updated": "2021-01-18T21:21:51.982Z",
-            "created_by": 1,
-            "judge": 1,
-            "project": 2,
-            "score": 5,
-            "hack_project_score_category": 4
-        }
-    },
-    {
-        "model": "hackathon.hackprojectscore",
-        "pk": 20,
-        "fields": {
-            "created": "2021-01-18T21:21:51.988Z",
-            "updated": "2021-01-18T21:21:51.988Z",
-            "created_by": 1,
-            "judge": 1,
-            "project": 2,
-            "score": 5,
-            "hack_project_score_category": 5
-        }
-    },
-    {
-        "model": "hackathon.hackprojectscore",
         "pk": 21,
         "fields": {
             "created": "2021-01-18T23:03:42.913Z",
@@ -1314,6 +1187,71 @@
             "judge": 17,
             "project": 1,
             "score": 7,
+            "hack_project_score_category": 5
+        }
+    },
+    {
+        "model": "hackathon.hackprojectscore",
+        "pk": 31,
+        "fields": {
+            "created": "2021-01-28T23:36:22.480Z",
+            "updated": "2021-01-28T23:36:22.480Z",
+            "created_by": 1,
+            "judge": 1,
+            "project": 8,
+            "score": 3,
+            "hack_project_score_category": 1
+        }
+    },
+    {
+        "model": "hackathon.hackprojectscore",
+        "pk": 32,
+        "fields": {
+            "created": "2021-01-28T23:36:22.490Z",
+            "updated": "2021-01-28T23:36:22.490Z",
+            "created_by": 1,
+            "judge": 1,
+            "project": 8,
+            "score": 6,
+            "hack_project_score_category": 2
+        }
+    },
+    {
+        "model": "hackathon.hackprojectscore",
+        "pk": 33,
+        "fields": {
+            "created": "2021-01-28T23:36:22.497Z",
+            "updated": "2021-01-28T23:36:22.497Z",
+            "created_by": 1,
+            "judge": 1,
+            "project": 8,
+            "score": 6,
+            "hack_project_score_category": 3
+        }
+    },
+    {
+        "model": "hackathon.hackprojectscore",
+        "pk": 34,
+        "fields": {
+            "created": "2021-01-28T23:36:22.504Z",
+            "updated": "2021-01-28T23:36:22.504Z",
+            "created_by": 1,
+            "judge": 1,
+            "project": 8,
+            "score": 5,
+            "hack_project_score_category": 4
+        }
+    },
+    {
+        "model": "hackathon.hackprojectscore",
+        "pk": 35,
+        "fields": {
+            "created": "2021-01-28T23:36:22.513Z",
+            "updated": "2021-01-28T23:36:22.513Z",
+            "created_by": 1,
+            "judge": 1,
+            "project": 8,
+            "score": 1,
             "hack_project_score_category": 5
         }
     },
