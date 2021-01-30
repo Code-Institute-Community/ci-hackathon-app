@@ -179,6 +179,24 @@ def check_projects_scores(request, hack_id):
                               if team.project]
         scores = HackProjectScore.objects.filter(
             project_id__in=hackathon_projects).all()
+        hack_awards_formset = HackAwardFormSet(
+            form_kwargs={'hackathon_id': hack_id},
+            queryset=HackAward.objects.filter(hackathon=hackathon))
+
+        if hackathon.teams.count() == 0:
+            messages.info(request, 'No teams created yet')
+            return render(request, 'hackathon/final_score.html', {
+                'hackathon': hackathon,
+                'hack_awards_formset': hack_awards_formset,
+            })
+
+        if scores.count() == 0:
+            messages.info(request, 'No scores created yet.')
+            return render(request, 'hackathon/final_score.html', {
+                'hackathon': hackathon,
+                'hack_awards_formset': hack_awards_formset,
+            })
+
         judges = hackathon.judges.all()
         team_scores = create_team_judge_category_construct(
             hackathon.teams.all(), judges, score_categories)
@@ -239,10 +257,6 @@ def check_projects_scores(request, hack_id):
                 category_scores[team['team_name']][category]['place'] = place
                 if team['score'] == 0: 
                     category_scores[team['team_name']][category]['place'] = ''
-
-        hack_awards_formset = HackAwardFormSet(
-            form_kwargs={'hackathon_id': hack_id},
-            queryset=HackAward.objects.filter(hackathon=hackathon))
 
         return render(request, 'hackathon/final_score.html', {
             'sorted_teams_scores': sorted_team_scores,

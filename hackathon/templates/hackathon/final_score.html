@@ -6,7 +6,7 @@
 {% if hack_awards_formset.get_queryset|length == 0 %}
 <div class="alert alert-danger" role="alert">
     This Hackathon does not have any awards. Please create at least one award to determine a winner.
-    <button class="btn btn-primary btn-sm">Add Now</button>
+    <a role="button" class="btn btn-primary btn-sm" href="/hackathon/{{hackathon.id}}/awards/">Add Now</a>
 </div>
 {% endif %}
 
@@ -113,7 +113,16 @@
 {% endif %}
 
 {% else %}
-<strong>No scores added yet.</strong>
+
+<div class="card">
+    <div class="card-body">
+        {% if hackathon.teams.all|length == 0 %}
+        <strong>No teams added yet.</strong>
+        {% else %}
+        <strong>No scores added yet.</strong>
+        {% endif %}
+    </div>
+</div>
 {% endif %}
 
 {% endblock %}
