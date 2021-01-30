@@ -97,6 +97,6 @@ class CustomUser(AbstractUser):
     def to_team_member(self):
         return {
             'userid': self.id,
-            'name': self.username,
+            'name': self.slack_display_name or self.email,
             'level': LMS_LEVELS[self.current_lms_module]
         }

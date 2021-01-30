@@ -76,7 +76,7 @@ def group_participants(participants, num_teams):
         participant_groups.setdefault(participant_level, [])
         participant_groups[participant_level].append({
                 'userid': participant.id,
-                'name': participant.email,
+                'name': (participant.slack_display_name or participant.email),
                 'level': participant_level
                 })
     return participant_groups, hackathon_level
