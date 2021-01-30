@@ -89,7 +89,7 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         """  Return Class object to string via the user email value  """
-        return self.username
+        return self.slack_display_name
 
     def human_readable_current_lms_module(self):
         return self.current_lms_module.replace('_', ' ')
@@ -97,6 +97,6 @@ class CustomUser(AbstractUser):
     def to_team_member(self):
         return {
             'userid': self.id,
-            'name': self.username,
+            'name': self.slack_display_name or self.email,
             'level': LMS_LEVELS[self.current_lms_module]
         }

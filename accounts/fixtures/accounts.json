@@ -7,6 +7,13 @@
         }
     },
     {
+        "model": "accounts.organisation",
+        "pk": 2,
+        "fields": {
+            "display_name": "Example Partner"
+        }
+    },
+    {
         "model": "accounts.customuser",
         "pk": 1,
         "fields": {
@@ -14,13 +21,13 @@
             "last_login": "2021-01-18T11:37:31.438Z",
             "is_superuser": true,
             "username": "admin@example.com",
-            "first_name": "",
-            "last_name": "",
+            "first_name": "Admin",
+            "last_name": "User",
             "email": "admin@example.com",
             "is_staff": true,
             "is_active": true,
             "date_joined": "2020-10-26T16:54:30.184Z",
-            "full_name": "Admin Account",
+            "full_name": "Admin User",
             "slack_display_name": "admin_ci",
             "user_type": "staff",
             "current_lms_module": "staff",
@@ -188,7 +195,7 @@
             "is_staff": false,
             "is_active": true,
             "date_joined": "2020-10-26T21:54:54.941Z",
-            "full_name": "Owne Lars",
+            "full_name": "Owen Lars",
             "slack_display_name": "Owen_Lars",
             "user_type": "participant",
             "current_lms_module": "html_essentials",
@@ -562,6 +569,34 @@
             "profile_image": "",
             "profile_is_public": true,
             "email_is_public": true,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.customuser",
+        "pk": 21,
+        "fields": {
+            "password": "pbkdf2_sha256$216000$mWxvUDiyFGbL$5UM3nbjA9AbcQ7+T44M4HFu914Q2TJOrpwKcBV/z1Og=",
+            "last_login": "2021-01-18T21:19:06.348Z",
+            "is_superuser": false,
+            "username": "admin2@example.com",
+            "first_name": "Admin",
+            "last_name": "User 2",
+            "email": "admin2@example.com",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2021-01-18T21:18:08.530Z",
+            "full_name": "Admin User 2",
+            "slack_display_name": "admin2_ci",
+            "user_type": "staff",
+            "current_lms_module": "staff",
+            "organisation": 1,
+            "about": "",
+            "website_url": "",
+            "profile_image": "",
+            "profile_is_public": false,
+            "email_is_public": false,
             "groups": [],
             "user_permissions": []
         }

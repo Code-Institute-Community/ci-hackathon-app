@@ -133,9 +133,9 @@ def check_projects_scores(request, hack_id):
             queryset=HackAwardCategory.objects.filter(hackathon=hackathon))
         if hack_awards_formset.is_valid():
             hack_awards_formset.save()
+            messages.success(request, "Awards saved successfully.")
         else:
-            print(hack_awards_formset.errors)
-            pass
+            messages.error(request, "An unexpected error occurred.")
         return redirect(reverse('hackathon:final_score', kwargs={'hack_id': hack_id}))
 
     else:
@@ -283,6 +283,9 @@ def create_hackathon(request):
                 hack_award.save()
             messages.success(
                 request, 'Thanks for submitting a new Hackathon event!')
+        else:
+            messages.error(request, ("An error occurred creating the event. "
+                                     "Please try again."))
         return redirect("hackathon:hackathon-list")
 
 
@@ -330,6 +333,9 @@ def update_hackathon(request, hackathon_id):
             form.save()
             messages.success(
                 request, f'Thanks, {hackathon.display_name} has been successfully updated!')
+        else:
+            messages.error(request, ("An error occurred updating the event. "
+                                     "Please try again."))
         return redirect("hackathon:hackathon-list")
 
 
@@ -347,6 +353,8 @@ def update_hackathon_status(request, hackathon_id):
         return redirect(reverse('hackathon:view_hackathon',
                                 kwargs={'hackathon_id': hackathon_id}))
     else:
+        messages.error(request, ("An error occurred updating the event status. "
+                                 "Please try again."))
         return redirect("hackathon:hackathon-list") 
 
 

@@ -192,6 +192,12 @@ class HackProject(models.Model):
 
     def __str__(self):
         return self.display_name
+    
+    def get_showcase(self):
+       try:
+          return self.showcase
+       except:
+          return None
 
 
 class HackProjectScore(models.Model):

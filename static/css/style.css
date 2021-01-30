@@ -266,6 +266,10 @@ html .all-auth-container {
     text-align: left;
 }
 
+.row.langing-page .hack-card {
+    margin-bottom: .2rem;
+}
+
 /* View Hackathon Page */
 
 .page-title::after {
@@ -522,6 +526,67 @@ form.distribute-teams-form, form.clear-teams-form {
     width: 100%;
 }
 
+/* Showcase */
+.carousel.slide {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.carousel-item a img {
+    max-height: 500px;
+    min-width: auto;
+}
+
+.carousel-control-next:hover {
+    background: linear-gradient(270deg, rgba(54,54,54,1) 0%, rgba(122,122,122,0.5) 48%, rgba(255,255,255,0) 100%);
+}
+
+.carousel-control-prev:hover {
+    background: linear-gradient(90deg, rgba(54,54,54,1) 0%, rgba(122,122,122,0.5) 48%, rgba(255,255,255,0) 100%);
+}
+
+.card-showcase-img img {
+    width: 100%;
+    margin: .5rem;
+    object-fit: cover;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 2px;
+}
+
+.card-title.showcase-card-title h4 a {
+    font-size: 1.5rem;
+}
+
+.card.showcase-image-edit .card-body .card-text img {
+    width: 350px;
+}
+
+img.showcase-image-edit {
+    width: 350px;
+}
+
+.showcase-placeholder {
+    width: 100%;
+    max-height: 500px;
+    /* background-image: linear-gradient(to right bottom, #ff5900, #ff7029, #ff8444, #ff965f, #ffa879); */
+    background: url('/static/img/hackathon-bg.png') center center;
+}
+
+.showcase-project-name {
+    position: absolute;
+    width: fit-content;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 50px;
+    background: var(--p-navy);
+    color: var(--white);
+}
+
+.showcase-public-text {
+    font-size: .75rem;
+}
+
 /* Media Queries */
 
 @media (max-width:453px) {
@@ -529,6 +594,23 @@ form.distribute-teams-form, form.clear-teams-form {
     #carousel-wrapper>h1 {
         font-size: 1.5rem;
 
+    }
+
+    /* Error pages */
+    .card.p-5.error-500 {
+        padding: .5rem !important;
+    }
+
+    .error-500 div div h1 {
+        font-size: 1.5rem;
+    }
+    .error-500 div div img {
+        width: 100% !important;
+    }
+
+    /* Showcase page */
+    .no-showcases img {
+        width: 100% !important;
     }
 }
 

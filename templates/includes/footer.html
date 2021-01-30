@@ -11,10 +11,6 @@
                     <!-- To link to own Plagiarism Policy page once built -->
                     <a href="{% url 'plagiarism_policy' %}" target="_blank">Plagiarism Policy</a>
                 </li>
-                <li>
-                    <a href="https://docs.github.com/en/free-pro-team@latest/github/site-policy/github-terms-of-service"
-                        target="_blank">GitHub Terms of Service</a>
-                </li>
             </ul>
         </div>
         <div class="col-sm-6 col-md-3">
@@ -25,18 +21,18 @@
                 <li>
                     <a href="{% url 'faq' %}">FAQ</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li>
                     <a href="{% url 'judging_criteria' %}">Judging Criteria</a>
                 </li>
                 <li>
                     <a href="{% url 'resources' %}">Useful Resources</a>
                 </li>
+                {% endif %}
                 <li>
                     <a href="https://codeinstitute.net/">Code Institute</a>
                 </li>
-                <li>
-                    <a href="https://hacktoberfest.digitalocean.com/" target="_blank">Hacktoberfest Official Site</a>
-                </li>
+
             </ul>
         </div>
         <div class="col-md-6">

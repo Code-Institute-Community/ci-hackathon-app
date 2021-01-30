@@ -11,14 +11,7 @@
 {% endblock %}
 
 {% block edit_profile %}
-<hr class="w-100 mb-1 thick mt-4">
 <h1 class="edit_title dark-text">Edit Profile</h1>
-<hr class="w-100 mb-1">
-{% for message in messages %}
-<div class="alert alert-warning">
-	{{ message }}
-</div>
-{% endfor %}
 <div class="edit_form mt-3 mb-3">
 	<form method="post">
 		{% csrf_token %}

@@ -26,6 +26,7 @@ def change_teams(request, hackathon_id):
     edit = False
     hackathon = Hackathon.objects.get(id=hackathon_id)
     participants = hackathon.participants.all()
+
     if len(participants) == 0:
         teams = []
         participants_still_to_distribute = []
@@ -70,13 +71,16 @@ def change_teams(request, hackathon_id):
 
 @login_required
 def create_teams(request):
+    """ View used to save the hackathon teams created by an admin """
     if not request.user.is_superuser:
         messages.error(request, "You do not have access to this page!")
         return redirect(reverse('hackathon:hackathon-list'))
+
     if request.method == 'POST':
         data = request.POST
         teams = json.loads(data.get('teams'))
         hackathon_id = data.get('hackathon_id')
+
         if data.get('_method') == 'post':
             with transaction.atomic():
                 create_teams_in_view(request.user, teams, hackathon_id)
@@ -128,18 +132,28 @@ def create_project(request, team_id):
     hack_project = HackProject.objects.filter(hackteam=hack_team)
 
     if request.method == 'POST':
-        form = HackProjectForm(request.POST, instance=hack_project.get())
+        if hack_project: 
+            form = HackProjectForm(request.POST, instance=hack_project.get())
+        else:
+            form = HackProjectForm(request.POST)
+
         if form.is_valid():
             hack_project = form.save()
             hack_team.project = hack_project
             hack_team.save()
 
+            messages.success(request, 'Project updated successfully.')
+            return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+        else:
+            messages.error(request, ('An unexpected error occurred updating '
+                                     'the project. Please try again.'))
             return redirect(reverse('view_team', kwargs={'team_id': team_id}))
     else:
         if hack_project:
             form = HackProjectForm(instance=hack_project.get())
         else:
             form = HackProjectForm()
+
     return render(request, 'create_project.html', {
         'form': form,
         'team_id': team_id

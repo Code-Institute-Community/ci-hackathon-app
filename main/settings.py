@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "images",
     "profiles",
     "resources",
+    "showcase",
     "submissions",
     "teams",
 ]
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = "main.urls"
@@ -143,11 +145,11 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
 STATICFILES_LOCATION = "static"
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIAFILES_LOCATION = "media"
 MEDIA_URL = "/media/"
@@ -160,3 +162,7 @@ if os.environ.get("SLACK_ENABLED") == 'True':
             'SCOPE':['identity.basic', 'identity.email'],
         }
     }
+
+# Number of showcases displayed in the carousel
+SHOWCASE_SPOTLIGHT_NUMBER = int(os.environ.get('SHOWCASE_SPOTLIGHT_NUMBER')
+                                or 0)

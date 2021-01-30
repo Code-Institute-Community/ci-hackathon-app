@@ -15,7 +15,7 @@ class HackathonTests(TestCase):
 
     def setUp(self):
         """Sets up the models for testing"""
-        user = CustomUser.objects.create(username="testuser")
+        user = CustomUser.objects.create(slack_display_name="testuser")
         organisation = Organisation.objects.create()
 
         hackathon = Hackathon.objects.create(
