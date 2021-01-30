@@ -529,8 +529,7 @@ form.distribute-teams-form, form.clear-teams-form {
 /* Showcase */
 .carousel.slide {
     max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
 }
 
 .carousel-item a img {
@@ -539,11 +538,11 @@ form.distribute-teams-form, form.clear-teams-form {
 }
 
 .carousel-control-next:hover {
-    background: linear-gradient(270deg, rgba(54,54,54,1) 0%, rgba(122,122,122,0.5270483193277311) 48%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(270deg, rgba(54,54,54,1) 0%, rgba(122,122,122,0.5) 48%, rgba(255,255,255,0) 100%);
 }
 
 .carousel-control-prev:hover {
-    background: linear-gradient(90deg, rgba(54,54,54,1) 0%, rgba(122,122,122,0.5270483193277311) 48%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(90deg, rgba(54,54,54,1) 0%, rgba(122,122,122,0.5) 48%, rgba(255,255,255,0) 100%);
 }
 
 .card-showcase-img img {
@@ -599,19 +598,19 @@ img.showcase-image-edit {
 
     /* Error pages */
     .card.p-5.error-500 {
-        padding: .5rem!important;
+        padding: .5rem !important;
     }
 
     .error-500 div div h1 {
         font-size: 1.5rem;
     }
     .error-500 div div img {
-        width: 100%!important;
+        width: 100% !important;
     }
 
     /* Showcase page */
     .no-showcases img {
-        width: 100%!important;
+        width: 100% !important;
     }
 }
 

@@ -4,8 +4,8 @@
 {% block content %}
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="hidden" name="display_name" value="{{project.display_name}}" />
-    <input type="hidden" name="created_by" value="{{request.user.id}}" />
+    <input type="hidden" name="display_name" value="{{project.display_name}}">
+    <input type="hidden" name="created_by" value="{{request.user.id}}">
     {{form.hack_project}}
     {{form.showcase_participants|as_crispy_field}}
     {{form.is_public|as_crispy_field}}
