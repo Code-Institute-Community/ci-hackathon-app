@@ -873,6 +873,26 @@
     },
     {
         "model": "hackathon.hackproject",
+        "pk": 7,
+        "fields": {
+            "created": "2021-01-23T20:00:45.888Z",
+            "updated": "2021-01-23T20:00:45.888Z",
+            "created_by": 16,
+            "display_name": "Carbonite",
+            "description": "Carbonite is an out of hours courier application to enable ad-hoc deliveries with full transparency on tracking and delivery. The application is targeted at Storm Troopers providing a web platform for all members of staff to perform ad-hoc deliveries.",
+            "technologies_used": "HTML, CSS, Javascript, Python",
+            "project_image": "",
+            "screenshot": "",
+            "github_url": "http://github.com/carbonite",
+            "deployed_url": "http://carbonite.com",
+            "submission_time": "2021-01-23T20:00:45.888Z",
+            "speaker_name": "Padme Amidala",
+            "share_permission": true,
+            "mentor": 13
+        }
+    },
+    {
+        "model": "hackathon.hackproject",
         "pk": 8,
         "fields": {
             "created": "2021-01-23T22:03:50.676Z",
