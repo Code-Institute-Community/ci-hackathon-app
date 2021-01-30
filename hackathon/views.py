@@ -193,7 +193,9 @@ def check_projects_scores(request, hack_id):
             project_name = score.project.display_name
             score_category = score.hack_project_score_category.category
             score = score.score
-            count_score = counted_judges_scores[judge_name]
+            count_score = counted_judges_scores.get(judge_name)
+            if not count_score:
+                continue
             
             team_scores[team_name]['scores'][judge_name]['Total'] += score
             team_scores[team_name]['scores'][judge_name][score_category] = score
