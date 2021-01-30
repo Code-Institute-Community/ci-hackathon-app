@@ -25,6 +25,7 @@
 
     <section class="container-fluid">
         <form class="hack-score-form text-center" action="{% url 'hackathon:judging' hackathon.id team.id %}" method="post">
+        {% csrf_token %}
         <div class="row justify-content-around">
             {% for category in score_categories %}
             <div class="col-12 col-md-4 mb-3 mb-md-4 p-0 p-md-2">
@@ -40,7 +41,9 @@
                                 <option selected disabled value="">Score</option>
                                 <!-- using custom get_range tag -->
                                 {% for i in category.max_score|get_range:category.min_score %}
-                                <option value="{{ i }}">{{ i }}</option>
+                                {% with score=existing_scores|get_value_from_dict:category.category %}
+                                <option value="{{ i }}"{% if score == i %}selected{% endif %}>{{ i }}</option>
+                                {% endwith %}
                                 {% endfor %}
                             </select>
                             <p>

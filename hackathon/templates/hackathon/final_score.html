@@ -12,65 +12,75 @@
 
 <h3 class="table_titles"> {{ hackathon }} Scores </h3>
 {% if sorted_teams_scores %}
-<table class="final_score_table">
-    <thead>
-        <tr class="table_titles">
-            <th scope="col"> Team / Project </th>
-            {% for judge in sorted_teams_scores.0.scores.keys %}
-            <th scope="col"> {{ judge }} </th>
+<div class="card mb-3">
+    <table class="table table-bordered final_score_table w-100 m-0 p-0">
+        <thead>
+            <tr class="table_titles">
+                <th scope="col" class="text-left"> Team / Project
+                    <i class="fas fa-info-circle ml-2" title="Teams with no projects yet:{{teams_without_projects}}"></i>
+                </th>
+                {% for judge in sorted_teams_scores.0.scores.keys %}
+                <th scope="col"> {{ judge }} </th>
+                {% endfor %}
+                <th scope="col"> Total Score </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in sorted_teams_scores %}
+            <tr>
+                <td class="text-left">{{ project.project_name}} ({{project.team_name}})</td>
+                {% for judge in project.scores %}
+                {% with judge_score=project.scores|get_value_from_dict:judge %}
+                <td {% if not judge_score.count_scores %}class="not-counted-scores"{% endif %}>{{ judge_score.Total }}</td>
+                {% endwith %}
+                {% endfor %}
+                <td scope="row">{{ project.total_score }}</td>
+            </tr>
             {% endfor %}
-            <th scope="col"> Total Score </th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for project in sorted_teams_scores %}
-        <tr>
-            <td>{{ project.team_name}} - {{ project.project_name}}</td>
-            {% for judge in project.scores %}
-            {% with judge_score=project.scores|get_value_from_dict:judge %}
-            <td>{{ judge_score.Total }}</td>
-            {% endwith %}
-            {% endfor %}
-            <td scope="row">{{ project.total_score }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 
 {% if category_scores %}
-<table class="final_score_table">
-    <thead>
-        <tr class="table_titles">
-            <th scope="col">
-                Team / Project
-            </th>
-            {% with categories=category_scores.values|to_list|first %}
-            {% for category in categories.keys %}
-            <th>
-                {{category}}
-            </th>
-            {% endfor %}
-            {% endwith %}
-        </tr>
-    </thead>
-    <tbody>
-        {% with teams=category_scores.keys|sort_list %}
-        {% for team in teams %}
-            <tr>
-               
-                {% with team_scores=category_scores|get_value_from_dict:team %}
-                <td>{{team}}</td>
-                {% for category, score in team_scores.items %}
-                <td title="Score: {{score.score}}">
-                    {{score.place|place_identifier}}
-                </td>
+<div class="card mb-3">
+    <table class="table table-bordered w-100 m-0 p-0">
+        <thead>
+            <tr class="table_titles">
+                <th scope="col" class="text-left">
+                    Team / Project
+                </th>
+                {% with categories=category_scores.values|to_list|first %}
+                {% for category in categories.keys %}
+                {% if category != 'project_name' %}
+                <th scope="col" >
+                    {{category}}
+                </th>
+                {% endif %}
                 {% endfor %}
                 {% endwith %}
             </tr>
-        {% endfor %}
-        {% endwith %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% with teams=category_scores.keys|sort_list %}
+            {% for team in teams %}
+                <tr>
+                   
+                    {% with team_scores=category_scores|get_value_from_dict:team %}
+                    <td class="text-left">{{team}} ({{team_scores|get_value_from_dict:'project_name'}})</td>
+                    {% for category, score in team_scores.items %}
+                    {% if category != 'project_name' %}
+                    <td title="Score: {{score.score}}">
+                        {{score.place|place_identifier}}
+                    </td>
+                    {% endif %}
+                    {% endfor %}
+                    {% endwith %}
+                </tr>
+            {% endfor %}
+            {% endwith %}
+        </tbody>
+    </table>
+</div>
 {% endif %}
 
 {% if hack_awards_formset.get_queryset|length > 0 %}
@@ -84,7 +94,7 @@
             <div class="row">
                 <div class="col-md-12 col-lg-6">
                     {{ form.id|as_crispy_field }}
-                    {{ form.display_name|as_crispy_field }}
+                    {{ form.hack_award_category|as_crispy_field }}
                 </div>
                 <div class="col-md-12 col-lg-6">
                     {{ form.winning_project|as_crispy_field }}

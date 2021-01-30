@@ -10,14 +10,16 @@ from .views import (
     check_projects_scores,
     view_hackathon,
     update_hackathon_status,
+    change_awards,
 )
 from teams.views import change_teams
 
 urlpatterns = [
     path('', HackathonListView.as_view(), name="hackathon-list"),
     path("<int:hack_id>/team/<int:team_id>/judging/", judging, name="judging"),
-    path("<int:hack_id>/final_score", check_projects_scores, name="final_score"),
+    path("<int:hack_id>/final_score/", check_projects_scores, name="final_score"),
     path("<int:hackathon_id>/change_teams/", change_teams, name="change_teams"),
+    path("<int:hack_id>/awards/", change_awards, name="awards"),
     path("create_hackathon", create_hackathon, name='create_hackathon'),
     path("<int:hackathon_id>/", view_hackathon,
          name='view_hackathon'),

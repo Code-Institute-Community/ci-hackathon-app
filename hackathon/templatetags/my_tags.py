@@ -58,6 +58,9 @@ def sort_list(data):
 @register.filter
 def place_identifier(num):
     num_str = str(num)
+    if not isinstance(num, int):
+        # no score
+        return ''
     if num_str[-1] == '1':
         return num_str + 'st'
     elif num_str[-1] == '2':

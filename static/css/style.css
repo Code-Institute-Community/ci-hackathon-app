@@ -79,6 +79,15 @@ main {
     color: var(--s-grey);
 }
 
+.disabled-link {
+    pointer-events: none;
+    opacity: .5;
+}
+
+.btn-subtitle {
+    font-size: .85rem;
+}
+
 .accordion.card button {
     text-decoration: none;
     border: none;
@@ -303,6 +312,10 @@ html .all-auth-container {
 h1.table_titles{
     margin-bottom: 5vh;
     font-size: 6vh;
+}
+
+.not-counted-scores {
+    opacity: .5;
 }
 
 .final_score_table {
@@ -585,6 +598,12 @@ img.showcase-image-edit {
 
 .showcase-public-text {
     font-size: .75rem;
+}
+
+/* Awards */
+.edit-awards-form {
+    width: 100%;
+    max-width: none;
 }
 
 /* Media Queries */
