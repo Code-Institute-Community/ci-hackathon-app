@@ -47,6 +47,7 @@ def view_showcase(request, showcase_id):
 
     return render(request, 'team.html', {
         'team': team,
+        'rename_team_form': None,
         'showcase': showcase,
         'anon_members': anon_members,
         })

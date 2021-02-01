@@ -26,8 +26,11 @@
                         data-toggle="modal" data-target="#uploadImageModal">
                         <i class="fas fa-pen mr-2"></i>Edit</button>
                     {% endif %}
-                    <h2>Team: <i>{{team}}</i> <a role="button" data-toggle="modal" data-target="#renameTeamModal">
+                    <h2>Team: <i>{{team}}</i>
+                        {% if request.user in team.participants.all and not showcase %}
+                        <a role="button" data-toggle="modal" data-target="#renameTeamModal">
                         <i class="fas fa-pen ml-3" title="Rename team"></i></a>
+                        {% endif %}
                     </h2>
                 </div>
             </div>
