@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update -y
-RUN apt-get install python3 python3-pip libmysqlclient-dev curl -y
+RUN apt-get install python3 python3-pip libmysqlclient-dev mysql-client vim -y
 
 WORKDIR /hackathon-app
 COPY ./requirements.txt /hackathon-app/requirements.txt

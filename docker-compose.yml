@@ -5,19 +5,33 @@ services:
     image: hackathon-app
     volumes:
       - ${PWD}/data/mysql/:/var/lib/mysql
+    environment: 
+      DEVELOPMENT: 1
+      SECRET_KEY: "your_secret_key_here"
+      SITE_NAME: "*"
+      SLACK_ENABLED: "True"
+      SHOWCASE_SPOTLIGHT_NUMBER: 5
+      SUPPORT_EMAIL: community@codeinstitute.net
+      DBHOST: mysql
+      DBPORT: 3306
+      DBNAME: hackathons
+      DBUSER: hackathon_user
+      DBPASS: gummyball
     ports:
       - "8000:8000"
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
 
   mysql:
     image: docker.io/mysql:5.6.36
     command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
     # Do NOT use for production
     environment:
-      MYSQL_ROOT_PASSWORD: "gummyball"
+      MYSQL_ROOT_PASSWORD: gummyball
       MYSQL_DATABASE: hackathons
-      MYSQL_USER: hackathons_user
-      MYSQL_PASSWORD: "gummyball"
+      MYSQL_USER: hackathon_user
+      MYSQL_PASSWORD: gummyball
+    ports:
+      - "3306:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql

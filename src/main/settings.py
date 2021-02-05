@@ -108,6 +108,12 @@ LOGIN_REDIRECT_URL = "/post_login/"
 
 WSGI_APPLICATION = "main.wsgi.application"
 
+print("DBHOST: ", os.getenv('DBHOST'))
+print("DBNAME: ", os.getenv('DBNAME'))
+print("DBPASS: ", os.getenv('DBPASS'))
+print("DBPORT: ", os.getenv('DBPORT'))
+print("DBUSER: ", os.getenv('DBUSER'))
+
 DATABASES = {
     'default': {
         'ATOMIC_REQUESTS': True,
@@ -121,6 +127,7 @@ DATABASES = {
         'USER': os.getenv('DBUSER'),
     },
 }
+print(DATABASES)
 
 
 
