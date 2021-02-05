@@ -3,8 +3,6 @@ version: "3.4"
 services:
   hackathon-app:
     image: hackathon-app
-    volumes:
-      - ${PWD}/data/mysql/:/var/lib/mysql
     environment: 
       DEVELOPMENT: 1
       SECRET_KEY: "your_secret_key_here"
@@ -19,8 +17,6 @@ services:
       DBPASS: gummyball
     ports:
       - "8000:8000"
-    # env_file:
-    #   - .env
 
   mysql:
     image: docker.io/mysql:5.6.36
@@ -31,7 +27,5 @@ services:
       MYSQL_DATABASE: hackathons
       MYSQL_USER: hackathon_user
       MYSQL_PASSWORD: gummyball
-    ports:
-      - "3306:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql
