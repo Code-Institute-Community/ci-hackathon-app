@@ -14,12 +14,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='hackathon',
-            name='organisation',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='hackathon_organisation', to='accounts.organisation'),
-        ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='hackathon',
             name='status',
             field=models.CharField(choices=[('draft', 'Draft'), ('published', 'Published'), ('deleted', 'Deleted')], default='draft', max_length=10),
