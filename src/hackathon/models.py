@@ -55,12 +55,12 @@ class Hackathon(models.Model):
                                   null=True,
                                   blank=True,
                                   on_delete=models.SET_NULL,
-                                  related_name="hackathon_organiser")
+                                  related_name="organised_hackathons")
     organisation = models.ForeignKey(Organisation,
                                      null=True,
                                      blank=True,
                                      on_delete=models.SET_NULL,
-                                     related_name='hackathon_organisation')
+                                     related_name='hackathons')
     status = models.CharField(
         max_length=20,
         blank=False,
