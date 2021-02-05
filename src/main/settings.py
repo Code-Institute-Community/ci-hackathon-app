@@ -1,6 +1,7 @@
 import os
 import dj_database_url
 if os.path.exists(".env"):
+    print("PATH EXISTS")
     from dotenv import load_dotenv
     load_dotenv()
 
@@ -107,20 +108,20 @@ LOGIN_REDIRECT_URL = "/post_login/"
 
 WSGI_APPLICATION = "main.wsgi.application"
 
+DATABASES = {
+    'default': {
+        'ATOMIC_REQUESTS': True,
+        'CONN_MAX_AGE': 0,
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': os.getenv('DBHOST'),  # '127.0.0.1',
+        'NAME': os.getenv('DBNAME'),  #'hackathons',
+        'OPTIONS': {},
+        'PASSWORD': os.getenv('DBPASS'),
+        'PORT': os.getenv('DBPORT', '3306'),
+        'USER': os.getenv('DBUSER'),
+    },
+}
 
-if "DATABASE_URL" in os.environ:
-    print("Postgres DATABASE_URL found.")
-    DATABASES = {
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
-    }
-else:
-    print("Postgres DATABASE_URL not found, using db.sqlite3")
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
-    }
 
 
 AUTH_PASSWORD_VALIDATORS = [
