@@ -1,4 +1,6 @@
 from copy import deepcopy
+from dateutil.parser import parse
+from datetime import datetime
 
 from django.db.models import Count
 
@@ -82,3 +84,12 @@ def count_judges_scores(judges, projects, score_categories):
         judge_scores[judge.slack_display_name] = (
             scores.count() == len(projects) * len(score_categories))
     return judge_scores
+
+
+def format_date(date_str):
+    """ Try parsing your dates with strptime and fallback to dateutil.parser
+    """
+    try:
+        return datetime.strptime(date_str, '%d/%m/%Y %H:%M')
+    except ValueError:
+        return parse(date_str)
