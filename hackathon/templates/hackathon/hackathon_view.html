@@ -99,10 +99,12 @@
                                         {% endfor %}
                                     </div>
                                     <!-- Render project submission button if user is participant of team -->
-                                    {% if user in team.participants.get_queryset %}
+                                    {% if user in hackathon.participants.all %}
+                                        {% if user in team.participants.get_queryset %}
                                         <div class="text-left">
                                             <a href="/teams/{{team.id}}/project/" class="btn btn-ci">Edit Project</a>
                                         </div>
+                                        {% endif %}
                                     {% elif user in hackathon.judges.all %}
                                         {% if hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
                                         <div class="text-left">

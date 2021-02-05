@@ -64,10 +64,14 @@
             </div>
             
             {% if team.project %}
-                {% if team.project.share_permission or request.user.is_staff or request.user in team.participants.all %}
-                {% include 'includes/project.html' %}
+                {% if request.user.is_staff or team.project.share_permission or request.user in team.participants.all %}
+                    {% if request.user in team.hackathon.participants.all and request.user not in team.participants.all and request.user.is_staff %}
+                        {% include 'includes/project_not_visible.html' %}
+                    {% else %}
+                        {% include 'includes/project.html' %}
+                    {% endif %}
                 {% else %}
-                {% include 'includes/project_not_visible.html' %}
+                    {% include 'includes/project.html' %}
                 {% endif %}
             {% else %}
                 {% include 'includes/empty_project.html' %}

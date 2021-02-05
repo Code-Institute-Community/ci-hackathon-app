@@ -70,10 +70,11 @@ def judging(request, hack_id, team_id):
                 project=get_object_or_404(HackTeam, pk=team_id).project,
                 hack_project_score_category=score_category,
             )
+
+            score_cat_id = f"score_{score_category.id}"
             if team_score:
                 team_score.update(score=request.POST.get(score_cat_id))   
             else:
-                score_cat_id = f"score_{score_category.id}"
                 team_score = HackProjectScore(
                     created_by=request.user,
                     judge=request.user,
