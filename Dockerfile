@@ -11,4 +11,5 @@ RUN pip3 install -r requirements.txt
 COPY ./src/ /hackathon-app
 
 EXPOSE 8000
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["gunicorn", "--workers=5", "--timeout=120", "--access-logfile=-",\
+            "--bind=0.0.0.0:8000", "--max-requests=1000", "django_ci_sandbox_proxy.wsgi:application"]
