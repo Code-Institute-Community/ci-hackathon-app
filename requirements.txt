@@ -25,7 +25,7 @@ ipython-genutils==0.2.0
 jedi==0.18.0
 lockfile==0.12.2
 msgpack==0.6.2
-mysql-client==0.0.1
+mysqlclient==2.0.3
 oauthlib==3.1.0
 packaging==20.3
 parso==0.8.1
