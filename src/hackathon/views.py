@@ -46,7 +46,6 @@ class HackathonListView(ListView):
         in progress (needed because using built in template 'now' date didn't
         work correctly for the comparison)
         """
-        print("Hello")
         context = super().get_context_data(**kwargs)
         context['hackathons'] = Hackathon.objects.order_by(
             '-created').exclude(status='deleted')
@@ -327,9 +326,6 @@ def create_hackathon(request):
             messages.success(
                 request, 'Thanks for submitting a new Hackathon event!')
         else:
-            print("Errors")
-            print(form)
-            logger.error(form.errors)
             messages.error(request, ("An error occurred creating the event. "
                                      "Please try again."))
         return redirect("hackathon:hackathon-list")
