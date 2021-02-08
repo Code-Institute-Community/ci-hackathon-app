@@ -33,7 +33,9 @@
                 {% if is_owner %}
                 <p class="mt-2">Welcome: <span class="dark-text">{{ user.slack_display_name }}</span></p>
                 <p><a class="btn btn-ci" href="{% url 'edit_profile' %}"><i class="fas fa-user-edit p-1"></i>Edit Profile</a></p>
+                {% if not slack_enabled %}
                 <p><a class="btn btn-ci" href="{% url 'account_change_password' %}"><i class="fas fa-key p-1"></i></i>Change Password</a></p>
+                {% endif %}
                 {% else %}
                 <p class="mt-2"><span class="dark-text">{{ user.slack_display_name }}</span></p>
                 {% endif %}
@@ -44,7 +46,7 @@
             <div class="col-12 col-md-9">
               <div class="card">
                 <div class="card-body">
-                  
+
                   <div class="edit-profile dark-text">
                     <!-- Edit Profile Form -->
                     {% block edit_profile %}
@@ -88,7 +90,7 @@
                         {{ user.email }}
                       </p>
                       {% endif %}
-                          
+
                     </div>
                     {% else %}
                     <div class="user-info mt-4">

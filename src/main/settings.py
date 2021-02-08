@@ -154,8 +154,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIAFILES_LOCATION = "media"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+SLACK_ENABLED = os.environ.get("SLACK_ENABLED") == 'True'
 
-if os.environ.get("SLACK_ENABLED") == 'True':
+if SLACK_ENABLED:
     INSTALLED_APPS += ['allauth.socialaccount.providers.slack']
     SOCIALACCOUNT_PROVIDERS = {
         'slack': {

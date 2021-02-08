@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from accounts.models import CustomUser
 
@@ -10,6 +11,7 @@ def profile(request, user_id=None):
     """ Display the user's profile. """
     context = {
         'is_owner': True,
+        'slack_enabled': settings.SLACK_ENABLED,
     }
     
     if user_id is not None:
