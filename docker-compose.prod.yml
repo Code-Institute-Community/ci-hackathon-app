@@ -10,7 +10,7 @@ services:
       SITE_NAME: "*"
       SLACK_ENABLED: "True"
       SHOWCASE_SPOTLIGHT_NUMBER: 5
-      SUPPORT_EMAIL: community@codeinstitute.net
+      SUPPORT_EMAIL: community@example.com
       DBHOST: mysql
       DBPORT: 3306
       DBNAME: hackathons

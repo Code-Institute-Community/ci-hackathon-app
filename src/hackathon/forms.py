@@ -4,7 +4,7 @@ from django.forms import BaseModelFormSet
 from accounts.models import Organisation
 from .models import Hackathon, HackProject, HackAward,\
                     HackProjectScoreCategory, HackAwardCategory
-from .lists import STATUS_TYPES_CHOICES, JUDGING_STATUS_CHOICES
+from .lists import STATUS_TYPES_CHOICES
 
 class HackathonForm(forms.ModelForm):
     """ A form to enable users to add hackathon events via the frontend site.
@@ -71,11 +71,6 @@ class HackathonForm(forms.ModelForm):
         required=True,
         widget=forms.Select(choices=STATUS_TYPES_CHOICES),
     )
-    judging_status = forms.CharField(
-        label="Judging Status",
-        required=True,
-        widget=forms.Select(choices=JUDGING_STATUS_CHOICES),
-    )
     organisation = forms.ModelChoiceField(
         label="Organisation",
         queryset=Organisation.objects.order_by('display_name'),
@@ -90,8 +85,7 @@ class HackathonForm(forms.ModelForm):
     class Meta:
         model = Hackathon
         fields = ['display_name', 'description', 'theme', 'start_date',
-                  'end_date', 'status', 'judging_status', 'organisation',
-                  'score_categories',
+                  'end_date', 'status', 'organisation', 'score_categories',
                   ]
 
     def __init__(self, *args, **kwargs):

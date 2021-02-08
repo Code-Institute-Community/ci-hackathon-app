@@ -14,7 +14,6 @@
             "organiser": 12,
             "organisation": 1,
             "status": "draft",
-            "judging_status": "not_yet_started",
             "hackathon_image": "",
             "judges": [
                 1,
@@ -45,7 +44,6 @@
             "organiser": 12,
             "organisation": 1,
             "status": "deleted",
-            "judging_status": "closed",
             "hackathon_image": "",
             "judges": [
                 7,
@@ -88,7 +86,6 @@
             "organiser": 12,
             "organisation": 1,
             "status": "published",
-            "judging_status": "not_yet_started",
             "hackathon_image": "",
             "judges": [
                 3,
@@ -134,7 +131,6 @@
             "organiser": 12,
             "organisation": 1,
             "status": "published",
-            "judging_status": "open",
             "hackathon_image": "",
             "judges": [
                 5,
@@ -181,7 +177,6 @@
             "organiser": 1,
             "organisation": 2,
             "status": "hack_in_progress",
-            "judging_status": "not_yet_started",
             "hackathon_image": "",
             "judges": [
                 1,
@@ -226,7 +221,6 @@
             "organiser": 1,
             "organisation": 1,
             "status": "published",
-            "judging_status": "not_yet_started",
             "hackathon_image": "",
             "judges": [],
             "participants": [],
@@ -248,7 +242,6 @@
             "organiser": 1,
             "organisation": 1,
             "status": "published",
-            "judging_status": "not_yet_started",
             "hackathon_image": "",
             "judges": [],
             "participants": [],
@@ -276,7 +269,6 @@
             "organiser": 1,
             "organisation": 1,
             "status": "hack_in_progress",
-            "judging_status": "not_yet_started",
             "hackathon_image": "",
             "judges": [
                 3,

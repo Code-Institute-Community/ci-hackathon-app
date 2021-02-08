@@ -3,13 +3,15 @@ version: "3.4"
 services:
   hackathon-app:
     image: hackathon-app
+    volumes:
+      - ./src/hackathon:/hackathon-app/hackathon/
     environment: 
       DEVELOPMENT: 1
       SECRET_KEY: "your_secret_key_here"
       SITE_NAME: "*"
       SLACK_ENABLED: "True"
       SHOWCASE_SPOTLIGHT_NUMBER: 5
-      SUPPORT_EMAIL: community@codeinstitute.net
+      SUPPORT_EMAIL: community@example.com
       DBHOST: mysql
       DBPORT: 3306
       DBNAME: hackathons
