@@ -11,10 +11,12 @@
         <div class="card p-3">
             <div class="card-body">
                 No Project submitted yet.
+                {% if team.hackathon.status == 'hack_in_progress' %}
                 {% if request.user in team.participants.all %} 
                 <a href="/teams/{{team.id}}/project" class="teams-link">Add project details now!</a>
                 <p class="empty-project-subtitle mt-2 mb-0">
                     <i>Project details can always be edited until the judging starts.</i>
+                {% endif %}
                 {% endif %}
                 </p>
             </div>

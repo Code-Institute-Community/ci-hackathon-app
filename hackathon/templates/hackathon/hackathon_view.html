@@ -84,10 +84,10 @@
                             <div class="card team-card">
                                 <div class="card-body">
                                     <div class="card-title text-left my-auto">
-                                        <a href="{% url 'view_team' team_id=team.id %}">
-                                            <h3 class="team-name">
+                                        <a href="{% url 'view_team' team_id=team.id %}" class="ci-link">
+                                            <h4 class="team-name">
                                                 {{ team }}
-                                            </h3>
+                                            </h4>
                                         </a>
                                     </div>
                                     <div class="card-text">
@@ -102,7 +102,9 @@
                                     {% if user in hackathon.participants.all %}
                                         {% if user in team.participants.get_queryset %}
                                         <div class="text-left">
+                                            {% if hackathon.status == 'hack_in_progress' %}
                                             <a href="/teams/{{team.id}}/project/" class="btn btn-ci">Edit Project</a>
+                                            {% endif %}
                                         </div>
                                         {% endif %}
                                     {% elif user in hackathon.judges.all %}

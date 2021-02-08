@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-12 col-lg-9">
 
-                <h5 class="p-orange card-title">{{ hackathon.display_name }}
+                <h5 class="p-orange card-title"><a href="/hackathon/{{hackathon.id}}/" class="ci-link">{{ hackathon.display_name }}</a>
                     {% if user.is_staff %}<span class="badge badge-secondary ml-2">{{hackathon.status}}</span>{% endif %}
                 </h5>
                 <p class="card-subtitle mb-2 text-muted"><i class="far fa-calendar-alt p-2"></i> {{ hackathon.start_date }} - {{ hackathon.end_date }}</p>
