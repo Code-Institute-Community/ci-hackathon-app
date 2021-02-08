@@ -2,7 +2,7 @@
 
 <div class="card card-no-border team-member-card ml-auto mr-auto">
 
-    <a href="{% url 'show_profile' user_id=member.id %}"><h6 class="card-text text-center mb-3">{{member.slack_display_name}}</h6></a>
+    <a href="{% url 'show_profile' user_id=member.id %}" class="ci-link"><h6 class="card-text text-center mb-3">{{member.slack_display_name}}</h6></a>
     {% if member.profile_image %}
         <img class="card-img-top team-member-img"
             src="{{member.profile_image}}" alt="Profile Image">

@@ -2,7 +2,7 @@
 
 <div class="card card-no-border team-member-card ml-auto mr-auto">
     {% if member.website_url %}
-    <a href="{{member.website_url}}" target="_blank"><h6 class="card-text text-center mb-3">{{member.full_name}}</h6></a>
+    <a href="{{member.website_url}}" target="_blank" class="ci-link"><h6 class="card-text text-center mb-3">{{member.full_name}}</h6></a>
     {% else %}
     <h6 class="card-text text-center mb-3">{% if not member.full_name %}{{member.slack_display_name}}{% else %}{{member.full_name}}{% endif %}</h6>
     {% endif %}

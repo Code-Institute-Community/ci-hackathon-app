@@ -23,7 +23,13 @@
             {% endif %}
         </div>
         {% if request.user in team.participants.all and not showcase %}
+        {% if team.hackathon.status == 'hack_in_progress' %}
         <a role="button" class="btn btn-ci mt-2 w-100" href="{% url 'create_project' team_id=team.id %}">Edit Project</a>
+        {% elif team.hackathon.status == 'judging' %}
+        <div class="enrollments-closed mt-4 mb-2 p-3">
+            Judging in progress, you cannot edit your project anymore.
+        </div>
+        {% endif%}
         <a role="button" class="btn btn-ci mt-2 w-100" href="{% url 'create_or_update_showcase' team_id=team.id %}">
             {% if team.get_showcase %}Edit{% else %}Add{% endif %} Showcase
         </a>
@@ -65,12 +71,12 @@
                 <div class="card-text">
                     {% if team.project.technologies_used %}
                         <p class="mb-0">
-                            <strong>GitHub Repo:</strong> <a class="teams-link"
+                            <strong>GitHub Repo:</strong> <a class="teams-link ci-link"
                                 target="_blank"
                                 href="{{team.project.github_url}}">{{team.project.github_url}}</a>
                         </p>
                         <p class="mb-0">
-                            <strong>Deployed at: </strong> <a class="teams-link"
+                            <strong>Deployed at: </strong> <a class="teams-link ci-link"
                                 target="_blank"
                                 href="{{team.project.github_url}}">{{team.project.deployed_url}}</a>
                         </p>

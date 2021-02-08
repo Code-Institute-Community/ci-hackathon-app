@@ -29,21 +29,21 @@
     {% endif %}
     </div>
 
-    {% if leftover_participants %}
     <section class="card shadow mb-3 mt-3">
         <div class="card-body">
             <h5 class="p-orange card-title">Leftover Participants</h5>
             <ol class="team-drop-area" id="leftover_participants" ondrop="drop(event)" ondragover="allowDrop(event)">
+                {% if leftover_participants %}
                 {% for participant in leftover_participants %}
                 <li id="leftover_participants-{{ forloop.counter0 }}" 
                     data-level={{ participant.level }}
                     data-userid={{ participant.userid }}
                     draggable="true" ondragstart="drag(event)">{{ participant.name }} (level: {{ participant.level }})</li>
                 {% endfor %}
+                {% endif %}
             </ol>
         </div>
     </section>
-    {% endif %}
     
     {% include 'includes/menu.html' %}
 

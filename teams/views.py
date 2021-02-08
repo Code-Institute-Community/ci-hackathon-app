@@ -133,6 +133,10 @@ def create_project(request, team_id):
     hack_team = get_object_or_404(HackTeam, id=team_id)
     hack_project = HackProject.objects.filter(hackteam=hack_team)
 
+    if hack_team.hackathon.status != 'hack_in_progress':
+        messages.error(request, "You currently cannot edit this project.")
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+
     if request.method == 'POST':
         if hack_project: 
             form = HackProjectForm(request.POST, instance=hack_project.get())

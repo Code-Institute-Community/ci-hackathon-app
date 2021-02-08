@@ -79,6 +79,11 @@ main {
     color: var(--s-grey);
 }
 
+a.ci-link {
+    font-size: inherit !important;
+    color: var(--p-orange);
+}
+
 .disabled-link {
     pointer-events: none;
     opacity: .5;

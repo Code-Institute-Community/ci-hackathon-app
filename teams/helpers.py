@@ -206,5 +206,6 @@ def update_team_participants(created_by_user, teams, hackathon_id):
         if hack_team:
             hack_team.first().participants.set(get_users_from_ids(team_members))
         else:
+            hackathon = Hackathon.objects.get(id=hackathon_id)
             create_new_team_and_add_participants(created_by_user, team_name,
                                          team_members, hackathon)
