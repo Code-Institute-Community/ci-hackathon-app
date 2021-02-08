@@ -86,6 +86,10 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+    
+    def save(self, *args, **kwargs):
+        self.username = self.slack_display_name
+        super(CustomUser, self).save(*args, **kwargs)
 
     def __str__(self):
         """  Return Class object to string via the user email value  """
