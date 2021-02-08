@@ -157,9 +157,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 SLACK_ENABLED = os.environ.get("SLACK_ENABLED") == 'True'
 
 if SLACK_ENABLED:
-    INSTALLED_APPS += ['allauth.socialaccount.providers.slack']
+    INSTALLED_APPS += ['custom_slack_provider']
     SOCIALACCOUNT_PROVIDERS = {
-        'slack': {
+        'custom_slack_provider': {
             'SCOPE':['identity.basic', 'identity.email'],
         }
     }
