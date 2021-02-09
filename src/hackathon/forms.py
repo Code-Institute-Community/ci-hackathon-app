@@ -71,6 +71,10 @@ class HackathonForm(forms.ModelForm):
         required=True,
         widget=forms.Select(choices=STATUS_TYPES_CHOICES),
     )
+    teamsize = forms.IntegerField(
+        label="Team Size",
+        required=True,
+    )
     organisation = forms.ModelChoiceField(
         label="Organisation",
         queryset=Organisation.objects.order_by('display_name'),
@@ -86,6 +90,7 @@ class HackathonForm(forms.ModelForm):
         model = Hackathon
         fields = ['display_name', 'description', 'theme', 'start_date',
                   'end_date', 'status', 'organisation', 'score_categories',
+                  'teamsize',
                   ]
 
     def __init__(self, *args, **kwargs):

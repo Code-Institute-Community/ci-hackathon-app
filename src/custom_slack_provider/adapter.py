@@ -40,6 +40,8 @@ class CustomSlackSocialAdapter(DefaultSocialAccountAdapter):
         first_name = data.get('first_name')
         last_name = data.get('last_name')
         email = data.get('email')
+        profile_image = data.get('profile_image')
+        about = data.get('about')
         user = sociallogin.user
         user_username(user, username or '')
         user_email(user, valid_email_or_none(email) or '')
@@ -49,4 +51,6 @@ class CustomSlackSocialAdapter(DefaultSocialAccountAdapter):
         user_field(user, 'full_name', full_name)
         user_field(user, 'slack_display_name', slack_display_name)
         user_field(user, 'username', username)
+        user_field(user, 'profile_image', profile_image)
+        user_field(user, 'about', about)
         return user

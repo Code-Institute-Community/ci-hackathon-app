@@ -1,7 +1,6 @@
 import os
 import dj_database_url
 if os.path.exists(".env"):
-    print("PATH EXISTS")
     from dotenv import load_dotenv
     load_dotenv()
 

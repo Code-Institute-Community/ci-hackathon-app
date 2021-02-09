@@ -31,7 +31,7 @@ def change_teams(request, hackathon_id):
         teams = []
         participants_still_to_distribute = []
     elif len(hackathon.teams.all()) == 0:
-        teamsize = 3
+        teamsize = hackathon.teamsize
         team_sizes = sorted(choose_team_sizes(participants, teamsize))
         if len(team_sizes) == 0:
             return render(request, 'change_teams.html',

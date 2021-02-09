@@ -37,10 +37,13 @@
         <div class="col-12">
           {{ form.organisation|as_crispy_field }}
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 mb-3">
+          {{ form.teamsize|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-6 mb-3">
           {{ form.status|as_crispy_field }}
         </div>
-        <div class="col-12">
+        <div class="col-12 col-md-6 mb-3">
           {{ form.start_date|as_crispy_field }}
         </div>
         <div class="col-12 col-md-6 mb-3">

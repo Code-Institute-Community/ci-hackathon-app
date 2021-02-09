@@ -34,6 +34,7 @@ class Hackathon(models.Model):
     theme = models.CharField(max_length=264, blank=False)
     start_date = models.DateTimeField(blank=False)
     end_date = models.DateTimeField(blank=False)
+    teamsize = models.IntegerField(default=3)
     # Hackathons can have numerous judges and
     # users could be the judges of more than one Hackathon: Many to Many
     judges = models.ManyToManyField(User,
