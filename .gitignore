@@ -14,3 +14,4 @@ venv/
 .idea/
 MYNOTES.md
 staticfiles
+data/
