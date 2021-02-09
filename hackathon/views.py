@@ -284,7 +284,11 @@ def create_hackathon(request):
         template = "hackathon/create-event.html"
         form = HackathonForm(initial={
             'organisation': 1,
+<<<<<<< HEAD
             'team_size': 3,
+=======
+            'teamsize': 3,
+>>>>>>> Adding adjustable team sizes to the hackathon
             'score_categories':HackProjectScoreCategory.objects.all()[:5]})
 
         return render(request, template, {"form": form})
