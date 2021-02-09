@@ -11,6 +11,7 @@ class CustomUserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': (
+            'username',
             'full_name', 'slack_display_name', 'user_type',
             'current_lms_module', 'organisation')}),
         ('Permissions', {'fields': (

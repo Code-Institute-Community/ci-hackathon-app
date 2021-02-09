@@ -6,6 +6,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("accounts/", include("accounts.urls")),
+    path("accounts/", include("custom_slack_provider.urls")),
     path("images/", include("images.urls")),
     path("profile/", include("profiles.urls")),
     path("resources/", include("resources.urls")),
