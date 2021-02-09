@@ -59,6 +59,10 @@ class SlackOAuth2Adapter(OAuth2Adapter):
                                                   {}).get('first_name')
         resp['user']['last_name'] = user_info.get('profile',
                                                   {}).get('last_name')
+        resp['user']['image_original'] = user_info.get('profile',
+                                                  {}).get('image_original')
+        resp['user']['title'] = user_info.get('profile',
+                                                  {}).get('title')
         return resp
 
 
