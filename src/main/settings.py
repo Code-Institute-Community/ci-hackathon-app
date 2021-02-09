@@ -100,7 +100,6 @@ ACCOUNT_EMAIL_VERIFICATION = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
-ACCOUNT_USER_MODEL_USERNAME_FIELD = 'slack_display_name'
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/post_login/"
@@ -108,19 +107,27 @@ LOGIN_REDIRECT_URL = "/post_login/"
 
 WSGI_APPLICATION = "main.wsgi.application"
 
-DATABASES = {
-    'default': {
-        'ATOMIC_REQUESTS': True,
-        'CONN_MAX_AGE': 0,
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': os.getenv('DBHOST'),  # '127.0.0.1',
-        'NAME': os.getenv('DBNAME'),  #'hackathons',
-        'OPTIONS': {},
-        'PASSWORD': os.getenv('DBPASS'),
-        'PORT': os.getenv('DBPORT', '3306'),
-        'USER': os.getenv('DBUSER'),
-    },
-}
+if not DEBUG:
+    DATABASES = {
+        'default': {
+            'ATOMIC_REQUESTS': True,
+            'CONN_MAX_AGE': 0,
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': os.getenv('DBHOST'),  # '127.0.0.1',
+            'NAME': os.getenv('DBNAME'),  #'hackathons',
+            'OPTIONS': {},
+            'PASSWORD': os.getenv('DBPASS'),
+            'PORT': os.getenv('DBPORT', '3306'),
+            'USER': os.getenv('DBUSER'),
+        },
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [

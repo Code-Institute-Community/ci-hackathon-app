@@ -1,3 +1,2 @@
 - Add notification to notify participants of winners
-- Check if teams can submit projects still if status is judging, finished, deleted
 - Allow judges to enroll as participant, but remove staff privileges for that hackathon
