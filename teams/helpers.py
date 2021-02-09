@@ -71,7 +71,8 @@ def group_participants(participants, num_teams):
     participant_groups = {}
     hackathon_level = 0
     for participant in participants:
-        participant_level = LMS_LEVELS[participant.current_lms_module]
+        participant_level = (LMS_LEVELS.get(participant.current_lms_module)
+                             or 1)
         hackathon_level += participant_level
         participant_groups.setdefault(participant_level, [])
         participant_groups[participant_level].append({
@@ -100,7 +101,7 @@ def find_all_combinations(participants, team_sizes):
 
     Returns a list of tuples representing all the possible combinations """
     num_teams = len(team_sizes)
-    participant_levels = [LMS_LEVELS[participant.current_lms_module] 
+    participant_levels = [LMS_LEVELS.get(participant.current_lms_module) or 1 
                           for participant in participants]
     hackathon_level = sum(participant_levels)
     team_level = math.floor(hackathon_level / num_teams)
