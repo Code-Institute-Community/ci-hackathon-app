@@ -1,3 +1,7 @@
 - Add notification to notify participants of winners
 - Allow judges to enroll as participant, but remove staff privileges for that hackathon
+<<<<<<< HEAD
 - Disallow registration if no "current LMS module" selected on profile
+=======
+- Disallow registration if no "current LMS module" selected on profile
+>>>>>>> Extract Slack profile details and image
