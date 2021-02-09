@@ -48,8 +48,8 @@ class CustomUser(AbstractUser):
     organisation = models.ForeignKey(
         Organisation,
         on_delete=models.CASCADE,
-        related_name='user_organisation',
-        default=Organisation.DEFAULT_PK
+        related_name='users',
+        default=1
     )
 
     about = models.TextField(
