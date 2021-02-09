@@ -59,8 +59,10 @@ class SlackOAuth2Adapter(OAuth2Adapter):
                                                   {}).get('first_name')
         resp['user']['last_name'] = user_info.get('profile',
                                                   {}).get('last_name')
-        resp['user']['image_original'] = user_info.get('profile',
-                                                  {}).get('image_original')
+        # This key is not present in the response if the user has not
+        # uploaded an image and the field cannot be None
+        resp['user']['image_original'] = (user_info.get(
+            'profile', {}).get('image_original') or '')
         resp['user']['title'] = user_info.get('profile',
                                                   {}).get('title')
         return resp
