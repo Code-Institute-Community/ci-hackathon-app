@@ -52,7 +52,9 @@ class SlackProvider(OAuth2Provider):
                 'username': user.get('username'),
                 'full_name': user.get('full_name'),
                 'slack_display_name': user.get('display_name'),
-                'email': user.get('email', None)}
+                'email': user.get('email', None),
+                'profile_image': user.get('image_original'),
+                'about': user.get('title')}
 
     def get_default_scope(self):
         return ['identify']

@@ -59,16 +59,16 @@
 
                       <label for="fullName">Name</label>
                       <p id="fullName">
-                        {{ user.full_name|title }}
+                        {{ user.full_name }}
                       </p>
 
                       <label for="slackName">Slack Name</label>
                       <p id="slackName">
-                        {{ user.slack_display_name|title }}
+                        {{ user.slack_display_name }}
                       </p>
 
                       <label for="about">About</label>
-                      <p id="about" class="profile-about">{% if user.about %}{{ user.about|title }}{% else %}N/A{% endif %}</p>
+                      <p id="about" class="profile-about">{% if user.about %}{{ user.about }}{% else %}N/A{% endif %}</p>
 
                       <label for="latestModule">Latest Module</label>
                       <p id="latestModule">
@@ -79,7 +79,7 @@
                       <p id="website" class="profile-website-url">
                         {% if user.website_url %}
                         <a href="{{ user.website_url }}" target="_blank">
-                          {{ user.website_url|title }}
+                          {{ user.website_url }}
                         </a>
                         {% else %}N/A{% endif %}
                       </p>
