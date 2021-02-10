@@ -167,7 +167,7 @@ if SLACK_ENABLED:
     INSTALLED_APPS += ['custom_slack_provider']
     SOCIALACCOUNT_PROVIDERS = {
         'custom_slack_provider': {
-            'SCOPE':['users:read'],
+            'SCOPE':['identity.basic'],
         }
     }
 

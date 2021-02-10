@@ -21,9 +21,6 @@ class SlackOAuth2Tests(OAuth2TestsMixin, TestCase):
                                       provider=SlackProvider)
         sa.sites.add(Site.objects.get_current())
 
-    @override_settings(
-        ACCOUNT_AUTHENTICATION_METHOD=app_settings.AuthenticationMethod
-        .USERNAME_EMAIL)
     def get_mocked_response(self):
         return MockedResponse(200, """{
           "ok": true,
