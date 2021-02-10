@@ -1,3 +1,4 @@
+import logging
 import requests
 
 from accounts.models import CustomUser
@@ -8,8 +9,11 @@ from allauth.socialaccount.providers.oauth2.views import (
     OAuth2CallbackView,
     OAuth2LoginView,
 )
+from django.conf import settings
 
 from .provider import SlackProvider
+
+logger = logging.getLogger(__name__)
 
 
 class SlackOAuth2Adapter(OAuth2Adapter):
@@ -27,7 +31,6 @@ class SlackOAuth2Adapter(OAuth2Adapter):
 
     def get_data(self, token):
         # Verify the user first
-
         resp = requests.get(
             self.identity_url,
             params={'token': token}
@@ -35,16 +38,18 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         resp = resp.json()
 
         if not resp.get('ok'):
+            logger.exception(f'OAuth Exception: {resp.get("error")}')
             raise OAuth2Error()
 
         userid = resp.get('user', {}).get('id')
         user_info = requests.get(
             self.user_detail_url,
-            params={'token': token, 'user': userid}
+            params={'token': settings.SLACK_BOT_TOKEN, 'user': userid}
         )
         user_info = user_info.json()
 
         if not user_info.get('ok'):
+            logger.exception(f'UserInfo Exception: {user_info.get("error")}')
             raise OAuth2Error()
 
         user_info = user_info.get('user', {})
