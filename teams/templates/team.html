@@ -16,7 +16,7 @@
                 style="background-image:url('{{ team.header_image }}')">
             {% else %}
             <div class="row teams-header" 
-                style="background-image:url({% static '/img/ci-hackathon--horizontal.png' %})">
+                style="background-image:url({% static 'img/ci-hackathon--horizontal.png' %})">
             {% endif %}
                 <div class="team-name">
                     {% if request.user in team.participants.all and not showcase and team.hackathon.status == 'hack_in_progress' %}
