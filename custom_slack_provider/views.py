@@ -70,10 +70,11 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         user_info = user_info.get('user', {})
         display_name = user_info.get('profile',
                                      {}).get('display_name_normalized')
+        teamid = resp.get('team').get('id')
         if not resp.get('user', {}).get('email'):
             resp['user']['email'] = user_info.get('email')
         resp['user']['display_name'] = display_name
-        resp['user']['username'] = user_info.get('id')
+        resp['user']['username'] = f'{userid}_{teamid}'
         resp['user']['full_name'] = user_info.get('profile',
                                                   {}).get('real_name')
         resp['user']['first_name'] = user_info.get('profile',
