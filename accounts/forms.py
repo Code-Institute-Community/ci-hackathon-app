@@ -24,7 +24,7 @@ class SignupForm(forms.Form):
     current_lms_module = forms.CharField(
         widget=forms.Select(
         choices=LMS_MODULES_CHOICES),
-        label="Where are you currently in the program?"
+        label="Where are you currently in the programme?"
     )
 
     class Meta:
@@ -46,6 +46,19 @@ class EditProfileForm(forms.ModelForm):
     """ 
         Using ModelForm to directly convert the CustomUser model into the EditProfileForm form.
     """
+    full_name = forms.CharField(
+        max_length=30,  
+        widget=forms.TextInput(attrs={'placeholder': 'Full Name'}),
+        label='')
+    slack_display_name = forms.CharField(
+        max_length=30,
+        widget=forms.TextInput(attrs={'placeholder': 'Slack Display Name'}),
+        label='')
+    current_lms_module = forms.CharField(
+        widget=forms.Select(
+        choices=LMS_MODULES_CHOICES),
+        label="Where are you currently in the programme?"
+    )
     about = forms.CharField(widget=forms.Textarea(), required=False)
     website_url = forms.CharField(required=False)
 
