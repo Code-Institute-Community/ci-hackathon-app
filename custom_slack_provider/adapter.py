@@ -10,6 +10,10 @@ from allauth.utils import (
     valid_email_or_none,
 )
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class CustomSlackSocialAdapter(DefaultSocialAccountAdapter):
     def __init__(self, adapter):
@@ -54,3 +58,34 @@ class CustomSlackSocialAdapter(DefaultSocialAccountAdapter):
         user_field(user, 'profile_image', profile_image)
         user_field(user, 'about', about)
         return user
+
+    def is_auto_signup_allowed(self, request, sociallogin):
+        # If email is specified, check for duplicate and if so, no auto signup.
+        auto_signup = app_settings.AUTO_SIGNUP
+        if auto_signup:
+            email = user_email(sociallogin.user)
+            # Let's check if auto_signup is really possible...
+            if email:
+                if account_settings.UNIQUE_EMAIL:
+                    if email_address_exists(email):
+                        logger.exception((f'User with email {email} already '
+                                          f'exists.'))
+                        # Oops, another user already has this address.
+                        # We cannot simply connect this social account
+                        # to the existing user. Reason is that the
+                        # email adress may not be verified, meaning,
+                        # the user may be a hacker that has added your
+                        # email address to their account in the hope
+                        # that you fall in their trap.  We cannot
+                        # check on 'email_address.verified' either,
+                        # because 'email_address' is not guaranteed to
+                        # be verified.
+                        auto_signup = False
+                        # FIXME: We redirect to signup form -- user will
+                        # see email address conflict only after posting
+                        # whereas we detected it here already.
+            elif app_settings.EMAIL_REQUIRED:
+                # Nope, email is required and we don't have it yet...
+                auto_signup = False
+
+        return auto_signup

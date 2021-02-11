@@ -2,13 +2,27 @@ import logging
 import requests
 
 from accounts.models import CustomUser
+from django.core.exceptions import PermissionDenied
+from requests import RequestException
 
 from allauth.socialaccount.providers.oauth2.client import OAuth2Error
+from allauth.socialaccount.providers.base import AuthAction, AuthError, AuthProcess
+from allauth.socialaccount.providers.base import ProviderException
+from allauth.socialaccount.adapter import get_adapter
+from .helpers import (
+    complete_social_login,
+    render_authentication_error,
+)
 from allauth.socialaccount.providers.oauth2.views import (
     OAuth2Adapter,
     OAuth2CallbackView,
     OAuth2LoginView,
+    OAuth2View,
 )
+from allauth.socialaccount import app_settings, signals
+from allauth.socialaccount.models import SocialLogin, SocialToken
+from allauth.utils import build_absolute_uri, get_request_param
+
 from django.conf import settings
 
 from .provider import SlackProvider
@@ -29,6 +43,7 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         return self.get_provider().sociallogin_from_response(request,
                                                              extra_data)
 
+
     def get_data(self, token):
         # Verify the user first
         resp = requests.get(
@@ -40,7 +55,7 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         if not resp.get('ok'):
             logger.exception(f'OAuth Exception: {resp.get("error")}')
             raise OAuth2Error()
-
+        
         userid = resp.get('user', {}).get('id')
         user_info = requests.get(
             self.user_detail_url,
@@ -55,7 +70,8 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         user_info = user_info.get('user', {})
         display_name = user_info.get('profile',
                                      {}).get('display_name_normalized')
-
+        if not resp.get('user', {}).get('email'):
+            resp['user']['email'] = user_info.get('email')
         resp['user']['display_name'] = display_name
         resp['user']['username'] = user_info.get('id')
         resp['user']['full_name'] = user_info.get('profile',
@@ -73,5 +89,47 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         return resp
 
 
+class CustomOAuth2CallbackView(OAuth2View):
+    def dispatch(self, request, *args, **kwargs):
+        if 'error' in request.GET or 'code' not in request.GET:
+            # Distinguish cancel from error
+            auth_error = request.GET.get('error', None)
+            if auth_error == self.adapter.login_cancelled_error:
+                error = AuthError.CANCELLED
+            else:
+                error = AuthError.UNKNOWN
+            return render_authentication_error(
+                request,
+                self.adapter.provider_id,
+                error=error)
+        app = self.adapter.get_provider().get_app(self.request)
+        client = self.get_client(request, app)
+        try:
+            access_token = client.get_access_token(request.GET['code'])
+            token = self.adapter.parse_token(access_token)
+            token.app = app
+            login = self.adapter.complete_login(request,
+                                                app,
+                                                token,
+                                                response=access_token)
+            login.token = token
+            if self.adapter.supports_state:
+                login.state = SocialLogin \
+                    .verify_and_unstash_state(
+                        request,
+                        get_request_param(request, 'state'))
+            else:
+                login.state = SocialLogin.unstash_state(request)
+            return complete_social_login(request, login)
+        except (PermissionDenied,
+                OAuth2Error,
+                RequestException,
+                ProviderException) as e:
+            return render_authentication_error(
+                request,
+                self.adapter.provider_id,
+                exception=e)
+
+
 oauth2_login = OAuth2LoginView.adapter_view(SlackOAuth2Adapter)
-oauth2_callback = OAuth2CallbackView.adapter_view(SlackOAuth2Adapter)
+oauth2_callback = CustomOAuth2CallbackView.adapter_view(SlackOAuth2Adapter)

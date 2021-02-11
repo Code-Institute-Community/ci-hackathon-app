@@ -1,5 +1,6 @@
 from allauth.socialaccount.providers.base import ProviderAccount
 from allauth.socialaccount.providers.oauth2.provider import OAuth2Provider
+from allauth.socialaccount import app_settings
 
 from custom_slack_provider.adapter import CustomSlackSocialAdapter
 
