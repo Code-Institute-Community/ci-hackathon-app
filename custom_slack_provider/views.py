@@ -55,7 +55,7 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         if not resp.get('ok'):
             logger.exception(f'OAuth Exception: {resp.get("error")}')
             raise OAuth2Error()
-        
+
         userid = resp.get('user', {}).get('id')
         user_info = requests.get(
             self.user_detail_url,
