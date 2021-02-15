@@ -550,9 +550,10 @@ form.distribute-teams-form, form.clear-teams-form {
     margin: 0 auto;
 }
 
-.carousel-item a img {
-    max-height: 500px;
+.carousel-item img, .carousel-item canvas {
+    height: 400px;
     min-width: auto;
+    object-fit: cover;
 }
 
 .carousel-control-next:hover {

@@ -9,7 +9,7 @@
 <div class="row mt-3 mb-5 ml-4 mr-4"> 
     <div class="col-md-12 col-lg-3">
         <div class="card">
-            {% if request.user in team.participants.all and not showcase %}
+            {% if request.user in team.participants.all and not showcase and team.hackathon.status == 'hack_in_progress' %}
             <button class="btn btn-secondary btn-sm edit-image" 
                 data-image-type="project_image"
                 data-identifier="{{team.project.id}}"
@@ -78,7 +78,7 @@
                         <p class="mb-0">
                             <strong>Deployed at: </strong> <a class="teams-link ci-link"
                                 target="_blank"
-                                href="{{team.project.github_url}}">{{team.project.deployed_url}}</a>
+                                href="{{team.project.deployed_url}}">{{team.project.deployed_url}}</a>
                         </p>
                     {% else %}
                         N/A
@@ -90,7 +90,7 @@
                 <div class="card-title">
                     
                     <h4>Screenshot
-                        {% if request.user in team.participants.all and not showcase %}
+                        {% if request.user in team.participants.all and not showcase and team.hackathon.status == 'hack_in_progress' %}
                         <button class="btn btn-secondary btn-sm edit-image screenshot-image" 
                         data-image-type="screenshot"
                         data-identifier="{{team.project.id}}"

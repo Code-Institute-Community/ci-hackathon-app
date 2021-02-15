@@ -16,10 +16,10 @@
                 style="background-image:url('{{ team.header_image }}')">
             {% else %}
             <div class="row teams-header" 
-                style="background-image:url({% static '/img/ci-hackathon--horizontal.png' %})">
+                style="background-image:url({% static 'img/ci-hackathon--horizontal.png' %})">
             {% endif %}
                 <div class="team-name">
-                    {% if request.user in team.participants.all and not showcase %}
+                    {% if request.user in team.participants.all and not showcase and team.hackathon.status == 'hack_in_progress' %}
                     <button class="btn btn-secondary btn-sm edit-image"
                         data-image-type="header_image"
                         data-identifier="{{team.id}}"
@@ -27,7 +27,7 @@
                         <i class="fas fa-pen mr-2"></i>Edit</button>
                     {% endif %}
                     <h2>Team: <i>{{team}}</i>
-                        {% if request.user in team.participants.all and not showcase %}
+                        {% if request.user in team.participants.all and not showcase and team.hackathon.status == 'hack_in_progress' %}
                         <a role="button" data-toggle="modal" data-target="#renameTeamModal">
                         <i class="fas fa-pen ml-3" title="Rename team"></i></a>
                         {% endif %}

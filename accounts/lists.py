@@ -23,7 +23,7 @@ LMS_MODULES_CHOICES = (
     ('comparative_programming_languages_essentials', 'Comparative Programming Languages Essentials'),
     ('javascript_essentials', 'Javascript Essentials'),
     ('interactive_frontend_development', 'Interactive Frontend Development'),
-    ('python_essentials', 'Python essentials'),
+    ('python_essentials', 'Python Essentials'),
     ('practical_python', 'Practical Python'),
     ('data_centric_development', 'Data Centric Development'),
     ('backend_development','Backend Development'),

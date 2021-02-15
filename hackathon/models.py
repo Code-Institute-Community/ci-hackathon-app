@@ -4,7 +4,7 @@ from datetime import datetime
 
 from accounts.models import CustomUser as User
 from accounts.models import Organisation
-from .lists import STATUS_TYPES_CHOICES, JUDGING_STATUS_CHOICES
+from .lists import STATUS_TYPES_CHOICES
 
 # Optional fields are ony set to deal with object deletion issues.
 # If this isn't a problem, they can all be changed to required fields.
@@ -34,6 +34,7 @@ class Hackathon(models.Model):
     theme = models.CharField(max_length=264, blank=False)
     start_date = models.DateTimeField(blank=False)
     end_date = models.DateTimeField(blank=False)
+    teamsize = models.IntegerField(default=3)
     # Hackathons can have numerous judges and
     # users could be the judges of more than one Hackathon: Many to Many
     judges = models.ManyToManyField(User,
@@ -55,23 +56,17 @@ class Hackathon(models.Model):
                                   null=True,
                                   blank=True,
                                   on_delete=models.SET_NULL,
-                                  related_name="hackathon_organiser")
+                                  related_name="organised_hackathons")
     organisation = models.ForeignKey(Organisation,
                                      null=True,
                                      blank=True,
                                      on_delete=models.SET_NULL,
-                                     related_name='hackathon_organisation')
+                                     related_name='hackathons')
     status = models.CharField(
         max_length=20,
         blank=False,
         default='draft',
         choices=STATUS_TYPES_CHOICES
-    )
-    judging_status = models.CharField(
-        max_length=16,
-        blank=False,
-        default='not_yet_started',
-        choices=JUDGING_STATUS_CHOICES
     )
     hackathon_image = models.TextField(
         default="",

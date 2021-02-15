@@ -99,7 +99,6 @@ ACCOUNT_EMAIL_VERIFICATION = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
-ACCOUNT_USER_MODEL_USERNAME_FIELD = 'slack_display_name'
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/post_login/"
@@ -107,14 +106,21 @@ LOGIN_REDIRECT_URL = "/post_login/"
 
 WSGI_APPLICATION = "main.wsgi.application"
 
-
-if "DATABASE_URL" in os.environ:
-    print("Postgres DATABASE_URL found.")
+if not DEBUG:
     DATABASES = {
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+        'default': {
+            'ATOMIC_REQUESTS': True,
+            'CONN_MAX_AGE': 0,
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': os.getenv('DBHOST'),  # '127.0.0.1',
+            'NAME': os.getenv('DBNAME'),  #'hackathons',
+            'OPTIONS': {},
+            'PASSWORD': os.getenv('DBPASS'),
+            'PORT': os.getenv('DBPORT', '3306'),
+            'USER': os.getenv('DBUSER'),
+        },
     }
 else:
-    print("Postgres DATABASE_URL not found, using db.sqlite3")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -154,11 +160,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIAFILES_LOCATION = "media"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+SLACK_ENABLED = os.environ.get("SLACK_ENABLED") == 'True'
 
-if os.environ.get("SLACK_ENABLED") == 'True':
-    INSTALLED_APPS += ['allauth.socialaccount.providers.slack']
+if SLACK_ENABLED:
+    SLACK_BOT_TOKEN = os.environ.get('SLACK_BOT_TOKEN')
+    INSTALLED_APPS += ['custom_slack_provider']
     SOCIALACCOUNT_PROVIDERS = {
-        'slack': {
+        'custom_slack_provider': {
             'SCOPE':['identity.basic', 'identity.email'],
         }
     }
@@ -167,3 +175,17 @@ if os.environ.get("SLACK_ENABLED") == 'True':
 SHOWCASE_SPOTLIGHT_NUMBER = int(os.environ.get('SHOWCASE_SPOTLIGHT_NUMBER')
                                 or 0)
 SUPPORT_EMAIL = os.environ.get("SUPPORT_EMAIL")
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}

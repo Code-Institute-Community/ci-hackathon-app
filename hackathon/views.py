@@ -3,7 +3,6 @@ from datetime import datetime
 from operator import itemgetter
 import logging
 
-from dateutil.parser import parse
 from django.db import transaction, IntegrityError
 from django.forms import modelformset_factory
 from django.views.generic import ListView, DetailView
@@ -20,7 +19,8 @@ from .forms import HackathonForm, ChangeHackathonStatusForm,\
                    HackAwardForm
 from .lists import AWARD_CATEGORIES
 from .helpers import create_team_judge_category_construct,\
-                     create_category_team_construct, count_judges_scores
+                     create_category_team_construct, count_judges_scores,\
+                     format_date
 
 DEFAULT_SCORES = {
     'team_name': '',
@@ -284,6 +284,7 @@ def create_hackathon(request):
         template = "hackathon/create-event.html"
         form = HackathonForm(initial={
             'organisation': 1,
+            'team_size': 3,
             'score_categories':HackProjectScoreCategory.objects.all()[:5]})
 
         return render(request, template, {"form": form})
@@ -291,10 +292,9 @@ def create_hackathon(request):
     else:
         form = HackathonForm(request.POST)
         # Convert start and end date strings to datetime and validate
-        start_date = parse(request.POST.get('start_date'))
-        end_date = parse(request.POST.get('end_date'))
+        start_date = format_date(request.POST.get('start_date'))
+        end_date = format_date(request.POST.get('end_date'))
         now = datetime.now()
-
         # Ensure start_date is a day in the future
         if start_date.date() <= now.date():
             messages.error(
@@ -354,8 +354,9 @@ def update_hackathon(request, hackathon_id):
     else:
         form = HackathonForm(request.POST, instance=hackathon)
         # Convert start and end date strings to datetime and validate
-        start_date = parse(request.POST.get('start_date'))
-        end_date = parse(request.POST.get('end_date'))
+
+        start_date = format_date(request.POST.get('start_date'))
+        end_date = format_date(request.POST.get('end_date'))
         now = datetime.now()
 
         # Ensure start_date is a day in the future for hackathons that haven't

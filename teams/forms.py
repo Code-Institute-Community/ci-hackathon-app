@@ -18,11 +18,11 @@ class HackProjectForm(forms.ModelForm):
         label='Technologies used',
         required=True
     )
-    github_url = forms.CharField(
+    github_url = forms.URLField(
         label='GitHub url',
         required=False
     )
-    deployed_url = forms.CharField(
+    deployed_url = forms.URLField(
         label='Deployed url',
         required=False
     )
