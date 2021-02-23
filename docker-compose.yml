@@ -4,7 +4,8 @@ services:
   hackathon-app:
     image: hackathon-app
     volumes:
-      - ./src/hackathon:/hackathon-app/hackathon/
+      - ./staticfiles/:/hackathon-app/staticfiles/
+      - ./data/:/hackathon-app/data/
     environment: 
       DEVELOPMENT: 1
       SECRET_KEY: "your_secret_key_here"
@@ -17,6 +18,7 @@ services:
       DBNAME: hackathons
       DBUSER: hackathon_user
       DBPASS: gummyball
+    entrypoint: ['python3', 'manage.py', 'runserver', '0.0.0.0:8000']
     ports:
       - "8000:8000"
 

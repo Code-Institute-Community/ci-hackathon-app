@@ -8,20 +8,21 @@ COPY ./requirements.txt /hackathon-app/requirements.txt
 
 RUN pip3 install -r requirements.txt
 
-COPY ./accounts/ /hackathon-app
-COPY ./assets/ /hackathon-app
-COPY ./custom_slack_provider/ /hackathon-app
-COPY ./hackathon/ /hackathon-app
-COPY ./home/ /hackathon-app
-COPY ./images/ /hackathon-app
-COPY ./main/ /hackathon-app
-COPY ./profiles/ /hackathon-app
-COPY ./resources/ /hackathon-app
-COPY ./showcase/ /hackathon-app
-COPY ./submissions/ /hackathon-app
-COPY ./teams/ /hackathon-app
-COPY ./templates/ /hackathon-app
-COPY ./manage.py /hackathon/manage.py
+COPY ./accounts/ /hackathon-app/accounts/
+COPY ./assets/ /hackathon-appassets/
+COPY ./custom_slack_provider/ /hackathon-app/custom_slack_provider/
+COPY ./hackathon/ /hackathon-app/hackathon/
+COPY ./home/ /hackathon-app/home/
+COPY ./images/ /hackathon-app/images/
+COPY ./main/ /hackathon-app/main/
+COPY ./profiles/ /hackathon-app/profiles/
+COPY ./resources/ /hackathon-app/resources/
+COPY ./showcase/ /hackathon-app/showcase/
+COPY ./static/ /hackathon-app/static/
+COPY ./submissions/ /hackathon-app/submissions/
+COPY ./teams/ /hackathon-app/teams/
+COPY ./templates/ /hackathon-app/templates/
+COPY ./manage.py /hackathon-app/manage.py
 
 EXPOSE 8000
 ENTRYPOINT ["gunicorn", "--workers=5", "--timeout=120", "--access-logfile=-",\
