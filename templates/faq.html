@@ -3,8 +3,7 @@
 {% block content %}
 
 <h1>Frequently Asked Questions</h1>
-<!-- help needed -->
-<h3>
+<h3 class="mt-3">
     1. WHAT IS A HACKATHON?
 </h3>
 <p>A hackathon (also known as a hack day, hackfest, datathon or codefest) is a
@@ -61,7 +60,44 @@
     </li>
 </ul>
 <h3 class="mt-5">
-    4. HOW DO I FORM OR JOIN A TEAM AND WHY?
+    4. DO I JUST NEED TO SIGNUP TO THE PLATFORM OR DO I NEED TO DO ANYTHING ELSE?
+</h3>
+<p>
+    Apart from signing in to the platform with your Slack Account, each time
+    you want to participate in a Hackathon you will need to enroll to that
+    specific hackathon. 
+</p>
+<p>
+    You can do that either from the start page, the
+    <a href="{% url 'hackathon:hackathon-list' %}">View Hackathons</a>  page 
+    or (if you have a direct link) from the detail view of the hackathon directly;
+    simply click on the <strong>"Enroll as participant"</strong> button when
+    the registration is open.
+</p>
+<h3 class="mt-5">
+    5. HOW DO I KNOW THAT I AM REGISTERED FOR A HACKATHON?
+</h3>
+<p>
+    <ol>
+        <li>
+            Log in and go to the <a href="{% url 'hackathon:hackathon-list' %}">View Hackathons</a> page
+        </li>
+        <li>
+            Find the hackathon you want to check if you are registered to
+        </li>
+        <li>
+            Check that the status is <strong>"You are enrolled in this hackathon!"</strong>
+        </li>
+        <li>
+            If it does not say <strong>"You are enrolled in this hackathon!"</strong>, either
+            click on <strong>"Enroll as participant"</strong> (if the button is visible) or
+            contanct <a href="mailto:{{support_email}}">{{support_email}}</a>
+        </li>
+    </ol>
+</p>
+
+<h3 class="mt-5">
+    6. HOW DO I FORM OR JOIN A TEAM AND WHY?
 </h3>
 <p>
     You need a team to participate in a hackathon, otherwise the workload to
@@ -75,23 +111,13 @@
     assigned to get an even mix of experience in each of the teams.
 </p>
 <h3 class="mt-5">
-    5. I HAVE A TEAM ALREADY, HOW CAN I MAKE SURE WE END UP TOGETHER
-</h3>
-<p>
-    If you want to join a hackathon with a preformed team, make sure that each
-    of your team members joins individually and send an email to 
-    {% if not support_email %}Student Care{% else %}
-    <a href="mailto:{{support_email}}">{{support_email}}</a>{% endif %} at
-    least a few days before the hackathon.
-</p>
-<h3 class="mt-5">
-    6. ARE THERE PRIZES FOR THE HACK CATEGORIES?
+    7. ARE THERE PRIZES FOR THE HACK CATEGORIES?
 </h3>
 <p>
     Prizes depend on the individual hackathons and sponsorship availability.
 </p>
 <h3 class="mt-5">
-    7. WHO JUDGES THE WINNERS?
+    8. WHO JUDGES THE WINNERS?
 </h3>
 <p>
     The winning team will be decided by a jury made up of Code Institute staff
@@ -99,7 +125,7 @@
     Institute. 
 </p>
 <h3 class="mt-5">
-    8. WHAT IS THE EVALUATION CRITERIA FOR THE SELECTION OF THE WINNING TEAM?
+    9. WHAT IS THE EVALUATION CRITERIA FOR THE SELECTION OF THE WINNING TEAM?
 </h3>
 <p>
     The jury will analyze and evaluate all works submitted by each team
@@ -127,7 +153,7 @@
     hackathon itself)
 </p>
 <h3 class="mt-5">
-    9. WHAT IS THE THEME FOR THE HACKATHON?
+    10. WHAT IS THE THEME FOR THE HACKATHON?
 </h3>
 <p>
     Hackathon themes vary depending on the hackathon itself. The theme will be
