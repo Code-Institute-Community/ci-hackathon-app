@@ -28,7 +28,7 @@ def home(request):
     """
     hackathons = Hackathon.objects.filter(
         status__in=PUBLIC_STATUSES,
-        organisation=1).all()
+        organisation=1).order_by('id')
     paginator = Paginator(hackathons, 2)
     page = request.GET.get('page')
     paged_hackathons = paginator.get_page(page)
@@ -41,12 +41,6 @@ def faq(request):
     support_email = settings.SUPPORT_EMAIL
 
     return render(request, "faq.html", {'support_email': support_email})
-
-
-def judging_criteria(request):
-    """ A view to return the Judging Criteria page """
-
-    return render(request, "judging-criteria.html")
 
 
 def plagiarism_policy(request):

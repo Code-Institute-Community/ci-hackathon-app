@@ -68,3 +68,9 @@ html form button:hover {
     font-style: italic;
     color: var(--p-orange);
 }
+
+.signin-subheading {
+    font-style: italic;
+    margin-top: 50px;
+    font-size: .85rem;
+}
