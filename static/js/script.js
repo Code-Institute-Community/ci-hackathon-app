@@ -14,9 +14,6 @@ function filterUsersByHackathon(){
     $('#hackathonFilter').change(function(){
         let userCount = 0;
         let elementValue = $(this).val();
-        let shownResults = $('#usersTable tbody tr').filter(function(){
-            return $(this).data('hackathons').split(',').includes(elementValue);
-        })
         $('#usersTable tbody tr').each(function(){
             if(elementValue == '0'){
                 $(this).removeClass('hide-row');
@@ -40,16 +37,16 @@ function filterUsersByHackathon(){
             let tds = $(this).children();
             let rowText = [];
             tds.each(function(){
-                rowText.push($(this).text().trim())
+                rowText.push($(this).text().trim());
             });
             csvContent +=rowText.join(',') + '\n';
         });
-        console.log(encodeURIComponent(csvContent))
+
         let link = document.createElement('a')
         link.id = 'download-csv'
         link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csvContent));
         link.setAttribute('download', 'user-export.csv');
-        document.body.appendChild(link)
-        document.querySelector('#download-csv').click()
+        document.body.appendChild(link);
+        document.querySelector('#download-csv').click();
     });
 }
