@@ -9,7 +9,7 @@ COPY ./requirements.txt /hackathon-app/requirements.txt
 RUN pip3 install -r requirements.txt
 
 COPY ./accounts/ /hackathon-app/accounts/
-COPY ./assets/ /hackathon-appassets/
+COPY ./assets/ /hackathon-app/assets/
 COPY ./custom_slack_provider/ /hackathon-app/custom_slack_provider/
 COPY ./hackathon/ /hackathon-app/hackathon/
 COPY ./home/ /hackathon-app/home/
