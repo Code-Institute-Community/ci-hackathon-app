@@ -1,0 +1,35 @@
+version: "3.4"
+
+services:
+  hackathon-app:
+    image: hackathon-app
+    volumes:
+      - ./staticfiles/:/hackathon-app/staticfiles/
+      - ./data/:/hackathon-app/data/
+    environment: 
+      DEVELOPMENT: 1
+      SECRET_KEY: "your_secret_key_here"
+      SITE_NAME: "*"
+      SLACK_ENABLED: "True"
+      SHOWCASE_SPOTLIGHT_NUMBER: 5
+      SUPPORT_EMAIL: community@example.com
+      DBHOST: mysql
+      DBPORT: 3306
+      DBNAME: hackathons
+      DBUSER: hackathon_user
+      DBPASS: gummyball
+    entrypoint: ['python3', 'manage.py', 'runserver', '0.0.0.0:8000']
+    ports:
+      - "8000:8000"
+
+  mysql:
+    image: docker.io/mysql:5.6.36
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+    # Do NOT use for production
+    environment:
+      MYSQL_ROOT_PASSWORD: gummyball
+      MYSQL_DATABASE: hackathons
+      MYSQL_USER: hackathon_user
+      MYSQL_PASSWORD: gummyball
+    volumes:
+      - ./data/mysql:/var/lib/mysql
