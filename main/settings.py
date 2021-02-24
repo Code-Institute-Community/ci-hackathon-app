@@ -1,5 +1,9 @@
 import os
+
 import dj_database_url
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 if os.path.exists(".env"):
     from dotenv import load_dotenv
     load_dotenv()
@@ -189,3 +193,9 @@ LOGGING = {
         'level': 'WARNING',
     },
 }
+
+if os.environ.get('SENTRY_DSN'):
+    sentry_sdk.init(
+        dsn=os.environ.get('SENTRY_DSN'),
+        integrations=[DjangoIntegration()]
+    )

@@ -8,5 +8,12 @@
         href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
         <img src="https://api.slack.com/img/sign_in_with_slack.png">
     </a>
+    <p class="signin-subheading">
+        By using the Code Institute Hackathon platform, and by participating
+        in any Code Institute Hackathons, you agree to abide by all Code
+        Institute policies, including the 
+        <a href="http://bit.ly/Slack_Code_Conduct_CI"
+            target="_blank">Community Guidelines</a>.
+    </p>
     {% endif %}
 {% endfor %}
