@@ -612,6 +612,11 @@ img.showcase-image-edit {
     max-width: none;
 }
 
+/* Hackathon Stats */
+.hide-row{
+    display:none;
+}
+
 /* Media Queries */
 
 @media (max-width:453px) {
