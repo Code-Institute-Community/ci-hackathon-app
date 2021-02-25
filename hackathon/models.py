@@ -30,7 +30,15 @@ class Hackathon(models.Model):
                                    on_delete=models.CASCADE,
                                    related_name="hackathons")
     display_name = models.CharField(default="", max_length=254, blank=False)
-    description = models.TextField(blank=False)
+    tag_line = models.CharField(default="", max_length=254, blank=False,
+                                help_text=("Short description which will be "
+                                           "displayed in the Hackathon List "
+                                           "view."))
+    description = models.TextField(blank=False, 
+                                   help_text=("Longer description which will "
+                                              "be displayed in the Hackathon "
+                                              "Detail view. Usually includes "
+                                              "schedule and other details."))
     theme = models.CharField(max_length=264, blank=False)
     start_date = models.DateTimeField(blank=False)
     end_date = models.DateTimeField(blank=False)
