@@ -5,6 +5,7 @@ user selection.
 USER_TYPES_CHOICES = (
     ('', 'Select Post Category'),
     ('participant', 'Participant'),
+    ('mentor', 'Mentor'),
     ('staff', 'Staff'),
     ('admin', 'Admin'),
 )

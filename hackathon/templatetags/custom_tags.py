@@ -69,3 +69,17 @@ def place_identifier(num):
         return num_str + 'rd'
     else:
         return num_str + 'th'
+
+
+@register.filter
+def prettify_status(status):
+    if status == 'published':
+        return "Registration Starts Soon"
+    elif status == 'hack_in_progress':
+        return "Registration Open"
+    elif status == 'hack_in_progress':
+        return "Hackathon In Progress"
+    elif status == 'judging':
+        return "Judging In Progress"
+    else:
+        return "Hackathon Finished"

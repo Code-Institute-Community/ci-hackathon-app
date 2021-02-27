@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_tags %}
 {% block content %}
     <!-- Render Hackathon details & Registration button -->
     <div class="row">
@@ -33,8 +34,8 @@
                               Admin Actions
                             </button>
                             <div id="judge-dropdown" class="dropdown-menu judge-dropdown" aria-labelledby="dropdownMenuButton">
-
                                 {% include 'hackathon/includes/enrollstaff.html' %}
+                                <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/update/">Edit Hackathon</a>
                                 {% if user.is_superuser %}
                                 <a class="dropdown-item" href="change_teams">
                                     {% if hackathon.teams.all|length == 0 %}Distribute{% else %}Change{% endif %} Teams
@@ -57,10 +58,15 @@
                         <div class="card my-3">
                             <div class="card-body text-left hackathon-detailed-items">
                                 <p class="hackathon-sub-details"><i class="fas fa-laptop"></i> Theme: {{ hackathon.theme }}</p>
+                                {% if request.user.is_staff %}
                                 <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{ hackathon.status }}</p>
+                                <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
+                                {% else %}
+                                <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{hackathon.status|prettify_status}}</p>
+                                {% endif %}
                                 <p class="hackathon-sub-details"><i class="far fa-clock"></i> Start: {{ hackathon.start_date }}</p>
                                 <p class="hackathon-sub-details"><i class="fas fa-clock"></i> End: {{ hackathon.end_date }}</p>
-                                <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
+                                
                                 <p class="hackathon-sub-details"><i class="fas fa-school"></i> Organisation: {{ hackathon.organisation }}</p>
                             </div>
                         </div>
@@ -74,7 +80,7 @@
             <h1 class="page-title">{{ hackathon.display_name }} #{{ hackathon.id }}</h1>
             <div class="card my-3 hackathon-detail-description">
                 <div class="card-body">
-                    <p>{{ hackathon.description|linebreaks }}</p>
+                    <p>{{ hackathon.description|safe|linebreaksbr }}</p>
                 </div>
             </div>
 

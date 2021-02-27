@@ -20,6 +20,10 @@ class HackathonForm(forms.ModelForm):
         ),
         required=True
     )
+    tag_line = forms.CharField(
+        label="Tag Line",
+        max_length=254,
+    )
     description = forms.CharField(
         label="Description",
         min_length=10,
@@ -90,7 +94,7 @@ class HackathonForm(forms.ModelForm):
         model = Hackathon
         fields = ['display_name', 'description', 'theme', 'start_date',
                   'end_date', 'status', 'organisation', 'score_categories',
-                  'team_size',
+                  'team_size', 'tag_line'
                   ]
 
     def __init__(self, *args, **kwargs):
