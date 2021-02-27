@@ -98,5 +98,5 @@ class CustomUser(AbstractUser):
         return {
             'userid': self.id,
             'name': self.slack_display_name or self.email,
-            'level': LMS_LEVELS[self.current_lms_module]
+            'level': LMS_LEVELS.get(self.current_lms_module) or 1
         }
