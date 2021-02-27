@@ -132,50 +132,7 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    {% if teams.has_other_pages %}
-                        <ul class="pagination">
-                            <!-- Render "previous" icon for pagination set -->
-                            {% if teams.has_previous %}
-                                <li class="page-item">
-                                    <a href="?page={{ teams.previous_page_number }}#teams" class="page-link">
-                                        <span><i class="fas fa-angle-double-left"></i></span>
-                                    </a>
-                                </li>
-                            {% else %}
-                                <!-- Disable "previous" icon if on first page of pagination set -->
-                                <li class="disabled page-item">
-                                    <span class="page-link"><i class="fas fa-angle-double-left"></i></span>
-                                </li>
-                            {% endif %}
-        
-                            <!-- Render total number of pagination pages with active highlight -->
-                            {% for i in teams.paginator.page_range %}
-                                {% if teams.number == i %}
-                                    <li class="page-item active">
-                                        <span class="page-link">{{ i }}<span class="sr-only">(current)</span></span>
-                                    </li>
-                                {% else %}
-                                    <li class="page-item">
-                                        <a href="?page={{ i }}#teams" class="page-link">{{ i }}</a>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-        
-                            <!-- Render "next" icon for pagination set -->
-                            {% if teams.has_next %}
-                                <li class="page-item">
-                                    <a href="?page={{ teams.next_page_number }}#teams" class="page-link">
-                                        <span><i class="fas fa-angle-double-right"></i></span>
-                                    </a>
-                                </li>
-                            {% else %}
-                                <!-- Disable "next" icon if on first page of pagination set -->
-                                <li class="page-item disabled">
-                                    <span class="page-link"><i class="fas fa-angle-double-right"></i></span>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    {% endif %}
+                    {% include 'hackathon/includes/paginator.html' with page_obj=teams %}
                 </div>
             </div>
 
