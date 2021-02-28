@@ -78,6 +78,7 @@ class HackathonForm(forms.ModelForm):
     team_size = forms.IntegerField(
         label="Team Size",
         required=True,
+        widget=forms.TextInput(attrs={'min':3,'max': 6,'type': 'number'})
     )
     organisation = forms.ModelChoiceField(
         label="Organisation",

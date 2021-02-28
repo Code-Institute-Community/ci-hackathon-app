@@ -83,16 +83,32 @@ def group_participants(participants, num_teams):
     return participant_groups, hackathon_level
 
 
-def find_group_combinations(group_levels, team_size, team_level):
+def find_group_combinations(participant_levels, team_size, team_level,
+                                missing):
     """ Finds all possible combinations based on the list of participants'
     experience levels, the team size and the team's wanted combined
     experience level
 
-    Returns a list of combinations as a tuple """
-    choices = [int(progression_level) for progression_level
-               in group_levels]
-    return [pair for pair in combinations(choices, team_size)
-            if sum(pair) == team_level]
+    Returns a list of combinations as a list """
+    numbers = [i for i in range(10)]
+    minimum = int(team_size * str(min(participant_levels)))
+    maximum = int(team_size * str(max(participant_levels)))
+
+    combos = []
+    for i in range(minimum, maximum + 1):
+        combo = sorted(list(str(i)))
+        combos.append(combo)
+
+    fitting_combos = []
+    numbers_to_exclude = list(set(numbers) - set(participant_levels))
+    for combo in combos:
+        c = [int(num) for num in list(combo)]
+        if any(num in c for num in numbers_to_exclude):
+            continue
+        elif team_level-missing < sum(c) < team_level + missing:
+            fitting_combos.append(c)
+
+    return fitting_combos
 
 
 def find_all_combinations(participants, team_sizes):
@@ -108,10 +124,9 @@ def find_all_combinations(participants, team_sizes):
     missing = hackathon_level - (num_teams * team_level)
     team_sizes = list(set(team_sizes))
     combos = []
-    for level in range(team_level, team_level + missing + 1):
-        for team_size in team_sizes:
-            combos += find_group_combinations(participant_levels, team_size,
-                                              level)
+    for team_size in team_sizes:
+        combos += find_group_combinations(participant_levels, team_size,
+                                              team_level, missing)
     # to remove differently sorted combinations with the same elements
     sorted_combinations = [sorted(combo) for combo in combos]
     combos_without_dupes = list(set(set(tuple(i)
