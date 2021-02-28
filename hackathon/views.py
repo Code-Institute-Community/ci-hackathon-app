@@ -10,6 +10,7 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
@@ -33,7 +34,7 @@ DEFAULT_SCORES = {
 logger = logging.getLogger(__name__)
 
 
-class HackathonListView(ListView):
+class HackathonListView(LoginRequiredMixin, ListView):
     """Renders a page with a list of Hackathons."""
     model = Hackathon
     ordering = ["-created"]
