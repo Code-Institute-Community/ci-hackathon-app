@@ -56,10 +56,10 @@ class HackathonListView(LoginRequiredMixin, ListView):
 
 
 @login_required
-def judging(request, hack_id, team_id):
+def judging(request, hackathon_id, team_id):
     """Displays the judging page for the judge to save their scores
     for the selected project - determined by hackathon id and team id"""
-    hackathon = get_object_or_404(Hackathon, pk=hack_id)
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     score_categories = HackProjectScoreCategory.objects.filter(
         category__in=list(hackathon.score_categories.all())).all()
     team = get_object_or_404(HackTeam, pk=team_id)
@@ -86,7 +86,7 @@ def judging(request, hack_id, team_id):
                 )
                 team_score.save()
         return redirect(reverse('hackathon:view_hackathon',
-                                kwargs={'hackathon_id': hack_id}))
+                                kwargs={'hackathon_id': hackathon_id}))
     else:
         # verify whether user is judge for the hackathon
         if hackathon not in Hackathon.objects.filter(judges=request.user):
@@ -130,7 +130,7 @@ def judging(request, hack_id, team_id):
 
 
 @login_required
-def check_projects_scores(request, hack_id):
+def check_projects_scores(request, hackathon_id):
     """ When a judge submits the score, check if all projects in the Hackathon
     were scored by all the judges in all the categories by comparing the
     number of objects in HackProjectScore for each projects to the required
@@ -144,7 +144,7 @@ def check_projects_scores(request, hack_id):
     and render final_score.html with the score table.
 
     """
-    hackathon = get_object_or_404(Hackathon, pk=hack_id)
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     HackAwardFormSet = modelformset_factory(
                 HackAward, fields=('id', 'hack_award_category',
                                    'winning_project'),
@@ -153,7 +153,7 @@ def check_projects_scores(request, hack_id):
     if request.method == 'POST':
         hack_awards_formset = HackAwardFormSet(
             request.POST,
-            form_kwargs={'hackathon_id': hack_id},
+            form_kwargs={'hackathon_id': hackathon_id},
             queryset=HackAward.objects.filter(hackathon=hackathon))
         if hack_awards_formset.is_valid():
             try:
@@ -173,7 +173,7 @@ def check_projects_scores(request, hack_id):
             messages.error(request, 
                            "An unexpected error occurred. Please try again.")
         return redirect(reverse('hackathon:final_score',
-                                kwargs={'hack_id': hack_id}))
+                                kwargs={'hackathon_id': hackathon_id}))
 
     else:
         score_categories = HackProjectScoreCategory.objects.filter(
@@ -183,7 +183,7 @@ def check_projects_scores(request, hack_id):
         scores = HackProjectScore.objects.filter(
             project_id__in=hackathon_projects).all()
         hack_awards_formset = HackAwardFormSet(
-            form_kwargs={'hackathon_id': hack_id},
+            form_kwargs={'hackathon_id': hackathon_id},
             queryset=HackAward.objects.filter(hackathon=hackathon))
 
         if hackathon.teams.count() == 0:
@@ -490,8 +490,8 @@ def enroll_toggle(request):
 
 
 @login_required
-def change_awards(request, hack_id):
-    hackathon = get_object_or_404(Hackathon, pk=hack_id)
+def change_awards(request, hackathon_id):
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     awards = hackathon.awards.all()
 
     if request.method == 'GET':
@@ -510,7 +510,7 @@ def change_awards(request, hack_id):
                                ("You cannot remove this award since it already"
                                " has a winner assigned to it."))
                 return redirect(reverse('hackathon:awards',
-                                kwargs={'hack_id': hack_id}))
+                                kwargs={'hackathon_id': hackathon_id}))
             hack_award.delete()
             messages.success(request, "Award removed added.")
         else:
@@ -534,11 +534,13 @@ def change_awards(request, hack_id):
                 messages.error(request,
                                "An unexpected error occurred. Please try again")
         return redirect(reverse('hackathon:awards',
-                                kwargs={'hack_id': hack_id}))
+                                kwargs={'hackathon_id': hackathon_id}))
 
 
 @login_required
 def hackathon_stats(request):
+    """ Used for admin to view all registered users and allows to filter
+    by individual hackathon """
     if not request.user.is_superuser:
         messages.error(request, 'You do not have access to this page.')
         return reverse(reverse('hackathon:hackathon-list'))
@@ -549,3 +551,9 @@ def hackathon_stats(request):
         'hackathons': hackathons,
         'users': users,
     })
+
+
+@login_required
+def list_teams_for_scoring(request, hackathon_id):
+    """ Shows the list of teams and allows a judge to go to the scoring page """
+    if 
