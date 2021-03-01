@@ -165,6 +165,12 @@ class HackTeam(models.Model):
     # Could use a custom save method to prevent it.
     participants = models.ManyToManyField(User,
                                           related_name="hackteam")
+    # A team has one mentor, a mentor has numerous teams: One to Many.
+    mentor = models.ForeignKey(User,
+                               null=True,
+                               blank=True,
+                               on_delete=models.SET_NULL,
+                               related_name="mentored_teams")
     # A team participates in one Hackathon and
     # a Hackathon has numerous teams: One to Many.
     hackathon = models.ForeignKey(Hackathon,
@@ -219,12 +225,6 @@ class HackProject(models.Model):
     submission_time = models.DateTimeField(auto_now_add=True)
     speaker_name = models.CharField(default="", max_length=225)
     share_permission = models.BooleanField(default=True)
-    # A project has one mentor, a mentor has numerous projects: One to Many.
-    mentor = models.ForeignKey(User,
-                               null=True,
-                               blank=True,
-                               on_delete=models.SET_NULL,
-                               related_name="hackproject_mentor")
 
     def __str__(self):
         return self.display_name
