@@ -6,6 +6,7 @@ STATUS_TYPES_CHOICES = (
     ('draft', 'Draft'),
     ('published', 'Published'),
     ('registration_open', 'Registration Open'),
+    ('hack_prep', 'Hackathon Preparation'),
     ('hack_in_progress', 'Hackathon In Progress'),
     ('judging', 'Judging'),
     ('finished', 'Hackathon Finished'),

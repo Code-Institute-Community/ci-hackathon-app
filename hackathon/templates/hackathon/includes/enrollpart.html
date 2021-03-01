@@ -17,7 +17,7 @@
 {% else %}
 <div class="enrollments-closed mt-4 mb-2 p-3">
     {% if request.user in hackathon.participants.all %}
-        {% if hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
+        {% if hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' or hackathon.status == 'hack_prep' %}
         You are participanting in this hackathon.
         {% elif hackathon.status == 'finished' %}
         You participated in this hackathon.

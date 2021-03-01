@@ -77,6 +77,8 @@ def prettify_status(status):
         return "Registration Starts Soon"
     elif status == 'hack_in_progress':
         return "Registration Open"
+    elif status == 'hack_prep':
+        return "Hackathon Starting Soon"
     elif status == 'hack_in_progress':
         return "Hackathon In Progress"
     elif status == 'judging':

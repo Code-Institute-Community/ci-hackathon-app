@@ -87,6 +87,7 @@
             <h1 class="page-title" id="teams">Teams:</h1>
             <div class="row teams-row">
                 {% if teams %}
+                    {% hackathon.status != 'hack_prep' %}
                     {% for team in teams %}
                         <div class="col-sm-12 col-lg-4 my-3">
                             <div class="card team-card">
@@ -129,6 +130,11 @@
                             </div>
                         </div>
                     {% endfor %}
+                    {% else %}
+                    <div class="col-sm-12">
+                        <p>Teams have not been distributed yet.</p>
+                    </div>
+                    {% endif %}
                 {% else %}
                     <div class="col-sm-12">
                         <p>Teams have not been distributed yet.</p>
