@@ -1,3 +1,5 @@
+{% load custom_tags %}
+
 {% if hackathon.status == 'registration_open' %}
 <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
     {% csrf_token %}
@@ -17,10 +19,22 @@
 {% else %}
 <div class="enrollments-closed mt-4 mb-2 p-3">
     {% if request.user in hackathon.participants.all %}
-        {% if hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' or hackathon.status == 'hack_prep' %}
-        You are participanting in this hackathon.
+        {% if hackathon.status == 'hack_prep' %}
+        You are participanting in this hackathon. Teams will be distributed soon.
+        {% elif hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
+        
+            {% with participant_team=request.user|get_assigned_team:hackathon %}
+            {% if participant_team %}
+            <strong>My Team:
+                <a class="ci-link ml-2" href="/teams/{{participant_team.id}}/">{{participant_team}}</a>
+            </strong>
+            {% else %}
+            You have not been assigned a team yet.
+            {% endif %}
+
+        {% endwith %}
         {% elif hackathon.status == 'finished' %}
-        You participated in this hackathon.
+            You participated in this hackathon.
         {% endif %}
     {% else %}
     Registrations for this hackathon are currently not open.
