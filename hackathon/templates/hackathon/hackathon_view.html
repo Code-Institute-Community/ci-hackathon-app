@@ -35,8 +35,8 @@
                             </button>
                             <div id="judge-dropdown" class="dropdown-menu judge-dropdown" aria-labelledby="dropdownMenuButton">
                                 {% include 'hackathon/includes/enrollstaff.html' %}
-                                <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/update/">Edit Hackathon</a>
                                 {% if user.is_superuser %}
+                                <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/update/">Edit Hackathon</a>
                                 <a class="dropdown-item" href="change_teams">
                                     {% if hackathon.teams.all|length == 0 %}Distribute{% else %}Change{% endif %} Teams
                                 </a>
