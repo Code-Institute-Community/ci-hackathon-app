@@ -18,11 +18,14 @@ class TestHackathonViews(TestCase):
             display_name="hacktest",
             description="lorem ipsum",
             start_date=f'{timezone.now()}',
-            end_date=f'{timezone.now()}')
+            end_date=f'{timezone.now()}',
+            organisation=organisation)
 
     def test_render_hackathon_list(self):
         """Tests the correct rendering of the hackathon list page,
         including contexts."""
+        user = CustomUser.objects.get(pk=1)
+        self.client.force_login(user)
         response = self.client.get('/hackathon/')
 
         # Confirms the correct template, context items and queryset

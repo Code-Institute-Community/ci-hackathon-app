@@ -35,5 +35,6 @@ urlpatterns = [
          name="delete_hackathon"),
     path('enroll/', enroll_toggle, name='enroll_toggle'),
     path('stats/', hackathon_stats, name='hackathon_stats'),
-    path('<int:hackathon_id>/score_teams')
+    path('<int:hackathon_id>/score_teams/', list_teams_for_scoring,
+        name="list_teams_for_scoring"),
 ]

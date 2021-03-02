@@ -556,4 +556,5 @@ def hackathon_stats(request):
 @login_required
 def list_teams_for_scoring(request, hackathon_id):
     """ Shows the list of teams and allows a judge to go to the scoring page """
-    if 
+    # if
+    pass 
