@@ -16,7 +16,7 @@
             <div class="col-md-12 col-lg-9">
 
                 <h5 class="p-orange card-title"><a href="/hackathon/{{hackathon.id}}/" class="ci-link">{{ hackathon.display_name }}</a>
-                    {% if user.is_staff %}<span class="badge badge-secondary ml-2">{{hackathon.status}}</span>{% endif %}
+                    {% if user.is_superuser %}<span class="badge badge-secondary ml-2">{{hackathon.status}}</span>{% endif %}
                 </h5>
                 <p class="card-subtitle mb-2 text-muted"><i class="far fa-calendar-alt p-2"></i> {{ hackathon.start_date }} - {{ hackathon.end_date }}</p>
                 {% if request.user.is_authenticated %}
@@ -32,9 +32,11 @@
                 <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Registrations open!</p>
                 {% elif hackathon.status == 'registration_open' and request.user in hackathon.participants.all %}
                 <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user p-2"></i>You are enrolled in this hackathon!</p>
-                {% elif hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
+                {% elif hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' or hackathon.status == 'hack_prep' %}
                 {% if request.user in hackathon.participants.all %}
                 <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>You are participating in this hackathon</p>
+                {% elif hackathon.status == 'hack_prep' %}
+                <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Hackathon is currently being prepared.</p>
                 {% else %}
                 <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Hackathon currently ongoing.</p>
                 {% endif %}

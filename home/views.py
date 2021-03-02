@@ -6,7 +6,9 @@ from django.shortcuts import render, redirect, reverse
 from hackathon.models import Hackathon
 
 PUBLIC_STATUSES = [
-    'published', 'registration_open', 'hack_in_progress', 'judging']
+    'published', 'registration_open', 'hack_prep', 'hack_in_progress',
+    'judging'
+]
 
 
 def index(request):

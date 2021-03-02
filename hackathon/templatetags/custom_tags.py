@@ -77,9 +77,37 @@ def prettify_status(status):
         return "Registration Starts Soon"
     elif status == 'hack_in_progress':
         return "Registration Open"
+    elif status == 'hack_prep':
+        return "Hackathon Starting Soon"
     elif status == 'hack_in_progress':
         return "Hackathon In Progress"
     elif status == 'judging':
         return "Judging In Progress"
     else:
         return "Hackathon Finished"
+
+
+@register.filter
+def get_assigned_team(participant, hackathon):
+    """ Return the team for the current hackathon for a participant """
+    participant_team = None
+    if not hackathon.teams:
+        return
+    
+    teams = hackathon.teams.all()
+    participant_team = [team for team in teams
+                        if participant in team.participants.all()]
+
+    if len(participant_team) == 0:
+        return
+
+    return participant_team[0]
+
+
+@register.filter
+def get_mentored_team(mentor, hackathon):
+    """ Retrieve all mentored teams for a Judge at a Hackathon """
+    mentored_teams = None
+    mentored_teams = mentor.mentored_teams.filter(
+        hackathon=hackathon).order_by('display_name')
+    return mentored_teams
