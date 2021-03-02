@@ -87,68 +87,70 @@
             </div>
 
             <h1 class="page-title" id="teams">Teams:</h1>
+
+            {% if request.user.is_superuser or hackathon.status in 'hack_in_progress, judging, finished' %}
             <div class="row teams-row">
                 {% if teams %}
-                    {% if hackathon.status != 'hack_prep' or request.user.is_superuser %}
-                    {% for team in teams %}
-                        <div class="col-sm-12 col-lg-4 my-3">
-                            <div class="card team-card">
-                                <div class="card-body">
-                                    <div class="card-title text-left my-auto">
-                                        <a href="{% url 'view_team' team_id=team.id %}" class="ci-link">
-                                            <h4 class="team-name">
-                                                {{ team }}
-                                            </h4>
-                                        </a>
-                                    </div>
-                                    <div class="card-text">
-                                        <p class="text-left card-text-title">Team members:</p>
-                                        {% for participant in team.participants.get_queryset %}
-                                            <p>
-                                                <i class="fas fa-user-circle mr-2"></i>
-                                                {{ participant.slack_display_name }}
-                                            </p>
-                                        {% endfor %}
-                                    </div>
-                                    <!-- Render project submission button if user is participant of team -->
-                                    {% if user in hackathon.participants.all %}
-                                        {% if user in team.participants.get_queryset %}
-                                        <div class="text-left">
-                                            {% if hackathon.status == 'hack_in_progress' %}
-                                            <a href="/teams/{{team.id}}/project/" class="btn btn-ci">Edit Project</a>
-                                            {% endif %}
-                                        </div>
-                                        {% endif %}
-                                    {% elif user in hackathon.judges.all %}
-                                        {% if hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
-                                        <div class="text-left">
-                                            <a href="/hackathon/{{hackathon.id}}/team/{{team.id}}/judging/"
-                                                class="btn btn-ci {% if not team.project%}disabled-link{% endif %}">Edit Scores</a>
-                                            <p class="btn-subtitle p-1">{% if not team.project %}No project submitted yet.{% endif %}</p>
-                                        </div>
-                                        {% endif %}
+                {% for team in teams %}
+                <div class="col-sm-12 col-lg-4 my-3">
+                    <div class="card team-card">
+                        <div class="card-body">
+                            <div class="card-title text-left my-auto">
+                                <a href="{% url 'view_team' team_id=team.id %}" class="ci-link">
+                                    <h4 class="team-name">
+                                        {{ team }}
+                                    </h4>
+                                </a>
+                            </div>
+                            <div class="card-text">
+                                <p class="text-left card-text-title">Team members:</p>
+                                {% for participant in team.participants.get_queryset %}
+                                    <p>
+                                        <i class="fas fa-user-circle mr-2"></i>
+                                        {{ participant.slack_display_name }}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                            <!-- Render project submission button if user is participant of team -->
+                            {% if user in hackathon.participants.all %}
+                                {% if user in team.participants.get_queryset %}
+                                <div class="text-left">
+                                    {% if hackathon.status == 'hack_in_progress' %}
+                                    <a href="/teams/{{team.id}}/project/" class="btn btn-ci">Edit Project</a>
                                     {% endif %}
                                 </div>
-                            </div>
+                                {% endif %}
+                            {% elif user in hackathon.judges.all %}
+                                {% if hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
+                                <div class="text-left">
+                                    <a href="/hackathon/{{hackathon.id}}/team/{{team.id}}/judging/"
+                                        class="btn btn-ci {% if not team.project%}disabled-link{% endif %}">Edit Scores</a>
+                                    <p class="btn-subtitle p-1">{% if not team.project %}No project submitted yet.{% endif %}</p>
+                                </div>
+                                {% endif %}
+                            {% endif %}
                         </div>
-                    {% endfor %}
-                    {% else %}
-                    <div class="col-sm-12">
-                        <p>Teams have not been distributed yet.</p>
                     </div>
-                    {% endif %}
+                </div>
+                {% endfor %}
                 {% else %}
-                    <div class="col-sm-12">
-                        <p>Teams have not been distributed yet.</p>
-                    </div>
+                <div class="col-sm-12">
+                    <p>Teams have not been distributed yet.</p>
+                </div>
                 {% endif %}
             </div>
-
             <div class="row">
                 <div class="col-sm-12">
                     {% include 'hackathon/includes/paginator.html' with page_obj=teams %}
                 </div>
             </div>
+            {% else %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>Teams have not been distributed yet.</p>
+                </div>
+            </div>
+            {% endif %}
 
         </div>
     </div>
