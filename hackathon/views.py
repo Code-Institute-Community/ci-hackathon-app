@@ -110,7 +110,7 @@ def judging(request, hackathon_id, team_id):
         if not project:
             messages.error(
                 request, ("The team doesn't have a project yet, check back "
-                        "later..."))
+                          "later..."))
             return redirect(reverse('home'))
 
         scores = {
@@ -556,5 +556,12 @@ def hackathon_stats(request):
 @login_required
 def list_teams_for_scoring(request, hackathon_id):
     """ Shows the list of teams and allows a judge to go to the scoring page """
-    # if
-    pass 
+    hackathon = get_object_or_404(Hackathon, id=hackathon_id)
+
+    if hackathon not in Hackathon.objects.filter(judges=request.user):
+        messages.error(request, "You are not a judge for that event!")
+        return redirect(reverse('home'))
+
+    return render(request, 'hackathon/judge_teams.html', {
+        'teams': hackathon.teams,
+    })

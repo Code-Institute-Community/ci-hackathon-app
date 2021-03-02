@@ -111,3 +111,14 @@ def get_mentored_team(mentor, hackathon):
     mentored_teams = mentor.mentored_teams.filter(
         hackathon=hackathon).order_by('display_name')
     return mentored_teams
+
+
+def filter_judge_scores(score, judge):
+    if score.judge == judge:
+        return score
+    return
+
+
+@register.simple_tag
+def increment_by(number, incrementor):
+    return number + incrementor

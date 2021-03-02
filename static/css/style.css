@@ -21,6 +21,10 @@ body {
     height: 100%;
 }
 
+body * {
+    font-family: Montserrat, sans-serif;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -413,6 +417,10 @@ form.distribute-teams-form, form.clear-teams-form {
     max-width: none;
 }
 
+/* Team Scores */
+.team-scores {
+    font-size: .75rem;
+}
 
 .card .card-body div.project-form-buttons a,
 .card .card-body div.project-form-buttons button {

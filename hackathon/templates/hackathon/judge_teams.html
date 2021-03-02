@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+
+        <div class="card">
+            <div class="card-body">
+                <div class="card-text">
+                {% for team in teams.all %}
+                
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <div class="card-title">{{team.display_name}}</div>
+                            <div class="card-text">
+
+                                {% if team.project %}
+                                {% with 0 as num_scores %}
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-10 team-scores">
+                                        {% if team.project.scores.all %}
+                                        
+                                            {% for score in team.project.scores.all %}
+                                                {% with judge_score=score|filter_judge_scores:request.user %}
+                                                    {% if judge_score %}
+                                                        {% increment_by num_scores 1 as num_scores %}
+                                                        {{num_scores}}
+                                                        {% if forloop.counter > 1 %} / {% endif %}
+                                                        {{judge_score.hack_project_score_category}}: <strong>{{judge_score.score}}</strong>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            {% endfor %}
+                                        {% else %}
+                                            No scores submitted yet.
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-12 col-lg-2">
+                                        {{num_scores}}
+                                        <button class="btn btn-success btn-sm mt-2">Score Team</button>
+                                    </div>
+                                </div>
+                                {% endwith %}
+
+                                {% else %}
+                                <p>
+                                    This team has not submitted a project.
+                                </p>
+                                {% endif %}
+                                        
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
