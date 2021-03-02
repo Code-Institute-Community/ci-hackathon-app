@@ -35,6 +35,8 @@
                 {% elif hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' or hackathon.status == 'hack_prep' %}
                 {% if request.user in hackathon.participants.all %}
                 <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>You are participating in this hackathon</p>
+                {% elif hackathon.status == 'hack_prep' %}
+                <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Hackathon is currently being prepared.</p>
                 {% else %}
                 <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Hackathon currently ongoing.</p>
                 {% endif %}
