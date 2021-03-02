@@ -85,6 +85,11 @@ def judging(request, hackathon_id, team_id):
                     hack_project_score_category=score_category,
                 )
                 team_score.save()
+
+        if request.POST.get('redirect_url'):
+            return redirect(reverse(request.POST.get('redirect_url'),
+                                kwargs={'hackathon_id': hackathon_id}))
+
         return redirect(reverse('hackathon:view_hackathon',
                                 kwargs={'hackathon_id': hackathon_id}))
     else:
@@ -119,12 +124,15 @@ def judging(request, hackathon_id, team_id):
                 judge=request.user, project=project)
         }
 
+        redirect_url = request.GET.get('next') or ''
+
         context = {
             'hackathon': hackathon,
             'score_categories': score_categories,
             'team': team,
             'project': project,
             'existing_scores': scores or {},
+            'redirect_url': redirect_url,
         }
         return render(request, 'hackathon/judging.html', context)
 
@@ -554,7 +562,7 @@ def hackathon_stats(request):
 
 
 @login_required
-def list_teams_for_scoring(request, hackathon_id):
+def judge_teams(request, hackathon_id):
     """ Shows the list of teams and allows a judge to go to the scoring page """
     hackathon = get_object_or_404(Hackathon, id=hackathon_id)
 

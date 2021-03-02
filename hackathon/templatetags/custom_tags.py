@@ -113,12 +113,10 @@ def get_mentored_team(mentor, hackathon):
     return mentored_teams
 
 
-def filter_judge_scores(score, judge):
-    if score.judge == judge:
-        return score
+@register.filter
+def filter_judge_scores(scores, judge):
+    """ Filters all scores for a team based on judge """
+    judge_scores = scores.filter(judge=judge)
+    if judge_scores:
+        return judge_scores
     return
-
-
-@register.simple_tag
-def increment_by(number, incrementor):
-    return number + incrementor

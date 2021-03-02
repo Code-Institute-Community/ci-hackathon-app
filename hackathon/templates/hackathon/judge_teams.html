@@ -16,32 +16,28 @@
                             <div class="card-text">
 
                                 {% if team.project %}
-                                {% with 0 as num_scores %}
-                                <div class="row">
-                                    <div class="col-md-12 col-lg-10 team-scores">
-                                        {% if team.project.scores.all %}
-                                        
-                                            {% for score in team.project.scores.all %}
-                                                {% with judge_score=score|filter_judge_scores:request.user %}
-                                                    {% if judge_score %}
-                                                        {% increment_by num_scores 1 as num_scores %}
-                                                        {{num_scores}}
-                                                        {% if forloop.counter > 1 %} / {% endif %}
-                                                        {{judge_score.hack_project_score_category}}: <strong>{{judge_score.score}}</strong>
-                                                    {% endif %}
-                                                {% endwith %}
-                                            {% endfor %}
-                                        {% else %}
-                                            No scores submitted yet.
-                                        {% endif %}
+                                    {% with judge_scores=team.project.scores.all|filter_judge_scores:request.user %}
+                                    <div class="row">
+                                        <div class="col-md-12 col-lg-10 team-scores">
+                                            {% if judge_scores %}
+                                                
+                                                {% for score in judge_scores %}
+                                                    {% if forloop.counter > 1 %} / {% endif %}
+                                                    {{score.hack_project_score_category}}: <strong>{{score.score}}</strong>
+                                                {% endfor %}
+                                            {% else %}
+                                                No scores submitted yet.
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-12 col-lg-2">
+                                            {% if judge_scores %}
+                                            <a role="button" class="btn btn-secondary btn-sm mt-2" href="/hackathon/{{team.hackathon.id}}/team/{{team.id}}/judging/?next=hackathon:judge_teams">Change Score</a>
+                                            {% else %}
+                                            <a role="button" class="btn btn-success btn-sm mt-2" href="/hackathon/{{team.hackathon.id}}/team/{{team.id}}/judging/?next=hackathon:judge_teams">Score Team</a>
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                    <div class="col-md-12 col-lg-2">
-                                        {{num_scores}}
-                                        <button class="btn btn-success btn-sm mt-2">Score Team</button>
-                                    </div>
-                                </div>
-                                {% endwith %}
-
+                                    {% endwith %}
                                 {% else %}
                                 <p>
                                     This team has not submitted a project.

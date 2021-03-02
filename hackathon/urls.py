@@ -12,7 +12,7 @@ from .views import (
     update_hackathon_status,
     change_awards,
     hackathon_stats,
-    list_teams_for_scoring
+    judge_teams,
 )
 from teams.views import change_teams
 
@@ -35,6 +35,6 @@ urlpatterns = [
          name="delete_hackathon"),
     path('enroll/', enroll_toggle, name='enroll_toggle'),
     path('stats/', hackathon_stats, name='hackathon_stats'),
-    path('<int:hackathon_id>/score_teams/', list_teams_for_scoring,
-        name="list_teams_for_scoring"),
+    path('<int:hackathon_id>/judge_teams/', judge_teams,
+        name="judge_teams"),
 ]
