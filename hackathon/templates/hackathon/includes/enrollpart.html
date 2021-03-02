@@ -16,13 +16,30 @@
         {% endif %}
     </button>
 </form>
+{% elif hackathon.status == 'hack_prep' %}
+
+    {% if request.user in hackathon.participants.all %}
+    <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
+        <button id="enroll-part" type="submit" class="btn btn-ci mt-4 mb-2 form-control">
+            Withdraw from the Hackaton
+        </button>
+    </form>
+    <div class="enrollments-closed mt-4 mb-2 p-3">
+        The hackathon is currently being prepared. Teams will be announced soon.
+    </div>
+    {% else %}
+    <div class="enrollments-closed mt-4 mb-2 p-3">
+        Registrations for this hackathon are currently not open.
+    </div>
+    {% endif %}
+
 {% else %}
+
 <div class="enrollments-closed mt-4 mb-2 p-3">
     {% if request.user in hackathon.participants.all %}
-        {% if hackathon.status == 'hack_prep' %}
-        You are participanting in this hackathon. Teams will be distributed soon.
-        {% elif hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
-        
+        {% if hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
             {% with participant_team=request.user|get_assigned_team:hackathon %}
             {% if participant_team %}
             <strong>My Team:
@@ -37,8 +54,9 @@
             You participated in this hackathon.
         {% endif %}
     {% else %}
-    Registrations for this hackathon are currently not open.
+        Registrations for this hackathon are currently not open.
     {% endif %}
+
 </div>
 
 {% endif %}
