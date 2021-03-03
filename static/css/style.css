@@ -152,7 +152,6 @@ footer ul li a {
 }
 
 .fab {
-    font-size: 200%;
     margin: 0 20px;
     color: var(--s-grey);
     transition: transform .4s;
@@ -307,6 +306,20 @@ html .all-auth-container {
     border-radius: 5px;
     border: 2px solid var(--p-orange);
 }
+
+.slack-mpim button, .slack-mpim a {
+    width: 100%;
+    text-align: left;
+}
+.slack-mpim button:hover i,  .slack-mpim a:hover i {
+    color: white;
+}
+
+button:hover i.fab.fa-slack.fa-.p-orange,
+ a:hover i.fab.fa-slack.fa-sm.ml-0.mr-2.p-orange {
+    color: white;
+}
+
 /* Final Score page */
 
 .final_score_table tbody >:first-child {
