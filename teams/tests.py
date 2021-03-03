@@ -60,16 +60,18 @@ class TeamsHelpersTestCase(TestCase):
         group_levels = [1, 1, 1, 2, 3, 4]
         team_size = 2
         team_level = 5
+        missing = 2
         combinations = find_group_combinations(group_levels, team_size,
-                                               team_level)
-        self.assertEqual(combinations, [(1, 4), (1, 4), (1, 4), (2, 3)])
+                                               team_level, missing)
+        self.assertEqual(combinations, [[1, 3], [1, 4], [2, 2], [2, 3], [2, 4],
+                                        [1, 3], [2, 3], [3, 3], [1, 4], [2, 4]])
 
     def test_find_all_combinations(self):
         teamsize = 3
         team_sizes = sorted(choose_team_sizes(self.participants, teamsize))
         combos_without_dupes = find_all_combinations(
             self.participants, team_sizes)
-        self.assertEqual(len(combos_without_dupes), 18)
+        self.assertEqual(len(combos_without_dupes), 38)
 
     def test_distribute_participants_to_teams(self):
         teamsize = 3

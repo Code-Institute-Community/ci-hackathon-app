@@ -111,3 +111,12 @@ def get_mentored_team(mentor, hackathon):
     mentored_teams = mentor.mentored_teams.filter(
         hackathon=hackathon).order_by('display_name')
     return mentored_teams
+
+
+@register.filter
+def filter_judge_scores(scores, judge):
+    """ Filters all scores for a team based on judge """
+    judge_scores = scores.filter(judge=judge)
+    if judge_scores:
+        return judge_scores
+    return
