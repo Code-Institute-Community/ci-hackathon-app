@@ -204,7 +204,8 @@ def create_group_im(request, team_id):
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
     team = get_object_or_404(HackTeam, id=team_id)
-    if not request.user in team.participants.all():
+    if not (request.user in team.participants.all()
+            or request.user == team.mentor):
         messages.error(request,
                        ('You do not have access to create a Slack IM group '
                        'for this team.'))
