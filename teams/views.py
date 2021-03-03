@@ -1,4 +1,5 @@
 import json
+import re
 import requests
 
 from django.conf import settings
@@ -199,37 +200,57 @@ def create_group_im(request, team_id):
     """ Creates a new group IM in slack """
     if request.method != 'POST':
         messages.error(request,
-                       ('You cannot access this page in this way.'))
+                       'You cannot access this page in this way.')
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
     team = get_object_or_404(HackTeam, id=team_id)
     if not request.user in team.participants.all():
         messages.error(request,
                        ('You do not have access to create a Slack IM group '
-                       'for this team'))
+                       'for this team.'))
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
     if not (settings.SLACK_ENABLED or settings.SLACK_BOT_TOKEN
             or settings.SLACK_WORKSPACE):
-        messages.error(request,'This feature is currently not enabled.')
+        messages.error(request, 'This feature is currently not enabled.')
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))   
 
-    users = ','.join([team_member.username.split('_')[0] 
-             for team_member in team.participants.all()])
+    pattern = re.compile(r'^U[a-zA-Z0-9]*[_]T[a-zA-Z0-9]*$')
+    users = [team_member.username.split('_')[0] 
+             for team_member in team.participants.all()
+             if pattern.match(team_member.username)]
+
     params = {
-        'users': users,
+        'users': ','.join(users),
     }
     headers = {'Authorization': f'Bearer {settings.SLACK_BOT_TOKEN}' }
     response = requests.get(SLACK_GROUP_IM_ENDPOINT, params=params,
                              headers=headers)
 
-    if response.status_code == 200:
-        response = response.json()
-        channel = response.get('channel', {}).get('id')
-        communication_channel = f'https://{settings.SLACK_WORKSPACE}.slack.com/app_redirect?channel={channel}'  # noqa: E501
-        team.communication_channel = communication_channel
-        team.save()
-        messages.success(request, 'Group IM successfully created')
+    if not response.status_code == 200:
+        messages.error(request, ('An unexpected error occurred creating the '
+                                 'Group IM.'))
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+
+    response = response.json()
+    if not response.get('ok'):
+        messages.error(request, (f'An error occurred creating the Group IM. '
+                                 f'Error code: {response.get("error")}'))
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+        
+    channel = response.get('channel', {}).get('id')
+    communication_channel = (f'https://{settings.SLACK_WORKSPACE}.slack.com/'
+                             f'app_redirect?channel={channel}')
+    team.communication_channel = communication_channel
+    team.save()
+
+    if len(users) < len(team.participants.all()):
+        missing_users = len(team.participants.all()) - len(users)
+        messages.error(request, 
+                       (f'Group IM successfully created, but {missing_users} '
+                        f'users could not be added to the Group IM. '
+                        f'Please add the missing users manually.'))
     else:
-        messages.error(request, 'An error occurred creating the Group IM.')
+        messages.success(request, 'Group IM successfully created')
+
     return redirect(reverse('view_team', kwargs={'team_id': team_id}))
