@@ -220,6 +220,9 @@ def create_group_im(request, team_id):
              for team_member in team.participants.all()
              if pattern.match(team_member.username)]
 
+    if team.mentor:
+        users.append(team.mentor.username.split('_')[0])
+
     params = {
         'users': ','.join(users),
     }
