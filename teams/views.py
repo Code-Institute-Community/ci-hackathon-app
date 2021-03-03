@@ -1,5 +1,8 @@
 import json
+import re
+import requests
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -12,6 +15,8 @@ from teams.helpers import choose_team_sizes, group_participants,\
                           distribute_participants_to_teams,\
                           create_teams_in_view, update_team_participants
 from teams.forms import HackProjectForm, EditTeamName
+
+SLACK_GROUP_IM_ENDPOINT = 'https://slack.com/api/conversations.open/'
 
 
 @login_required
@@ -120,10 +125,12 @@ def view_team(request, team_id):
     """ View the detailed team information for a HackTeam """
     team = get_object_or_404(HackTeam, id=team_id)
     rename_team_form = EditTeamName(instance=team)
+    create_group_im = (settings.SLACK_ENABLED and settings.SLACK_BOT_TOKEN)
 
     return render(request, 'team.html', {
         'team': team,
         'rename_team_form': rename_team_form,
+        'create_group_im': create_group_im,
         })
 
 
@@ -185,4 +192,69 @@ def rename_team(request, team_id):
     else:
         messages.error(request,
                        'An unexpected error occurred.')
+    return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+
+
+@login_required
+def create_group_im(request, team_id):
+    """ Creates a new group IM in slack """
+    if request.method != 'POST':
+        messages.error(request,
+                       'You cannot access this page in this way.')
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+
+    team = get_object_or_404(HackTeam, id=team_id)
+    if not (request.user in team.participants.all()
+            or request.user == team.mentor):
+        messages.error(request,
+                       ('You do not have access to create a Slack IM group '
+                       'for this team.'))
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+
+    if not (settings.SLACK_ENABLED or settings.SLACK_BOT_TOKEN
+            or settings.SLACK_WORKSPACE):
+        messages.error(request, 'This feature is currently not enabled.')
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))   
+
+    pattern = re.compile(r'^U[a-zA-Z0-9]*[_]T[a-zA-Z0-9]*$')
+    users = [team_member.username.split('_')[0] 
+             for team_member in team.participants.all()
+             if pattern.match(team_member.username)]
+
+    if team.mentor:
+        users.append(team.mentor.username.split('_')[0])
+
+    params = {
+        'users': ','.join(users),
+    }
+    headers = {'Authorization': f'Bearer {settings.SLACK_BOT_TOKEN}' }
+    response = requests.get(SLACK_GROUP_IM_ENDPOINT, params=params,
+                             headers=headers)
+
+    if not response.status_code == 200:
+        messages.error(request, ('An unexpected error occurred creating the '
+                                 'Group IM.'))
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+
+    response = response.json()
+    if not response.get('ok'):
+        messages.error(request, (f'An error occurred creating the Group IM. '
+                                 f'Error code: {response.get("error")}'))
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+        
+    channel = response.get('channel', {}).get('id')
+    communication_channel = (f'https://{settings.SLACK_WORKSPACE}.slack.com/'
+                             f'app_redirect?channel={channel}')
+    team.communication_channel = communication_channel
+    team.save()
+
+    if len(users) < len(team.participants.all()):
+        missing_users = len(team.participants.all()) - len(users)
+        messages.error(request, 
+                       (f'Group IM successfully created, but {missing_users} '
+                        f'users could not be added to the Group IM. '
+                        f'Please add the missing users manually.'))
+    else:
+        messages.success(request, 'Group IM successfully created')
+
     return redirect(reverse('view_team', kwargs={'team_id': team_id}))
