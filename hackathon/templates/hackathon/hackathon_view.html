@@ -106,7 +106,7 @@
                             <div class="card-text">
                                 <p class="text-left card-text-title">Team members:</p>
                                 {% for participant in team.participants.get_queryset %}
-                                    <p>
+                                    <p class="m-1">
                                         <i class="fas fa-user-circle mr-2"></i>
                                         {{ participant.slack_display_name }}
                                     </p>

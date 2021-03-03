@@ -516,7 +516,8 @@ form.distribute-teams-form, form.clear-teams-form {
 
 /* Set min-height of team-cards to suit for a minimum of 5 team members & submit project button */
 .team-card {
-    min-height: 380px;
+    min-height: 250px;
+    height: 100%;
 }
 
 .card-title .team-name::after {
