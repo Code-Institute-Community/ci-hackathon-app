@@ -320,6 +320,11 @@ button:hover i.fab.fa-slack.fa-.p-orange,
     color: white;
 }
 
+.card.hackathon-detail-description .card-body,
+.card.hackathon-detail-description .card-body p {
+    line-height: 1.7;
+}
+
 /* Final Score page */
 
 .final_score_table tbody >:first-child {

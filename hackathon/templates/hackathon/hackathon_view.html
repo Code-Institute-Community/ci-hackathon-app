@@ -83,7 +83,7 @@
             <h1 class="page-title">{{ hackathon.display_name }} #{{ hackathon.id }}</h1>
             <div class="card my-3 hackathon-detail-description">
                 <div class="card-body">
-                    <p>{{ hackathon.description|safe|linebreaksbr }}</p>
+                    {{ hackathon.description|safe|linebreaks }}
                 </div>
             </div>
 
