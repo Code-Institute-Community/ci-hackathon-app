@@ -127,10 +127,20 @@ def view_team(request, team_id):
     rename_team_form = EditTeamName(instance=team)
     create_group_im = (settings.SLACK_ENABLED and settings.SLACK_BOT_TOKEN)
 
+    mentor_profile = None
+    if team.mentor and settings.SLACK_WORKSPACE:
+        mentor_slack_id = team.mentor.username.split('_')[0]
+        mentor_profile = (f'https://{settings.SLACK_WORKSPACE}.slack.com/'
+                          f'team/{mentor_slack_id}')
+    elif team.mentor:
+        mentor_profile = f'profile/{team.mentor.id}'
+
+
     return render(request, 'team.html', {
         'team': team,
         'rename_team_form': rename_team_form,
         'create_group_im': create_group_im,
+        'mentor_profile': mentor_profile
         })
 
 
