@@ -217,8 +217,6 @@ def check_projects_scores(request, hackathon_id):
         judges = hackathon.judges.all()
         team_scores = create_team_judge_category_construct(
             hackathon.teams.all(), judges, score_categories)
-        category_scores_per_team = create_category_team_construct(
-            hackathon.teams.all(), score_categories)
         counted_judges_scores = count_judges_scores(
             judges, hackathon_projects, score_categories)
 
@@ -238,46 +236,13 @@ def check_projects_scores(request, hackathon_id):
                 'count_scores'] = count_score
             if count_score:
                 team_scores[team_name]['total_score'] += score
-                category_scores_per_team[score_category][team_name] += score
 
         sorted_team_scores = sorted(team_scores.values(),
                                     key=itemgetter('total_score'),
                                     reverse=True)
-        # Ordering scores per category
-        category_scores_per_category = {}
-        for category, scores in category_scores_per_team.items():
-            category_scores_per_category[category] = sorted(
-                [{"team_name": team_name, "score": score}
-                 for team_name, score in scores.items()],
-                key=itemgetter('score'),
-                reverse=True)
-
-        # Grouping back into teams
-        projects = {team.display_name: team.project.display_name 
-                    for team in hackathon.teams.all()
-                    if team.project}
-        category_scores = {
-            team.display_name : {} for team in hackathon.teams.all()
-            if team.project}
-        for category, teams in category_scores_per_category.items():
-            max_score = max([team['score'] for team in teams])
-            place = 1
-            for team in teams:
-                category_scores[team['team_name']][
-                    'project_name'] = projects.get(team['team_name']) or 'n/a'
-                category_scores[team['team_name']].setdefault(category, {})
-                category_scores[team['team_name']][category][
-                    'score'] = team['score']
-                if team['score'] < max_score:
-                    place += 1
-                    max_score = team['score']
-                category_scores[team['team_name']][category]['place'] = place
-                if team['score'] == 0: 
-                    category_scores[team['team_name']][category]['place'] = ''
 
         return render(request, 'hackathon/final_score.html', {
             'sorted_teams_scores': sorted_team_scores,
-            'category_scores': category_scores,
             'hackathon': hackathon.display_name,
             'judges': judges,
             'hack_awards_formset': hack_awards_formset,

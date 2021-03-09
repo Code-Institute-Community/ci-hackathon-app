@@ -327,9 +327,31 @@ button:hover i.fab.fa-slack.fa-.p-orange,
 
 /* Final Score page */
 
-.final_score_table tbody >:first-child {
-    background-color: var(--p-orange);
-    color: var(--white);
+.judge-scores-card {
+    overflow-x: scroll;
+    overflow-y: auto;
+    max-height: 600px;
+}
+
+.final_score_table tbody tr:first-child td {
+    background-color: var(--p-orange) !important;
+    color: var(--white) !important;
+}
+
+.final_score_table thead tr th:first-child, 
+.final_score_table tbody tr td:first-child {
+    position: sticky;
+    left: -1px;
+    z-index: 2;
+    background: white;
+}
+
+.final_score_table thead tr th:last-child, 
+.final_score_table tbody tr td:last-child {
+    position: sticky;
+    right: -1px;
+    z-index: 2;
+    background: white;
 }
 
 .table_titles, .final_score_table {

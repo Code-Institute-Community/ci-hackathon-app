@@ -12,7 +12,7 @@
 
 <h3 class="table_titles"> {{ hackathon }} Scores </h3>
 {% if sorted_teams_scores %}
-<div class="card mb-3">
+<div class="card mb-3 judge-scores-card">
     <table class="table table-bordered final_score_table w-100 m-0 p-0">
         <thead>
             <tr class="table_titles">
@@ -40,48 +40,6 @@
         </tbody>
     </table>
 </div>
-
-{% if category_scores %}
-<div class="card mb-3">
-    <table class="table table-bordered w-100 m-0 p-0">
-        <thead>
-            <tr class="table_titles">
-                <th scope="col" class="text-left">
-                    Team / Project
-                </th>
-                {% with categories=category_scores.values|to_list|first %}
-                {% for category in categories.keys %}
-                {% if category != 'project_name' %}
-                <th scope="col" >
-                    {{category}}
-                </th>
-                {% endif %}
-                {% endfor %}
-                {% endwith %}
-            </tr>
-        </thead>
-        <tbody>
-            {% with teams=category_scores.keys|sort_list %}
-            {% for team in teams %}
-                <tr>
-                   
-                    {% with team_scores=category_scores|get_value_from_dict:team %}
-                    <td class="text-left">{{team}} ({{team_scores|get_value_from_dict:'project_name'}})</td>
-                    {% for category, score in team_scores.items %}
-                    {% if category != 'project_name' %}
-                    <td title="Score: {{score.score}}">
-                        {{score.place|place_identifier}}
-                    </td>
-                    {% endif %}
-                    {% endfor %}
-                    {% endwith %}
-                </tr>
-            {% endfor %}
-            {% endwith %}
-        </tbody>
-    </table>
-</div>
-{% endif %}
 
 {% if hack_awards_formset.get_queryset|length > 0 %}
 <div class="card">
