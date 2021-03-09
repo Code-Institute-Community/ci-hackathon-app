@@ -153,6 +153,11 @@ def check_projects_scores(request, hackathon_id):
     and render final_score.html with the score table.
 
     """
+    if not request.user.is_superuser:
+        messages.error(request, "You don't have access to view the scores.")
+        return redirect(reverse('hackathon:view_hackathon',
+                                kwargs={'hackathon_id': hackathon_id}))
+
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     HackAwardFormSet = modelformset_factory(
                 HackAward, fields=('id', 'hack_award_category',
