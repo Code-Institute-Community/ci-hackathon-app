@@ -55,7 +55,7 @@ def query_scores(hackathon_id):
         ORDER BY teams.id, users.id;
         """, [hackathon_id])
         rows = cursor.fetchall()
-        rows = [[desc[0] for desc in cursor.description]] + rows
+        rows = [[desc[0] for desc in cursor.description]] + list(rows)
     return rows
 
 
@@ -92,7 +92,7 @@ def create_judges_scores_table(scores, judges, teams):
     scores_per_judge = dict(judges_scores_table.groupby('judge_name'
         ).count()['team_name'])
     judges_to_exclude = [judge for judge in judges
-                     if scores_per_judge.get(judge) or 0 < len(teams)]
+                     if (scores_per_judge.get(judge) or 0) < len(teams)]
     for j in judges_to_exclude:
         scores_table[j] = 0
     
