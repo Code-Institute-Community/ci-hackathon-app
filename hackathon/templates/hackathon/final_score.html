@@ -11,30 +11,29 @@
 {% endif %}
 
 <h3 class="table_titles"> {{ hackathon }} Scores </h3>
-{% if sorted_teams_scores %}
+{% if scores_table %}
 <div class="card mb-3 judge-scores-card">
     <table class="table table-bordered final_score_table w-100 m-0 p-0">
         <thead>
             <tr class="table_titles">
-                <th scope="col" class="text-left"> Team / Project
-                    <i class="fas fa-info-circle ml-2" title="Teams with no projects yet:{{teams_without_projects}}"></i>
+                {% for header in scores_table.headers %}
+                {% if forloop.counter == 1%}
+                <th scope="col" class="text-left">
+                    {{header}} <i class="fas fa-info-circle ml-2" title="Teams with no projects yet:{{teams_without_projects}}"></i>
                 </th>
-                {% for judge in sorted_teams_scores.0.scores.keys %}
-                <th scope="col"> {{ judge }} </th>
+                {% else %}
+                <th scope="col">{{header}}</th>
+                {% endif %}
                 {% endfor %}
-                <th scope="col"> Total Score </th>
             </tr>
         </thead>
         <tbody>
-            {% for project in sorted_teams_scores %}
+            {% for row in scores_table.rows %}
             <tr>
-                <td class="text-left">{{ project.project_name}} ({{project.team_name}})</td>
-                {% for judge in project.scores %}
-                {% with judge_score=project.scores|get_value_from_dict:judge %}
-                <td {% if not judge_score.count_scores %}class="not-counted-scores"{% endif %}>{{ judge_score.Total }}</td>
-                {% endwith %}
+                {% for col in row %}
+                <!-- class="not-counted-scores" -->
+                <td {% if forloop.counter == 1%}class="text-left"{% elif forloop.last %} scope="row"{% endif %}>{{col}}</td>
                 {% endfor %}
-                <td scope="row">{{ project.total_score }}</td>
             </tr>
             {% endfor %}
         </tbody>

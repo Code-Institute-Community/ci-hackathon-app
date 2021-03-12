@@ -21,9 +21,7 @@ from .models import Hackathon, HackTeam, HackProject, HackProjectScore,\
 from .forms import HackathonForm, ChangeHackathonStatusForm,\
                    HackAwardForm
 from .lists import AWARD_CATEGORIES
-from .helpers import create_team_judge_category_construct,\
-                     create_category_team_construct, count_judges_scores,\
-                     format_date
+from .helpers import format_date, query_scores, create_judges_scores_table
 
 DEFAULT_SCORES = {
     'team_name': '',
@@ -190,62 +188,20 @@ def check_projects_scores(request, hackathon_id):
                                 kwargs={'hackathon_id': hackathon_id}))
 
     else:
-        score_categories = HackProjectScoreCategory.objects.filter(
-            category__in=list(hackathon.score_categories.all())).all()
-        hackathon_projects = [team.project.id for team in hackathon.teams.all()
-                              if team.project]
-        scores = HackProjectScore.objects.filter(
-            project_id__in=hackathon_projects).all()
+        judges = [judge.slack_display_name for judge in hackathon.judges.all()]
+        teams  = [team.display_name for team in hackathon.teams.all()
+                  if team.project]
+        scores = query_scores(hackathon_id)
+        scores_table = create_judges_scores_table(scores, judges, teams)
+
         hack_awards_formset = HackAwardFormSet(
             form_kwargs={'hackathon_id': hackathon_id},
             queryset=HackAward.objects.filter(hackathon=hackathon))
 
-        if hackathon.teams.count() == 0:
-            messages.info(request, 'No teams created yet')
-            return render(request, 'hackathon/final_score.html', {
-                'hackathon': hackathon,
-                'hack_awards_formset': hack_awards_formset,
-            })
-
-        if scores.count() == 0:
-            messages.info(request, 'No scores created yet.')
-            return render(request, 'hackathon/final_score.html', {
-                'hackathon': hackathon,
-                'hack_awards_formset': hack_awards_formset,
-            })
-
-        judges = hackathon.judges.all()
-        team_scores = create_team_judge_category_construct(
-            hackathon.teams.all(), judges, score_categories)
-        counted_judges_scores = count_judges_scores(
-            judges, hackathon_projects, score_categories)
-
-        for score in scores:
-            judge_name = score.judge.slack_display_name
-            team_name = score.project.hackteam.display_name
-            project_name = score.project.display_name
-            score_category = score.hack_project_score_category.category
-            score = score.score
-            count_score = counted_judges_scores.get(judge_name)
-            if not count_score:
-                continue
-            
-            team_scores[team_name]['scores'][judge_name]['Total'] += score
-            team_scores[team_name]['scores'][judge_name][score_category] = score
-            team_scores[team_name]['scores'][judge_name][
-                'count_scores'] = count_score
-            if count_score:
-                team_scores[team_name]['total_score'] += score
-
-        sorted_team_scores = sorted(team_scores.values(),
-                                    key=itemgetter('total_score'),
-                                    reverse=True)
-
         return render(request, 'hackathon/final_score.html', {
-            'sorted_teams_scores': sorted_team_scores,
             'hackathon': hackathon.display_name,
-            'judges': judges,
             'hack_awards_formset': hack_awards_formset,
+            'scores_table': scores_table,
             'teams_without_projects': '\n'+'\n'.join([
                 team.display_name
                 for team in hackathon.teams.all()
