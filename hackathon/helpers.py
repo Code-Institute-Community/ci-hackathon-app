@@ -96,6 +96,9 @@ def create_judges_scores_table(scores, judges, teams):
     for j in judges_to_exclude:
         scores_table[j] = 0
     
+    # Convert all scores to a numeric value
+    for judge in judges:
+        scores_table[judge] = scores_table[judge].apply(pd.to_numeric)
     # Adding a total column to sum each judges scores for each team
     # and sort by that column in descending order
     scores_table['Total'] = 0
