@@ -65,8 +65,8 @@
                         {% else %}
                             <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
                             {% if user.is_superuser %}
-                                <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">Admin Panel</a>
-                                <a class="dropdown-item" href="{% url 'hackathon:hackathon_stats' %}">Hackthon Stats</a>
+                                <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">Django Admin</a>
+                                <a class="dropdown-item" href="{% url 'hackadmin:hackadmin_panel' %}" target="_blank">Admin Panel</a>
                             {% endif %}
                             <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
                         {% endif %}

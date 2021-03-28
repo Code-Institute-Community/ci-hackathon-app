@@ -10,6 +10,8 @@ urlpatterns = [
     path("images/", include("images.urls")),
     path("profile/", include("profiles.urls")),
     path("resources/", include("resources.urls")),
+    path("hackadmin/", include(("hackadmin.urls", "hackadmin"),
+                               namespace='hackadmin')),
     path("hackathon/", include(("hackathon.urls", "hackathon"),
                                namespace='hackathon')),
     path("showcase/", include("showcase.urls")),

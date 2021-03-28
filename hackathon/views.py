@@ -10,7 +10,6 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse
@@ -473,22 +472,6 @@ def change_awards(request, hackathon_id):
                                "An unexpected error occurred. Please try again")
         return redirect(reverse('hackathon:awards',
                                 kwargs={'hackathon_id': hackathon_id}))
-
-
-@login_required
-def hackathon_stats(request):
-    """ Used for admin to view all registered users and allows to filter
-    by individual hackathon """
-    if not request.user.is_superuser:
-        messages.error(request, 'You do not have access to this page.')
-        return reverse(reverse('hackathon:hackathon-list'))
-
-    hackathons = Hackathon.objects.all().exclude(status='deleted')
-    users = get_user_model().objects.all()
-    return render(request, 'hackathon/hackathon_stats.html', {
-        'hackathons': hackathons,
-        'users': users,
-    })
 
 
 @login_required
