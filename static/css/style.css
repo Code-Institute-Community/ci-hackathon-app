@@ -312,12 +312,12 @@ html .all-auth-container {
     text-align: left;
 }
 .slack-mpim button:hover i,  .slack-mpim a:hover i {
-    color: white;
+    color: var(--white);
 }
 
 button:hover i.fab.fa-slack.fa-.p-orange,
  a:hover i.fab.fa-slack.fa-sm.ml-0.mr-2.p-orange {
-    color: white;
+    color: var(--white);
 }
 
 .card.hackathon-detail-description .card-body,
@@ -343,7 +343,7 @@ button:hover i.fab.fa-slack.fa-.p-orange,
     position: sticky;
     left: -1px;
     z-index: 2;
-    background: white;
+    background: var(--white);
 }
 
 .final_score_table thead tr th:last-child, 
@@ -351,7 +351,7 @@ button:hover i.fab.fa-slack.fa-.p-orange,
     position: sticky;
     right: -1px;
     z-index: 2;
-    background: white;
+    background: var(--white);
 }
 
 .table_titles, .final_score_table {
@@ -378,7 +378,7 @@ h1.table_titles{
 }
 
 .final_score_table tr th {
-    padding: 2vh
+    padding: 2vh;
 }
 
 .card .card-body form.hack-award-submission {
@@ -475,7 +475,7 @@ form.distribute-teams-form, form.clear-teams-form {
 /* Teams page */
 .teams-page {
     padding: 0px;
-    background: white;
+    background: var(--white);
 }
 
 .teams-header {
@@ -486,7 +486,7 @@ form.distribute-teams-form, form.clear-teams-form {
 
 .team-name {
     border:2px solid black;
-    background: white;
+    background: var(--white);
     padding: 2px 10px;
     height:fit-content;
     border-radius: 0px 0px 15px 0px;
@@ -576,7 +576,7 @@ form.distribute-teams-form, form.clear-teams-form {
 .dropdown-menu.judge-dropdown .dropdown-item:hover {
     width: 100%;
     background: var(--p-orange);
-    color: white;
+    color: var(--white);
     border-radius: 0px;
 }
 
