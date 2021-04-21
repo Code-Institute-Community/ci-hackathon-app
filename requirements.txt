@@ -38,7 +38,7 @@ pickleshare==0.7.5
 progress==1.5
 prompt-toolkit==3.0.8
 ptyprocess==0.7.0
-Pygments==2.7.3
+Pygments==2.7.4
 pyparsing==2.4.6
 python-dateutil==2.8.1
 python-dotenv==0.14.0
