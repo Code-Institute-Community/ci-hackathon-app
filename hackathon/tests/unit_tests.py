@@ -1,9 +1,6 @@
 from django.test import TestCase
 from django.utils import timezone
 
-from hackathon.helpers import create_team_judge_category_construct,\
-                              create_category_team_construct,\
-                              count_judges_scores
 from accounts.models import CustomUser, Organisation
 from hackathon.models import (Hackathon,
                               HackTeam,
@@ -42,8 +39,6 @@ class HackathonUnitTestCase(TestCase):
             hackathon=self.hackathon)
         self.team.participants.set([self.user])
 
-        
-
         self.score_category = HackProjectScoreCategory.objects.create(
             created_by=self.user,
             category="knowledge",
@@ -68,60 +63,3 @@ class HackathonUnitTestCase(TestCase):
             project=self.project,
             score=1,
             hack_project_score_category=self.score_category)
-
-    def test_create_team_judge_category_construct(self):
-        expected_result = {
-            'testteam': {
-                'team_name': 'testteam',
-                'project_name': 'testproject',
-                'scores': {
-                    'testuser': {
-                        'knowledge': 0,
-                        'deployement': 0,
-                        'theme': 0,
-                        'Total': 0,
-                        'count_scores': False,
-                    }
-                },
-                'total_score': 0,
-            }
-        }
-        hackathon = Hackathon.objects.filter(display_name='hacktest').first()
-        categories = HackProjectScoreCategory.objects.all()
-        teams_judges_construct = create_team_judge_category_construct(
-            hackathon.teams.all(),
-            hackathon.judges.all(),
-            categories)
-        self.assertEqual(expected_result, teams_judges_construct)
-    
-    def test_create_category_team_construct(self):
-        expected_result = {
-            'knowledge': {
-                'testteam': 0,
-            },
-            'deployement': {
-                'testteam': 0,
-            },
-            'theme': {
-                'testteam': 0,
-            },
-        }
-        hackathon = Hackathon.objects.filter(display_name='hacktest').first()
-        categories = HackProjectScoreCategory.objects.all()
-        categories_teams_construct = create_category_team_construct(
-            hackathon.teams.all(), categories)
-        self.assertEqual(categories_teams_construct, expected_result)
-    
-    def test_count_judges_scores(self):
-        expected_results = {
-            'testuser': True,
-            'testuser2': False
-        }
-        hackathon = Hackathon.objects.filter(display_name='hacktest').first()
-        user = CustomUser.objects.create(
-            username="testuser2",
-            slack_display_name="testuser2")
-        hackathon.judges.add(user)
-        hackathon.save()
-        counted_judges_scores = count_judges_scores(hackathon.judges.all(), 1)
-        self.assertEqual(counted_judges_scores, expected_results)
