@@ -53,8 +53,7 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         resp = resp.json()
 
         if not resp.get('ok'):
-            logger.exception(f'OAuth Exception: {resp.get("error")}')
-            raise OAuth2Error()
+            raise OAuth2Error(f'UserInfo Exception: {user_info.get("error")}')
 
         userid = resp.get('user', {}).get('id')
         user_info = requests.get(
@@ -64,8 +63,7 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         user_info = user_info.json()
 
         if not user_info.get('ok'):
-            logger.exception(f'UserInfo Exception: {user_info.get("error")}')
-            raise OAuth2Error()
+            raise OAuth2Error(f'UserInfo Exception: {user_info.get("error")}')
 
         user_info = user_info.get('user', {})
         display_name = user_info.get('profile',
