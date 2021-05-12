@@ -1,7 +1,9 @@
 from django.db import models
 
+from .lists import ORDER_BY_CATEGORY_CHOICES
+
 from accounts.models import CustomUser as User
-from hackathon.models import HackProject
+from hackathon.models import HackProject, Hackathon
 
 
 class Showcase(models.Model):
@@ -47,3 +49,39 @@ class Showcase(models.Model):
          return self.hack_project
       except:
          return None
+
+
+class SingletonModel(models.Model):
+    """ Singleton model for Showcases """
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super(SingletonModel, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        pass
+
+    @classmethod
+    def load(cls):
+        obj, created = cls.objects.get_or_create(pk=1)
+        return obj
+
+
+class ShowcaseSiteSettings(SingletonModel):
+   """ Model to set how the showcase should be constructed"""
+   hackathons = models.ManyToManyField(Hackathon,
+                                  related_name="showcase_hackathons")
+   featured_hackathons = models.ManyToManyField(
+      Hackathon, related_name="showcase_featured_hackathons")
+   order_by_category = models.CharField(default="random", max_length=255,
+                                        choices=ORDER_BY_CATEGORY_CHOICES)
+
+
+   def __str__(self):
+      return "Project Showcase Settings"
+   
+   class Meta:
+      verbose_name = 'Project Showcase Site Settings'
+      verbose_name_plural = 'Project Showcase Site Settings'
