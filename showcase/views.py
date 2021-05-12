@@ -12,15 +12,18 @@ from .models import Showcase, ShowcaseSiteSettings
 from hackathon.models import HackTeam, HackProject
 from images.helpers import image_to_base64str
 
-SHOWCASE_SPOTLIGHT_NUMBER = settings.SHOWCASE_SPOTLIGHT_NUMBER 
-
 
 def view_showcases(request):
     """ Shows the project showcase page """
     showcase_settings = ShowcaseSiteSettings.objects.first()
+    if not showcase_settings:
+        return render(request, 'showcase.html', {
+        'top_results': None,
+        'all_showcases': None,
+    })
+
     showcase_hackathons = showcase_settings.hackathons.all()
     featured_hackathons = showcase_settings.featured_hackathons.all()
-
     showcase_hackathons_teams = [team.id
                                  for hackathon in showcase_hackathons
                                  for team in hackathon.teams.all()]
@@ -31,14 +34,13 @@ def view_showcases(request):
     all_showcases = Showcase.objects.filter(
         hack_project__hackteam__in=showcase_hackathons_teams,
         is_public=True
-    ).order_by('display_name')
-
+    ).order_by(showcase_settings.order_by_category)
     top_results = Showcase.objects.filter(
         hack_project__hackteam__in=showcase_featured_hackathons_teams,
         is_public=True
-    ).order_by('?')[:SHOWCASE_SPOTLIGHT_NUMBER]
+    ).order_by('?')[:showcase_settings.spotlight_number]
 
-    paginator = Paginator(all_showcases, 5)
+    paginator = Paginator(all_showcases, showcase_settings.projects_per_page)
     page = request.GET.get('page')
     paginated_showcases = paginator.get_page(page)
     

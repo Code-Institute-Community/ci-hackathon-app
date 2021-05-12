@@ -176,9 +176,6 @@ if SLACK_ENABLED:
         }
     }
 
-# Number of showcases displayed in the carousel
-SHOWCASE_SPOTLIGHT_NUMBER = int(os.environ.get('SHOWCASE_SPOTLIGHT_NUMBER')
-                                or 0)
 SUPPORT_EMAIL = os.environ.get("SUPPORT_EMAIL")
 
 LOGGING = {

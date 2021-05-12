@@ -1,0 +1,13 @@
+[
+    {
+        "model": "showcase.showcasesitesettings",
+        "pk": 1,
+        "fields": {
+            "order_by_category": "-created",
+            "spotlight_number": 5,
+            "projects_per_page": 5,
+            "hackathons": [],
+            "featured_hackathons": []
+        }
+    }
+]

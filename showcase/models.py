@@ -77,7 +77,8 @@ class ShowcaseSiteSettings(SingletonModel):
       Hackathon, related_name="showcase_featured_hackathons")
    order_by_category = models.CharField(default="random", max_length=255,
                                         choices=ORDER_BY_CATEGORY_CHOICES)
-
+   spotlight_number = models.IntegerField(default=5)
+   projects_per_page = models.IntegerField(default=5)
 
    def __str__(self):
       return "Project Showcase Settings"
