@@ -1,7 +1,6 @@
 from django.db import models
 
 from .lists import ORDER_BY_CATEGORY_CHOICES
-
 from accounts.models import CustomUser as User
 from hackathon.models import HackProject, Hackathon
 
@@ -82,7 +81,7 @@ class ShowcaseSiteSettings(SingletonModel):
 
    def __str__(self):
       return "Project Showcase Settings"
-   
+
    class Meta:
       verbose_name = 'Project Showcase Site Settings'
       verbose_name_plural = 'Project Showcase Site Settings'
