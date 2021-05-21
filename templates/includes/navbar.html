@@ -1,4 +1,5 @@
 {% load static %}
+{% load account_tags %}
 
 {% load account socialaccount %}
 {% get_providers as socialaccount_providers %}
@@ -14,17 +15,15 @@
                     <a class="nav-link" href="{% url 'home' %}">Home</a>
                 </li>
                 {% if user.is_authenticated %}
-                {% if user.is_superuser %}
+                {% if request.user.user_type|is_types:"SUPERUSER,FACILITATOR_ADMIN,PARTNER_ADMIN" %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarHackathons" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         Hackathons
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarHackathons">
-                        {% if user.is_superuser %}
-                        <!-- Create event link only available for admin users -->
+                        <!-- TODO: Separate between different admin users -->
                         <a class="dropdown-item" href="{% url 'hackathon:create_hackathon' %}">Create Hackathon</a>
-                        {% endif %}
                         <a class="dropdown-item" href="{% url 'hackathon:hackathon-list' %}">View Hackathons</a>
                     </div>
                 </li>
@@ -64,9 +63,11 @@
                             <a class="dropdown-item" href="{% url 'account_login' %}">Login</a>
                         {% else %}
                             <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
-                            {% if user.is_superuser %}
+                            {% if request.user.user_type|is_type:"SUPERUSER" %}
                                 <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">Django Admin</a>
-                                <a class="dropdown-item" href="{% url 'hackadmin:hackadmin_panel' %}" target="_blank">Admin Panel</a>
+                            {% endif %}
+                            {% if request.user.user_type|is_types:"SUPERUSER,FACILITATOR_ADMIN,PARTNER_ADMIN" %}
+                                <a class="dropdown-item" href="{% url 'hackadmin:hackadmin_panel' %}">Hack Admin</a>
                             {% endif %}
                             <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
                         {% endif %}

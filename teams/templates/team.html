@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load teams_tags %}
+{% load account_tags %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" />
@@ -38,7 +39,7 @@
             <div class="row mb-2 mt-5 ml-4"> 
                 <div class="col">
                     <h3>About the team</h3>
-                    {% if request.user in team.participants.all or request.user == team.mentor or reqest.user.is_staff %}
+                    {% if request.user in team.participants.all or request.user == team.mentor or request.user.user_type|is_type:"STAFF" %}
                     
                     <p>
                         <strong class="mr-2">Mentor:</strong>
@@ -76,8 +77,8 @@
             </div>
             
             {% if team.project %}
-                {% if request.user.is_staff or team.project.share_permission or request.user in team.participants.all %}
-                    {% if request.user in team.hackathon.participants.all and request.user not in team.participants.all and request.user.is_staff %}
+                {% if request.user.user_type|is_type:"STAFF" or team.project.share_permission or request.user in team.participants.all %}
+                    {% if request.user in team.hackathon.participants.all and request.user not in team.participants.all and request.user.user_type|is_type:"STAFF" %}
                         {% include 'includes/project_not_visible.html' %}
                     {% else %}
                         {% include 'includes/project.html' %}

@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
-from accounts.models import CustomUser
+from accounts.models import CustomUser,UserType
 
 
 @login_required
@@ -21,7 +21,7 @@ def profile(request, user_id=None):
         # Or if the request.user is staff they can see them
         if (user.organisation == 1 
                 or user.organisation == request.user.organisation
-                or request.user.is_staff):
+                or request.user.user_type == UserType.STAFF):
             context['user'] = user
         else:
             context['user'] = None

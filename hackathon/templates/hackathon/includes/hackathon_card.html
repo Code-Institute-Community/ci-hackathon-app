@@ -1,4 +1,5 @@
 {% load static %}
+{% load account_tags %}
 
 <article class="card hack-card">
     <div class="card-body">
@@ -16,7 +17,9 @@
             <div class="col-md-12 col-lg-9">
 
                 <h5 class="p-orange card-title"><a href="/hackathon/{{hackathon.id}}/" class="ci-link">{{ hackathon.display_name }}</a>
-                    {% if user.is_superuser %}<span class="badge badge-secondary ml-2">{{hackathon.status}}</span>{% endif %}
+                    {% if request.user.user_type|is_types:"SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE" %}
+                    <span class="badge badge-secondary ml-2">{{hackathon.status}}</span>
+                  {% endif %}
                 </h5>
                 <p class="card-subtitle mb-2 text-muted"><i class="far fa-calendar-alt p-2"></i> {{ hackathon.start_date }} - {{ hackathon.end_date }}</p>
                 {% if request.user.is_authenticated %}
@@ -50,17 +53,17 @@
                 <i class="fas fa-info-circle p-2"></i>{{hackathon.tag_line}}
                 </p>
                 
-                {% if user.is_staff %}
+                {% if request.user.user_type|is_type:"STAFF" %}
                 <p class="card-subtitle mb-2">
                 <i class="fas fa-users p-2"></i>Participants: {{ hackathon.participants.all|length }} / Teams: {{ hackathon.teams.all|length }}</p>
                 {% endif %}
                 <a href="{% url 'hackathon:view_hackathon' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
-                {% if user.is_authenticated and hackathon.status == 'registration_open' and not request.user.is_staff and request.user not in hackathon.participants.all %}
+                {% if request.user.is_authenticated and hackathon.status == 'registration_open' and not request.user.user_type|is_type:"STAFF" and request.user not in hackathon.participants.all %}
                 <div class="enroll-hackathon-card">{% include 'hackathon/includes/enrollpart.html' %}</div>
                 {% endif %}
             
                 <!-- Edit and Delete buttons, only visible for admin users -->
-                {% if user.is_authenticated and user.is_superuser %}
+                {% if request.user.is_authenticated and request.user.user_type|is_type:"SUPERUSER,FACILITATOR_ADMIN,PARTNER_ADMIN" %}
                 <!-- Warn user if hackathon is ongoing or ended before loading edit form - trigger edit modal -->
                 {% if hackathon.start_date|date:"YmdHis" <= today|date:"YmdHis" %}
                     <a class="btn btn-ci mr-3" type="button" data-toggle="modal" data-target="#edit-modal-{{ hackathon.id }}">

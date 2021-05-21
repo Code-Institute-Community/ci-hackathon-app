@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load account_tags %}
 
 {% block content %}
 
@@ -9,7 +10,7 @@
             <hr class="divider-orange w-25 mt-4 d">
         </div>
 
-        {% if request.user.is_superuser %}
+        {% if request.user.user_type|is_types:"SUPERUSER,STAFF,FACILITATOR_ADMIN" %}
         <div class="col-12 text-right">
             <a class="btn btn-ci" href="{% url 'add_resource' %}">
                 <i class="fas fa-plus-circle mr-1"></i> Add a Resource
@@ -37,7 +38,7 @@
                         </th>
                         <td class="w-75"> {{ resource.description}}</td>
 
-                        {% if request.user.is_superuser %}
+                        {% if request.user.user_type|is_types:"SUPERUSER,STAFF,FACILITATOR_ADMIN" %}
                         <!--Edit resource button-->
                         <td>
                             <a href="{% url 'edit_resource' resource.id %}" title="Edit"> 
@@ -68,7 +69,7 @@
                 <i class="fas fa-link mr-2"></i>
                 {{ resource.name }}
             </a>
-            {% if request.user.is_superuser %}
+            {% if request.user.user_type|is_types:"SUPERUSER,STAFF,FACILITATOR_ADMIN" %}
             <div>
                 <!--Edit button-->
                 <a href="{% url 'edit_resource' resource.id %}">

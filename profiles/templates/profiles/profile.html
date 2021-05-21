@@ -3,6 +3,7 @@
 {% block title %}User profile{% endblock %}
 
 {% load static %}
+{% load account_tags %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
@@ -54,7 +55,7 @@
                   </div>
                   {% if '/accounts/edit_profile/' == request.path %}
                   {% else %}
-                    {% if is_owner or request.user.is_staff or user.profile_is_public %}
+                    {% if is_owner or request.user.user_type|is_type:"STAFF" or user.profile_is_public %}
                     <div class="user-info">
 
                       <label for="fullName">Name</label>
@@ -84,7 +85,7 @@
                         {% else %}N/A{% endif %}
                       </p>
 
-                      {% if is_owner or request.user.is_staff or user.email_is_public %}
+                      {% if is_owner or request.user.user_type|is_type:"STAFF" or user.email_is_public %}
                       <label for="email">Email</label>
                       <p id="email">
                         {{ user.email }}

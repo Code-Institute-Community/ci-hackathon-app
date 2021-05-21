@@ -404,7 +404,7 @@ def enroll_toggle(request):
         # Gets the PK of the Hackathon and then the related Hackathon
         hackathon_id = request.POST.get("hackathon-id")
         hackathon = Hackathon.objects.get(pk=hackathon_id)
-        if user.is_staff:
+        if user.user_type == UserType.STAFF:
             if user in hackathon.judges.all():
                 hackathon.judges.remove(user)
                 messages.success(request, "You have withdrawn from judging.")

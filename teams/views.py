@@ -186,7 +186,7 @@ def rename_team(request, team_id):
     """ Change the name of a HackTeam """
     hack_team = get_object_or_404(HackTeam, id=team_id)
 
-    if (not request.user.is_staff 
+    if (not request.user.user_type == UserType.STAFF 
             and request.user not in hack_team.participants.all()):
         messages.error(request,
                        'You do not have access to rename this team')

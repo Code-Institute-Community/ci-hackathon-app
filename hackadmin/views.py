@@ -10,12 +10,14 @@ from hackathon.models import Hackathon
 
 
 @login_required
-@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN],
+@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN],
             redirect_url='hackathon:hackathon-list')
 def hackadmin_panel(request):
     """ Used for admin to view all registered users and allows to filter
     by individual hackathon """
-
+    # TODO: Filter hackathons by user type, PARTNER_ADMIN should not have
+    # access to all hackathons and users
     hackathons = Hackathon.objects.order_by('-start_date').exclude(
         status='deleted')
     return render(request, 'hackadmin_panel.html', {
@@ -24,11 +26,14 @@ def hackadmin_panel(request):
 
 
 @login_required
-@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN],
+@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN],
             redirect_url='hackathon:hackathon-list')
 def hackathon_participants(request, hackathon_id):
     """ Used for admin to view all registered users and allows to filter
     by individual hackathon """
+    # TODO: Filter hackathons by user type, PARTNER_ADMIN should not have
+    # access to all hackathons and users
     slack_url = None
     hackathon = get_object_or_404(Hackathon, id=hackathon_id)
     mentors = [{   
@@ -45,12 +50,14 @@ def hackathon_participants(request, hackathon_id):
 
 
 @login_required
-@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN],
+@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN],
             redirect_url='hackathon:hackathon-list')
 def all_users(request):
     """ Used for admin to view all registered users and allows to filter
     by individual hackathon """
-
+    # TODO: Filter hackathons by user type, PARTNER_ADMIN should not have
+    # access to all hackathons and users
     hackathons = Hackathon.objects.all().exclude(status='deleted')
     users = get_user_model().objects.all()
     return render(request, 'all_users.html', {
