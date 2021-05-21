@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     "profiles",
     "resources",
     "showcase",
-    "submissions",
     "teams",
 ]
 
