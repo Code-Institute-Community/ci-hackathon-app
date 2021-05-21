@@ -37,6 +37,7 @@
                 </div>
 
     {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+
                 <div class="row">
                     <div class="col p-0">
                         {% if request.user.user_type|is_types:authorised_types %}
@@ -45,17 +46,21 @@
                               Admin Actions
                             </button>
                             <div id="judge-dropdown" class="dropdown-menu judge-dropdown" aria-labelledby="dropdownMenuButton">
-
-                                {% if request.user.user_type|is_type:"SUPERUSER" %}
+                                {% with superuser_types='SUPERUSER,FACILITATOR_ADMIN,PARTNER_ADMIN' %}
+                                {% if request.user.user_type|is_types:superuser_types %}
                                 <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/update">Edit Hackathon</a>
+                                <a role="button" class="dropdown-item" href="/hackadmin/{{hackathon.id}}/participants/">View Hackathon Stats</a>
                                 <a role="button" class="dropdown-item" href="change_teams">
-                                    {% if hackathon.teams.all|length == 0 %}Distribute{% else %}Change{% endif %} Teams</a>
+                                    {% if hackathon.teams.all|length == 0 %}Distribute{% else %}Change{% endif %} Teams
+                                </a>
+                                <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/assign_mentors/">Assign Mentors</a>
                                 <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/awards/">Change Awards</a>
                                 <a role="button" class="dropdown-item" id="change-hack-status" data-toggle="modal" data-target="#changeStatusModal">
                                     Change Status
                                 </a>
                                 <a role="button" class="dropdown-item" href="final_score">View Scores</a>
                                 {% endif %}
+                                {% endwith %}
 
                                 {% if request.user in hackathon.judges.all %}
                                 <a role="button" class="dropdown-item" href="judge_teams">Judge Teams</a>

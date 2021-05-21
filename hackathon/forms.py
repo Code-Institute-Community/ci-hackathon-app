@@ -2,7 +2,7 @@ from django import forms
 from django.forms import BaseModelFormSet
 
 from accounts.models import Organisation
-from .models import Hackathon, HackProject, HackAward,\
+from .models import Hackathon, HackProject, HackAward, HackTeam, \
                     HackProjectScoreCategory, HackAwardCategory
 from .lists import STATUS_TYPES_CHOICES
 
@@ -120,6 +120,29 @@ class ChangeHackathonStatusForm(forms.ModelForm):
             }
 
 
+class HackTeamForm(forms.ModelForm):
+    display_name = forms.CharField(
+        label="Team Name",
+        required=True,
+        disabled=True,
+    )
+
+    class Meta:
+        model = HackTeam
+        fields = ['id', 'display_name', 'mentor']
+    
+    def __init__(self, *args, **kwargs):
+        hackathon_id = kwargs.pop('hackathon_id', None)
+        hackathon = Hackathon.objects.filter(id=hackathon_id).first()
+        super(HackTeamForm, self).__init__(*args, **kwargs)
+
+        if hackathon:
+            judges = hackathon.judges.all().order_by('slack_display_name')
+            self.fields['mentor'] = forms.ModelChoiceField(
+                queryset=judges)
+            self.fields['mentor'].required = False
+
+
 class HackAwardForm(forms.ModelForm):
     """ Form to create or edit HackAwards """
     hack_award_category = forms.ModelChoiceField(
@@ -151,7 +174,6 @@ class HackAwardForm(forms.ModelForm):
                     award__in=hackathon.awards.all()).order_by(
                         'display_name')
             self.fields['hack_award_category'] = forms.ModelChoiceField(
-                # queryset=hackathon.hackaward.hack_award_categories.all())
                 queryset=hack_award_categories)
             self.fields['winning_project'] = forms.ModelChoiceField(
                 queryset=hack_projects)
