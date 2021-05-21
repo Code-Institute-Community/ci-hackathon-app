@@ -112,7 +112,7 @@ class CustomUser(AbstractUser):
     
     @property
     def user_type(self):
-        """Return the user's main designation.
+        """ Return the user's main designation.
         This is something that we would need to continuously evolve.
         """
         groups = self.groups.all()
@@ -125,11 +125,11 @@ class CustomUser(AbstractUser):
                 return UserType.EXTERNAL_USER
             return UserType.STUDENT
         else:
-            if 'FACILITATOR_ADMIN' in groups:
+            if groups.filter(name='FACILITATOR_ADMIN'):
                 return UserType.FACILITATOR_ADMIN
-            elif 'FACILITATOR_JUDGE' in groups:
+            elif groups.filter(name='FACILITATOR_JUDGE'):
                 return UserType.FACILITATOR_JUDGE
-            elif 'FACILITATOR' in groups:
+            elif groups.filter(name='FACILITATOR'):
                 return UserType.FACILITATOR
             else:
                 # A non-specified group
