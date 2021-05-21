@@ -14,6 +14,10 @@ class UserType(Enum):
     FACILITATOR = 4
     STUDENT = 5
     EXTERNAL_USER = 6
+    PARTNER_ADMIN = 7
+    PARTNER_JUDGE = 8
+    PARTNER_USER = 9
+
 
 class Organisation(models.Model):
     DEFAULT_PK = 1
@@ -119,7 +123,14 @@ class CustomUser(AbstractUser):
         if self.is_staff and self.is_superuser:
             return UserType.SUPERUSER
         elif self.is_staff:
-            return UserType.STAFF       
+            return UserType.STAFF
+        elif self.organisation.id != 1:
+            if groups.filter(name='FACILITATOR_ADMIN'):
+                return UserType.PARTNER_ADMIN
+            elif groups.filter(name='FACILITATOR_JUDGE'):
+                return UserType.PARTNER_JUDGE
+            else:
+                return UserType.PARTNER_USER
         elif not groups:
             if self.is_external:
                 return UserType.EXTERNAL_USER
