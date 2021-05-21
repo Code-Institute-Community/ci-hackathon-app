@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.shortcuts import render, redirect, reverse
@@ -57,6 +58,7 @@ def privacy_policy(request):
     return render(request, "privacy-policy.html")
 
 
+@login_required
 def useful_resources(request):
     """ A view to return the Useful Resources page """
 

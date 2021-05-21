@@ -1,19 +1,15 @@
 from copy import deepcopy
 from datetime import datetime
-from operator import itemgetter
 import logging
 
 from django.db import transaction, IntegrityError
 from django.forms import modelformset_factory
-from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse
-from django.utils import timezone
 
 from .models import Hackathon, HackTeam, HackProject, HackProjectScore,\
                     HackProjectScoreCategory, HackAwardCategory, HackAward
@@ -35,28 +31,44 @@ DEFAULT_SCORES = {
 logger = logging.getLogger(__name__)
 
 
-class HackathonListView(LoginRequiredMixin, ListView):
-    """Renders a page with a list of Hackathons."""
-    model = Hackathon
-    ordering = ["-created"]
-    paginate_by = 8
+@login_required
+def list_hackathons(request):
+    """ Lists all hackathons available to a given student
 
-    def get_context_data(self, **kwargs):
-        """
-        Pass in the following context to the template:
-        hackathons - filter out deleted hackathons and order by newest first
-        today - needed to compare dates to display delete alert for hackathons
-        in progress (needed because using built in template 'now' date didn't
-        work correctly for the comparison)
-        """
-        context = super().get_context_data(**kwargs)
-        context['hackathons'] = Hackathon.objects.order_by(
-            '-created').exclude(status='deleted')
-        context['today'] = datetime.now()
-        return context
+        TODO: Fix permissions as below
+        EXTERNAL_USER should only see Hackathons set to `is_public=True`
+        Any PARTNER_* users should see all hackathons where the oranisation
+        is the same as the user's and all public hackathons
+        Any other user should see all CI hackathons and all public hackathons
+        SUPERUSER and STAFF should see all hackathons
+
+    """
+    if request.user.user_type == UserType.EXTERNAL_USER:
+        hackathons = Hackathon.objects.filter(is_public=True).order_by(
+        '-created').exclude(status='deleted')
+    elif request.user.user_type in [UserType.PARTNER_ADMIN,
+            UserType.PARTNER_JUDGE, UserType.PARTNER_USER]:
+        hackathons = Hackathon.objects.filter(
+            organisation=request.user.organisation).order_by('-created'
+            ).exclude(status='deleted')
+    else:
+        hackathons = Hackathon.objects.order_by('-created').exclude(
+            status='deleted')
+    paginator = Paginator(hackathons, 8)
+    page = request.GET.get('page')
+    paged_hackathons = paginator.get_page(page)
+
+    return render(request, 'hackathon/hackathon_list.html', {
+        'hackathons': paged_hackathons,
+        'today': datetime.now(),
+    })
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
+             UserType.FACILITATOR_JUDGE, UserType.PARTNER_ADMIN,
+             UserType.PARTNER_JUDGE],
+             redirect_url='hackathon:hackathon-list')
 def judging(request, hackathon_id, team_id):
     """Displays the judging page for the judge to save their scores
     for the selected project - determined by hackathon id and team id"""
@@ -139,6 +151,8 @@ def judging(request, hackathon_id, team_id):
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
 def check_projects_scores(request, hackathon_id):
     """ When a judge submits the score, check if all projects in the Hackathon
     were scored by all the judges in all the categories by comparing the
@@ -153,11 +167,6 @@ def check_projects_scores(request, hackathon_id):
     and render final_score.html with the score table.
 
     """
-    if not request.user.is_superuser:
-        messages.error(request, "You don't have access to view the scores.")
-        return redirect(reverse('hackathon:view_hackathon',
-                                kwargs={'hackathon_id': hackathon_id}))
-
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     HackAwardFormSet = modelformset_factory(
                 HackAward, fields=('id', 'hack_award_category',
@@ -212,14 +221,11 @@ def check_projects_scores(request, hackathon_id):
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
 def create_hackathon(request):
     """ Allow users to create hackathon event """
-
     if request.method == 'GET':
-        # Redirect user if they are not admin
-        if not request.user.is_superuser:
-            return redirect("hackathon:hackathon-list")
-
         template = "hackathon/create-event.html"
         form = HackathonForm(initial={
             'organisation': 1,
@@ -272,13 +278,10 @@ def create_hackathon(request):
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
 def update_hackathon(request, hackathon_id):
     """ Allow users to edit hackathon event """
-
-    # Redirect user if they are not admin
-    if not request.user.is_superuser:
-        return redirect("hackathon:hackathon-list")
-
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     if request.method == 'GET':
         form = HackathonForm(instance=hackathon)
@@ -326,11 +329,10 @@ def update_hackathon(request, hackathon_id):
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
 def update_hackathon_status(request, hackathon_id):
-    # Redirect user if they are not admin
-    if not request.user.is_superuser:
-        return redirect("hackathon:hackathon-list")
-    
+    """ Allows users to updated the status of a hackathon """
     if request.method == 'POST':
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
         hackathon.status = request.POST.get('status')
@@ -339,8 +341,8 @@ def update_hackathon_status(request, hackathon_id):
         return redirect(reverse('hackathon:view_hackathon',
                                 kwargs={'hackathon_id': hackathon_id}))
     else:
-        messages.error(request, ("An error occurred updating the event status. "
-                                 "Please try again."))
+        messages.error(request, ("An error occurred updating the event "
+                                 "status. Please try again."))
         return redirect("hackathon:hackathon-list") 
 
 
@@ -355,8 +357,9 @@ def view_hackathon(request, hackathon_id):
 
     If teams count > 3 show pagination for teams.
     """
+    # TODO: Add check if the user has access to this specific hackathon based
+    # on the user_type (e.g. external and partner hackathons)
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
-
     teams = HackTeam.objects.filter(hackathon_id=hackathon_id).order_by(
         'display_name')
     paginator = Paginator(teams, 3)
@@ -376,13 +379,11 @@ def view_hackathon(request, hackathon_id):
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
 def delete_hackathon(request, hackathon_id):
     """ Allow users to 'soft delete' hackathon event - set status to 'deleted'
      to remove from frontend list """
-
-    # Redirect user if they are not admin
-    if not request.user.is_superuser:
-        return redirect("hackathon:hackathon-list")
 
     # Get selected hackathon and set status to deleted to remove from
     # frontend list
@@ -425,6 +426,8 @@ def enroll_toggle(request):
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
 def change_awards(request, hackathon_id):
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     awards = hackathon.awards.all()
@@ -473,8 +476,13 @@ def change_awards(request, hackathon_id):
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
+             UserType.FACILITATOR_JUDGE, UserType.PARTNER_ADMIN,
+             UserType.PARTNER_JUDGE],
+             redirect_url='hackathon:hackathon-list')
 def judge_teams(request, hackathon_id):
-    """ Shows the list of teams and allows a judge to go to the scoring page """
+    """ Shows the list of teams and allows a judge to go to the scoring
+    page """
     hackathon = get_object_or_404(Hackathon, id=hackathon_id)
 
     if hackathon not in Hackathon.objects.filter(judges=request.user):
