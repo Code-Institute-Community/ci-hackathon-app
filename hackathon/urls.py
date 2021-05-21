@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (
-    HackathonListView,
+    list_hackathons,
     create_hackathon,
     update_hackathon,
     delete_hackathon,
@@ -15,7 +15,7 @@ from .views import (
 from teams.views import change_teams
 
 urlpatterns = [
-    path('', HackathonListView.as_view(), name="hackathon-list"),
+    path('', list_hackathons, name="hackathon-list"),
     path("<int:hackathon_id>/team/<int:team_id>/judging/",
          judging, name="judging"),
     path("<int:hackathon_id>/final_score/", check_projects_scores,
@@ -25,11 +25,11 @@ urlpatterns = [
     path("create_hackathon", create_hackathon, name='create_hackathon'),
     path("<int:hackathon_id>/", view_hackathon,
          name='view_hackathon'),
-    path("<int:hackathon_id>/update", update_hackathon,
+    path("<int:hackathon_id>/update/", update_hackathon,
          name="update_hackathon"),
-     path("<int:hackathon_id>/update_hackathon_status", update_hackathon_status,
+     path("<int:hackathon_id>/update_hackathon_status/", update_hackathon_status,
          name="update_hackathon_status"),
-    path("<int:hackathon_id>/delete", delete_hackathon,
+    path("<int:hackathon_id>/delete/", delete_hackathon,
          name="delete_hackathon"),
     path('enroll/', enroll_toggle, name='enroll_toggle'),
     path('<int:hackathon_id>/judge_teams/', judge_teams,
