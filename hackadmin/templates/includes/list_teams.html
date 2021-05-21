@@ -1,0 +1,59 @@
+{% load hackadmin_tags %}
+
+<table class="table table-sm border-top-0" id="judgesTable">
+    <thead>
+      <tr>
+        <th scope="col">Team Name</th>
+        <th scope="col">Project</th>
+        <th scope="col">Mentor</th>
+        <th scope="col">Communication Channel</th>
+        <th scope="col">Is Slack</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% if teams %}
+        {% for team in teams %}
+        <tr>
+            <td>
+                {{ team.display_name }}
+            </td>
+            <td>
+                {% if team.project %}
+                {{ team.project.display_name }}
+                {% else %}
+                No project submitted yet.
+                {% endif %}
+            </td>
+            <td>
+                {{ team.mentor }}
+            </td>
+            <td>
+                {% if team_communication_channel %}
+                Yes
+                {% else %}
+                No
+                {% endif %}
+            </td>
+            <td>
+                {% if team_communication_channel %}
+                    {% if 'slack.com' in team_communication_channel %}
+                    Yes
+                    {% else %}
+                    No
+                    {% endif %}
+                {% else %}
+                No
+                {% endif %}
+            </td>
+                
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="4">
+                Nobody has registered as judge for this hackathon yet.
+            </td>
+        </tr>
+        {% endif %}
+</table>

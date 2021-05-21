@@ -1,0 +1,45 @@
+{% load hackadmin_tags %}
+
+<table class="table table-sm border-top-0" id="mentorsTable">
+    <thead>
+      <tr>
+        <th scope="col">Mentor Display Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Team Name</th>
+        <th scope="col">Privileges</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% if mentors %}
+        {% for mentor_details in mentors %}
+        <tr>
+            <td>
+                {{ mentor_details.mentor.slack_display_name }}
+            </td>
+            <td>
+                {{ mentor_details.mentor.email }}
+            </td>
+            <td>
+                {{ mentor_details.team.display_name }}
+            </td>
+            <td>
+                {{mentor_details.mentor.user_type|readable_user_type}}
+            </td>
+            <td>
+                <a href="/profile/{{mentor_details.mentor.id}}/" class="ci-link mr-2" title="View Hackathon Profile"><i class="fas fa-eye"></i></a>
+                {% if slack_url and not mentor_details.mentor.is_external %}
+                {% split_string string=mentor_details.mentor.username delimiter="_" index=0  as slack_username %}
+                <a href="{{slack_url}}{{slack_username}}/" class="ci-link mr-2" target="_blank" title="View Slack Profile"><i class="fab fa-slack ci-orange m-0"></i></a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="4">
+                No mentors distributed yet.
+            </td>
+        </tr>
+        {% endif %}
+</table>

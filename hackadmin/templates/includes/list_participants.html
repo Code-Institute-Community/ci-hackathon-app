@@ -1,0 +1,45 @@
+{% load hackadmin_tags %}
+
+<table class="table table-sm border-top-0" id="participantsTable">
+    <thead>
+      <tr>
+        <th scope="col">Slack Display Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Current LMS Module</th>
+        <th scope="col">Privileges</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% if participants %}
+        {% for participant in participants %}
+        <tr>
+            <td>
+                {{ participant.slack_display_name }}
+            </td>
+            <td>
+                {{ participant.email }}
+            </td>
+            <td>
+                {{ participant.current_lms_module|readable_lms_module|title }}
+            </td>
+            <td>
+                {{participant.user_type|readable_user_type}}
+            </td>
+            <td>
+                <a href="/profile/{{participant.id}}/" class="ci-link mr-2" title="View Hackathon Profile"><i class="fas fa-eye"></i></a>
+                {% if slack_url and not participant.is_external %}
+                {% split_string string=participant.username delimiter="_" index=0  as slack_username %}
+                <a href="{{slack_url}}{{slack_username}}/" class="ci-link mr-2" target="_blank" title="View Slack Profile"><i class="fab fa-slack ci-orange m-0"></i></a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="4">
+                Nobody has registered for this hackathon yet.
+            </td>
+        </tr>
+        {% endif %}
+</table>

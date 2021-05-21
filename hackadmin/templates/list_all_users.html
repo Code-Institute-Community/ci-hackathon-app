@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load hackadmin_tags %}
+
+{% block content %}
+<div class="row mb-2">
+    <div class="col">
+        <a class="btn btn-secondary btn-sm px-3" role="button" href="/hackadmin/">
+            <i class="fas fa-chevron-left mr-2"></i>Back To HackAdmin
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title"><h5>All Users</h5></div>
+                <div class="card-text mt-5">
+
+                    <table class="table table-sm border-top-0" id="participantsTable">
+                        <thead>
+                        <tr>
+                            <th scope="col">Slack Display Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Current LMS Module</th>
+                            <th scope="col">Privileges</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% if users %}
+                            {% for user in users %}
+                            <tr>
+                                <td>
+                                    {{ user.slack_display_name }}
+                                </td>
+                                <td>
+                                    {{ user.email }}
+                                </td>
+                                <td>
+                                    {{ user.current_lms_module|readable_lms_module|title }}
+                                </td>
+                                <td>
+                                    {{user.user_type|readable_user_type}}
+                                </td>
+                                <td>
+                                    <a href="/profile/{{user.id}}/" class="ci-link mr-2" title="View Hackathon Profile"><i class="fas fa-eye"></i></a>
+                                    {% if slack_url and not user.is_external %}
+                                    {% split_string string=user.username delimiter="_" index=0  as slack_username %}
+                                    <a href="{{slack_url}}{{slack_username}}/" class="ci-link mr-2" target="_blank" title="View Slack Profile"><i class="fab fa-slack ci-orange m-0"></i></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="4">
+                                    No users found.
+                                </td>
+                            </tr>
+                            {% endif %}
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
