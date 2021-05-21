@@ -4,7 +4,6 @@ from .views import (
     create_hackathon,
     update_hackathon,
     delete_hackathon,
-    HackathonDetailView,
     enroll_toggle,
     judging,
     check_projects_scores,

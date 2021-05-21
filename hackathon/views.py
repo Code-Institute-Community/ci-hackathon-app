@@ -22,6 +22,9 @@ from .forms import HackathonForm, ChangeHackathonStatusForm,\
 from .lists import AWARD_CATEGORIES
 from .helpers import format_date, query_scores, create_judges_scores_table
 
+from accounts.models import UserType
+from accounts.decorators import can_access
+
 DEFAULT_SCORES = {
     'team_name': '',
     'project_name': '',
@@ -390,11 +393,6 @@ def delete_hackathon(request, hackathon_id):
     messages.success(
         request, f'{hackathon.display_name} has been successfully deleted!')
     return redirect("hackathon:hackathon-list")
-
-class HackathonDetailView(DetailView):
-    """Renders a page with Hackathon details."""
-    model = Hackathon
-    context_object_name = "hackathon"
 
 
 @login_required
