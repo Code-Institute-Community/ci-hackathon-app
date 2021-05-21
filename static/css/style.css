@@ -157,7 +157,7 @@ footer ul li a {
     transition: transform .4s;
 }
 
-.fab:hover {
+.fab:hover, .fas:hover {
     transform: scale(1.3);
 }
 /* TEXT */
