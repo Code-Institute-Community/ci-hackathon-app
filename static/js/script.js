@@ -1,6 +1,30 @@
 $(document).ready(function(){
     $('.edit-image').click(setUpoadImageType);
     filterUsersByHackathon();
+
+    $('.delete').submit(function(event){
+        let confirmation = confirm("Do you really want to remove this team member?")
+        if(!confirmation){
+            event.preventDefault();
+        }
+    })
+
+    $('.hackadmin-add-participant').click(function(){
+        let participantId = $(this).data('participant-id');
+        $('.participant_id').val(participantId);
+    })
+
+    $('.hackadmin-add-judge').click(function(){
+        let judgeId = $(this).data('judge-id');
+        $('.judge_id').val(judgeId);
+    })
+
+    $('#add_participant_hackathon_id').change(function(){
+        let hackathonId = $(this).val();
+        $(`.hackadmin-team-select`).hide();
+        $(`#hackadmin-team-select-${hackathonId}`).show();
+    })
+
 });
 
 function setUpoadImageType(){
