@@ -125,6 +125,10 @@ class CustomUser(AbstractUser):
         elif self.is_staff:
             return UserType.STAFF
         elif self.organisation.id != 1:
+            # This is assuming that the first organisation entered is the 
+            # "host organisation"
+            # TODO: Add a model or environment variable to determine which is
+            # the host organisation
             if groups.filter(name='FACILITATOR_ADMIN'):
                 return UserType.PARTNER_ADMIN
             elif groups.filter(name='FACILITATOR_JUDGE'):
