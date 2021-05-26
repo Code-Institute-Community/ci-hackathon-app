@@ -17,7 +17,7 @@
             <div class="col-md-12 col-lg-9">
 
                 <h5 class="p-orange card-title"><a href="/hackathon/{{hackathon.id}}/" class="ci-link">{{ hackathon.display_name }}</a>
-                    {% if request.user.user_type|is_types:"SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE" %}
+                    {% if request.user.user_type|is_types:"SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE" %}
                     <span class="badge badge-secondary ml-2">{{hackathon.status}}</span>
                   {% endif %}
                 </h5>
@@ -53,12 +53,12 @@
                 <i class="fas fa-info-circle p-2"></i>{{hackathon.tag_line}}
                 </p>
                 
-                {% if request.user.user_type|is_type:"STAFF" %}
+                {% if request.user.user_type|is_types:"SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE" %}
                 <p class="card-subtitle mb-2">
                 <i class="fas fa-users p-2"></i>Participants: {{ hackathon.participants.all|length }} / Teams: {{ hackathon.teams.all|length }}</p>
                 {% endif %}
                 <a href="{% url 'hackathon:view_hackathon' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
-                {% if request.user.is_authenticated and hackathon.status == 'registration_open' and not request.user.user_type|is_type:"STAFF" and request.user not in hackathon.participants.all %}
+                {% if request.user.is_authenticated and hackathon.status == 'registration_open' and not request.user.user_type|is_types:"SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE" and request.user not in hackathon.participants.all %}
                 <div class="enroll-hackathon-card">{% include 'hackathon/includes/enrollpart.html' %}</div>
                 {% endif %}
             

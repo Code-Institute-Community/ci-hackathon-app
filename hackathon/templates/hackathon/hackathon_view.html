@@ -24,7 +24,7 @@
                             data-identifier="{{hackathon.id}}"
                             data-toggle="modal" data-target="#uploadImageModal">
                             <i class="fas fa-pen mr-2"></i>Edit</button>
-                        {% elif hackathon.created_by == request.user and request.user.user_type|is_type:"FACILITATOR_ADMIN" %}
+                        {% elif hackathon.created_by == request.user and request.user.user_type|is_types:"FACILITATOR_ADMIN,PARTNER_ADMIN" %}
                         <button class="btn btn-secondary btn-sm edit-image"
                             data-image-type="hackathon_image"
                             data-identifier="{{hackathon.id}}"
@@ -36,7 +36,7 @@
 
                 <div class="row">
                     <div class="col p-0">
-                        {% if request.user.user_type|is_types:"SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE" %}
+                        {% if request.user.user_type|is_types:"SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE" %}
                         <div class="dropdown mt-4 mb-2 ">
                             <button class="btn btn-ci dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               Admin Actions
@@ -74,7 +74,7 @@
                         <div class="card my-3">
                             <div class="card-body text-left hackathon-detailed-items">
                                 <p class="hackathon-sub-details"><i class="fas fa-laptop"></i> Theme: {{ hackathon.theme }}</p>
-                                {% if request.user.user_type|is_type:"STAFF" %}
+                                {% if request.user.user_type|is_types:"SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE" %}
                                 <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{ hackathon.status }}</p>
                                 <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
                                 {% else %}
@@ -102,7 +102,7 @@
 
             <h1 class="page-title" id="teams">Teams:</h1>
 
-            {% if request.user.user_type|is_types:"SUPERUSER,FACILITATOR_ADMIN,FACILITATOR_JUDGE" or hackathon.status in 'hack_in_progress, judging, finished' %}
+            {% if request.user.user_type|is_types:"SUPERUSER,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE" or hackathon.status in 'hack_in_progress, judging, finished' %}
             <div class="row teams-row">
                 {% if teams %}
                 {% for team in teams %}
