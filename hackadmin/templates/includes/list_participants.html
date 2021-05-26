@@ -32,6 +32,7 @@
                 {% split_string string=participant.username delimiter="_" index=0  as slack_username %}
                 <a href="{{slack_url}}{{slack_username}}/" class="ci-link mr-2" target="_blank" title="View Slack Profile"><i class="fab fa-slack ci-orange m-0"></i></a>
                 {% endif %}
+                {% include 'includes/remove_participant.html' with remove_from_hackathon=True member=participant %}
             </td>
         </tr>
         {% endfor %}

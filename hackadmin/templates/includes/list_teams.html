@@ -4,6 +4,7 @@
     <thead>
       <tr>
         <th scope="col">Team Name</th>
+        <th scope="col">Team Members</th>
         <th scope="col">Project</th>
         <th scope="col">Mentor</th>
         <th scope="col">Communication Channel</th>
@@ -16,6 +17,20 @@
         <tr>
             <td>
                 {{ team.display_name }}
+            </td>
+            <td>
+                {% if team.participants.all %}
+                <ul class="hack-admin-team-members">
+                    {% for member in team.participants.all %}
+                    <li>
+                        {% include 'includes/remove_participant.html' with remove_from_hackathon=False %}
+                        {{member.slack_display_name}}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                Team has no members.
+                {% endif %}
             </td>
             <td>
                 {% if team.project %}
@@ -44,8 +59,6 @@
                 {% else %}
                 No
                 {% endif %}
-            </td>
-                
             </td>
         </tr>
         {% endfor %}
