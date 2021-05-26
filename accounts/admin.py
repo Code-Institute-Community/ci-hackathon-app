@@ -1,16 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import AdminPasswordChangeForm, \
-    UserChangeForm, UserCreationForm
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 
 from .models import CustomUser, Organisation
 
 
 class CustomUserAdmin(BaseUserAdmin):
-    # def user_type(self, instance):
-    #     return instance.user_type
-
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': (
