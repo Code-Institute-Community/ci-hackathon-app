@@ -3,8 +3,9 @@ from enum import Enum
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
+from .lists import LMS_MODULES_CHOICES
 from teams.lists import LMS_LEVELS
+
 
 class UserType(Enum):
     SUPERUSER = 0
@@ -12,7 +13,7 @@ class UserType(Enum):
     FACILITATOR_ADMIN = 2
     FACILITATOR_JUDGE = 3
     FACILITATOR = 4
-    STUDENT = 5
+    PARTICIPANT = 5
     EXTERNAL_USER = 6
     PARTNER_ADMIN = 7
     PARTNER_JUDGE = 8
@@ -113,7 +114,7 @@ class CustomUser(AbstractUser):
             'name': self.slack_display_name or self.email,
             'level': LMS_LEVELS.get(self.current_lms_module) or 1
         }
-    
+
     @property
     def user_type(self):
         """ Return the user's main designation.
@@ -138,7 +139,7 @@ class CustomUser(AbstractUser):
         elif not groups:
             if self.is_external:
                 return UserType.EXTERNAL_USER
-            return UserType.STUDENT
+            return UserType.PARTICIPANT
         else:
             if groups.filter(name='FACILITATOR_ADMIN'):
                 return UserType.FACILITATOR_ADMIN
