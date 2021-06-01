@@ -15,7 +15,7 @@ class CustomUserAdmin(BaseUserAdmin):
             'current_lms_module', 'organisation',
             'user_type', 'is_external')}),
         ('Permissions', {'fields': (
-            'is_active', 'is_staff', 'is_superuser', 
+            'is_active', 'is_staff', 'is_superuser',
             'profile_is_public', 'email_is_public',
             'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
@@ -45,7 +45,7 @@ class CustomUserAdmin(BaseUserAdmin):
     search_fields = ('full_name', 'email', 'slack_display_name')
     ordering = ('email',)
 
-    readonly_fields = ('last_login', 'date_joined', 'user_type',)
+    readonly_fields = ('last_login', 'date_joined', 'user_type')
 
 
 # sign-in via allauth required before accessing the admin panel
