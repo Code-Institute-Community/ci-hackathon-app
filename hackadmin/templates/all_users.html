@@ -63,12 +63,14 @@
                                     data-participant-id="{{user.id}}" title="Add participant to Hackaton and Team">
                                     <i class="fas fa-user-plus"></i>
                                 </button>
-                                {% if user.user_type|is_types:'SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+                                {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+                                {% if user.user_type|is_types:authorised_types %}
                                 <button class="hackadmin-add-judge ml-2" data-toggle="modal" data-target="#addJudgesModal"
                                     data-judge-id="{{user.id}}" title="Add to Judges">
                                     <i class="fas fa-gavel"></i>
                                 </button>
                                 {% endif %}
+                                {% endwith %}
                             </td>
                           </tr>
                           {% endfor %}
