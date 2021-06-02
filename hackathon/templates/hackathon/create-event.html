@@ -55,6 +55,9 @@
         <div class="col-12 mb-3">
           {{ form.score_categories|as_crispy_field }}
         </div>
+        <div class="col-12 mb-3">
+          {{ form.is_public|as_crispy_field }}
+        </div>
         <div class="col-12 mb-5">
           <input type="submit" class="btn-ci mr-2">
           <a href="{% url 'hackathon:hackathon-list' %}" type="button" class="btn-ci button">Cancel</a>

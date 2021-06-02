@@ -1,8 +1,23 @@
+from enum import Enum
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
+from .lists import LMS_MODULES_CHOICES
 from teams.lists import LMS_LEVELS
+
+
+class UserType(Enum):
+    SUPERUSER = 0
+    STAFF = 1
+    FACILITATOR_ADMIN = 2
+    FACILITATOR_JUDGE = 3
+    FACILITATOR = 4
+    PARTICIPANT = 5
+    EXTERNAL_USER = 6
+    PARTNER_ADMIN = 7
+    PARTNER_JUDGE = 8
+    PARTNER_USER = 9
 
 
 class Organisation(models.Model):
@@ -29,13 +44,6 @@ class CustomUser(AbstractUser):
         max_length=80,
         blank=False,
         default=''
-    )
-
-    user_type = models.CharField(
-        max_length=20,
-        blank=False,
-        default='participant',
-        choices=USER_TYPES_CHOICES
     )
 
     current_lms_module = models.CharField(
@@ -83,6 +91,12 @@ class CustomUser(AbstractUser):
                    "profile needs to be set to public as well")
     )
 
+    is_external = models.BooleanField(
+        default=False,
+        help_text=("Set to True if a user signs up through an external "
+                   "registration link")
+    )
+
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
@@ -100,3 +114,39 @@ class CustomUser(AbstractUser):
             'name': self.slack_display_name or self.email,
             'level': LMS_LEVELS.get(self.current_lms_module) or 1
         }
+
+    @property
+    def user_type(self):
+        """ Return the user's main designation.
+        This is something that we would need to continuously evolve.
+        """
+        groups = self.groups.all()
+        if self.is_staff and self.is_superuser:
+            return UserType.SUPERUSER
+        elif self.is_staff:
+            return UserType.STAFF
+        elif self.organisation.id != 1:
+            # This is assuming that the first organisation entered is the 
+            # "host organisation"
+            # TODO: Add a model or environment variable to determine which is
+            # the host organisation
+            if groups.filter(name='FACILITATOR_ADMIN'):
+                return UserType.PARTNER_ADMIN
+            elif groups.filter(name='FACILITATOR_JUDGE'):
+                return UserType.PARTNER_JUDGE
+            else:
+                return UserType.PARTNER_USER
+        elif not groups:
+            if self.is_external:
+                return UserType.EXTERNAL_USER
+            return UserType.PARTICIPANT
+        else:
+            if groups.filter(name='FACILITATOR_ADMIN'):
+                return UserType.FACILITATOR_ADMIN
+            elif groups.filter(name='FACILITATOR_JUDGE'):
+                return UserType.FACILITATOR_JUDGE
+            elif groups.filter(name='FACILITATOR'):
+                return UserType.FACILITATOR
+            else:
+                # A non-specified group
+                return None

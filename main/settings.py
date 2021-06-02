@@ -36,12 +36,12 @@ INSTALLED_APPS = [
     # custom apps
     "accounts",
     "hackathon",
+    "hackadmin",
     "home",
     "images",
     "profiles",
     "resources",
     "showcase",
-    "submissions",
     "teams",
 ]
 

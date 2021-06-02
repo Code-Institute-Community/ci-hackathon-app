@@ -90,12 +90,13 @@ class HackathonForm(forms.ModelForm):
             'size': '5'
         })
     )
+    is_public = forms.BooleanField(required=False)
 
     class Meta:
         model = Hackathon
         fields = ['display_name', 'description', 'theme', 'start_date',
                   'end_date', 'status', 'organisation', 'score_categories',
-                  'team_size', 'tag_line'
+                  'team_size', 'tag_line', 'is_public',
                   ]
 
     def __init__(self, *args, **kwargs):

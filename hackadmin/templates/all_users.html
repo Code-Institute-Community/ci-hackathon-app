@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
+{% load hackadmin_tags %}
+{% load account_tags %}
 
 {% block content %}
+
+{% include 'includes/back_button.html' with redirect_url="/hackadmin/" button_label="Back To HackAdmin" %}
 
 <div class="row">
     <div class="col">
@@ -36,6 +40,7 @@
                             <th scope="col">Email</th>
                             <th scope="col">Current LMS Module</th>
                             <th scope="col">Privileges</th>
+                            <th scope="col">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -51,13 +56,21 @@
                                 {{ user.current_lms_module }}
                             </td>
                             <td>
-                                {% if user.is_staff and user.is_superuser %}
-                                Superuser
-                                {% elif user.is_staff %}
-                                Staff
-                                {% else %}
-                                Participant
+                                {{user.user_type|readable_user_type}}
+                            </td>
+                            <td>
+                                <button class="hackadmin-add-participant" data-toggle="modal" data-target="#addParticipantsModal"
+                                    data-participant-id="{{user.id}}" title="Add participant to Hackaton and Team">
+                                    <i class="fas fa-user-plus"></i>
+                                </button>
+                                {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+                                {% if user.user_type|is_types:authorised_types %}
+                                <button class="hackadmin-add-judge ml-2" data-toggle="modal" data-target="#addJudgesModal"
+                                    data-judge-id="{{user.id}}" title="Add to Judges">
+                                    <i class="fas fa-gavel"></i>
+                                </button>
                                 {% endif %}
+                                {% endwith %}
                             </td>
                           </tr>
                           {% endfor %}
@@ -69,6 +82,7 @@
     </div>
 </div>
 
-
+{% include 'includes/add_participant.html' %}
+{% include 'includes/add_judge.html' %}
 
 {% endblock %}

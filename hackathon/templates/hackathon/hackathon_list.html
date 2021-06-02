@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+{% load account_tags %}
+
 {% block css %}
 <link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" />
 {% endblock %}
@@ -9,13 +11,15 @@
     {% if hackathons %}
         <h2 class="p-orange text-center mb-4">Hackathons</h2>
         {% for hackathon in hackathons %}
-            {% if hackathon.organisation.id == 1 or hackathon.organisation == user.organisation or user.is_staff %}
-                {% if hackathon.status != 'draft' or user == hackathon.created_by %}
+            {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+            {% if hackathon.organisation.id == 1 or hackathon.organisation == user.organisation or request.user.user_type|is_types:authorised_types %}
+                {% if hackathon.status != 'draft' or request.user == hackathon.created_by %}
                     {% if not hackathon.status == 'deleted' %}
                         {% include 'hackathon/includes/hackathon_card.html' %}
                     {% endif %}
                 {% endif %}
             {% endif %}
+            {% endwith %}
         {% endfor %}
     {% else %}
         <h2 class="text-center">There aren't any Hackathons at the moment!</h2>

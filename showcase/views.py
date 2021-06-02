@@ -76,6 +76,8 @@ def create_or_update_showcase(request, team_id):
     team = get_object_or_404(HackTeam, id=team_id)
     showcase = team.project.get_showcase()
 
+    # TODO: Add extra check to make sure only team members or admins can edit
+
     if request.method == 'GET':
         if showcase:
             form = ShowcaseForm(team_id=team_id, instance=showcase)

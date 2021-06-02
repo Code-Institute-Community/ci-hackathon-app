@@ -19,9 +19,9 @@ COPY ./profiles/ /hackathon-app/profiles/
 COPY ./resources/ /hackathon-app/resources/
 COPY ./showcase/ /hackathon-app/showcase/
 COPY ./static/ /hackathon-app/static/
-COPY ./submissions/ /hackathon-app/submissions/
 COPY ./teams/ /hackathon-app/teams/
 COPY ./templates/ /hackathon-app/templates/
+COPY ./hackadmin/ /hackathon-app/hackadmin/
 COPY ./manage.py /hackathon-app/manage.py
 
 EXPOSE 8000

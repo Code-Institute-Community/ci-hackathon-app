@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.core.files.images import ImageFile
@@ -13,6 +14,7 @@ VALID_UPLOAD_TYPES = ['profile_image', 'header_image', 'project_image',
                       ]
 
 
+@login_required
 def save_image(request):
     """ Receives a form with an image converts it to base64 and saves it to
     the right model based on upload_type """

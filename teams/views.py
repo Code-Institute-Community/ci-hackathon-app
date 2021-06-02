@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
-from accounts.models import CustomUser
+from accounts.decorators import can_access
+from accounts.models import UserType
 from hackathon.models import Hackathon, HackTeam, HackProject
 from teams.helpers import choose_team_sizes, group_participants,\
                           choose_team_levels, find_all_combinations,\
@@ -20,14 +21,12 @@ SLACK_GROUP_IM_ENDPOINT = 'https://slack.com/api/conversations.open/'
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN],
+             redirect_url='hackathon:list-hackathons')
 def change_teams(request, hackathon_id):
     """ Page that handles the logic of automatically distributing the teams
     for a hackathon and allows for the admin to re-arrange the team members """
-    # Redirect user if they are not admin
-    if not request.user.is_superuser:
-        return redirect(reverse('hackathon:view_hackathon',
-                                kwargs={'hackathon_id': hackathon_id}))
-
     edit = False
     hackathon = Hackathon.objects.get(id=hackathon_id)
     participants = hackathon.participants.all()
@@ -75,12 +74,11 @@ def change_teams(request, hackathon_id):
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN],
+             redirect_url='hackathon:list-hackathons')
 def create_teams(request):
     """ View used to save the hackathon teams created by an admin """
-    if not request.user.is_superuser:
-        messages.error(request, "You do not have access to this page!")
-        return redirect(reverse('hackathon:hackathon-list'))
-
     if request.method == 'POST':
         data = request.POST
         teams = json.loads(data.get('teams'))
@@ -103,11 +101,11 @@ def create_teams(request):
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN],
+             redirect_url='hackathon:list-hackathons')
 def clear_teams(request):
-    if not request.user.is_superuser:
-        messages.error(request, "You do not have access to this page!")
-        return redirect(reverse('hackathon:hackathon-list'))
-
+    """ Reset all teams for a specific hackathon """
     if request.method == 'POST':
         data = request.POST
         hackathon_id = data.get('hackathon_id')
@@ -188,7 +186,7 @@ def rename_team(request, team_id):
     """ Change the name of a HackTeam """
     hack_team = get_object_or_404(HackTeam, id=team_id)
 
-    if (not request.user.is_staff 
+    if (not request.user.user_type == UserType.STAFF 
             and request.user not in hack_team.participants.all()):
         messages.error(request,
                        'You do not have access to rename this team')

@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% load custom_tags %}
+{% load account_tags %}
+
 {% block content %}
     <!-- Render Hackathon details & Registration button -->
     <div class="row">
@@ -9,6 +11,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col p-0">
+                        {% with authorised_types='FACILITATOR_ADMIN,PARTNER_ADMIN' %}
                         {% if hackathon.hackathon_image %}
                         <img class="hackathon-detail-image" 
                             src="{{ hackathon.hackathon_image }}" />
@@ -16,31 +19,44 @@
                         <img class="hackathon-detail-image" 
                             src="{% static 'img/ci-hackathon--square.png' %}" />
                         {% endif %}
-                        {% if user.is_superuser %}
-                        <button class="btn btn-secondary btn-sm edit-image" 
+                        {% if request.user.user_type|is_type:"SUPERUSER" %}
+                        <button class="btn btn-secondary btn-sm edit-image"
+                            data-image-type="hackathon_image"
+                            data-identifier="{{hackathon.id}}"
+                            data-toggle="modal" data-target="#uploadImageModal">
+                            <i class="fas fa-pen mr-2"></i>Edit</button>
+                        {% elif hackathon.created_by == request.user and request.user.user_type|is_types:authorised_types %}
+                        <button class="btn btn-secondary btn-sm edit-image"
                             data-image-type="hackathon_image"
                             data-identifier="{{hackathon.id}}"
                             data-toggle="modal" data-target="#uploadImageModal">
                             <i class="fas fa-pen mr-2"></i>Edit</button>
                         {% endif %}
+                        {% endwith %}
                     </div>
                 </div>
 
+                {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
                 <div class="row">
                     <div class="col p-0">
-                        {% if user.is_staff %}
+                        {% if request.user.user_type|is_types:authorised_types %}
                         <div class="dropdown mt-4 mb-2 ">
                             <button class="btn btn-ci dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               Admin Actions
                             </button>
                             <div id="judge-dropdown" class="dropdown-menu judge-dropdown" aria-labelledby="dropdownMenuButton">
-                                {% if user.is_superuser %}
+
+                                {% if request.user.user_type|is_type:"SUPERUSER" %}
                                 <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/update">Edit Hackathon</a>
-                                <a role="button" class="dropdown-item" href="change_teams">{% if hackathon.teams.all|length == 0 %}Distribute{% else %}Change{% endif %} Teams</a>
+                                <a role="button" class="dropdown-item" href="change_teams">
+                                    {% if hackathon.teams.all|length == 0 %}Distribute{% else %}Change{% endif %} Teams</a>
                                 <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/awards/">Change Awards</a>
-                                <a role="button" class="dropdown-item" id="change-hack-status" data-toggle="modal" data-target="#changeStatusModal">Change Status</a>
+                                <a role="button" class="dropdown-item" id="change-hack-status" data-toggle="modal" data-target="#changeStatusModal">
+                                    Change Status
+                                </a>
                                 <a role="button" class="dropdown-item" href="final_score">View Scores</a>
                                 {% endif %}
+
                                 {% if request.user in hackathon.judges.all %}
                                 <a role="button" class="dropdown-item" href="judge_teams">Judge Teams</a>
                                 {% endif %}
@@ -61,7 +77,7 @@
                         <div class="card my-3">
                             <div class="card-body text-left hackathon-detailed-items">
                                 <p class="hackathon-sub-details"><i class="fas fa-laptop"></i> Theme: {{ hackathon.theme }}</p>
-                                {% if request.user.is_staff %}
+                                {% if request.user.user_type|is_types:authorised_types %}
                                 <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{ hackathon.status }}</p>
                                 <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
                                 {% else %}
@@ -89,7 +105,7 @@
 
             <h1 class="page-title" id="teams">Teams:</h1>
 
-            {% if request.user.is_superuser or hackathon.status in 'hack_in_progress, judging, finished' %}
+            {% if request.user.user_type|is_types:authorised_types or hackathon.status in 'hack_in_progress, judging, finished' %}
             <div class="row teams-row">
                 {% if teams %}
                 {% for team in teams %}

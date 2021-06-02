@@ -157,7 +157,7 @@ footer ul li a {
     transition: transform .4s;
 }
 
-.fab:hover {
+.fab:hover, .fas:hover {
     transform: scale(1.3);
 }
 /* TEXT */
@@ -388,6 +388,58 @@ h1.table_titles{
 .bg-p-blue {
     background-color: var(--p-blue);  
 }
+
+/* Hackadmin */
+ul.hack-admin-team-members {
+    padding: 0;
+}
+
+ul.hack-admin-team-members li {
+    list-style-type: none;
+}
+
+button.hackadmin-remove-participant i, button.hackadmin-add-participant i,
+button.hackadmin-add-judge i {
+    cursor: pointer;
+}
+
+button.hackadmin-remove-participant, button.hackadmin-add-participant,
+button.hackadmin-add-judge {
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    color: var(--p-orange);
+    background: var(--white);
+}
+
+button.hackadmin-remove-participant:hover,
+button.hackadmin-add-participant:hover,
+button.hackadmin-add-judge:hover {
+    cursor: pointer;
+    border: none;
+    background: var(--white);
+    color: var(--p-orange);
+}
+
+button.hackadmin-remove-participant:focus,
+button.hackadmin-add-participant:focus,
+button.hackadmin-add-judge:focus {
+    border: none;
+    outline: none;
+}
+
+.delete {
+    display: inline-block;
+}
+
+.hackadmin-team-select {
+    display:none;
+}
+
+.hackadmin-team-select.active {
+    display: block;
+}
+
 
 /* TOASTS */
 /*This allows for multiple toasts to stack.*/

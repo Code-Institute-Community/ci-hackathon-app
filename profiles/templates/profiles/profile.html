@@ -3,6 +3,7 @@
 {% block title %}User profile{% endblock %}
 
 {% load static %}
+{% load account_tags %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
@@ -10,103 +11,104 @@
 
 {% block content %}
 
-    <!-- Profile Image -->
-    <div class="container">
-        <div class="row">
-          <div class="col-12 col-md-3">
-            <div class="card">
-              <div class="p-3">
-                  {% if is_owner %}
-                  <button class="btn btn-secondary btn-sm edit-image"
-                    data-image-type="profile_image"
-                    data-toggle="modal" data-target="#uploadImageModal">
-                    <i class="fas fa-pen mr-2"></i>Edit</button>
-                  {% endif %}
-                  {% if user.profile_image %}
-                    <img class="card-img-top profile-image" src="{{user.profile_image}}" alt="Profile image">
-                  {% else %}
-                    <!-- Greasemann, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons -->
-                    <img class="card-img-top profile-image" src="{% static 'img/profiles/profile.png' %}" alt="Profile image">
-                  {% endif %}
-              </div>
-              <div class="text-center">
+<!-- Profile Image -->
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-3">
+        <div class="card">
+            <div class="p-3">
                 {% if is_owner %}
-                <p class="mt-2">Welcome: <span class="dark-text">{{ user.slack_display_name }}</span></p>
-                <p><a class="btn btn-ci" href="{% url 'edit_profile' %}"><i class="fas fa-user-edit p-1"></i>Edit Profile</a></p>
-                {% if not slack_enabled %}
-                <p><a class="btn btn-ci" href="{% url 'account_change_password' %}"><i class="fas fa-key p-1"></i></i>Change Password</a></p>
+                <button class="btn btn-secondary btn-sm edit-image"
+                data-image-type="profile_image"
+                data-toggle="modal" data-target="#uploadImageModal">
+                <i class="fas fa-pen mr-2"></i>Edit</button>
                 {% endif %}
+                {% if user.profile_image %}
+                <img class="card-img-top profile-image" src="{{user.profile_image}}" alt="Profile image">
                 {% else %}
-                <p class="mt-2"><span class="dark-text">{{ user.slack_display_name }}</span></p>
+                <!-- Greasemann, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons -->
+                <img class="card-img-top profile-image" src="{% static 'img/profiles/profile.png' %}" alt="Profile image">
                 {% endif %}
-              </div>
             </div>
-          </div>
-            <!-- User Information -->
-            <div class="col-12 col-md-9">
-              <div class="card">
-                <div class="card-body">
+            <div class="text-center">
+            {% if is_owner %}
+            <p class="mt-2">Welcome: <span class="dark-text">{{ user.slack_display_name }}</span></p>
+            <p><a class="btn btn-ci" href="{% url 'edit_profile' %}"><i class="fas fa-user-edit p-1"></i>Edit Profile</a></p>
+            {% if not slack_enabled %}
+            <p><a class="btn btn-ci" href="{% url 'account_change_password' %}"><i class="fas fa-key p-1"></i></i>Change Password</a></p>
+            {% endif %}
+            {% else %}
+            <p class="mt-2"><span class="dark-text">{{ user.slack_display_name }}</span></p>
+            {% endif %}
+            </div>
+        </div>
+        </div>
+        <!-- User Information -->
+        <div class="col-12 col-md-9">
+            <div class="card">
+            <div class="card-body">
 
-                  <div class="edit-profile dark-text">
-                    <!-- Edit Profile Form -->
-                    {% block edit_profile %}
-                    {% endblock %}
-                  </div>
-                  {% if '/accounts/edit_profile/' == request.path %}
-                  {% else %}
-                    {% if is_owner or request.user.is_staff or user.profile_is_public %}
-                    <div class="user-info">
+                <div class="edit-profile dark-text">
+                <!-- Edit Profile Form -->
+                {% block edit_profile %}
+                {% endblock %}
+                </div>
+                {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+                {% if '/accounts/edit_profile/' != request.path %}
+                {% if is_owner or request.user.user_type|is_types:authorised_types or user.profile_is_public %}
+                <div class="user-info">
 
-                      <label for="fullName">Name</label>
-                      <p id="fullName">
+                    <label for="fullName">Name</label>
+                    <p id="fullName">
                         {{ user.full_name }}
-                      </p>
+                    </p>
 
-                      <label for="slackName">Slack Name</label>
-                      <p id="slackName">
+                    <label for="slackName">Slack Name</label>
+                    <p id="slackName">
                         {{ user.slack_display_name }}
-                      </p>
+                    </p>
 
-                      <label for="about">About</label>
-                      <p id="about" class="profile-about">{% if user.about %}{{ user.about }}{% else %}N/A{% endif %}</p>
+                    <label for="about">About</label>
+                    <p id="about" class="profile-about">{% if user.about %}{{ user.about }}{% else %}N/A{% endif %}</p>
 
-                      <label for="latestModule">Latest Module</label>
-                      <p id="latestModule">
+                    <label for="latestModule">Latest Module</label>
+                    <p id="latestModule">
                         {{ user.human_readable_current_lms_module|title }}
-                      </p>
+                    </p>
 
-                      <label for="website">Website</label>
-                      <p id="website" class="profile-website-url">
+                    <label for="website">Website</label>
+                    <p id="website" class="profile-website-url">
                         {% if user.website_url %}
                         <a href="{{ user.website_url }}" target="_blank">
-                          {{ user.website_url }}
+                        {{ user.website_url }}
                         </a>
                         {% else %}N/A{% endif %}
-                      </p>
+                    </p>
 
-                      {% if is_owner or request.user.is_staff or user.email_is_public %}
-                      <label for="email">Email</label>
-                      <p id="email">
+                    {% if is_owner or request.user.user_type|is_types:authorised_types or user.email_is_public %}
+                    <label for="email">Email</label>
+                    <p id="email">
                         {{ user.email }}
-                      </p>
-                      {% endif %}
-
-                    </div>
-                    {% else %}
-                    <div class="user-info mt-4">
-                      This profile is not public
-                    </div>
+                    </p>
                     {% endif %}
-                  {% endif %}
+                    {% endwith %}
 
                 </div>
-              </div>
+                {% else %}
+                <div class="user-info mt-4">
+                    This profile is not public
+                </div>
+                {% endif %}
+                {% endif %}
+
             </div>
-
+            </div>
         </div>
-    </div>
 
-    {% include 'upload_image.html' %}
+    </div>
+</div>
+
+{% include 'upload_image.html' %}
 
 {% endblock %}
 
