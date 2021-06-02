@@ -4,7 +4,7 @@
 <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
     {% csrf_token %}
     <!--It only sends the hackathon ID.-->
-    <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
+    <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}">
     <!-- Must be one long string for the JS script to switch words correctly.
     An alternative would be to have two different buttons.-->
     <button id="enroll-part" type="submit" 
@@ -21,7 +21,7 @@
     {% if request.user in hackathon.participants.all %}
     <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
         {% csrf_token %}
-        <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
+        <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}">
         <button id="enroll-part" type="submit" class="btn btn-ci mt-4 mb-2 form-control">
             Withdraw from the Hackaton
         </button>

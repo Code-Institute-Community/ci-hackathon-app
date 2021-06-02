@@ -1,9 +1,8 @@
+{% if request.user not in hackathon.participants.all %}
 <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
     {% csrf_token %}
-    <!--It only sends the hackathon ID.-->
+    <input type="hidden" name="enrollment-type" value="judge" />
     <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
-    <!-- Must be one long string for the JS script to switch words correctly.
-    An alternative would be to have two different buttons.-->
     <button id="enroll-judge" type="submit" class="dropdown-item" 
         {% if hackathon.status == 'finished' or hackathon.status == 'deleted' %}
             disabled
@@ -16,3 +15,22 @@
         {% endif %}
     </button>
 </form>
+{% endif %}
+{% if request.user not in hackathon.judges.all %}
+<form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
+    <button id="enroll-judge" type="submit" class="dropdown-item" 
+        {% if hackathon.status == 'finished' or hackathon.status == 'deleted' %}
+            disabled
+        {% endif %}
+    >
+        {% if user in hackathon.participants.all %}
+            Withdraw as Participant
+        {% else %}
+            Enroll as Participant
+        {% endif %}
+    </button>
+</form>
+{% endif %}
+

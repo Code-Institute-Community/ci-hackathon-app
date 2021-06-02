@@ -398,29 +398,32 @@ def delete_hackathon(request, hackathon_id):
 
 @login_required
 def enroll_toggle(request):
-    user = request.user
-    data = {}
     if request.method == "POST":
-        # Gets the PK of the Hackathon and then the related Hackathon
-        hackathon_id = request.POST.get("hackathon-id")
-        hackathon = Hackathon.objects.get(pk=hackathon_id)
-        if user.user_type == UserType.STAFF:
-            if user in hackathon.judges.all():
-                hackathon.judges.remove(user)
-                messages.success(request, "You have withdrawn from judging.")
-            else:
-                hackathon.judges.add(user)
-                messages.success(request, "You have enrolled as a judge.")
+        judge_user_types = [
+            UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
+            UserType.FACILITATOR_JUDGE, UserType.PARTNER_ADMIN,
+            UserType.PARTNER_JUDGE,
+        ]
+        hackathon = get_object_or_404(Hackathon,
+                                      id=request.POST.get("hackathon-id"))
+        if request.user in hackathon.judges.all():
+            hackathon.judges.remove(request.user)
+            messages.success(request, "You have withdrawn from judging.")
+        elif request.user in hackathon.participants.all():
+            hackathon.participants.remove(request.user)
+            messages.success(request,
+                             "You have withdrawn from this Hackaton.")
+        elif (request.POST.get('enrollment-type') == 'judge'
+                and request.user.user_type in judge_user_types):
+            hackathon.judges.add(request.user)
+            messages.success(request, "You have enrolled as a judge.")
         else:
-            if user in hackathon.participants.all():
-                hackathon.participants.remove(user)
-                messages.success(request,
-                                 "You have withdrawn from this Hackaton.")
-            else:
-                hackathon.participants.add(user)
-                messages.success(request, "You have enrolled successfully.")
-        return redirect(reverse('hackathon:view_hackathon',
-                                kwargs={'hackathon_id': hackathon_id}))
+            hackathon.participants.add(request.user)
+            messages.success(request, "You have enrolled successfully.")
+
+        return redirect(reverse(
+            'hackathon:view_hackathon',
+            kwargs={'hackathon_id': request.POST.get("hackathon-id")}))
     else:
         return HttpResponse(status=403)
 
