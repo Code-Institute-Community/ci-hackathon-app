@@ -10,9 +10,9 @@
     <button id="enroll-part" type="submit" 
         class="btn btn-ci mt-4 mb-2 form-control">
         {% if user in hackathon.participants.all %}
-            Withdraw from the Hackaton
+            <i class="fas fa-user-times mr-2"></i>Withdraw from the Hackaton
         {% else %}
-            Enroll as Participant
+            <i class="fas fa-user-plus mr-2"></i>Enroll as Participant
         {% endif %}
     </button>
 </form>
@@ -23,7 +23,7 @@
         {% csrf_token %}
         <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}">
         <button id="enroll-part" type="submit" class="btn btn-ci mt-4 mb-2 form-control">
-            Withdraw from the Hackaton
+            <i class="fas fa-user-times mr-2"></i>Withdraw from the Hackaton
         </button>
     </form>
     <div class="enrollments-closed mt-4 mb-2 p-3">

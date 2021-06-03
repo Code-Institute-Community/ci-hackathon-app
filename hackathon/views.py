@@ -14,7 +14,7 @@ from django.http import JsonResponse, HttpResponse
 from .models import Hackathon, HackTeam, HackProject, HackProjectScore,\
                     HackProjectScoreCategory, HackAwardCategory, HackAward
 from .forms import HackathonForm, ChangeHackathonStatusForm,\
-                   HackAwardForm
+                   HackAwardForm, HackTeamForm
 from .lists import AWARD_CATEGORIES
 from .helpers import format_date, query_scores, create_judges_scores_table
 
@@ -495,3 +495,40 @@ def judge_teams(request, hackathon_id):
     return render(request, 'hackathon/judge_teams.html', {
         'teams': hackathon.teams,
     })
+
+
+@login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+def assign_mentors(request, hackathon_id):
+    """ View used to assign a mentor to each team """    
+    hackathon = get_object_or_404(Hackathon, id=hackathon_id)
+    HackMentorFormSet = modelformset_factory(
+        HackTeam, fields=('id', 'display_name',
+                            'mentor'),
+        form=HackTeamForm, extra=0)
+
+    if request.method == 'GET':
+        hack_mentors_formset = HackMentorFormSet(
+            form_kwargs={'hackathon_id': hackathon_id},
+            queryset=HackTeam.objects.filter(hackathon=hackathon))
+
+        return render(request, 'hackathon/assign_mentors.html', {
+            'hackathon': hackathon,
+            'hack_mentors_formset': hack_mentors_formset,
+        })
+    else:
+        hack_mentors_formset = HackMentorFormSet(
+            request.POST,
+            form_kwargs={'hackathon_id': hackathon_id},
+            queryset=HackTeam.objects.filter(hackathon=hackathon))
+
+        if hack_mentors_formset.is_valid():
+            hack_mentors_formset.save()
+            messages.success(request, "Mentors updated successfully!")
+            return redirect(reverse('hackathon:assign_mentors',
+                                kwargs={'hackathon_id': hackathon_id}))
+        else:
+            messages.error(request, 
+                           (f"An unexpected error occurred: "
+                            f"{hack_mentors_formset.errors}"))
