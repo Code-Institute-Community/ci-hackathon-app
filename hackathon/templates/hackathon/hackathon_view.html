@@ -36,7 +36,7 @@
                     </div>
                 </div>
 
-                {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+    {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
                 <div class="row">
                     <div class="col p-0">
                         {% if request.user.user_type|is_types:authorised_types %}
@@ -171,6 +171,8 @@
 
         </div>
     </div>
+
+    {% endwith %}
 
     {% include 'upload_image.html' %}
     {% include 'hackathon/includes/change_status.html' %}
