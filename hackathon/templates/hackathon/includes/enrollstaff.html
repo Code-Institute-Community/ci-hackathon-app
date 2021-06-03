@@ -9,9 +9,9 @@
         {% endif %}
     >
         {% if user in hackathon.judges.all %}
-            Withdraw as Judge
+        <i class="fas fa-user-times mr-2"></i>Withdraw as Judge
         {% else %}
-            Enroll as Judge
+        <i class="fas fa-user-plus mr-2"></i>Enroll as Judge
         {% endif %}
     </button>
 </form>
@@ -26,9 +26,9 @@
         {% endif %}
     >
         {% if user in hackathon.participants.all %}
-            Withdraw as Participant
+        <i class="fas fa-user-times mr-2"></i>Withdraw as Participant
         {% else %}
-            Enroll as Participant
+        <i class="fas fa-user-plus mr-2"></i>Enroll as Participant
         {% endif %}
     </button>
 </form>

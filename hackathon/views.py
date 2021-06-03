@@ -498,12 +498,10 @@ def judge_teams(request, hackathon_id):
 
 
 @login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
 def assign_mentors(request, hackathon_id):
-    if not request.user.is_superuser:
-        messages.error(request, "You cannot access this page!")
-        return redirect(reverse('hackathon:view_hackathon',
-                                kwargs={'hackathon_id': hackathon_id}))
-    
+    """ View used to assign a mentor to each team """    
     hackathon = get_object_or_404(Hackathon, id=hackathon_id)
     HackMentorFormSet = modelformset_factory(
         HackTeam, fields=('id', 'display_name',
@@ -524,6 +522,7 @@ def assign_mentors(request, hackathon_id):
             request.POST,
             form_kwargs={'hackathon_id': hackathon_id},
             queryset=HackTeam.objects.filter(hackathon=hackathon))
+
         if hack_mentors_formset.is_valid():
             hack_mentors_formset.save()
             messages.success(request, "Mentors updated successfully!")
