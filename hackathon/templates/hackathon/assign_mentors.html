@@ -3,9 +3,11 @@
 
 {% block content %}
 
-{% if hack_mentors_formset.get_queryset|length > 0 %}
+
 <div class="card">
     <div class="card-body">
+
+        {% if hack_mentors_formset.get_queryset|length > 0 %}
         
         <form method="POST" class="hack-award-submission p-3">
             {% csrf_token %}
@@ -28,8 +30,23 @@
             </div>
         </form>
 
+        {% else %}
+
+        <p>
+            No teams assigned yet.
+        </p>
+
+        <p>
+            Please <a class="ci-link font-weight-bold" href="/hackathon/{{hackathon.id}}/change_teams/">distribute teams</a> first to be able to assign your mentors.
+        </p>
+
+        <p class="m-0 mt-5">
+            <a role="button" class="btn btn-secondary" href="/hackathon/{{hackathon.id}}/"><i class="fas fa-chevron-left mr-2"></i> Back to the Hackathon</a>
+        </p>
+
+        {% endif %}
+
     </div>
 </div>
-{% endif %}
 
 {% endblock %}
