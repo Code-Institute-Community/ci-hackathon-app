@@ -11,7 +11,6 @@ def can_access(allowed_types, redirect_url=None, redirect_kwargs={}):
     def decorator(view_function):
         @wraps(view_function)
         def wrapped_view(request, *args, **kwargs):
-            print(request.user.user_type)
             authorized = (request.user.user_type in allowed_types
                           or request.user.user_type is UserType.SUPERUSER)
 

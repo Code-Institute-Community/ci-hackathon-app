@@ -85,7 +85,6 @@ def remove_participant(request, hackathon_id):
             for team in teams:
                 team.participants.remove(participant)
         else:
-            print("Do not remove from Hackathon")
             team = get_object_or_404(HackTeam,
                                      id=request.POST.get('team_id'))
             team.participants.remove(participant)
