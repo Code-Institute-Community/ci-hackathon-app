@@ -73,9 +73,9 @@ def place_identifier(num):
 
 @register.filter
 def prettify_status(status):
-    if status == 'published':
+    if status == 'published' or status == 'draft':
         return "Registration Starts Soon"
-    elif status == 'hack_in_progress':
+    elif status == 'registration_open':
         return "Registration Open"
     elif status == 'hack_prep':
         return "Hackathon Starting Soon"

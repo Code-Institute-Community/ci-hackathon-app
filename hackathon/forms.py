@@ -6,12 +6,12 @@ from .models import Hackathon, HackProject, HackAward, HackTeam, \
                     HackProjectScoreCategory, HackAwardCategory
 from .lists import STATUS_TYPES_CHOICES
 
+
 class HackathonForm(forms.ModelForm):
     """ A form to enable users to add hackathon events via the frontend site.
      The form renders the fields that require value inputs from the user, along with some basic validation. """
     display_name = forms.CharField(
         label='Display Name',
-        min_length=5,
         max_length=254,
         widget=forms.TextInput(
             attrs={
@@ -26,8 +26,6 @@ class HackathonForm(forms.ModelForm):
     )
     description = forms.CharField(
         label="Description",
-        min_length=10,
-        max_length=3000,
         widget=forms.Textarea(
             attrs={
                 'rows': 4,
@@ -37,7 +35,6 @@ class HackathonForm(forms.ModelForm):
     )
     theme = forms.CharField(
         label='Theme',
-        min_length=5,
         max_length=254,
         widget=forms.TextInput(
             attrs={

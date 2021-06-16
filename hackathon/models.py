@@ -34,12 +34,12 @@ class Hackathon(models.Model):
                                 help_text=("Short description which will be "
                                            "displayed in the Hackathon List "
                                            "view."))
-    description = models.TextField(blank=False, 
+    description = models.TextField(blank=False,
                                    help_text=("Longer description which will "
                                               "be displayed in the Hackathon "
                                               "Detail view. Usually includes "
                                               "schedule and other details."))
-    theme = models.CharField(max_length=264, blank=False)
+    theme = models.CharField(default="", max_length=264, blank=False)
     start_date = models.DateTimeField(blank=False)
     end_date = models.DateTimeField(blank=False)
     team_size = models.IntegerField(default=3)

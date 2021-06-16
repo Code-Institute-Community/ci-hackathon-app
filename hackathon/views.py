@@ -272,6 +272,7 @@ def create_hackathon(request):
             messages.success(
                 request, 'Thanks for submitting a new Hackathon event!')
         else:
+            logger.exception(form.errors)
             messages.error(request, ("An error occurred creating the event. "
                                      "Please try again."))
         return redirect("hackathon:hackathon-list")
