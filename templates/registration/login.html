@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Admin Login</h2>
+<h2>External Login</h2>
 <form action="/accounts/admin/" method="POST">
     {% csrf_token %}
     {{form.as_p}}
-    <input type="submit" class="btn btn-primary">
+    <input type="submit" class="btn btn-primary btn-sm" value="Sign In">
+    <a href="http://localhost:8000/accounts/password/reset/" class="ml-3">Forgot Your Password?</a>
 </form>
 {% endblock %}
