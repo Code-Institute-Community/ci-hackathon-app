@@ -75,7 +75,7 @@ class HackathonForm(forms.ModelForm):
     team_size = forms.IntegerField(
         label="Team Size",
         required=True,
-        widget=forms.TextInput(attrs={'min':3,'max': 6,'type': 'number'})
+        widget=forms.TextInput(attrs={'min': 3, 'max': 6, 'type': 'number'})
     )
     organisation = forms.ModelChoiceField(
         label="Organisation",
@@ -88,12 +88,17 @@ class HackathonForm(forms.ModelForm):
         })
     )
     is_public = forms.BooleanField(required=False)
+    max_participants = forms.IntegerField(
+        label="Max. Number Of Participants (leave empty for no max)",
+        required=False,
+        widget=forms.TextInput({'type': 'number'})
+    )
 
     class Meta:
         model = Hackathon
         fields = ['display_name', 'description', 'theme', 'start_date',
                   'end_date', 'status', 'organisation', 'score_categories',
-                  'team_size', 'tag_line', 'is_public',
+                  'team_size', 'tag_line', 'is_public', 'max_participants',
                   ]
 
     def __init__(self, *args, **kwargs):

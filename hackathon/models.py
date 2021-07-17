@@ -82,6 +82,7 @@ class Hackathon(models.Model):
         help_text=("Hackathon image.")
     )
     is_public = models.BooleanField(default=False)
+    max_participants = models.IntegerField(default=None, null=True, blank=True)
 
     def __str__(self):
         return self.display_name
@@ -89,6 +90,9 @@ class Hackathon(models.Model):
     class Meta:
         verbose_name = "Hackathon"
         verbose_name_plural = "Hackathons"
+
+    def max_participants_reached(self):
+        return self.participants.count() >= self.max_participants
 
 
 class HackAwardCategory(models.Model):
