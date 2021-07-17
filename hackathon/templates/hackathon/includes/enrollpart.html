@@ -1,6 +1,6 @@
 {% load custom_tags %}
 
-{% if hackathon.status == 'registration_open' %}
+{% if hackathon.status == 'registration_open' and not hackathon.max_participants_reached %}
 <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
     {% csrf_token %}
     <!--It only sends the hackathon ID.-->

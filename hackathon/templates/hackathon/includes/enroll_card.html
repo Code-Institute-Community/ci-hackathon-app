@@ -1,0 +1,13 @@
+{% if not hackathon.max_participants_reached %}
+<form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
+    {% csrf_token %}
+    <!--It only sends the hackathon ID.-->
+    <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}">
+    <!-- Must be one long string for the JS script to switch words correctly.
+    An alternative would be to have two different buttons.-->
+    <button id="enroll-part" type="submit" 
+        class="btn btn-ci mt-4 mb-2 form-control">
+            <i class="fas fa-user-plus mr-2"></i>Enroll as Participant
+    </button>
+</form>
+{% endif %}

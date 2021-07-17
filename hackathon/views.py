@@ -1,4 +1,3 @@
-from copy import deepcopy
 from datetime import datetime
 import logging
 
@@ -9,9 +8,9 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 
-from .models import Hackathon, HackTeam, HackProject, HackProjectScore,\
+from .models import Hackathon, HackTeam, HackProjectScore,\
                     HackProjectScoreCategory, HackAwardCategory, HackAward
 from .forms import HackathonForm, ChangeHackathonStatusForm,\
                    HackAwardForm, HackTeamForm
@@ -45,12 +44,13 @@ def list_hackathons(request):
     """
     if request.user.user_type == UserType.EXTERNAL_USER:
         hackathons = Hackathon.objects.filter(is_public=True).order_by(
-        '-created').exclude(status='deleted')
+            '-created').exclude(status='deleted')
     elif request.user.user_type in [UserType.PARTNER_ADMIN,
-            UserType.PARTNER_JUDGE, UserType.PARTNER_USER]:
+                                    UserType.PARTNER_JUDGE,
+                                    UserType.PARTNER_USER]:
         hackathons = Hackathon.objects.filter(
-            organisation=request.user.organisation).order_by('-created'
-            ).exclude(status='deleted')
+            organisation=request.user.organisation
+            ).order_by('-created').exclude(status='deleted')
     else:
         hackathons = Hackathon.objects.order_by('-created').exclude(
             status='deleted')
@@ -68,7 +68,7 @@ def list_hackathons(request):
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.FACILITATOR_JUDGE, UserType.PARTNER_ADMIN,
              UserType.PARTNER_JUDGE],
-             redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:hackathon-list')
 def judging(request, hackathon_id, team_id):
     """Displays the judging page for the judge to save their scores
     for the selected project - determined by hackathon id and team id"""
@@ -88,7 +88,7 @@ def judging(request, hackathon_id, team_id):
 
             score_cat_id = f"score_{score_category.id}"
             if team_score:
-                team_score.update(score=request.POST.get(score_cat_id))   
+                team_score.update(score=request.POST.get(score_cat_id))
             else:
                 team_score = HackProjectScore(
                     created_by=request.user,
@@ -101,7 +101,7 @@ def judging(request, hackathon_id, team_id):
 
         if request.POST.get('redirect_url'):
             return redirect(reverse(request.POST.get('redirect_url'),
-                                kwargs={'hackathon_id': hackathon_id}))
+                                    kwargs={'hackathon_id': hackathon_id}))
 
         return redirect(reverse('hackathon:view_hackathon',
                                 kwargs={'hackathon_id': hackathon_id}))
@@ -120,7 +120,7 @@ def judging(request, hackathon_id, team_id):
         # verify that the selected team belongs to the selected hackathon
         if team.hackathon != hackathon:
             messages.error(
-                request, f"Nice try! That team is not part of the event...")
+                request, "Nice try! That team is not part of the event...")
             return redirect(reverse('home'))
 
         # check if the judge has already scored the requested team's Project
@@ -184,24 +184,24 @@ def check_projects_scores(request, hackathon_id):
                     hack_awards_formset.save()
             except IntegrityError as e:
                 if 'UNIQUE' in str(e):
-                    messages.error(request, 
+                    messages.error(request,
                                    ("Each award category can only be added "
                                     "once to a hackathon."))
-                else: 
+                else:
                     logger.exception(e)
-                    messages.error(request, 
+                    messages.error(request,
                                    ("An unexpected error occurred. Please "
                                     "try again."))
         else:
-            messages.error(request, 
+            messages.error(request,
                            "An unexpected error occurred. Please try again.")
         return redirect(reverse('hackathon:final_score',
                                 kwargs={'hackathon_id': hackathon_id}))
 
     else:
         judges = [judge.slack_display_name for judge in hackathon.judges.all()]
-        teams  = [team.display_name for team in hackathon.teams.all()
-                  if team.project]
+        teams = [team.display_name for team in hackathon.teams.all()
+                 if team.project]
         scores = query_scores(hackathon_id)
         scores_table = create_judges_scores_table(scores, judges, teams)
 
@@ -230,7 +230,7 @@ def create_hackathon(request):
         form = HackathonForm(initial={
             'organisation': 1,
             'team_size': 3,
-            'score_categories':HackProjectScoreCategory.objects.all()[:5]})
+            'score_categories': HackProjectScoreCategory.objects.all()[:5]})
 
         return render(request, template, {"form": form})
 
@@ -250,7 +250,7 @@ def create_hackathon(request):
         if end_date <= start_date:
             messages.error(
                 request, ('The end date must be at least one day after the '
-                         'start date.'))
+                          'start date.'))
             return redirect("hackathon:create_hackathon")
 
         # Submit form and save record
@@ -264,8 +264,8 @@ def create_hackathon(request):
                 display_name__in=AWARD_CATEGORIES[:3])
             for award_category in hack_award_categories:
                 hack_award = HackAward(
-                    created_by = request.user,
-                    hackathon = form.instance,
+                    created_by=request.user,
+                    hackathon=form.instance,
                     hack_award_category=award_category,
                 )
                 hack_award.save()
@@ -313,7 +313,7 @@ def update_hackathon(request, hackathon_id):
         if end_date <= start_date:
             messages.error(
                 request, ('The end date must be at least one day after the '
-                         'start date.'))
+                          'start date.'))
             return redirect("hackathon:update_hackathon", hackathon_id)
 
         # Submit form and save record
@@ -344,7 +344,7 @@ def update_hackathon_status(request, hackathon_id):
     else:
         messages.error(request, ("An error occurred updating the event "
                                  "status. Please try again."))
-        return redirect("hackathon:hackathon-list") 
+        return redirect("hackathon:hackathon-list")
 
 
 @login_required
@@ -367,7 +367,6 @@ def view_hackathon(request, hackathon_id):
     page = request.GET.get('page')
     paged_teams = paginator.get_page(page)
     create_group_im = (settings.SLACK_ENABLED and settings.SLACK_BOT_TOKEN)
-
 
     context = {
         'hackathon': hackathon,
@@ -419,6 +418,14 @@ def enroll_toggle(request):
             hackathon.judges.add(request.user)
             messages.success(request, "You have enrolled as a judge.")
         else:
+            if hackathon.max_participants_reached():
+                messages.error(request,
+                               "Sorry, but the registration is closed.")
+                return redirect(reverse('hackathon:view_hackathon',
+                                        kwargs={
+                                            'hackathon_id':
+                                            request.POST.get("hackathon-id")
+                                        }))
             hackathon.participants.add(request.user)
             messages.success(request, "You have enrolled successfully.")
 
@@ -443,14 +450,14 @@ def change_awards(request, hackathon_id):
             'awards': awards,
             'form': form,
         })
-    else: 
+    else:
         if request.POST.get('update_type') == 'delete':
             hack_award = get_object_or_404(HackAward,
                                            id=request.POST.get('id'))
             if hack_award.winning_project:
                 messages.error(request,
                                ("You cannot remove this award since it already"
-                               " has a winner assigned to it."))
+                                " has a winner assigned to it."))
                 return redirect(reverse('hackathon:awards',
                                 kwargs={'hackathon_id': hackathon_id}))
             hack_award.delete()
@@ -473,8 +480,8 @@ def change_awards(request, hackathon_id):
                 messages.success(request, "Award successfully added.")
             else:
                 logger.exception(form.errors)
-                messages.error(request,
-                               "An unexpected error occurred. Please try again")
+                messages.error(
+                    request, "An unexpected error occurred. Please try again")
         return redirect(reverse('hackathon:awards',
                                 kwargs={'hackathon_id': hackathon_id}))
 
@@ -483,7 +490,7 @@ def change_awards(request, hackathon_id):
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.FACILITATOR_JUDGE, UserType.PARTNER_ADMIN,
              UserType.PARTNER_JUDGE],
-             redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:hackathon-list')
 def judge_teams(request, hackathon_id):
     """ Shows the list of teams and allows a judge to go to the scoring
     page """
@@ -502,11 +509,10 @@ def judge_teams(request, hackathon_id):
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
 def assign_mentors(request, hackathon_id):
-    """ View used to assign a mentor to each team """    
+    """ View used to assign a mentor to each team """
     hackathon = get_object_or_404(Hackathon, id=hackathon_id)
     HackMentorFormSet = modelformset_factory(
-        HackTeam, fields=('id', 'display_name',
-                            'mentor'),
+        HackTeam, fields=('id', 'display_name', 'mentor'),
         form=HackTeamForm, extra=0)
 
     if request.method == 'GET':
@@ -528,8 +534,8 @@ def assign_mentors(request, hackathon_id):
             hack_mentors_formset.save()
             messages.success(request, "Mentors updated successfully!")
             return redirect(reverse('hackathon:assign_mentors',
-                                kwargs={'hackathon_id': hackathon_id}))
+                                    kwargs={'hackathon_id': hackathon_id}))
         else:
-            messages.error(request, 
+            messages.error(request,
                            (f"An unexpected error occurred: "
                             f"{hack_mentors_formset.errors}"))

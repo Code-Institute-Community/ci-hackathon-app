@@ -31,10 +31,14 @@
                 <p class="card-subtitle mb-2 text-muted"><i class="fas fa-user-plus p-2"></i>Registration closed for this hackathon</p>
                 {% endif %}
                 {% else %}
-                {% if hackathon.status == 'registration_open' and request.user not in hackathon.participants.all %}
-                <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Registrations open!</p>
-                {% elif hackathon.status == 'registration_open' and request.user in hackathon.participants.all %}
-                <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user p-2"></i>You are enrolled in this hackathon!</p>
+                {% if hackathon.status == 'registration_open' %}
+                    {% if hackathon.max_participants_reached %}
+                        <p class="card-subtitle mb-2 text-muted"><i class="fas fa-user-plus p-2"></i>Registrations closed.</p>
+                    {% elif request.user not in hackathon.participants.all %}
+                        <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Registrations open!</p>
+                    {% elif request.user in hackathon.participants.all %}
+                        <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user p-2"></i>You are enrolled in this hackathon!</p>
+                    {% endif %}
                 {% elif hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' or hackathon.status == 'hack_prep' %}
                 {% if request.user in hackathon.participants.all %}
                 <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>You are participating in this hackathon</p>
@@ -59,7 +63,7 @@
                 {% endif %}
                 <a href="{% url 'hackathon:view_hackathon' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
                 {% if request.user.is_authenticated and hackathon.status == 'registration_open' and not request.user.user_type|is_types:authorised_types_on_card and request.user not in hackathon.participants.all %}
-                <div class="enroll-hackathon-card">{% include 'hackathon/includes/enrollpart.html' %}</div>
+                <div class="enroll-hackathon-card">{% include 'hackathon/includes/enroll_card.html' %}</div>
                 {% endif %}
                 {% endwith %}
                 
