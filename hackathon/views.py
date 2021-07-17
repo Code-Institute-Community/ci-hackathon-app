@@ -421,11 +421,8 @@ def enroll_toggle(request):
             if hackathon.max_participants_reached():
                 messages.error(request,
                                "Sorry, but the registration is closed.")
-                return redirect(reverse('hackathon:view_hackathon',
-                                        kwargs={
-                                            'hackathon_id':
-                                            request.POST.get("hackathon-id")
-                                        }))
+                return redirect(reverse('hackathon:view_hackathon', kwargs={
+                    'hackathon_id': request.POST.get("hackathon-id")}))
             hackathon.participants.add(request.user)
             messages.success(request, "You have enrolled successfully.")
 
