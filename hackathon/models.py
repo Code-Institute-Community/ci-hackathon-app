@@ -50,9 +50,8 @@ class Hackathon(models.Model):
                                     related_name='judged_hackathons')
     # Hackathons can have multiple participants judges and
     # users could be participating in more than one Hackathon: Many to Many
-    participants = models.ManyToManyField(User,
-                                    blank=True,
-                                    related_name='participated_hackathons')
+    participants = models.ManyToManyField(
+        User, blank=True, related_name='participated_hackathons')
     # Hackathons can have multiple score categories and score categories
     # Can belong to multiple hackahtons: Many to Many
     score_categories = models.ManyToManyField(
