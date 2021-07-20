@@ -89,7 +89,7 @@ class HackathonForm(forms.ModelForm):
     )
     is_public = forms.BooleanField(required=False)
     max_participants = forms.IntegerField(
-        label="Max. Number Of Participants (leave empty for no max)",
+        label="Max Number Of Participants (leave empty for no max)",
         required=False,
         widget=forms.TextInput({'type': 'number'})
     )

@@ -99,8 +99,8 @@
                                 <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{ hackathon.status }}</p>
                                 <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
                                 <p class="hackathon-sub-details"><i class="fas fa-users"></i>
-                                    Max. Participants: {% if hackathon.max_participants %}{{ hackathon.max_participants }}{% else %}Unlimited{% endif %}
-                                    {% if hackathon.max_participants_reached %}(Max. Reached){% endif %}
+                                    Max Participants: {% if hackathon.max_participants %}{{ hackathon.max_participants }}{% else %}Unlimited{% endif %}
+                                    {% if hackathon.max_participants_reached %}(Max Reached){% endif %}
                                 </p>
                                 {% else %}
                                 <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: 
