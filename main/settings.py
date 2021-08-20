@@ -57,7 +57,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = "main.urls"
@@ -159,14 +158,14 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATICFILES_LOCATION = "static"
-STATIC_URL = "/static/"
+STATICFILES_LOCATION = 'static'
+STATIC_URL = os.environ.get("STATIC_URL", "static/")
+STATIC_ROOT = os.environ.get("STATIC_ROOT",
+                             os.path.join(BASE_DIR, "staticfiles"))
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIAFILES_LOCATION = "media"
-MEDIA_URL = "/media/"
+MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 SLACK_ENABLED = os.environ.get("SLACK_ENABLED") == 'True'
 
