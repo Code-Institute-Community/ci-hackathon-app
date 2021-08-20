@@ -6,18 +6,9 @@ services:
     volumes:
       - ./staticfiles/:/hackathon-app/staticfiles/
       - ./data/:/hackathon-app/data/
-    environment: 
-      DEVELOPMENT: 1
-      SECRET_KEY: "your_secret_key_here"
-      SITE_NAME: "*"
-      SLACK_ENABLED: "True"
-      SHOWCASE_SPOTLIGHT_NUMBER: 5
-      SUPPORT_EMAIL: community@example.com
-      DBHOST: mysql
-      DBPORT: 3306
-      DBNAME: hackathons
-      DBUSER: hackathon_user
-      DBPASS: gummyball
+      - ./.env:/hackathon-app/.env
+    environment:
+      - ENV_FILE=/hackathon-app/.env
     entrypoint: ['python3', 'manage.py', 'runserver', '0.0.0.0:8000']
     ports:
       - "8000:8000"
