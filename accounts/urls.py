@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path("edit_profile/", views.edit_profile, name="edit_profile"),
-    path('admin/', LoginView.as_view()),
+    path('external/', LoginView.as_view()),
 ]

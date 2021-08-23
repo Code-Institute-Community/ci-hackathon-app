@@ -98,8 +98,13 @@
                                 {% if request.user.user_type|is_types:authorised_types %}
                                 <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{ hackathon.status }}</p>
                                 <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
+                                <p class="hackathon-sub-details"><i class="fas fa-users"></i>
+                                    Max Participants: {% if hackathon.max_participants %}{{ hackathon.max_participants }}{% else %}Unlimited{% endif %}
+                                    {% if hackathon.max_participants_reached %}(Max Reached){% endif %}
+                                </p>
                                 {% else %}
-                                <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{hackathon.status|prettify_status}}</p>
+                                <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: 
+                                    {{hackathon.status|prettify_status:hackathon.max_participants_reached}}</p>
                                 {% endif %}
                                 <p class="hackathon-sub-details"><i class="far fa-clock"></i> Start: {{ hackathon.start_date }}</p>
                                 <p class="hackathon-sub-details"><i class="fas fa-clock"></i> End: {{ hackathon.end_date }}</p>

@@ -55,8 +55,11 @@
         <div class="col-12 mb-3">
           {{ form.score_categories|as_crispy_field }}
         </div>
-        <div class="col-12 mb-3">
+        <div class="col-12 col-md-6 mb-3">
           {{ form.is_public|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-6 mb-3">
+          {{ form.max_participants|as_crispy_field }}
         </div>
         <div class="col-12 mb-5">
           <input type="submit" class="btn-ci mr-2">

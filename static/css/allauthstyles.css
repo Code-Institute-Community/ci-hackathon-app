@@ -69,8 +69,11 @@ html form button:hover {
     color: var(--p-orange);
 }
 
+.signin-subheading, .external-signin {
+    font-size: .85rem;
+}
+
 .signin-subheading {
     font-style: italic;
     margin-top: 50px;
-    font-size: .85rem;
 }
