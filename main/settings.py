@@ -107,6 +107,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
 ACCOUNT_USERNAME_MIN_LENGTH = 4
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.environ.get('ACCOUNT_DEFAULT_HTTP_PROTOCOL',
+                                               'https')
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/post_login/"
 
@@ -170,7 +172,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 SLACK_ENABLED = os.environ.get("SLACK_ENABLED") == 'True'
 
 if SLACK_ENABLED:
-    ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
     SLACK_WORKSPACE = os.environ.get('SLACK_WORKSPACE')
     SLACK_BOT_TOKEN = os.environ.get('SLACK_BOT_TOKEN')
     INSTALLED_APPS += ['custom_slack_provider']
