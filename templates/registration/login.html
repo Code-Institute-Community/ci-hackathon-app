@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>External Login</h2>
-<form action="/accounts/admin/" method="POST">
+<form action="/accounts/external/" method="POST">
     {% csrf_token %}
     {{form.as_p}}
     <input type="submit" class="btn btn-primary btn-sm" value="Sign In">
