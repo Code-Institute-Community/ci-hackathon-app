@@ -91,6 +91,9 @@ class Hackathon(models.Model):
         verbose_name_plural = "Hackathons"
 
     def max_participants_reached(self):
+        if not self.max_participants:
+            return False
+
         return self.participants.count() >= self.max_participants
 
 
