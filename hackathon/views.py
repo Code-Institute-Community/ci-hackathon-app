@@ -498,6 +498,7 @@ def judge_teams(request, hackathon_id):
         return redirect(reverse('home'))
 
     return render(request, 'hackathon/judge_teams.html', {
+        'hackathon': hackathon,
         'teams': hackathon.teams,
     })
 

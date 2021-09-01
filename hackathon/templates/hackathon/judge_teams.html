@@ -8,46 +8,56 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-text">
-                {% for team in teams.all %}
-                
-                    <div class="card mb-2">
-                        <div class="card-body">
-                            <div class="card-title">{{team.display_name}}</div>
-                            <div class="card-text">
+                {% if teams.all %}
+                    {% for team in teams.all %}
+                    
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <div class="card-title">{{team.display_name}}</div>
+                                <div class="card-text">
 
-                                {% if team.project %}
-                                    {% with judge_scores=team.project.scores.all|filter_judge_scores:request.user %}
-                                    <div class="row">
-                                        <div class="col-md-12 col-lg-10 team-scores">
-                                            {% if judge_scores %}
-                                                
-                                                {% for score in judge_scores %}
-                                                    {% if forloop.counter > 1 %} / {% endif %}
-                                                    {{score.hack_project_score_category}}: <strong>{{score.score}}</strong>
-                                                {% endfor %}
-                                            {% else %}
-                                                No scores submitted yet.
-                                            {% endif %}
+                                    {% if team.project %}
+                                        {% with judge_scores=team.project.scores.all|filter_judge_scores:request.user %}
+                                        <div class="row">
+                                            <div class="col-md-12 col-lg-10 team-scores">
+                                                {% if judge_scores %}
+                                                    
+                                                    {% for score in judge_scores %}
+                                                        {% if forloop.counter > 1 %} / {% endif %}
+                                                        {{score.hack_project_score_category}}: <strong>{{score.score}}</strong>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    No scores submitted yet.
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-12 col-lg-2">
+                                                {% if judge_scores %}
+                                                <a role="button" class="btn btn-secondary btn-sm mt-2" href="/hackathon/{{team.hackathon.id}}/team/{{team.id}}/judging/?next=hackathon:judge_teams">Change Score</a>
+                                                {% else %}
+                                                <a role="button" class="btn btn-success btn-sm mt-2" href="/hackathon/{{team.hackathon.id}}/team/{{team.id}}/judging/?next=hackathon:judge_teams">Score Team</a>
+                                                {% endif %}
+                                            </div>
                                         </div>
-                                        <div class="col-md-12 col-lg-2">
-                                            {% if judge_scores %}
-                                            <a role="button" class="btn btn-secondary btn-sm mt-2" href="/hackathon/{{team.hackathon.id}}/team/{{team.id}}/judging/?next=hackathon:judge_teams">Change Score</a>
-                                            {% else %}
-                                            <a role="button" class="btn btn-success btn-sm mt-2" href="/hackathon/{{team.hackathon.id}}/team/{{team.id}}/judging/?next=hackathon:judge_teams">Score Team</a>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                    {% endwith %}
-                                {% else %}
-                                <p>
-                                    This team has not submitted a project.
-                                </p>
-                                {% endif %}
-                                        
+                                        {% endwith %}
+                                    {% else %}
+                                    <p>
+                                        This team has not submitted a project.
+                                    </p>
+                                    {% endif %}
+                                            
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <p>
+                        Nothing to judge yet. Teams have not been assigned.
+                    </p>
+                    <p class="mb-0">
+                        <a href="{% url "hackathon:view_hackathon" hackathon_id=hackathon.id %}"
+                            class="ci-link">Back To Hackathon</a>
+                    </p>
+                {% endif %}
                 </div>
             </div>
         </div>
