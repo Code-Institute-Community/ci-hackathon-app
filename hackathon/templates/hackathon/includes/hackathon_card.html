@@ -23,7 +23,7 @@
                 </h5>
                 <p class="card-subtitle mb-2 text-muted"><i class="far fa-calendar-alt p-2"></i> {{ hackathon.start_date }} - {{ hackathon.end_date }}</p>
                 {% if request.user.is_authenticated %}
-                <p class="card-subtitle mb-2 text-muted"><i class="fas fa-building p-2"></i> Open to all {{ hackathon.organisation }} students</p>
+                <p class="card-subtitle mb-2 text-muted"><i class="fas fa-building p-2"></i> Open to all {{ hackathon.organisation }} students &amp; alumni</p>
                 {% if hackathon.end_date|date:"YmdHis" <= today|date:"YmdHis" or hackathon.status == 'finished' %}
                 {% if request.user in hackathon.participants.all %}
                 <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user p-2"></i>You participated in this hackathon</p>
