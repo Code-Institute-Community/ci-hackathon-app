@@ -44,11 +44,11 @@
                     {% if request.user in team.participants.all or request.user == team.mentor or request.user.user_type|is_types:authorised_types %}
                     
                     <p>
-                        <strong class="mr-2">Mentor:</strong>
+                        <strong class="mr-2">Facilitator:</strong>
                         {% if team.mentor %}
                         <a class="ci-link" href="{{mentor_profile}}">{{team.mentor}}</a>
                         {% else %}
-                        No Mentor assigned
+                        No Facilitator assigned
                         {% endif %}
                     </p>
                     {% endif %}

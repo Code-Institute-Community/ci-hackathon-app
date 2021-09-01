@@ -529,7 +529,7 @@ def assign_mentors(request, hackathon_id):
 
         if hack_mentors_formset.is_valid():
             hack_mentors_formset.save()
-            messages.success(request, "Mentors updated successfully!")
+            messages.success(request, "Facilitators updated successfully!")
             return redirect(reverse('hackathon:assign_mentors',
                                     kwargs={'hackathon_id': hackathon_id}))
         else:

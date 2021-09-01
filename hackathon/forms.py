@@ -132,7 +132,7 @@ class HackTeamForm(forms.ModelForm):
     class Meta:
         model = HackTeam
         fields = ['id', 'display_name', 'mentor']
-    
+
     def __init__(self, *args, **kwargs):
         hackathon_id = kwargs.pop('hackathon_id', None)
         hackathon = Hackathon.objects.filter(id=hackathon_id).first()
@@ -143,6 +143,7 @@ class HackTeamForm(forms.ModelForm):
             self.fields['mentor'] = forms.ModelChoiceField(
                 queryset=judges)
             self.fields['mentor'].required = False
+            self.fields['mentor'].label = 'Facilitator'
 
 
 class HackAwardForm(forms.ModelForm):
