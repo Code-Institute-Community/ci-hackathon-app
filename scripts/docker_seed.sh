@@ -10,3 +10,4 @@ docker compose exec hackathon-app python3 manage.py loaddata hackathons
 docker compose exec hackathon-app python3 manage.py loaddata showcase
 docker compose exec hackathon-app python3 manage.py loaddata showcase_site_settings
 docker compose exec hackathon-app python3 manage.py loaddata reviews
+
