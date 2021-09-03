@@ -1,4 +1,5 @@
 ECHO Seeding fixtures
+python manage.py loaddata groups
 python manage.py loaddata organisation
 python manage.py loaddata accounts
 python manage.py loaddata resources
