@@ -128,8 +128,14 @@ class CustomUser(AbstractUser):
         return {
             'userid': self.id,
             'name': self.slack_display_name or self.email,
-            'level': self.status.level or 1
+            'level': self.get_level()
         }
+
+    def get_level(self):
+        """ Get the level from the status if student has a status assigned """
+        if self.status:
+            return self.status.level
+        return 1
 
     @property
     def user_type(self):
