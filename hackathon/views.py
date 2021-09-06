@@ -416,7 +416,7 @@ def enroll_toggle(request):
         elif (request.POST.get('enrollment-type') == 'judge'
                 and request.user.user_type in judge_user_types):
             hackathon.judges.add(request.user)
-            messages.success(request, "You have enrolled as a judge.")
+            messages.success(request, "You have enrolled as a facilitator/judge.")  # noqa: E501
         else:
             if hackathon.max_participants_reached():
                 messages.error(request,
