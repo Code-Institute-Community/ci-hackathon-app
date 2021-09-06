@@ -72,7 +72,7 @@ def group_participants(participants, num_teams):
     participant_groups = {}
     hackathon_level = 0
     for participant in participants:
-        participant_level = (participant.status.level or 1)
+        participant_level = participant.get_level()
         hackathon_level += participant_level
         participant_groups.setdefault(participant_level, [])
         participant_groups[participant_level].append(

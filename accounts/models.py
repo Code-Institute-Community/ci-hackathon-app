@@ -148,6 +148,7 @@ class CustomUser(AbstractUser):
         return {
             'userid': self.id,
             'name': self.slack_display_name or self.email,
+<<<<<<< HEAD
             'timezone': self.timezone_to_offset(),
             'num_hackathons': teams.count(),
             'participant_label': self.participant_label(),
@@ -176,6 +177,11 @@ class CustomUser(AbstractUser):
         
         return self in hackathon.participants.all()
 
+    def get_level(self):
+        """ Get the level from the status if student has a status assigned """
+        if self.status:
+            return self.status.level
+        return 1
 
     @property
     def user_type(self):
