@@ -1,15 +1,11 @@
-import random
-
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import HttpResponseNotFound
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 
 from .forms import ShowcaseForm
 from .models import Showcase, ShowcaseSiteSettings
-from hackathon.models import HackTeam, HackProject
+from hackathon.models import HackTeam
 from images.helpers import image_to_base64str
 
 
@@ -18,9 +14,9 @@ def view_showcases(request):
     showcase_settings = ShowcaseSiteSettings.objects.first()
     if not showcase_settings:
         return render(request, 'showcase.html', {
-        'top_results': None,
-        'all_showcases': None,
-    })
+            'top_results': None,
+            'all_showcases': None,
+        })
 
     showcase_hackathons = showcase_settings.hackathons.all()
     featured_hackathons = showcase_settings.featured_hackathons.all()
@@ -43,7 +39,7 @@ def view_showcases(request):
     paginator = Paginator(all_showcases, showcase_settings.projects_per_page)
     page = request.GET.get('page')
     paginated_showcases = paginator.get_page(page)
-    
+
     return render(request, 'showcase.html', {
         'top_results': top_results,
         'all_showcases': paginated_showcases,
@@ -82,7 +78,7 @@ def create_or_update_showcase(request, team_id):
         if showcase:
             form = ShowcaseForm(team_id=team_id, instance=showcase)
         else:
-            form = ShowcaseForm(team_id=team_id, 
+            form = ShowcaseForm(team_id=team_id,
                                 initial={"hack_project": team.project.id})
     else:
         data = request.POST
@@ -105,7 +101,7 @@ def create_or_update_showcase(request, team_id):
                 f.created_by = request.user
                 f.save()
                 form.save_m2m()
-            
+
             messages.success(request, "Project showcase created successfully.")
             return redirect(reverse('create_or_update_showcase',
                                     kwargs={'team_id': team_id}))

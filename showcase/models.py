@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from .lists import ORDER_BY_CATEGORY_CHOICES
@@ -6,48 +7,53 @@ from hackathon.models import HackProject, Hackathon
 
 
 class Showcase(models.Model):
-   """ Showcase to be displayed on the showcase page """
-   created = models.DateTimeField(auto_now_add=True)
-   updated = models.DateTimeField(auto_now=True)
-   # Each model can only be created by one user: One To Many
-   created_by = models.ForeignKey(User,
-                                 on_delete=models.CASCADE,
-                                 related_name="created_showcases")
+    """ Showcase to be displayed on the showcase page """
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    # Each model can only be created by one user: One To Many
+    created_by = models.ForeignKey(User,
+                                   on_delete=models.CASCADE,
+                                   related_name="created_showcases")
 
-   display_name = models.CharField(default="", max_length=255)
-   hack_project = models.OneToOneField(HackProject,
-                                       related_name="showcase",
-                                       on_delete=models.SET_NULL,
-                                       null=True)
-   showcase_participants = models.ManyToManyField(User,
-                                                related_name="showcases")
+    display_name = models.CharField(default="", max_length=255)
+    hack_project = models.OneToOneField(HackProject,
+                                        related_name="showcase",
+                                        on_delete=models.SET_NULL,
+                                        null=True)
+    showcase_participants = models.ManyToManyField(User,
+                                                   related_name="showcases")
 
-   showcase_image = models.TextField(
-      default="",
-      blank=True,
-      help_text=("Image displayed on the project showcase page to promote "
-                  "the project. Img should ideally be 500x800px.")
-   )
-   is_public = models.BooleanField(default=True)
+    showcase_image = models.TextField(
+        default="",
+        blank=True,
+        help_text=("Image displayed on the project showcase page to promote "
+                   "the project. Img should ideally be 500x800px.")
+    )
+    is_public = models.BooleanField(default=True)
 
-   def __str__(self):
-      return self.display_name
+    def __str__(self):
+        return self.display_name
 
-   class Meta:
-      verbose_name = "Project Showcase"
-      verbose_name_plural = "Project Showcases"
-   
-   def get_team(self):
-      try:
-         return self.hack_project.hackteam
-      except:
-         return None
+    class Meta:
+        verbose_name = "Project Showcase"
+        verbose_name_plural = "Project Showcases"
 
-   def get_project(self):
-      try:
-         return self.hack_project
-      except:
-         return None
+    def get_team(self):
+        try:
+            return self.hack_project.hackteam
+        except:
+            return None
+
+    def get_project(self):
+        try:
+            return self.hack_project
+        except:
+            return None
+
+    @property
+    def url(self):
+        return (f'{settings.ACCOUNT_DEFAULT_HTTP_PROTOCOL}://'
+                f'{settings.ALLOWED_HOSTS[0]}/showcase/{self.id}/')
 
 
 class SingletonModel(models.Model):
@@ -69,19 +75,19 @@ class SingletonModel(models.Model):
 
 
 class ShowcaseSiteSettings(SingletonModel):
-   """ Model to set how the showcase should be constructed"""
-   hackathons = models.ManyToManyField(Hackathon,
-                                  related_name="showcase_hackathons")
-   featured_hackathons = models.ManyToManyField(
-      Hackathon, related_name="showcase_featured_hackathons")
-   order_by_category = models.CharField(default="random", max_length=255,
-                                        choices=ORDER_BY_CATEGORY_CHOICES)
-   spotlight_number = models.IntegerField(default=5)
-   projects_per_page = models.IntegerField(default=5)
+    """ Model to set how the showcase should be constructed"""
+    hackathons = models.ManyToManyField(Hackathon,
+                                        related_name="showcase_hackathons")
+    featured_hackathons = models.ManyToManyField(
+        Hackathon, related_name="showcase_featured_hackathons")
+    order_by_category = models.CharField(default="random", max_length=255,
+                                         choices=ORDER_BY_CATEGORY_CHOICES)
+    spotlight_number = models.IntegerField(default=5)
+    projects_per_page = models.IntegerField(default=5)
 
-   def __str__(self):
-      return "Project Showcase Settings"
+    def __str__(self):
+        return "Project Showcase Settings"
 
-   class Meta:
-      verbose_name = 'Project Showcase Site Settings'
-      verbose_name_plural = 'Project Showcase Site Settings'
+    class Meta:
+        verbose_name = 'Project Showcase Site Settings'
+        verbose_name_plural = 'Project Showcase Site Settings'
