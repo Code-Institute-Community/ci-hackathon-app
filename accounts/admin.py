@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 
-from .models import CustomUser, Organisation
+from .models import CustomUser, Organisation, Status
 
 
 class CustomUserAdmin(BaseUserAdmin):
@@ -12,7 +12,7 @@ class CustomUserAdmin(BaseUserAdmin):
         ('Personal info', {'fields': (
             'username', 'first_name', 'last_name',
             'full_name', 'slack_display_name',
-            'current_lms_module', 'organisation',
+            'status', 'organisation',
             'user_type', 'is_external')}),
         ('Permissions', {'fields': (
             'is_active', 'is_staff', 'is_superuser',
@@ -52,3 +52,4 @@ class CustomUserAdmin(BaseUserAdmin):
 admin.site.login = login_required(admin.site.login)
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Organisation)
+admin.site.register(Status)

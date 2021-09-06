@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 
 from .lists import LMS_MODULES_CHOICES
-from .models import CustomUser
+from .models import Status, CustomUser
 
 
 class SignupForm(forms.Form):
@@ -19,15 +19,14 @@ class SignupForm(forms.Form):
         max_length=30,
         widget=forms.TextInput(attrs={'placeholder': 'Slack Display Name'}),
         label='')
-    current_lms_module = forms.CharField(
-        widget=forms.Select(choices=LMS_MODULES_CHOICES),
+    status = forms.ModelChoiceField(
+        queryset=Status.objects.filter(admin_only=False),
         label="Where are you currently in the programme?"
     )
 
     class Meta:
         fields = (
-            'email', 'password1', 'password2', 'slack_display_name',
-            'current_lms_module',
+            'email', 'password1',  'password2', 'slack_display_name', 'status',
         )
         model = get_user_model()
 
@@ -36,7 +35,7 @@ class SignupForm(forms.Form):
         user.full_name = self.cleaned_data['full_name']
         user.username = self.cleaned_data['email']
         user.slack_display_name = self.cleaned_data['slack_display_name']
-        user.current_lms_module = self.cleaned_data['current_lms_module']
+        user.status = self.cleaned_data['status']
         user.save()
 
 
@@ -53,8 +52,9 @@ class EditProfileForm(forms.ModelForm):
         max_length=30,
         widget=forms.TextInput(attrs={'placeholder': 'Slack Display Name'}),
         label='')
-    current_lms_module = forms.CharField(
-        widget=forms.Select(choices=LMS_MODULES_CHOICES),
+    # TODO: Change this based on privileges
+    status = forms.ModelChoiceField(
+        queryset=Status.objects.filter(admin_only=False),
         label="Where are you currently in the programme?"
     )
     about = forms.CharField(widget=forms.Textarea(), required=False)
@@ -67,8 +67,19 @@ class EditProfileForm(forms.ModelForm):
             'full_name',
             'about',
             'slack_display_name',
-            'current_lms_module',
+            'status',
             'website_url',
             'profile_is_public',
             'email_is_public',
         )
+
+    def __init__(self, *args, **kwargs):
+        instance = kwargs.get('instance', None)
+
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+
+        if instance:
+            is_admin = instance.is_superuser or instance.is_staff
+            if is_admin:
+                self.fields['status'].queryset = Status.objects.filter(
+                    organisation=instance.organisation)

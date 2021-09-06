@@ -3,9 +3,6 @@ from enum import Enum
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from .lists import LMS_MODULES_CHOICES
-from teams.lists import LMS_LEVELS
-
 
 class UserType(Enum):
     SUPERUSER = 0
@@ -31,6 +28,28 @@ class Organisation(models.Model):
         return self.display_name
 
 
+class Status(models.Model):
+    """ The participant's status and experience level used for matching
+    students into teams """
+    display_name = models.CharField(max_length=80)
+    level = models.IntegerField()
+    organisation = models.ForeignKey(
+        Organisation, on_delete=models.CASCADE, related_name='statuses',
+        default=1)
+    admin_only = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.display_name
+
+    @property
+    def escaped_display_name(self):
+        return self.display_name.replace(' ', '_')
+
+    class Meta:
+        verbose_name = 'Status'
+        verbose_name_plural = 'Statuses'
+
+
 class CustomUser(AbstractUser):
     """ Custom user model extending the basic AbstractUser model """
 
@@ -46,11 +65,11 @@ class CustomUser(AbstractUser):
         default=''
     )
 
-    current_lms_module = models.CharField(
-        max_length=50,
-        blank=False,
-        default='',
-        choices=LMS_MODULES_CHOICES
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
     )
 
     organisation = models.ForeignKey(
@@ -105,14 +124,11 @@ class CustomUser(AbstractUser):
         """  Return Class object to string via the user email value  """
         return self.slack_display_name
 
-    def human_readable_current_lms_module(self):
-        return self.current_lms_module.replace('_', ' ')
-
     def to_team_member(self):
         return {
             'userid': self.id,
             'name': self.slack_display_name or self.email,
-            'level': LMS_LEVELS.get(self.current_lms_module) or 1
+            'level': self.status.level or 1
         }
 
     @property
