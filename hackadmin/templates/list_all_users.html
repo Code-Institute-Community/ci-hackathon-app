@@ -40,7 +40,7 @@
                                     {{ user.email }}
                                 </td>
                                 <td>
-                                    {{ user.current_lms_module|readable_lms_module|title }}
+                                    {{ user.status.display_name|title }}
                                 </td>
                                 <td>
                                     {{user.user_type|readable_user_type}}

@@ -5,7 +5,6 @@ import requests
 
 import pytz
 
-from .lists import LMS_LEVELS
 from accounts.models import CustomUser
 from hackathon.models import Hackathon, HackTeam
 
@@ -73,8 +72,7 @@ def group_participants(participants, num_teams):
     participant_groups = {}
     hackathon_level = 0
     for participant in participants:
-        participant_level = (LMS_LEVELS.get(participant.current_lms_module)
-                             or 1)
+        participant_level = (participant.status.level or 1)
         hackathon_level += participant_level
         participant_groups.setdefault(participant_level, [])
         participant_groups[participant_level].append(
@@ -116,8 +114,9 @@ def find_all_combinations(participants, team_sizes):
 
     Returns a list of tuples representing all the possible combinations """
     num_teams = len(team_sizes)
-    participant_levels = [LMS_LEVELS.get(participant.current_lms_module) or 1
-                          for participant in participants]
+    participant_levels = [
+        (participant.status.level or 1) if participant.status else 1
+        for participant in participants]
     hackathon_level = sum(participant_levels)
     team_level = math.floor(hackathon_level / num_teams)
     missing = hackathon_level - (num_teams * team_level)
