@@ -63,7 +63,6 @@ def save_image(request):
         return HttpResponseBadRequest()
 
 
-@login_required
 def render_image(request, showcase_id, image_hash):
     try:
         image_hash_uuid = uuid.UUID(image_hash)
