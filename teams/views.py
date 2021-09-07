@@ -76,7 +76,7 @@ def change_teams(request, hackathon_id):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-             redirect_url='hackathon:list-hackathons')
+            redirect_url='hackathon:list-hackathons')
 def create_teams(request):
     """ View used to save the hackathon teams created by an admin """
     if request.method == 'POST':
@@ -103,7 +103,7 @@ def create_teams(request):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-             redirect_url='hackathon:list-hackathons')
+            redirect_url='hackathon:list-hackathons')
 def clear_teams(request):
     """ Reset all teams for a specific hackathon """
     if request.method == 'POST':
@@ -132,7 +132,6 @@ def view_team(request, team_id):
                           f'team/{mentor_slack_id}')
     elif team.mentor:
         mentor_profile = f'profile/{team.mentor.id}'
-
 
     return render(request, 'team.html', {
         'team': team,
@@ -186,12 +185,12 @@ def rename_team(request, team_id):
     """ Change the name of a HackTeam """
     hack_team = get_object_or_404(HackTeam, id=team_id)
 
-    if (not request.user.user_type == UserType.STAFF 
+    if (not request.user.user_type == UserType.STAFF
             and request.user not in hack_team.participants.all()):
         messages.error(request,
                        'You do not have access to rename this team')
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
-    
+
     form = EditTeamName(request.POST, instance=hack_team)
     if form.is_valid():
         form.save()
@@ -216,13 +215,13 @@ def create_group_im(request, team_id):
             or request.user == team.mentor):
         messages.error(request,
                        ('You do not have access to create a Slack IM group '
-                       'for this team.'))
+                        'for this team.'))
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
     if not (settings.SLACK_ENABLED or settings.SLACK_BOT_TOKEN
             or settings.SLACK_WORKSPACE):
         messages.error(request, 'This feature is currently not enabled.')
-        return redirect(reverse('view_team', kwargs={'team_id': team_id}))   
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
     pattern = re.compile(r'^U[a-zA-Z0-9]*[_]T[a-zA-Z0-9]*$')
     users = [team_member.username.split('_')[0] 
@@ -235,9 +234,9 @@ def create_group_im(request, team_id):
     params = {
         'users': ','.join(users),
     }
-    headers = {'Authorization': f'Bearer {settings.SLACK_BOT_TOKEN}' }
+    headers = {'Authorization': f'Bearer {settings.SLACK_BOT_TOKEN}'}
     response = requests.get(SLACK_GROUP_IM_ENDPOINT, params=params,
-                             headers=headers)
+                            headers=headers)
 
     if not response.status_code == 200:
         messages.error(request, ('An unexpected error occurred creating the '
@@ -249,7 +248,7 @@ def create_group_im(request, team_id):
         messages.error(request, (f'An error occurred creating the Group IM. '
                                  f'Error code: {response.get("error")}'))
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
-        
+
     channel = response.get('channel', {}).get('id')
     communication_channel = (f'https://{settings.SLACK_WORKSPACE}.slack.com/'
                              f'app_redirect?channel={channel}')
@@ -258,7 +257,7 @@ def create_group_im(request, team_id):
 
     if len(users) < len(team.participants.all()):
         missing_users = len(team.participants.all()) - len(users)
-        messages.error(request, 
+        messages.error(request,
                        (f'Group IM successfully created, but {missing_users} '
                         f'users could not be added to the Group IM. '
                         f'Please add the missing users manually.'))
