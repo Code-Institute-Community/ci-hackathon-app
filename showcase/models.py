@@ -53,6 +53,13 @@ class Showcase(models.Model):
         except:
             return None
 
+    def get_image(self):
+        if self.showcase_image:
+            return self.showcase_image
+        if self.hack_project.project_image:
+            return self.hack_project.project_image
+        return
+
     @property
     def url(self):
         return (f'{settings.ACCOUNT_DEFAULT_HTTP_PROTOCOL}://'

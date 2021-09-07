@@ -67,9 +67,8 @@ def render_image(request, showcase_id, image_hash):
     try:
         image_hash_uuid = uuid.UUID(image_hash)
         showcase = get_object_or_404(Showcase, hash=image_hash_uuid)
-        if showcase.showcase_image:
-            data_uri = showcase.showcase_image
-            image_data = data_uri.partition('base64,')[2]
+        if showcase.get_image():
+            image_data = showcase.get_image().partition('base64,')[2]
             binary = base64.b64decode(image_data)
             return HttpResponse(binary, content_type='image/png')
     except ValueError:

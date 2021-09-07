@@ -7,7 +7,7 @@
 
 {% if showcase %}
 <meta property='og:title' content='{{showcase.hack_project.display_name}}'/>
-    {% if showcase.showcase_image %}
+    {% if showcase.get_image %}
     <meta property='og:image' content='{{showcase.image_url}}'/>
     {% endif %}
 <meta property='og:description' content='{{showcase.hack_project.description}}'/>
