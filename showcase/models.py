@@ -32,7 +32,7 @@ class Showcase(models.Model):
                    "the project. Img should ideally be 500x800px.")
     )
     is_public = models.BooleanField(default=True)
-    hash = models.UUIDField(default=uuid.uuid4, editable=False)
+    hash = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     def __str__(self):
         return self.display_name
