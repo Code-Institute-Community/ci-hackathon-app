@@ -1,3 +1,5 @@
+import uuid
+
 from django.conf import settings
 from django.db import models
 
@@ -30,6 +32,7 @@ class Showcase(models.Model):
                    "the project. Img should ideally be 500x800px.")
     )
     is_public = models.BooleanField(default=True)
+    hash = models.UUIDField(default=uuid.uuid4, editable=False)
 
     def __str__(self):
         return self.display_name
@@ -54,6 +57,10 @@ class Showcase(models.Model):
     def url(self):
         return (f'{settings.ACCOUNT_DEFAULT_HTTP_PROTOCOL}://'
                 f'{settings.ALLOWED_HOSTS[0]}/showcase/{self.id}/')
+
+    @property
+    def image_url(self):
+        return f'{self.url}image/{self.hash.hex}/'
 
 
 class SingletonModel(models.Model):
