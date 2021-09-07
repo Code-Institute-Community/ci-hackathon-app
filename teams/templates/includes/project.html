@@ -16,22 +16,31 @@
                 data-toggle="modal" data-target="#uploadImageModal">
                 <i class="fas fa-pen mr-2"></i>Edit</button>
             {% endif %}
-            {% if team.project.project_image %}
-                <img src="{{team.project.project_image}}" onerror="this.src = {% static 'img/ci-hackathon--square.png' %}" width="100%" />
+            {% if showcase.showcase_image %}
+            <img src="{{team.project.project_image}}" onerror="this.src = {% static 'img/ci-hackathon--square.png' %}" width="100%" alt="Project Image" />l
+            {% elif team.project.project_image %}
+                <img src="{{team.project.project_image}}" onerror="this.src = {% static 'img/ci-hackathon--square.png' %}" width="100%" alt="Project Image" />
             {% else %}
-                <img src="{% static 'img/ci-hackathon--square.png' %}" width="100%" />
+                <img src="{% static 'img/ci-hackathon--square.png' %}" width="100%" alt="Project Image" />
             {% endif %}
         </div>
         {% if request.user in team.participants.all and not showcase %}
-        {% if team.hackathon.status == 'hack_in_progress' %}
-        <a role="button" class="btn btn-ci mt-2 w-100" href="{% url 'create_project' team_id=team.id %}">Edit Project</a>
-        {% elif team.hackathon.status == 'judging' %}
-        <div class="enrollments-closed mt-4 mb-2 p-3">
-            Judging in progress, you cannot edit your project anymore.
-        </div>
-        {% endif%}
+            {% if team.hackathon.status == 'hack_in_progress' %}
+            <a role="button" class="btn btn-ci mt-2 w-100" href="{% url 'create_project' team_id=team.id %}">Edit Project</a>
+            {% elif team.project and team.hackathon.status == 'finished' %}
+            <a role="button" class="btn btn-ci mt-2 w-100" href="{% url 'create_project' team_id=team.id %}">Edit Project</a>
+            {% elif team.hackathon.status == 'judging' %}
+            <div class="enrollments-closed mt-4 mb-2 p-3">
+                Judging in progress, you cannot edit your project anymore.
+            </div>
+            {% endif%}
         <a role="button" class="btn btn-ci mt-2 w-100" href="{% url 'create_or_update_showcase' team_id=team.id %}">
             {% if team.get_showcase %}Edit{% else %}Add{% endif %} Showcase
+        </a>
+        {% endif %}
+        {% if not showcase and team.project.get_showcase %}
+        <a role="button" class="btn btn-primary mt-2 w-100" href="{% url 'view_showcase' showcase_id=team.project.get_showcase.id %}">
+            View Showcase
         </a>
         {% endif %}
     </div>

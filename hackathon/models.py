@@ -195,7 +195,7 @@ class HackTeam(models.Model):
 
     def __str__(self):
         return self.display_name
-    
+
     class Meta:
         verbose_name = "Hack Team"
         verbose_name_plural = "Hack Teams"
@@ -239,7 +239,7 @@ class HackProject(models.Model):
 
     def __str__(self):
         return self.display_name
-    
+
     def get_showcase(self):
        try:
           return self.showcase
