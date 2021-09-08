@@ -17,7 +17,7 @@
                 <i class="fas fa-pen mr-2"></i>Edit</button>
             {% endif %}
             {% if showcase.showcase_image %}
-            <img src="{{showcase.showcase_image}}" onerror="this.src = {% static 'img/ci-hackathon--square.png' %}" width="100%" alt="Project Image" />l
+            <img src="{{showcase.showcase_image}}" onerror="this.src = {% static 'img/ci-hackathon--square.png' %}" width="100%" alt="Project Image" />
             {% elif team.project.project_image %}
                 <img src="{{team.project.project_image}}" onerror="this.src = {% static 'img/ci-hackathon--square.png' %}" width="100%" alt="Project Image" />
             {% else %}
