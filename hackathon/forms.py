@@ -1,5 +1,4 @@
 from django import forms
-from django.forms import BaseModelFormSet
 
 from accounts.models import Organisation
 from .models import Hackathon, HackProject, HackAward, HackTeam, \
@@ -9,7 +8,8 @@ from .lists import STATUS_TYPES_CHOICES
 
 class HackathonForm(forms.ModelForm):
     """ A form to enable users to add hackathon events via the frontend site.
-     The form renders the fields that require value inputs from the user, along with some basic validation. """
+    The form renders the fields that require value inputs from the user,
+    along with some basic validation. """
     display_name = forms.CharField(
         label='Display Name',
         max_length=254,
@@ -172,7 +172,8 @@ class HackAwardForm(forms.ModelForm):
         # winning_projects can be chosen if a hackathon_id is specified
         if hackathon:
             hack_projects = HackProject.objects.filter(
-                    hackteam__in=hackathon.teams.all()).order_by('display_name')
+                    hackteam__in=hackathon.teams.all()).order_by(
+                        'display_name')
             hack_award_categories = HackAwardCategory.objects.filter(
                     award__in=hackathon.awards.all()).order_by(
                         'display_name')

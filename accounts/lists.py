@@ -11,7 +11,7 @@ USER_TYPES_CHOICES = (
 )
 
 """
-List of CI LMS modules to be passed into dropdown of same name for each 
+List of CI LMS modules to be passed into dropdown of same name for each
 user selection.
 """
 LMS_MODULES_CHOICES = (
@@ -21,13 +21,14 @@ LMS_MODULES_CHOICES = (
     ('html_essentials', 'HTML Essentials'),
     ('css_essentials', 'CSS Essentials'),
     ('user_centric_frontend_development', 'User Centric Frontend Development'),
-    ('comparative_programming_languages_essentials', 'Comparative Programming Languages Essentials'),
+    ('comparative_programming_languages_essentials',
+        'Comparative Programming Languages Essentials'),
     ('javascript_essentials', 'Javascript Essentials'),
     ('interactive_frontend_development', 'Interactive Frontend Development'),
     ('python_essentials', 'Python Essentials'),
     ('practical_python', 'Practical Python'),
     ('data_centric_development', 'Data Centric Development'),
-    ('backend_development','Backend Development'),
+    ('backend_development', 'Backend Development'),
     ('full_stack_frameworks_with_django', 'Full Stack Frameworks with Django'),
     ('alumni', 'Alumni'),
     ('staff', 'Staff'),

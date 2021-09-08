@@ -1,6 +1,4 @@
 from django.db import models
-from django.utils import timezone
-from datetime import datetime
 
 from accounts.models import CustomUser as User
 from accounts.models import Organisation
@@ -218,7 +216,7 @@ class HackProject(models.Model):
     display_name = models.CharField(default="", max_length=255)
     description = models.TextField(max_length=500)
     technologies_used = models.CharField(
-        default="", max_length=1024, 
+        default="", max_length=1024,
         help_text=("Add any technologies that were used for this project"))
     project_image = models.TextField(
         default="",

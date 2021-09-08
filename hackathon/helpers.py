@@ -35,7 +35,7 @@ def query_scores(hackathon_id):
         INNER JOIN hackathon_hackproject AS projects
         ON scores.project_id = projects.id
         INNER JOIN (
-            SELECT 
+            SELECT
                 judge_id,
                 project_id,
                 COUNT(*) AS num_scores
@@ -65,10 +65,10 @@ def combine_name(name1, name2):
 
 
 def create_judges_scores_table(scores, judges, teams):
-    """ Creates a list of lists of each judges score per team, the total for 
+    """ Creates a list of lists of each judges score per team, the total for
     each team, excludes judges scores who have not scored all teams yet and
     creates a name column from team and project name
-    
+
     Returns a dict that represents the headers and results table that will be
     displayed in the template """
     default_values = [0 for i in range(len(judges))]
@@ -89,13 +89,13 @@ def create_judges_scores_table(scores, judges, teams):
     # Calculate how many projects the judges have scored and set scores for
     # judges who have not scored all projects to 0 which will exclude their
     # scores from the overall
-    scores_per_judge = dict(judges_scores_table.groupby('judge_name'
-        ).count()['team_name'])
+    scores_per_judge = dict(judges_scores_table.groupby(
+        'judge_name').count()['team_name'])
     judges_to_exclude = [judge for judge in judges
-                     if (scores_per_judge.get(judge) or 0) < len(teams)]
+                         if (scores_per_judge.get(judge) or 0) < len(teams)]
     for j in judges_to_exclude:
         scores_table[j] = 0
-    
+
     # Convert all scores to a numeric value
     for judge in judges:
         scores_table[judge] = scores_table[judge].apply(pd.to_numeric)
@@ -108,9 +108,9 @@ def create_judges_scores_table(scores, judges, teams):
     # Combine team_name and project_name in one column and drop the unneeded
     # extra columns
     scores_table.insert(
-        0, 'Team / Project Name', 
+        0, 'Team / Project Name',
         scores_table['team_name'].combine(scores_table['project_name'],
-        combine_name))
+                                          combine_name))
     scores_table.drop(columns=['team_name', 'project_name'], inplace=True)
 
     return {

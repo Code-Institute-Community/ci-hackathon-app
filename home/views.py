@@ -20,13 +20,13 @@ def index(request):
     if not request.user.current_lms_module:
         messages.warning(request, 'Please fill in your profile.')
         return redirect(reverse('edit_profile'))
-    
+
     return redirect(reverse('home'))
 
 
 def home(request):
-    """ 
-    A view to return the index page and upcoming Hackathon information 
+    """
+    A view to return the index page and upcoming Hackathon information
     for any public hackathons (e.g. future and ongoing with CI as organisation)
     """
     hackathons = Hackathon.objects.filter(
@@ -36,7 +36,8 @@ def home(request):
     page = request.GET.get('page')
     paged_hackathons = paginator.get_page(page)
 
-    return render(request, "home/index.html",  {"hackathons": paged_hackathons})
+    return render(request, "home/index.html",  {
+        "hackathons": paged_hackathons})
 
 
 def faq(request):

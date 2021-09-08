@@ -1,6 +1,4 @@
 from copy import deepcopy
-from itertools import combinations
-import json
 import math
 
 from .lists import LMS_LEVELS
@@ -45,7 +43,7 @@ def choose_team_sizes(participants, teamsize):
 def choose_team_levels(num_teams, hackathon_level):
     """ Calculates the average experience level per team and distributes any
     remaining difference among some of the teams evenly
-    
+
     Returns a list of team_levels """
     avg_team_level = math.floor(hackathon_level / num_teams)
     team_levels = []
@@ -56,13 +54,13 @@ def choose_team_levels(num_teams, hackathon_level):
             team_levels.append(avg_team_level + remainder_per_team)
             remainder -= remainder_per_team
     num_team_with_avg_level = num_teams - len(team_levels)
-    teams_at_normal_level = [avg_team_level for team 
+    teams_at_normal_level = [avg_team_level for team
                              in range(num_team_with_avg_level)]
     return team_levels + teams_at_normal_level
 
 
 def group_participants(participants, num_teams):
-    """ Groups participants based on their experience level based on where 
+    """ Groups participants based on their experience level based on where
     they are in the programme
 
     Returns a dict with the experience level as key and the grouped student
@@ -84,7 +82,7 @@ def group_participants(participants, num_teams):
 
 
 def find_group_combinations(participant_levels, team_size, team_level,
-                                missing):
+                            missing):
     """ Finds all possible combinations based on the list of participants'
     experience levels, the team size and the team's wanted combined
     experience level
@@ -117,7 +115,7 @@ def find_all_combinations(participants, team_sizes):
 
     Returns a list of tuples representing all the possible combinations """
     num_teams = len(team_sizes)
-    participant_levels = [LMS_LEVELS.get(participant.current_lms_module) or 1 
+    participant_levels = [LMS_LEVELS.get(participant.current_lms_module) or 1
                           for participant in participants]
     hackathon_level = sum(participant_levels)
     team_level = math.floor(hackathon_level / num_teams)
@@ -126,7 +124,7 @@ def find_all_combinations(participants, team_sizes):
     combos = []
     for team_size in team_sizes:
         combos += find_group_combinations(participant_levels, team_size,
-                                              team_level, missing)
+                                          team_level, missing)
     # to remove differently sorted combinations with the same elements
     sorted_combinations = [sorted(combo) for combo in combos]
     combos_without_dupes = list(set(set(tuple(i)
@@ -144,14 +142,13 @@ def distribute_participants_to_teams(team_sizes, team_levels,
     distributed to a team to be distributed manually """
     teams = {}
     team_num = 1
-    num_teams = len(team_sizes)
     team_size = team_sizes.pop(0)
     team_level = team_levels.pop(0)
-    
+
     while team_size:
         combos_to_pick_from = [c for c in combos
-                                if sum(c) == team_level
-                                and len(c) == team_size]
+                               if sum(c) == team_level
+                               and len(c) == team_size]
         for combo in combos_to_pick_from:
             # Try to pick the participants from a copy of the participants
             # if there are not enough participants for the combo skip
@@ -161,7 +158,7 @@ def distribute_participants_to_teams(team_sizes, team_levels,
                 members = [participants_copy[c].pop() for c in combo]
             except IndexError:
                 continue
-            
+
             members = [participants[c].pop() for c in combo]
             teams[f'team_{team_num}'] = members
             team_num += 1
@@ -220,8 +217,9 @@ def update_team_participants(created_by_user, teams, hackathon_id):
             hackathon=Hackathon.objects.get(id=hackathon_id)
         )
         if hack_team:
-            hack_team.first().participants.set(get_users_from_ids(team_members))
+            hack_team.first().participants.set(
+                get_users_from_ids(team_members))
         else:
             hackathon = Hackathon.objects.get(id=hackathon_id)
             create_new_team_and_add_participants(created_by_user, team_name,
-                                         team_members, hackathon)
+                                                 team_members, hackathon)

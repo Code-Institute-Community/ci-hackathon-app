@@ -1,6 +1,3 @@
-from allauth.account.views import SignupView
-
-from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -10,9 +7,10 @@ from .forms import EditProfileForm
 
 @login_required
 def edit_profile(request):
-    """ 
-        If the request is POST and the form is valid, save the form and redirect to profile.
-        Otherwise, display current user instance in EditProfileForm on edit_profile.html.
+    """
+        If the request is POST and the form is valid, save the form and
+        redirect to profile. Otherwise, display current user instance in
+        EditProfileForm on edit_profile.html.
     """
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)

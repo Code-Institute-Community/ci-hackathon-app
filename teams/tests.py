@@ -1,6 +1,3 @@
-from copy import deepcopy
-import math
-
 from django.core.management import call_command
 from django.test import TestCase, tag
 
@@ -12,6 +9,7 @@ from .helpers import choose_team_sizes, choose_team_levels,\
                      distribute_participants_to_teams, get_users_from_ids,\
                      create_new_team_and_add_participants,\
                      create_teams_in_view
+
 
 @tag('unit')
 class TeamsHelpersTestCase(TestCase):
@@ -49,13 +47,13 @@ class TeamsHelpersTestCase(TestCase):
         participants, team_progression_level = group_participants(
             self.participants, num_teams)
         a = []
-        for l in participants.values():
-            for p in l:
+        for level in participants.values():
+            for p in level:
                 a.append(p['level'])
 
         self.assertTrue(isinstance(participants, dict))
         self.assertTrue(isinstance(team_progression_level, int))
-    
+
     def test_find_group_combinations(self):
         group_levels = [1, 1, 1, 2, 3, 4]
         team_size = 2
@@ -64,7 +62,8 @@ class TeamsHelpersTestCase(TestCase):
         combinations = find_group_combinations(group_levels, team_size,
                                                team_level, missing)
         self.assertEqual(combinations, [[1, 3], [1, 4], [2, 2], [2, 3], [2, 4],
-                                        [1, 3], [2, 3], [3, 3], [1, 4], [2, 4]])
+                                        [1, 3], [2, 3], [3, 3], [1, 4],
+                                        [2, 4]])
 
     def test_find_all_combinations(self):
         teamsize = 3
@@ -76,8 +75,10 @@ class TeamsHelpersTestCase(TestCase):
     def test_distribute_participants_to_teams(self):
         teamsize = 3
         team_sizes = sorted(choose_team_sizes(self.participants, teamsize))
-        grouped_participants, hackathon_level = group_participants(self.participants, len(team_sizes))
-        team_levels = sorted(choose_team_levels(len(team_sizes), hackathon_level))
+        grouped_participants, hackathon_level = group_participants(
+            self.participants, len(team_sizes))
+        team_levels = sorted(choose_team_levels(len(team_sizes),
+                                                hackathon_level))
         combos_without_dupes = find_all_combinations(
             self.participants, team_sizes)
         teams, leftover_participants = distribute_participants_to_teams(
@@ -96,11 +97,10 @@ class TeamsHelpersTestCase(TestCase):
 
         new_hack_team = create_new_team_and_add_participants(
             created_by_user, team_name, team_members, hackathon)
-        
+
         self.assertTrue(isinstance(new_hack_team, HackTeam))
         self.assertEqual(len(new_hack_team.participants.all()), 2)
-        
-    
+
     def test_get_users_from_ids(self):
         team_members = [
             {'userid': 13, 'name': 'Palpatine@test.com', 'level': 4},
@@ -157,10 +157,10 @@ class TeamsViewsTestCase(TestCase):
         self.client.force_login(self.participant_user)
         response = self.client.get('/hackathon/1/change_teams/')
         self.assertEqual(302, response.status_code)
-    
+
     def test_view_change_teams_with_admin_user(self):
         """ Test to see if staff can access the view to change teams """
-        login = self.client.force_login(self.admin_user)
+        self.client.force_login(self.admin_user)
         response = self.client.get('/hackathon/1/change_teams/')
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed('change_teams.html')
