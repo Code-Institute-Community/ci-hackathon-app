@@ -64,6 +64,8 @@ def save_image(request):
 
 
 def render_image(request, showcase_id, image_hash):
+    """ Retrieves a showcase image stored as base64 string 
+    and renders it as png image for sharing on LinkedIn """
     try:
         image_hash_uuid = uuid.UUID(image_hash)
         showcase = get_object_or_404(Showcase, hash=image_hash_uuid)
