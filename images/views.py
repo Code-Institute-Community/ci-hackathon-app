@@ -1,13 +1,16 @@
+import base64
+import uuid
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
-from django.shortcuts import render, redirect
-from django.core.files.images import ImageFile
-from django.core.files.base import ContentFile
+from django.http import HttpResponseBadRequest, HttpResponse, \
+                        Http404
+from django.shortcuts import get_object_or_404, redirect
 
 from .helpers import image_to_base64str
 from accounts.models import CustomUser
 from hackathon.models import HackTeam, HackProject, Hackathon
+from showcase.models import Showcase
 
 VALID_UPLOAD_TYPES = ['profile_image', 'header_image', 'project_image',
                       'screenshot', 'hackathon_image',
@@ -31,7 +34,7 @@ def save_image(request):
         if upload_type not in VALID_UPLOAD_TYPES:
             messages.error(request, 'Wrong upload type used.')
             return redirect(request.META.get('HTTP_REFERER'))
-        
+
         if upload_type == 'profile_image':
             user = CustomUser.objects.get(id=request.user.id)
             user.profile_image = image_to_base64str(upload_file)
@@ -55,8 +58,21 @@ def save_image(request):
 
         messages.success(request, 'Image uploaded successfully.')
         return redirect(request.META.get('HTTP_REFERER'))
-        
+
     else:
         return HttpResponseBadRequest()
-    return redirect(request.META.get('HTTP_REFERER'))
 
+
+def render_image(request, showcase_id, image_hash):
+    """ Retrieves a showcase image stored as base64 string
+    and renders it as png image for sharing on LinkedIn """
+    try:
+        image_hash_uuid = uuid.UUID(image_hash)
+        showcase = get_object_or_404(Showcase, hash=image_hash_uuid)
+        if showcase.get_image():
+            image_data = showcase.get_image().partition('base64,')[2]
+            binary = base64.b64decode(image_data)
+            return HttpResponse(binary, content_type='image/png')
+    except ValueError:
+        raise Http404()
+    raise Http404()

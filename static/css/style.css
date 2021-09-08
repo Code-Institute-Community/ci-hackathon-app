@@ -689,7 +689,7 @@ img.showcase-image-edit {
     width: 100%;
     max-height: 500px;
     /* background-image: linear-gradient(to right bottom, #ff5900, #ff7029, #ff8444, #ff965f, #ffa879); */
-    background: url('/static/img/hackathon-bg.png') center center;
+    background: url('../img/hackathon-bg.png') center center;
 }
 
 .showcase-project-name {

@@ -10,7 +10,7 @@ class HackProjectForm(forms.ModelForm):
         required=True
     )
     description = forms.CharField(
-        widget=forms.Textarea(attrs={'rows':4}),
+        widget=forms.Textarea(attrs={'rows': 4}),
         label='Description',
         required=True
     )
@@ -34,7 +34,7 @@ class HackProjectForm(forms.ModelForm):
         label='Grant permission to publicly share the project',
         widget=forms.CheckboxInput(),
         required=False
-    ) 
+    )
 
     class Meta:
         model = HackProject

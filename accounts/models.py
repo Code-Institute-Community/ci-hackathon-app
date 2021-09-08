@@ -87,8 +87,8 @@ class CustomUser(AbstractUser):
 
     email_is_public = models.BooleanField(
         default=False,
-        help_text=("Enabling this will let other users see your email address; "
-                   "profile needs to be set to public as well")
+        help_text=("Enabling this will let other users see your email "
+                   "address; profile needs to be set to public as well")
     )
 
     is_external = models.BooleanField(
@@ -126,7 +126,7 @@ class CustomUser(AbstractUser):
         elif self.is_staff:
             return UserType.STAFF
         elif self.organisation.id != 1:
-            # This is assuming that the first organisation entered is the 
+            # This is assuming that the first organisation entered is the
             # "host organisation"
             # TODO: Add a model or environment variable to determine which is
             # the host organisation

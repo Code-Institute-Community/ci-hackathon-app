@@ -18,4 +18,5 @@ class ResourceForm(forms.ModelForm):
         }
         for field in self.fields:
             self.fields[field].label = labels[field]
-        self.fields['description'].widget.attrs['placeholder'] = "Please, provide few sentences about the resource"
+        self.fields['description'].widget.attrs['placeholder'] = (
+            "Please, provide few sentences about the resource")

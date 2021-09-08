@@ -1,20 +1,18 @@
 from django import forms
-from django.forms import ModelForm
 from django.contrib.auth import get_user_model
 
-from .lists import USER_TYPES_CHOICES, LMS_MODULES_CHOICES
-from .models import Organisation
+from .lists import LMS_MODULES_CHOICES
 from .models import CustomUser
 
 
 class SignupForm(forms.Form):
-    """ 
-        Custom Signup form overriding the standard all_auth Signup form 
+    """
+        Custom Signup form overriding the standard all_auth Signup form
         Additional fields include: first_name | last_name |
         slack_display_name | user_type | current lms module | organisation
     """
     full_name = forms.CharField(
-        max_length=30,  
+        max_length=30,
         widget=forms.TextInput(attrs={'placeholder': 'Full Name'}),
         label='')
     slack_display_name = forms.CharField(
@@ -22,14 +20,14 @@ class SignupForm(forms.Form):
         widget=forms.TextInput(attrs={'placeholder': 'Slack Display Name'}),
         label='')
     current_lms_module = forms.CharField(
-        widget=forms.Select(
-        choices=LMS_MODULES_CHOICES),
+        widget=forms.Select(choices=LMS_MODULES_CHOICES),
         label="Where are you currently in the programme?"
     )
 
     class Meta:
         fields = (
-            'email','password1',  'password2', 'slack_display_name', 'current_lms_module',
+            'email', 'password1', 'password2', 'slack_display_name',
+            'current_lms_module',
         )
         model = get_user_model()
 
@@ -43,11 +41,12 @@ class SignupForm(forms.Form):
 
 
 class EditProfileForm(forms.ModelForm):
-    """ 
-        Using ModelForm to directly convert the CustomUser model into the EditProfileForm form.
+    """
+        Using ModelForm to directly convert the CustomUser model into the
+        EditProfileForm form.
     """
     full_name = forms.CharField(
-        max_length=30,  
+        max_length=30,
         widget=forms.TextInput(attrs={'placeholder': 'Full Name'}),
         label='')
     slack_display_name = forms.CharField(
@@ -55,8 +54,7 @@ class EditProfileForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'placeholder': 'Slack Display Name'}),
         label='')
     current_lms_module = forms.CharField(
-        widget=forms.Select(
-        choices=LMS_MODULES_CHOICES),
+        widget=forms.Select(choices=LMS_MODULES_CHOICES),
         label="Where are you currently in the programme?"
     )
     about = forms.CharField(widget=forms.Textarea(), required=False)

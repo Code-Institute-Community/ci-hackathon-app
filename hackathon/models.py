@@ -1,6 +1,4 @@
 from django.db import models
-from django.utils import timezone
-from datetime import datetime
 
 from accounts.models import CustomUser as User
 from accounts.models import Organisation
@@ -195,7 +193,7 @@ class HackTeam(models.Model):
 
     def __str__(self):
         return self.display_name
-    
+
     class Meta:
         verbose_name = "Hack Team"
         verbose_name_plural = "Hack Teams"
@@ -218,7 +216,7 @@ class HackProject(models.Model):
     display_name = models.CharField(default="", max_length=255)
     description = models.TextField(max_length=500)
     technologies_used = models.CharField(
-        default="", max_length=1024, 
+        default="", max_length=1024,
         help_text=("Add any technologies that were used for this project"))
     project_image = models.TextField(
         default="",
@@ -239,7 +237,7 @@ class HackProject(models.Model):
 
     def __str__(self):
         return self.display_name
-    
+
     def get_showcase(self):
        try:
           return self.showcase
