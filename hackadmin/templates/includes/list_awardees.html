@@ -1,0 +1,61 @@
+{% load hackadmin_tags %}
+
+<div class="table-responsive">
+    <table class="table table-sm border-top-0" id="awardsTable">
+        <thead>
+          <tr>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Team</th>
+            <th scope="col">Project</th>
+            <th scope="col">Award</th>
+            <th scope="col">Award Ranking</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% if awardees %}
+            {% for awardee in awardees %}
+            <tr>
+                <td>
+                    {{ awardee.name }}
+                </td>
+                <td>
+                    {{ awardee.email }}
+                </td>
+                <td>
+                    {{ awardee.team }}
+                </td>
+                <td>
+                    {{ awardee.project }}
+                </td>
+                <td>
+                    {{ awardee.award }}
+                </td>
+                <td>
+                    {{ awardee.award_ranking }}
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="4">
+                    No awards distributed yet
+                </td>
+            </tr>
+            {% endif %}
+    </table>
+</div>
+
+<div>
+    <a class="btn btn-primary btn-sm px-3" role="button" href="{% url 'hackathon:final_score' hackathon_id=hackathon.id %}">
+        <i class="fas fa-tasks mr-2"></i>View Scores
+    </a>
+    <a class="btn btn-primary btn-sm px-3" role="button" href="{% url 'hackathon:awards' hackathon_id=hackathon.id %}">
+        <i class="fas fa-award mr-2"></i>Change Awards
+    </a>
+    <a class="btn btn-warning btn-sm px-3" role="button" href="{{badges_csv}}" download="{{hackathon.display_name}} Badges.csv">
+        <i class="fas fa-file-download mr-2"></i>Download Badge Data as CSV
+    </a>
+</div>
+
+

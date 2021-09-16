@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -5,6 +7,7 @@ from django.contrib import messages
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, reverse, redirect, get_object_or_404
 
+from .helpers import extract_badges_for_hackathon
 from accounts.models import UserType, CustomUser
 from accounts.decorators import can_access
 from hackathon.models import Hackathon, HackTeam
@@ -43,10 +46,19 @@ def hackathon_participants(request, hackathon_id):
         } for team in hackathon.teams.all()]
     if settings.SLACK_ENABLED:
         slack_url = f'https://{settings.SLACK_WORKSPACE}.slack.com/team/'
+    badges_csv = 'data:text/csv;charset=utf-8,' + extract_badges_for_hackathon(
+            hackathon, date.today().isoformat(), format='csv')
+    awardees = [awardee for category, values in extract_badges_for_hackathon(
+            hackathon, date.today().isoformat()).items()
+            for awardee in values
+            if category not in ['participants', 'judges', 'facilitators']]
+    print(awardees)
     return render(request, 'hackadmin_participants.html', {
         'hackathon': hackathon,
         'mentors': mentors,
+        'awardees': awardees,
         'slack_url': slack_url,
+        'badges_csv': badges_csv,
     })
 
 
