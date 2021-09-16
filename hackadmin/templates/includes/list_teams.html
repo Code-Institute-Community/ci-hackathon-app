@@ -1,72 +1,90 @@
 {% load hackadmin_tags %}
 
-<table class="table table-sm border-top-0" id="judgesTable">
-    <thead>
-      <tr>
-        <th scope="col">Team Name</th>
-        <th scope="col">Team Members</th>
-        <th scope="col">Project</th>
-        <th scope="col">Facilitator</th>
-        <th scope="col">Communication Channel</th>
-        <th scope="col">Is Slack</th>
-      </tr>
-    </thead>
-    <tbody>
-        {% if teams %}
-        {% for team in teams %}
-        <tr>
-            <td>
-                {{ team.display_name }}
-            </td>
-            <td>
-                {% if team.participants.all %}
-                <ul class="hack-admin-team-members">
-                    {% for member in team.participants.all %}
-                    <li>
-                        {% include 'includes/remove_participant.html' with remove_from_hackathon=False %}
-                        {{member.slack_display_name}}
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                Team has no members.
-                {% endif %}
-            </td>
-            <td>
-                {% if team.project %}
-                {{ team.project.display_name }}
-                {% else %}
-                No project submitted yet.
-                {% endif %}
-            </td>
-            <td>
-                {{ team.mentor }}
-            </td>
-            <td>
-                {% if team_communication_channel %}
-                Yes
-                {% else %}
-                No
-                {% endif %}
-            </td>
-            <td>
-                {% if team_communication_channel %}
-                    {% if 'slack.com' in team_communication_channel %}
+<div class="table-responsive">
+    <table class="table table-sm border-top-0" id="teamsTable">
+        <thead>
+          <tr>
+            <th scope="col">Team Name</th>
+            <th scope="col">Team Members</th>
+            <th scope="col">Project</th>
+            <th scope="col">Facilitator</th>
+            <th scope="col">Channel</th>
+            <th scope="col">Is Slack</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% if teams %}
+            {% for team in teams %}
+            <tr>
+                <td>
+                    <a href="{% url 'view_team' team_id=team.id %}" class="ci-link">{{ team.display_name }}</a>
+                </td>
+                <td>
+                    {% if team.participants.all %}
+                    <ul class="hack-admin-team-members">
+                        {% for member in team.participants.all %}
+                        <li>
+                            
+                            <a href="{% url 'show_profile' user_id=member.id %}" class="ci-link">
+                                {{member.slack_display_name}}
+                                <a href="/admin/accounts/customuser/{{member.id}}/change/" class="ci-link ml-2 mr-1" title="Edit Member">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                {% include 'includes/remove_participant.html' with remove_from_hackathon=False title="Remove from team only" %}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    Team has no members.
+                    {% endif %}
+                </td>
+                <td>
+                    {% if team.project %}
+                    {{ team.project.display_name }}
+                    {% else %}
+                    No project submitted yet.
+                    {% endif %}
+                </td>
+                <td>
+                    {{ team.mentor }}
+                </td>
+                <td>
+                    {% if team.communication_channel %}
                     Yes
                     {% else %}
                     No
                     {% endif %}
-                {% else %}
-                No
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-        {% else %}
-        <tr>
-            <td colspan="4">
-                Nobody has registered as judge for this hackathon yet.
-            </td>
-        </tr>
-        {% endif %}
-</table>
+                </td>
+                <td>
+                    {% if team.communication_channel %}
+                        {% if 'slack.com' in team.communication_channel %}
+                        Yes
+                        {% else %}
+                        No
+                        {% endif %}
+                    {% else %}
+                    No
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="/admin/hackathon/hackteam/{{team.id}}/change/" class="ci-link mr-2" title="Edit Team">
+                        <i class="fas fa-pen"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="4">
+                    Nobody has registered as judge for this hackathon yet.
+                </td>
+            </tr>
+            {% endif %}
+    </table>
+</div>
+
+<div class="float-left">
+    <button class="btn btn-primary btn-sm float-right downloadTeams" data-tableid="teamsTable">Export Teams Data to CSV</button>
+</div>

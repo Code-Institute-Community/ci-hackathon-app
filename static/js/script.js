@@ -55,9 +55,10 @@ function filterUsersByHackathon(){
         $('#userCount').text(userCount);
     });
 
-    $('#downloadUsers').click(function(){
+    $('.downloadTable').click(function(){
         let csvContent = '';
-        let rows = $('#usersTable tr:not(.hide-row)');
+        let tableId = $(this).data('tableid');
+        let rows = $(`#${tableId} tr:not(.hide-row)`);
         rows.each(function(){
             let tds = $(this).children();
             let rowText = [];
@@ -70,8 +71,38 @@ function filterUsersByHackathon(){
         let link = document.createElement('a');
         link.id = 'download-csv';
         link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csvContent));
-        link.setAttribute('download', 'user-export.csv');
+        link.setAttribute('download', `${tableId}_${new Date().getTime()}.csv`);
         document.body.appendChild(link);
         document.querySelector('#download-csv').click();
+        document.body.removeChild(link);
+    });
+
+    $('.downloadTeams').click(function(){
+        let csvContent = '';
+        let tableId = $(this).data('tableid');
+        let rows = $(`#${tableId} tr:not(.hide-row)`);
+        rows.each(function(){
+            let tds = $(this).children();
+            console.log(rows)
+            let rowText = [];
+            let c = 0
+            tds.each(function(){
+                if (c == 1){
+                    rowText.push('"' + $(this).text().split('\n').map(x => x.trim()).filter(x => x != '').join('\n') + '"');
+                } else {
+                    rowText.push($(this).text().trim());
+                }
+                c++;
+            });
+            csvContent +=rowText.join(',') + '\n';
+        });
+
+        let link = document.createElement('a');
+        link.id = 'download-csv';
+        link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csvContent));
+        link.setAttribute('download', `${tableId}_${new Date().getTime()}.csv`);
+        document.body.appendChild(link);
+        document.querySelector('#download-csv').click();
+        document.body.removeChild(link);
     });
 }
