@@ -27,6 +27,9 @@
                         <li class="nav-item">
                             <a class="nav-link ci-link" id="judges-tab" data-toggle="tab" href="#judges" role="tab" aria-controls="judges" aria-selected="false">Judges</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link ci-link" id="awardees-tab" data-toggle="tab" href="#awardees" role="tab" aria-controls="awardees" aria-selected="false">Awardees</a>
+                        </li>
                     </ul>
                     <div class="tab-content" id="participantsTabContent">
                         <div class="tab-pane fade show active" id="participants" role="tabpanel" aria-labelledby="participants-tab">
@@ -40,6 +43,9 @@
                         </div>
                         <div class="tab-pane fade" id="judges" role="tabpanel" aria-labelledby="judges-tab">
                             {% include 'includes/list_judges.html' with judges=hackathon.judges.all %}
+                        </div>
+                        <div class="tab-pane fade" id="awardees" role="tabpanel" aria-labelledby="awardees-tab">
+                            {% include 'includes/list_awardees.html' %}
                         </div>
                     </div>
 
