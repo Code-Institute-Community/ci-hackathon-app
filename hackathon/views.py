@@ -44,15 +44,15 @@ def list_hackathons(request):
     """
     if request.user.user_type == UserType.EXTERNAL_USER:
         hackathons = Hackathon.objects.filter(is_public=True).order_by(
-            '-created').exclude(status='deleted')
+            '-start_date').exclude(status='deleted')
     elif request.user.user_type in [UserType.PARTNER_ADMIN,
                                     UserType.PARTNER_JUDGE,
                                     UserType.PARTNER_USER]:
         hackathons = Hackathon.objects.filter(
             organisation=request.user.organisation
-            ).order_by('-created').exclude(status='deleted')
+            ).order_by('-start_date').exclude(status='deleted')
     else:
-        hackathons = Hackathon.objects.order_by('-created').exclude(
+        hackathons = Hackathon.objects.order_by('-start_date').exclude(
             status='deleted')
     paginator = Paginator(hackathons, 8)
     page = request.GET.get('page')
