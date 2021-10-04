@@ -16,7 +16,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'home' %}">Home</a>
                 </li>
-                {% if user.is_authenticated %}
                 {% if request.user.user_type|is_types:authorised_admins %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarHackathons" role="button" data-toggle="dropdown"
@@ -31,9 +30,10 @@
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'hackathon:hackathon-list' %}">View Hackathons</a>
+                    <a class="nav-link" href="{% url 'hackathon:hackathon-list' %}">Hackathons</a>
                 </li>
                 {% endif %}
+                {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarResources" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">

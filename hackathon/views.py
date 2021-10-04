@@ -30,7 +30,6 @@ DEFAULT_SCORES = {
 logger = logging.getLogger(__name__)
 
 
-@login_required
 def list_hackathons(request):
     """ Lists all hackathons available to a given student
 
@@ -42,18 +41,9 @@ def list_hackathons(request):
         SUPERUSER and STAFF should see all hackathons
 
     """
-    if request.user.user_type == UserType.EXTERNAL_USER:
-        hackathons = Hackathon.objects.filter(is_public=True).order_by(
-            '-start_date').exclude(status='deleted')
-    elif request.user.user_type in [UserType.PARTNER_ADMIN,
-                                    UserType.PARTNER_JUDGE,
-                                    UserType.PARTNER_USER]:
-        hackathons = Hackathon.objects.filter(
-            organisation=request.user.organisation
-            ).order_by('-start_date').exclude(status='deleted')
-    else:
-        hackathons = Hackathon.objects.order_by('-start_date').exclude(
-            status='deleted')
+    hackathons = Hackathon.objects.filter(organisation=1).exclude(
+        status='deleted').order_by('id')
+
     paginator = Paginator(hackathons, 8)
     page = request.GET.get('page')
     paged_hackathons = paginator.get_page(page)
@@ -376,6 +366,17 @@ def view_hackathon(request, hackathon_id):
     }
 
     return render(request, "hackathon/hackathon_view.html", context)
+
+
+def view_hackathon_public(request, hackathon_id):
+    """ A limited view of the hackathon page for the public """
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    if hackathon.status == 'deleted':
+        messages.error(request, 'This hackathon does not exist.')
+        return redirect(reverse('home'))
+
+    return render(request, "hackathon/hackathon_view_public.html", {
+        'hackathon': hackathon})
 
 
 @login_required

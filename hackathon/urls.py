@@ -12,6 +12,7 @@ from .views import (
     change_awards,
     judge_teams,
     assign_mentors,
+    view_hackathon_public,
 )
 from teams.views import change_teams
 
@@ -27,6 +28,8 @@ urlpatterns = [
     path("create_hackathon", create_hackathon, name='create_hackathon'),
     path("<int:hackathon_id>/", view_hackathon,
          name='view_hackathon'),
+    path("public/<int:hackathon_id>/", view_hackathon_public,
+         name='view_hackathon_public'),
     path("<int:hackathon_id>/update/", update_hackathon,
          name="update_hackathon"),
     path("<int:hackathon_id>/update_hackathon_status/",
