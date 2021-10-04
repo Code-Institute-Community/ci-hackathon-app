@@ -25,7 +25,7 @@
                                 <div>
                                     <q>{{review.content}}</q>
                                     <p class="mt-2 rating">
-                                        {{ review.rating|get_rating|safe }}
+                                        {{ review.rating|convert_rating|safe }}
                                     </p>
                                 </div>
                             </div>
