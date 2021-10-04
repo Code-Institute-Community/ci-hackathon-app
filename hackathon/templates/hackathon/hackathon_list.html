@@ -26,7 +26,7 @@
     {% endif %}
     <!-- Pagination using Django's paginator. Options are disabled or hidden if unavailable. -->
     <nav aria-label="Hackathon Page Navigation">
-        {% include 'hackathon/includes/paginator.html' %}
+        {% include 'hackathon/includes/paginator.html' with page_obj=hackathons %}
     </nav>
 </section>
 {% endblock %}

@@ -52,16 +52,22 @@
                 {% endif %}
                 {% endif %}
                 {% endif %}
-              
+
                 <p class="card-subtitle mb-2">
                 <i class="fas fa-info-circle p-2"></i>{{hackathon.tag_line}}
                 </p>
-                
+
                 {% if request.user.user_type|is_types:authorised_types_on_card %}
                 <p class="card-subtitle mb-2">
                 <i class="fas fa-users p-2"></i>Participants: {{ hackathon.participants.all|length }} / Teams: {{ hackathon.teams.all|length }}</p>
                 {% endif %}
+
+                {% if request.user.is_authenticated %}
                 <a href="{% url 'hackathon:view_hackathon' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
+                {% else %}
+                <a href="{% url 'hackathon:view_hackathon_public' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
+                {% endif %}
+
                 {% if request.user.is_authenticated and hackathon.status == 'registration_open' and not request.user.user_type|is_types:authorised_types_on_card and request.user not in hackathon.participants.all %}
                 <div class="enroll-hackathon-card">{% include 'hackathon/includes/enroll_card.html' %}</div>
                 {% endif %}

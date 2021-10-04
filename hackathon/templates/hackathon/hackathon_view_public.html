@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% load account_tags %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12 col-lg-4">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col p-0">
+                        {% if hackathon.hackathon_image %}
+                        <img class="hackathon-detail-image"
+                            src="{{ hackathon.hackathon_image }}" />
+                        {% else %}
+                        <img class="hackathon-detail-image"
+                            src="{% static 'img/ci-hackathon--square.png' %}" />
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col p-0">
+                        <a role="button" class="btn btn-ci mt-3 w-100" href="{% url 'account_login' %}">Login To Register</a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col p-0">
+
+                        <div class="card my-3">
+                            <div class="card-body text-left hackathon-detailed-items">
+                                <p class="hackathon-sub-details"><i class="fas fa-laptop"></i> Theme: {{ hackathon.theme }}</p>
+                                <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{hackathon.status|prettify_status:hackathon.max_participants_reached}}</p>
+                                <p class="hackathon-sub-details"><i class="far fa-clock"></i> Start: {{ hackathon.start_date }}</p>
+                                <p class="hackathon-sub-details"><i class="fas fa-clock"></i> End: {{ hackathon.end_date }}</p>
+                                <p class="hackathon-sub-details"><i class="fas fa-school"></i> Organisation: {{ hackathon.organisation }}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-12 col-lg-8">
+            <h1 class="page-title">{{ hackathon.display_name }} #{{ hackathon.id }}</h1>
+            <div class="card my-3 hackathon-detail-description">
+                <div class="card-body">
+                    {{ hackathon.description|safe|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
