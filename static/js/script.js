@@ -115,7 +115,7 @@ function enableReviewsSlider(){
             active_elem.removeClass('active');
             next_elem.addClass('active');
             active_elem.hide();
-            next_elem.fadeIn();
+            next_elem.hide().fadeIn();
         }
     })
     $('.reviews-slider .prev-step').click(function(){
@@ -125,7 +125,7 @@ function enableReviewsSlider(){
             active_elem.removeClass('active');
             prev_elem.addClass('active');
             active_elem.hide();
-            prev_elem.fadeIn();
+            prev_elem.hide().fadeIn();
         }
     })
 }
