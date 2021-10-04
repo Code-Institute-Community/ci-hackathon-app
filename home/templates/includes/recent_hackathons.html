@@ -15,7 +15,11 @@
         {% else %}
         <div class="index-square-content" style="background-image: url({% static 'img/ci-hackathon--square.png' %})">
         {% endif %}
-            <a href="hackathon/{{hackathon.id}}">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'hackathon:view_hackathon' hackathon_id=hackathon.id %}">
+            {% else %}
+            <a href="{% url 'hackathon:view_hackathon_public' hackathon_id=hackathon.id %}">
+            {% endif %}
                 <div class="index-square-text">
                     <h1>{{hackathon.display_name}}</h1>
                 </div>
