@@ -6,39 +6,18 @@
 
 {% block content %}
 
-<div class="row">
-    <div class = "col-12 col-sm-12 col-md-12 col-lg-6">
-        <h1 class="mb-4">Upcoming Hackathons</h1>
-    </div>
-</div>
+<div class="row mt-5 mb-0">
+    <div class="col">
 
-<div class="row landing-page">
-
-    <div class="col-12 col-sm-12 col-md-12 col-lg-7">
-        {% if hackathons %}
-        {% for hackathon in hackathons %}
-            {% include 'hackathon/includes/hackathon_card.html' %}
-        {% endfor %}
-        <!-- Pagination using Django's paginator. Options are disabled or hidden if unavailable. -->
-        <nav aria-label="Hackathon Page Navigation">
-            {% include 'hackathon/includes/paginator.html' with page_obj=hackathons %}
-        </nav>
-        {% else %}
-        <div class="card">
-            <div class="card-body">
-                <div class="card-text">
-                    There aren't any Hackathons at the moment!
-                </div>
-            </div>
-        </div>
-        {% endif %}
-    </div>
-
-    <div class="col-12 col-sm-12 col-md-12 col-lg-5">
-        <div class="card">
-            <img class="card-img-top" src="{% static 'img/ci-hacking-new-normal--square.png' %}" alt="Code Institute Hackathon Logo">
+        <div class="container mb-5">
+        {% include 'includes/upcoming_hackathons.html' %}
+        {% include 'includes/recent_hackathons.html' %}
+        {% include 'includes/winning_showcases.html' %}
         </div>
     </div>
-</div>
+</div>  
+
+{% include 'includes/reviews_slider.html' %}
+{% include 'includes/partner_form.html' %}
 
 {% endblock %}

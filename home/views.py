@@ -49,9 +49,9 @@ def home(request):
 
     reviews = Review.objects.filter(visible=True).order_by('-rating')
 
-    return render(request, 'home/index_new.html',  {
+    return render(request, 'home/index.html',  {
         'recent_hackathons': recent_hackathons[:3],
-        'upcoming_hackathons': upcoming_hackathons[:3],
+        'upcoming_hackathons': upcoming_hackathons,
         'winning_showcases': winning_showcases[:3],
         'partnership_form': partnership_form,
         'reviews': reviews,
