@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+<div class="row mt-5 mb-0">
+    <div class="col">
+
+        <div class="container mb-5">
+        {% include 'includes/upcoming_hackathons.html' %}
+        {% include 'includes/recent_hackathons.html' %}
+        {% include 'includes/winning_showcases.html' %}
+        </div>
+    </div>
+</div>  
+
+{% include 'includes/reviews_slider.html' %}
+{% include 'includes/partner_form.html' %}
+
+{% endblock %}

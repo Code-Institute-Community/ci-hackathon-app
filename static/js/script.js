@@ -25,7 +25,7 @@ $(document).ready(function(){
         $(`.hackadmin-team-select`).hide();
         $(`#hackadmin-team-select-${hackathonId}`).show();
     });
-
+    enableReviewsSlider();
 });
 
 function setUpoadImageType(){
@@ -105,4 +105,27 @@ function filterUsersByHackathon(){
         document.querySelector('#download-csv').click();
         document.body.removeChild(link);
     });
+}
+
+function enableReviewsSlider(){
+    $('.reviews-slider .next-step').click(function(){
+        let active_elem = $('.reviews-content.active');
+        let next_elem = active_elem.next();
+        if(next_elem && next_elem.hasClass('reviews-content')){
+            active_elem.removeClass('active');
+            next_elem.addClass('active');
+            active_elem.hide();
+            next_elem.fadeIn();
+        }
+    })
+    $('.reviews-slider .prev-step').click(function(){
+        let active_elem = $('.reviews-content.active');
+        let prev_elem = active_elem.prev();
+        if(prev_elem && prev_elem.hasClass('reviews-content')){
+            active_elem.removeClass('active');
+            prev_elem.addClass('active');
+            active_elem.hide();
+            prev_elem.fadeIn();
+        }
+    })
 }

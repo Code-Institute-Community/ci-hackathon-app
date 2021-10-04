@@ -743,6 +743,20 @@ img.showcase-image-edit {
     .no-showcases img {
         width: 100% !important;
     }
+    
+    /* Home page */
+    .index-square-text {
+        opacity: 1;
+        background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
+        color: white;
+        width: 100%;
+        padding: 10px;
+        height: 100%;
+    }
+
+    h1.index-square-heading {
+        text-align: center;
+    }
 }
 
 @media (min-width: 991px) {

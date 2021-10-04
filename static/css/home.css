@@ -1,3 +1,142 @@
+.container.main-content-shadow {
+    margin-bottom: 0!important;
+    margin: 0;
+    width: 100% !important;
+    max-width: none !important;
+}
+
 .hack-card {
     margin-bottom: 1rem;
+}
+
+.index-square {
+    min-height: 200px;
+    padding: 5px;
+}
+
+.index-square-content {
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-size: cover;
+    border: 1px solid lightgray;
+}
+
+.index-square-content.more {
+    background-image: initial;
+    background-color: #4A4A4F;
+}
+
+.index-square-content.more .index-square-text {
+    opacity: 1;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
+    color: white;
+    width: 100%;
+    padding: 10px;
+    height: 100%;
+}
+
+.index-square-text {
+    opacity: 0;
+}
+
+.index-square-content:hover .index-square-text {
+    opacity: 1;
+    transition: .5s;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
+    color: white;
+    width: 100%;
+    padding: 10px;
+    height: 100%;
+}
+
+.index-square-text h1 {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+h1.index-square-heading {
+    font-size: 1.2em;
+    padding-left: 0;
+}
+
+h1.index-square-heading.heading-lg {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.review-slider-separator {
+    width: 200px;
+    height: 3px;
+    color: #23bbbb;
+    background-color: #23bbbb;
+}
+
+/* Reviews Slider */
+.reviews {
+    background-color: var(--white);
+}
+
+.row.reviews-slider .prev-step,
+.row.reviews-slider .next-step,
+.row.reviews-slider .reviews-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.row.reviews-slider {
+    min-height: 180px;
+    flex-wrap: nowrap;
+}
+
+.row.reviews-slider .reviews-content:not(.active) {
+    display:none;
+}
+
+.row.reviews-slider .reviews-content {
+    font-style: italic;
+    line-height: 2em;
+    text-align: center;
+    cursor: default;
+}
+
+.reviews-content .rating {
+    color: #f2d230;
+}
+
+.partner-form form {
+    margin: auto;
+}
+
+.partner-form {
+    color: var(--white);
+    background-image: linear-gradient(
+48deg, rgb(229, 71, 37) 50%, rgb(255, 49, 134));
+}
+
+.partner-form textarea {
+    resize: none;
+}
+
+.btn-ci-white {
+    font-weight: 600;
+    background-color: transparent;
+    border: 3px solid var(--white);
+    color: var(--white);
+}
+
+.btn-ci-white:hover {
+    background-color: var(--white);
+    color: var(--p-orange)
+}
+
+.btn-ci-white:active, .btn-ci-white:focus {
+    outline: none;
+    box-shadow: none;
 }
