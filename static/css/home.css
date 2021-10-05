@@ -1,8 +1,8 @@
 .container.main-content-shadow {
-    margin-bottom: 0!important;
+    margin-bottom: 0;
     margin: 0;
-    width: 100% !important;
-    max-width: none !important;
+    width: 100%;
+    max-width: none;
 }
 
 .hack-card {
@@ -96,7 +96,7 @@ h1.index-square-heading.heading-lg {
 }
 
 .row.reviews-slider .reviews-content:not(.active) {
-    display:none;
+    display: none;
 }
 
 .row.reviews-slider .reviews-content {
@@ -132,7 +132,7 @@ h1.index-square-heading.heading-lg {
 
 .btn-ci-white:hover {
     background-color: var(--white);
-    color: var(--p-orange)
+    color: var(--p-orange);
 }
 
 .btn-ci-white:active, .btn-ci-white:focus {

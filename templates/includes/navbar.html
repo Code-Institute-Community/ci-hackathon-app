@@ -59,7 +59,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarAccount">
                         {% if not user.is_authenticated %}
-                            {% if not socialaccount_providers%}
+                            {% if not socialaccount_providers %}
                             <a class="dropdown-item" href="{%  url 'account_signup' %}">Register</a>
                             {% endif %}
                             <a class="dropdown-item" href="{% url 'account_login' %}">Login</a>

@@ -14,10 +14,10 @@
                         {% with authorised_types='FACILITATOR_ADMIN,PARTNER_ADMIN' %}
                         {% if hackathon.hackathon_image %}
                         <img class="hackathon-detail-image" 
-                            src="{{ hackathon.hackathon_image }}" />
+                            src="{{ hackathon.hackathon_image }}">
                         {% else %}
                         <img class="hackathon-detail-image" 
-                            src="{% static 'img/ci-hackathon--square.png' %}" />
+                            src="{% static 'img/ci-hackathon--square.png' %}">
                         {% endif %}
                         {% if request.user.user_type|is_type:"SUPERUSER" %}
                         <button class="btn btn-secondary btn-sm edit-image"
