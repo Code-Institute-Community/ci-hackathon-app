@@ -371,9 +371,11 @@ def view_hackathon(request, hackathon_id):
 def view_hackathon_public(request, hackathon_id):
     """ A limited view of the hackathon page for the public """
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    redirect_url = (request.META.get('HTTP_REFERER') or reverse('home'))
+    print(f"REFERER: {request.META.get('HTTP_REFERER')}")
     if hackathon.status == 'deleted':
         messages.error(request, 'This hackathon does not exist.')
-        return redirect(reverse('home'))
+        return redirect(redirect_url)
 
     return render(request, "hackathon/hackathon_view_public.html", {
         'hackathon': hackathon})
