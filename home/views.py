@@ -85,7 +85,8 @@ def save_partnership_contact_form(request):
         if form.is_valid():
             form.save()
             send_partnership_request_email(request.POST)
-            messages.success(request, "Thank you very much for your interest! We will be in touch shortly.")  # noqa: E501
+            messages.success(request, ("Thank you very much for your interest!"
+                                       " We will be in touch shortly."))
         else:
             print(form.errors)
             messages.error(
