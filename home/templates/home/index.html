@@ -10,9 +10,35 @@
     <div class="col">
 
         <div class="container mb-5">
-        {% include 'includes/upcoming_hackathons.html' %}
-        {% include 'includes/recent_hackathons.html' %}
-        {% include 'includes/winning_showcases.html' %}
+            {% if upcoming_hackathons %}
+            {% include 'includes/heading.html' with heading_text="Upcoming Hackathons" %}
+            <div class="row">
+                {% for hackathon in upcoming_hackathons %}
+                {% include 'includes/hackathon_square.html' %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if recent_hackathons %}
+            {% include 'includes/heading.html' with heading_text="Recent Hackathons" %}
+            <div class="row">
+                {% for hackathon in recent_hackathons %}
+                {% include 'includes/hackathon_square.html' %}
+                {% endfor %}
+                {% include 'includes/link_square.html' with label="See All Hackathons" redirect_url="hackathon:hackathon-list" %}
+            </div>
+            {% endif %}
+
+            {% if winning_showcases %}
+            {% include 'includes/heading.html' with heading_text="Recent Winners" %}
+            <div class="row">
+                {% for showcase in winning_showcases %}
+                {% include 'includes/showcase_square.html' %}
+                {% endfor %}
+                {% include 'includes/link_square.html' with label="See All Showcased Projects" redirect_url="view_showcases" %}
+            </div>
+
+            {% endif %}
         </div>
     </div>
 </div>  
