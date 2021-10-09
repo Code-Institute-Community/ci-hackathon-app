@@ -13,7 +13,7 @@ class Review(models.Model):
                                    on_delete=models.CASCADE,
                                    related_name="reviews")
     content = models.TextField()
-    rating = models.FloatField(default=0.0, null=True, blank=True)
+    rating = models.FloatField(default=0.0)
     visible = models.BooleanField(default=True)
 
     def __str__(self):
