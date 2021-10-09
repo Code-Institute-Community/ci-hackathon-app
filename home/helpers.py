@@ -13,10 +13,10 @@ logger = logging.getLogger(__name__)
 def create_email_template(data):
     """ Creates the Email Template"""
     template = ''
-    template += f'Company: {data.get("company")}'
-    template += f'Contact Name: {data.get("contact_name")}'
-    template += f'Email: {data.get("email")}'
-    template += f'Phone: {data.get("phone")}'
+    template += f'Company: {data.get("company")}\n'
+    template += f'Contact Name: {data.get("contact_name")}\n'
+    template += f'Email: {data.get("email")}\n'
+    template += f'Phone: {data.get("phone")}\n'
     template += f'Hackathon Idea:\n{data.get("description")}'
     return template
 
