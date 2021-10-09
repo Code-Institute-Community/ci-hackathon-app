@@ -10,15 +10,39 @@ from .models import PartnershipRequestEmailSiteSettings
 logger = logging.getLogger(__name__)
 
 
+def create_email_template(data):
+    """ Creates the Email Template"""
+    template = ''
+    template += f'Company: {data.get("company")}'
+    template += f'Contact Name: {data.get("contact_name")}'
+    template += f'Email: {data.get("email")}'
+    template += f'Phone: {data.get("phone")}'
+    template += f'Hackathon Idea:\n{data.get("description")}'
+    return template
+
+
+def create_html_email_template(data):
+    """ Creates the HTML Email Template"""
+    return f"""
+    <p><strong>Company</strong>: {data.get('company')}</p>
+    <p><strong>Contact Name</strong>: {data.get('contact_name')}</p>
+    <p><strong>Email</strong>: {data.get('email')}</p>
+    <p><strong>Phone</strong>: {data.get('phone')}</p>
+    <p><strong>Hackathon Idea</strong>:<br>
+    {data.get('description')}</p>
+    """
+
+
 def send_partnership_request_email(data):
     try:
         settings = PartnershipRequestEmailSiteSettings.objects.first()
         if settings:
             send_mail(
-                settings.subject,
-                data.get("description"),
-                settings.from_email,
-                json.loads(settings.to_emails),
+                subject=settings.subject,
+                message=create_email_template(data),
+                html_message=create_html_email_template(data),
+                from_email=settings.from_email,
+                recipient_list=json.loads(settings.to_emails),
                 fail_silently=False,
             )
     except json.decoder.JSONDecodeError:

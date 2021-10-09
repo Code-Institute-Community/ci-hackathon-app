@@ -41,3 +41,8 @@ services:
       MYSQL_PASSWORD: gummyball
     volumes:
       - ./data/mysql:/var/lib/mysql
+
+  smtp:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "8025:8025"
