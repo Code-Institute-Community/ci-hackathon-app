@@ -49,7 +49,7 @@
             <h1 class="page-title">{{ hackathon.display_name }} #{{ hackathon.id }}</h1>
             <div class="card my-3 hackathon-detail-description">
                 <div class="card-body">
-                    {{ hackathon.description|safe|linebreaks }}
+                    {{ hackathon.description|remove_hrefs|safe|linebreaks }}
                 </div>
             </div>
         </div>

@@ -1,11 +1,12 @@
 
 # range snippet from: https://www.djangosnippets.org/snippets/1357/
 # adjusted to current project needs based on https://docs.djangoproject.com/en/3.1/howto/custom-template-tags/
-from operator import itemgetter
+import re
 
 from django.template import Library
 import datetime
-from django.conf import settings
+
+ANCHOR_PATTERN = r'href[=][\"]?.+?(?=[\"])[\"]'
 
 register = Library()
 
@@ -95,7 +96,7 @@ def get_assigned_team(participant, hackathon):
     participant_team = None
     if not hackathon.teams:
         return
-    
+
     teams = hackathon.teams.all()
     participant_team = [team for team in teams
                         if participant in team.participants.all()]
@@ -122,3 +123,12 @@ def filter_judge_scores(scores, judge):
     if judge_scores:
         return judge_scores
     return
+
+
+@register.filter
+def remove_hrefs(text):
+    """ Remove all href attributes from the text
+    
+    TODO: Add functionality to only remove specific links and show others
+    """
+    return re.sub(ANCHOR_PATTERN, '', text)
