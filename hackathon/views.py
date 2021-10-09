@@ -42,7 +42,7 @@ def list_hackathons(request):
 
     """
     hackathons = Hackathon.objects.filter(organisation=1).exclude(
-        status='deleted').order_by('id')
+        status='deleted').order_by('-start_date')
 
     paginator = Paginator(hackathons, 8)
     page = request.GET.get('page')

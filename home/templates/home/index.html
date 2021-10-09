@@ -12,7 +12,7 @@
         <div class="container mb-5">
             {% if upcoming_hackathons %}
             {% include 'includes/heading.html' with heading_text="Upcoming Hackathons" %}
-            <div class="row">
+            <div class="row mb-4">
                 {% for hackathon in upcoming_hackathons %}
                 {% include 'includes/hackathon_square.html' %}
                 {% endfor %}
@@ -21,7 +21,7 @@
 
             {% if recent_hackathons %}
             {% include 'includes/heading.html' with heading_text="Recent Hackathons" %}
-            <div class="row">
+            <div class="row mb-4">
                 {% for hackathon in recent_hackathons %}
                 {% include 'includes/hackathon_square.html' %}
                 {% endfor %}
