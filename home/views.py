@@ -45,7 +45,8 @@ def home(request):
     winning_awards = HackAward.objects.filter(hack_award_category__ranking=1)
     winning_showcases = [award.winning_project.get_showcase()
                          for award in winning_awards
-                         if award.winning_project.get_showcase()]
+                         if (award.winning_project
+                             and award.winning_project.get_showcase())]
 
     reviews = Review.objects.filter(visible=True).order_by('-rating')
 
