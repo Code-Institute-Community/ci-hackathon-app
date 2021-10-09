@@ -36,11 +36,11 @@ def home(request):
     partnership_form = PartnershipRequestForm()
     upcoming_hackathons = Hackathon.objects.filter(
         status__in=PUBLIC_STATUSES,
-        organisation=1).order_by('id')
+        organisation=1).order_by('-start_date')
 
     recent_hackathons = Hackathon.objects.filter(
         status='finished',
-        organisation=1).order_by('id')
+        organisation=1).order_by('-start_date')
 
     winning_awards = HackAward.objects.filter(hack_award_category__ranking=1)
     winning_showcases = [award.winning_project.get_showcase()
