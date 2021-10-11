@@ -40,7 +40,11 @@
                                     {{ user.email }}
                                 </td>
                                 <td>
+                                    {% if user.status %}
                                     {{ user.status.display_name|title }}
+                                    {% else %}
+                                    N/A
+                                    {% endif %}
                                 </td>
                                 <td>
                                     {{user.user_type|readable_user_type}}
