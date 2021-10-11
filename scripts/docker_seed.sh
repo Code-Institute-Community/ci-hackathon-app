@@ -1,7 +1,9 @@
 echo "============================"
 echo "Seeding fixtures"
 echo "============================"
+docker-compose exec hackathon-app python3 manage.py loaddata groups
 docker compose exec hackathon-app python3 manage.py loaddata organisation
+docker-compose exec hackathon-app python3 manage.py loaddata statuses
 docker compose exec hackathon-app python3 manage.py loaddata accounts
 docker compose exec hackathon-app python3 manage.py loaddata resources
 docker compose exec hackathon-app python3 manage.py loaddata profiles
