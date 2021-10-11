@@ -1,8 +1,14 @@
 .container.main-content-shadow {
-    margin-bottom: 0;
     margin: 0;
+    margin-top: 32px;
     width: 100%;
     max-width: none;
+}
+
+.alert {
+    margin: 0 auto;
+    margin-bottom: 10px;
+    max-width: 1140px
 }
 
 .hack-card {
