@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from .lists import LMS_MODULES_CHOICES
 from .models import Status, CustomUser
 
 
@@ -21,7 +20,7 @@ class SignupForm(forms.Form):
         label='')
     status = forms.ModelChoiceField(
         queryset=Status.objects.filter(admin_only=False),
-        label="Where are you currently in the programme?"
+        label="Programming Experience"
     )
 
     class Meta:
@@ -52,10 +51,9 @@ class EditProfileForm(forms.ModelForm):
         max_length=30,
         widget=forms.TextInput(attrs={'placeholder': 'Slack Display Name'}),
         label='')
-    # TODO: Change this based on privileges
     status = forms.ModelChoiceField(
         queryset=Status.objects.filter(admin_only=False),
-        label="Where are you currently in the programme?"
+        label="Programming Experience"
     )
     about = forms.CharField(widget=forms.Textarea(), required=False)
     website_url = forms.CharField(required=False)
