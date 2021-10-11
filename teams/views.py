@@ -97,7 +97,7 @@ def create_teams(request):
             return redirect(reverse('hackathon:view_hackathon',
                                     kwargs={'hackathon_id': hackathon_id}))
     else: 
-        return redirect(reverse('hackathon:hackathon-list'))
+        return redirect(reverse('hackathon:list-hackathons'))
 
 
 @login_required
@@ -115,7 +115,7 @@ def clear_teams(request):
         return redirect(reverse('hackathon:change_teams',
                                 kwargs={'hackathon_id': hackathon_id}))
     else: 
-        return redirect(reverse('hackathon:hackathon-list'))
+        return redirect(reverse('hackathon:list-hackathons'))
 
 
 @login_required

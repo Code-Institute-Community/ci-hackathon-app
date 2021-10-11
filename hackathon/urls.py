@@ -17,7 +17,7 @@ from .views import (
 from teams.views import change_teams
 
 urlpatterns = [
-    path('', list_hackathons, name="hackathon-list"),
+    path('', list_hackathons, name="list-hackathons"),
     path("<int:hackathon_id>/team/<int:team_id>/judging/",
          judging, name="judging"),
     path("<int:hackathon_id>/final_score/", check_projects_scores,
