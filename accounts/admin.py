@@ -42,7 +42,7 @@ class CustomUserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     list_display = ('email', 'username', 'full_name', 'is_superuser', 'user_type',
-                    'is_external')
+                    'is_external', 'status')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups',
                    'is_external')
     search_fields = ('full_name', 'email', 'slack_display_name')
