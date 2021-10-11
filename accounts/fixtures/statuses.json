@@ -1,0 +1,145 @@
+[
+    {
+        "model": "accounts.status",
+        "pk": 1,
+        "fields": {
+            "display_name": "Just started",
+            "level": 1,
+            "organisation": 1,
+            "admin_only": false,
+            "display_order": 1
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 2,
+        "fields": {
+            "display_name": "Studying (before Project 1)",
+            "level": 1,
+            "organisation": 1,
+            "admin_only": false,
+            "display_order": 2
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 3,
+        "fields": {
+            "display_name": "Studying (between Project 1 & 2)",
+            "level": 2,
+            "organisation": 1,
+            "admin_only": false,
+            "display_order": 3
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 4,
+        "fields": {
+            "display_name": "Studying (between Project 2 & 3)",
+            "level": 3,
+            "organisation": 1,
+            "admin_only": false,
+            "display_order": 4
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 5,
+        "fields": {
+            "display_name": "Studying (between Project 3 & 4)",
+            "level": 4,
+            "organisation": 1,
+            "admin_only": false,
+            "display_order": 5
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 6,
+        "fields": {
+            "display_name": "Studying for a (between Project 4 & 5)",
+            "level": 4,
+            "organisation": 1,
+            "admin_only": false,
+            "display_order": 6
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 7,
+        "fields": {
+            "display_name": "Recent Alumni",
+            "level": 5,
+            "organisation": 1,
+            "admin_only": false,
+            "display_order": 7
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 8,
+        "fields": {
+            "display_name": "Working as Developer 0-3 yrs",
+            "level": 6,
+            "organisation": 1,
+            "admin_only": false,
+            "display_order": 8
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 9,
+        "fields": {
+            "display_name": "Working as Developer 3-5 yrs",
+            "level": 6,
+            "organisation": 1,
+            "admin_only": false,
+            "display_order": 9
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 10,
+        "fields": {
+            "display_name": "Working as Developer 5+ yrs",
+            "level": 6,
+            "organisation": 1,
+            "admin_only": false,
+            "display_order": 10
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 11,
+        "fields": {
+            "display_name": "Staff (Developer)",
+            "level": 6,
+            "organisation": 1,
+            "admin_only": true,
+            "display_order": 11
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 12,
+        "fields": {
+            "display_name": "Staff (Non-Developer)",
+            "level": 1,
+            "organisation": 1,
+            "admin_only": true,
+            "display_order": 12
+        }
+    },
+    {
+        "model": "accounts.status",
+        "pk": 13,
+        "fields": {
+            "display_name": "Other Non-Developer",
+            "level": 1,
+            "organisation": 1,
+            "admin_only": false,
+            "display_order": 13
+        }
+    }
+]

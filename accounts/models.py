@@ -48,6 +48,7 @@ class Status(models.Model):
         Organisation, on_delete=models.CASCADE, related_name='statuses',
         default=1)
     admin_only = models.BooleanField(default=False)
+    display_order = models.IntegerField(default=1)
 
     def __str__(self):
         return self.display_name
@@ -57,6 +58,7 @@ class Status(models.Model):
         return self.display_name.replace(' ', '_')
 
     class Meta:
+        ordering = ('display_order', )
         verbose_name = 'Status'
         verbose_name_plural = 'Statuses'
 

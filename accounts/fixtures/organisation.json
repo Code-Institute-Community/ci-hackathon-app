@@ -5,5 +5,12 @@
       "fields": {
         "display_name": "Code Institute"
       }
-    }
+    },
+    {
+        "model": "accounts.organisation",
+        "pk": 2,
+        "fields": {
+          "display_name": "Example Partner"
+        }
+      }
   ] 
