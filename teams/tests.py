@@ -17,9 +17,9 @@ from .helpers import choose_team_sizes, choose_team_levels,\
 class TeamsHelpersTestCase(TestCase):
     def setUp(self):
         call_command('loaddata', 'organisation', verbosity=0)
+        call_command('loaddata', 'statuses', verbosity=0)
         call_command('loaddata', 'accounts', verbosity=0)
         call_command('loaddata', 'resources', verbosity=0)
-        call_command('loaddata', 'profiles', verbosity=0)
         call_command('loaddata', 'emailaddresses', verbosity=0)
         call_command('loaddata', 'hackathons', verbosity=0)
 
@@ -136,9 +136,9 @@ class TeamsHelpersTestCase(TestCase):
 class TeamsViewsTestCase(TestCase):
     def setUp(self):
         call_command('loaddata', 'organisation', verbosity=0)
+        call_command('loaddata', 'statuses', verbosity=0)
         call_command('loaddata', 'accounts', verbosity=0)
         call_command('loaddata', 'resources', verbosity=0)
-        call_command('loaddata', 'profiles', verbosity=0)
         call_command('loaddata', 'emailaddresses', verbosity=0)
         call_command('loaddata', 'hackathons', verbosity=0)
 

@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="row mt-5 mb-0">
+<div class="row mt-0 mb-0">
     <div class="col">
 
         <div class="container mb-5">
@@ -25,7 +25,7 @@
                 {% for hackathon in recent_hackathons %}
                 {% include 'includes/hackathon_square.html' %}
                 {% endfor %}
-                {% include 'includes/link_square.html' with label="See All Hackathons" redirect_url="hackathon:hackathon-list" %}
+                {% include 'includes/link_square.html' with label="See All Hackathons" redirect_url="hackathon:list-hackathons" %}
             </div>
             {% endif %}
 

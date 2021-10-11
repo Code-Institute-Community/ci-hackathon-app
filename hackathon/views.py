@@ -88,7 +88,7 @@ def list_hackathons(request):
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.FACILITATOR_JUDGE, UserType.PARTNER_ADMIN,
              UserType.PARTNER_JUDGE],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def judging(request, hackathon_id, team_id):
     """Displays the judging page for the judge to save their scores
     for the selected project - determined by hackathon id and team id"""
@@ -172,7 +172,7 @@ def judging(request, hackathon_id, team_id):
 
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
-             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:list-hackathons')
 def check_projects_scores(request, hackathon_id):
     """ When a judge submits the score, check if all projects in the Hackathon
     were scored by all the judges in all the categories by comparing the
@@ -242,7 +242,7 @@ def check_projects_scores(request, hackathon_id):
 
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
-             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:list-hackathons')
 def create_hackathon(request):
     """ Allow users to create hackathon event """
     if request.method == 'GET':
@@ -300,12 +300,12 @@ def create_hackathon(request):
             logger.exception(form.errors)
             messages.error(request, ("An error occurred creating the event. "
                                      "Please try again."))
-        return redirect("hackathon:hackathon-list")
+        return redirect("hackathon:list-hackathons")
 
 
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
-             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:list-hackathons')
 def update_hackathon(request, hackathon_id):
     """ Allow users to edit hackathon event """
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
@@ -351,12 +351,12 @@ def update_hackathon(request, hackathon_id):
         else:
             messages.error(request, ("An error occurred updating the event. "
                                      "Please try again."))
-        return redirect("hackathon:hackathon-list")
+        return redirect("hackathon:list-hackathons")
 
 
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
-             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:list-hackathons')
 def update_hackathon_status(request, hackathon_id):
     """ Allows users to updated the status of a hackathon """
     if request.method == 'POST':
@@ -369,7 +369,7 @@ def update_hackathon_status(request, hackathon_id):
     else:
         messages.error(request, ("An error occurred updating the event "
                                  "status. Please try again."))
-        return redirect("hackathon:hackathon-list")
+        return redirect("hackathon:list-hackathons")
 
 
 @login_required
@@ -424,7 +424,7 @@ def view_hackathon_public(request, hackathon_id):
 
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
-             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:list-hackathons')
 def delete_hackathon(request, hackathon_id):
     """ Allow users to 'soft delete' hackathon event - set status to 'deleted'
      to remove from frontend list """
@@ -437,7 +437,7 @@ def delete_hackathon(request, hackathon_id):
 
     messages.success(
         request, f'{hackathon.display_name} has been successfully deleted!')
-    return redirect("hackathon:hackathon-list")
+    return redirect("hackathon:list-hackathons")
 
 
 @login_required
@@ -484,7 +484,7 @@ def enroll_toggle(request):
 
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
-             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:list-hackathons')
 def change_awards(request, hackathon_id):
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     awards = hackathon.awards.all()
@@ -536,7 +536,7 @@ def change_awards(request, hackathon_id):
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.FACILITATOR_JUDGE, UserType.PARTNER_ADMIN,
              UserType.PARTNER_JUDGE],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def judge_teams(request, hackathon_id):
     """ Shows the list of teams and allows a judge to go to the scoring
     page """
@@ -554,7 +554,7 @@ def judge_teams(request, hackathon_id):
 
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
-             UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+             UserType.PARTNER_ADMIN], redirect_url='hackathon:list-hackathons')
 def assign_mentors(request, hackathon_id):
     """ View used to assign a mentor to each team """
     hackathon = get_object_or_404(Hackathon, id=hackathon_id)
