@@ -6,7 +6,6 @@ services:
     volumes:
       - ./staticfiles/:/hackathon-app/staticfiles/
       - ./data/:/hackathon-app/data/
-      - ./accounts/:/hackathon-app/accounts/
       - ./.env:/hackathon-app/.env
 
       # code
