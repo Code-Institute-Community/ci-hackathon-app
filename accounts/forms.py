@@ -84,8 +84,8 @@ class EditProfileForm(forms.ModelForm):
         )
 
     def __init__(self, *args, **kwargs):
+        """ Adding extra dropdown options if user is superuser or staff """
         instance = kwargs.get('instance', None)
-
         super(EditProfileForm, self).__init__(*args, **kwargs)
 
         if instance:
