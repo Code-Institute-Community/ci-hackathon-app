@@ -58,5 +58,17 @@
             "rating": 5.0,
             "visible": true
         }
+    },
+    {
+        "model": "home.review",
+        "pk": 6,
+        "fields": {
+            "created": "2021-10-19T14:17:00.676Z",
+            "updated": "2021-10-19T14:17:00.676Z",
+            "created_by": 1,
+            "content": "The communication in my team was not great, there were a lot of inexperienced people and I am not happy with our end product. I do like the concept of a hackathon though. Maybe next time I will be paired with people with more experience.",
+            "rating": 2.5,
+            "visible": false
+        }
     }
 ]
