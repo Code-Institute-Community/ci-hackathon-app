@@ -43,19 +43,22 @@ class HackathonUnitTestCase(TestCase):
             created_by=self.user,
             category="knowledge",
             min_score=1,
-            max_score=15)
+            max_score=15,
+            is_active=True)
 
         self.score_category2 = HackProjectScoreCategory.objects.create(
             created_by=self.user,
             category="deployement",
             min_score=1,
-            max_score=15)
+            max_score=15,
+            is_active=True)
 
         self.score_category3 = HackProjectScoreCategory.objects.create(
             created_by=self.user,
             category="theme",
             min_score=1,
-            max_score=15)
+            max_score=15,
+            is_active=True)
 
         self.project_score = HackProjectScore.objects.create(
             created_by=self.user,

@@ -54,7 +54,8 @@ class HackathonTests(TestCase):
             created_by=user,
             category="testcategory",
             min_score=1,
-            max_score=15)
+            max_score=15,
+            is_active=True)
         score_category.save()
 
         HackProjectScore.objects.create(
