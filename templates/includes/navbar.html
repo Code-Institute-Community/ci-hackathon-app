@@ -25,12 +25,12 @@
                     <div class="dropdown-menu" aria-labelledby="navbarHackathons">
                         <!-- TODO: Separate between different admin users -->
                         <a class="dropdown-item" href="{% url 'hackathon:create_hackathon' %}">Create Hackathon</a>
-                        <a class="dropdown-item" href="{% url 'hackathon:hackathon-list' %}">View Hackathons</a>
+                        <a class="dropdown-item" href="{% url 'hackathon:list-hackathons' %}">View Hackathons</a>
                     </div>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'hackathon:hackathon-list' %}">Hackathons</a>
+                    <a class="nav-link" href="{% url 'hackathon:list-hackathons' %}">Hackathons</a>
                 </li>
                 {% endif %}
                 {% if user.is_authenticated %}

@@ -23,7 +23,7 @@ SLACK_GROUP_IM_ENDPOINT = 'https://slack.com/api/conversations.open/'
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-             redirect_url='hackathon:list-hackathons')
+            redirect_url='hackathon:list-hackathons')
 def change_teams(request, hackathon_id):
     """ Page that handles the logic of automatically distributing the teams
     for a hackathon and allows for the admin to re-arrange the team members """
@@ -97,7 +97,7 @@ def create_teams(request):
             return redirect(reverse('hackathon:view_hackathon',
                                     kwargs={'hackathon_id': hackathon_id}))
     else: 
-        return redirect(reverse('hackathon:hackathon-list'))
+        return redirect(reverse('hackathon:list-hackathons'))
 
 
 @login_required
@@ -115,7 +115,7 @@ def clear_teams(request):
         return redirect(reverse('hackathon:change_teams',
                                 kwargs={'hackathon_id': hackathon_id}))
     else: 
-        return redirect(reverse('hackathon:hackathon-list'))
+        return redirect(reverse('hackathon:list-hackathons'))
 
 
 @login_required

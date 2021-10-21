@@ -1,7 +1,9 @@
 echo "============================"
 echo "Seeding fixtures"
 echo "============================"
+python3 manage.py loaddata groups
 python3 manage.py loaddata organisation
+python3 manage.py loaddata statuses
 python3 manage.py loaddata accounts
 python3 manage.py loaddata resources
 python3 manage.py loaddata profiles
