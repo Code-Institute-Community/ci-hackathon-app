@@ -283,6 +283,7 @@ class HackProjectScoreCategory(models.Model):
     # these fields set the scale
     min_score = models.IntegerField(default=1)
     max_score = models.IntegerField(default=10)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.category
