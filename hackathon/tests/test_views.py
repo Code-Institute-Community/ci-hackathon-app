@@ -11,6 +11,13 @@ class TestHackathonViews(TestCase):
     def setUp(self):
         """Sets up the models for testing"""
         user = CustomUser.objects.create(username="testuser")
+        staff_user = CustomUser.objects.create(username="staffuser")
+        staff_user.is_staff = True
+        staff_user.save()
+        super_user = CustomUser.objects.create(username="super_user")
+        super_user.is_staff = True
+        super_user.is_superuser = True
+        super_user.save()
         organisation = Organisation.objects.create()
         Hackathon.objects.create(
             created_by=user,
@@ -41,19 +48,17 @@ class TestHackathonViews(TestCase):
 
     def test_update_hackathon_status(self):
         """ Tests that the status changes """
-        user = CustomUser.objects.get(pk=1)
-        user.is_superuser = True
-        user.save()
-
-        self.client.force_login(user)
+        super_user = CustomUser.objects.get(pk=3)
+        self.client.force_login(super_user)
 
         hackathon = Hackathon.objects.get(pk=1)
         status_before = hackathon.status
-        response = self.client.post('/hackathon/1/update_hackathon_status',
+        response = self.client.post('/hackathon/1/update_hackathon_status/',
                                     {'status': 'finished'},
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest')
 
         hackathon = Hackathon.objects.get(pk=1)
+        self.assertEqual(response.status_code, 302)
         self.assertNotEqual(status_before, hackathon.status)
 
     def test_view_hackathon(self):
@@ -92,21 +97,24 @@ class TestHackathonViews(TestCase):
         self.assertFalse(user in hackathon.judges.all())
 
         # confirms staff can be enrolled as a judge
-        user.is_staff = True
-        user.save()
-        self.client.force_login(user)
+        staff_user = CustomUser.objects.get(pk=2)
+        staff_user.is_staff = True
+        staff_user.save()
+        self.client.force_login(staff_user)
 
         response = self.client.post('/hackathon/enroll/',
-                                    {'hackathon-id': 1},
+                                    {'hackathon-id': 1,
+                                     'enrollment-type': 'judge'},
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest')
 
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(user in hackathon.judges.all())
+        self.assertTrue(staff_user in hackathon.judges.all())
 
         # Confirms staff can withdraw
         response = self.client.post('/hackathon/enroll/',
-                                    {'hackathon-id': 1},
+                                    {'hackathon-id': 1,
+                                     'enrollment-type': 'judge'},
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest')
 
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(user in hackathon.judges.all())
+        self.assertFalse(staff_user in hackathon.judges.all())

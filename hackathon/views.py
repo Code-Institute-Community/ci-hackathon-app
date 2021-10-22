@@ -220,7 +220,8 @@ def create_hackathon(request):
         form = HackathonForm(initial={
             'organisation': 1,
             'team_size': 3,
-            'score_categories': HackProjectScoreCategory.objects.all()[:5]})
+            'score_categories': HackProjectScoreCategory.objects.filter(
+                is_active=True)[:5]})
 
         return render(request, template, {"form": form})
 

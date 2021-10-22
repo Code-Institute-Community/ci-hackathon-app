@@ -82,7 +82,7 @@ class HackathonForm(forms.ModelForm):
         queryset=Organisation.objects.order_by('display_name'),
     )
     score_categories = forms.ModelMultipleChoiceField(
-        queryset=HackProjectScoreCategory.objects.all(),
+        queryset=HackProjectScoreCategory.objects.filter(is_active=True),
         widget=forms.SelectMultiple(attrs={
             'size': '5'
         })
