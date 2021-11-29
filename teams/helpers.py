@@ -1,5 +1,8 @@
 from copy import deepcopy
+from datetime import datetime
 import math
+
+import pytz
 
 from .lists import LMS_LEVELS
 from accounts.models import CustomUser
@@ -223,3 +226,11 @@ def update_team_participants(created_by_user, teams, hackathon_id):
             hackathon = Hackathon.objects.get(id=hackathon_id)
             create_new_team_and_add_participants(created_by_user, team_name,
                                                  team_members, hackathon)
+
+
+def calculate_timezone_offset(timezone, timezone_offset):
+    """ Calculates the timezone offset between a timezone and a known
+    timezone offset """
+    tz = pytz.timezone(timezone)
+    offset = (datetime.now(tz).utcoffset().total_seconds()/60/60)
+    return offset - timezone_offset

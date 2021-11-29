@@ -583,6 +583,26 @@ form.distribute-teams-form, form.clear-teams-form {
     border: none;
 }
 
+/* Team Calendar Page */
+.table.calendar td {
+    text-align: center;
+}
+
+.table.calendar td.working {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.table.calendar tr:hover {
+    border: 1px solid black;
+    font-weight: 600;
+}
+
+.table.calendar tr:hover * {
+    background: #FAFAFA;
+}
+
 /* Ensure teams in paginated view are centered at all times even when odd number of
     teams persist in the view. */
 .teams-row {

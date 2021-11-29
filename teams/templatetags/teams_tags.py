@@ -39,3 +39,10 @@ def divided_by(num, val):
 @register.filter
 def extract_userid(username):
     return username.split('_')[0]
+
+
+@register.filter
+def is_working_time(num):
+    _num = int(num.split(':')[0])
+    return 8 <= _num <= 20
+    return num
