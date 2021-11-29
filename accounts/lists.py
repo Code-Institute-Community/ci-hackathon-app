@@ -2,6 +2,8 @@
 List of user types to be passed into dropdown of same name for each
 user selection.
 """
+import pytz
+
 USER_TYPES_CHOICES = (
     ('', 'Select Post Category'),
     ('participant', 'Participant'),
@@ -33,3 +35,5 @@ LMS_MODULES_CHOICES = (
     ('alumni', 'Alumni'),
     ('staff', 'Staff'),
 )
+
+TIMEZONE_CHOICES = [(tz, tz) for tz in pytz.all_timezones]
