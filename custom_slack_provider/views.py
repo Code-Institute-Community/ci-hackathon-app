@@ -76,7 +76,7 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         resp['user']['full_name'] = user_info.get('profile',
                                                   {}).get('real_name')
         resp['user']['first_name'] = user_info.get('profile',
-                                                  {}).get('first_name')
+                                                   {}).get('first_name')
         resp['user']['last_name'] = user_info.get('profile',
                                                   {}).get('last_name')
         # This key is not present in the response if the user has not
@@ -84,7 +84,8 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         resp['user']['image_original'] = (user_info.get(
             'profile', {}).get('image_original') or '')
         resp['user']['title'] = user_info.get('profile',
-                                                  {}).get('title')
+                                              {}).get('title')
+        resp['user']['timezone'] = user_info.get('tz')
         return resp
 
 

@@ -46,6 +46,7 @@ class CustomSlackSocialAdapter(DefaultSocialAccountAdapter):
         email = data.get('email')
         profile_image = data.get('profile_image')
         about = data.get('about')
+        timezone = data.get('timezone')
         user = sociallogin.user
         user_username(user, username or '')
         user_email(user, valid_email_or_none(email) or '')
@@ -57,6 +58,7 @@ class CustomSlackSocialAdapter(DefaultSocialAccountAdapter):
         user_field(user, 'username', username)
         user_field(user, 'profile_image', profile_image)
         user_field(user, 'about', about)
+        user_field(user, 'timezone', timezone)
         return user
 
     def is_auto_signup_allowed(self, request, sociallogin):
