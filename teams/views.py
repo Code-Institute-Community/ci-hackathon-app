@@ -280,7 +280,7 @@ def view_team_calendar(request, team_id):
     tz = pytz.timezone(timezone)
     user_tz_offset = (datetime.now(tz).utcoffset().total_seconds()/60/60)
     headers = [{'display_name': 'Time', 'description': '',
-                'timezone': timezone }]
+                'timezone': timezone}]
 
     for member in hack_team.participants.all():
         offset = calculate_timezone_offset(member.timezone, user_tz_offset)
