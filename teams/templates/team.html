@@ -54,6 +54,7 @@
 
             <div class="row mb-2 mt-5 ml-4"> 
                 <div class="col">
+
                     <h3>About the team</h3>
                     {% if request.user in team.participants.all or request.user == team.mentor or request.user.user_type|is_types:authorised_types %}
                     
@@ -66,7 +67,21 @@
                         {% endif %}
                     </p>
                     {% endif %}
-                    {% include 'includes/create_slack_mpim.html' %}
+                    <div class="team-menu-dropdown-container">
+                        <div class="dropdown mb-2">
+                            <button class="btn btn-ci dropdown-toggle form-control" 
+                            type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Team Actions
+                            </button>
+                            <div id="teams-dropdown" class="dropdown-menu teams-dropdown" aria-labelledby="dropdownMenuButton">
+                                {% include 'includes/create_slack_mpim.html' %}
+                                <a role="button" class="dropdown-item" href="{% url 'view_team_calendar' team_id=team.id %}">
+                                    <i class="far fa-calendar-alt mr-3"></i> View Team Calendar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
                     {% if showcase %}
                     <div class="share-linkedin">
                         <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>

@@ -583,6 +583,41 @@ form.distribute-teams-form, form.clear-teams-form {
     border: none;
 }
 
+.team-menu-dropdown-container {
+    position: absolute;
+    top: 0;
+    right: 60px;
+    min-width: 150px;
+}
+
+.teams-dropdown {
+    transform: translate3d(-130px, 38px, 0) !important;
+}
+
+.black {
+    color: var(--black);
+}
+
+/* Team Calendar Page */
+.table.calendar td {
+    text-align: center;
+}
+
+.table.calendar td.working {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.table.calendar tr:hover {
+    border: 1px solid var(--black);
+    font-weight: 600;
+}
+
+.table.calendar tr:hover * {
+    background: var(--bg-grey);
+}
+
 /* Ensure teams in paginated view are centered at all times even when odd number of
     teams persist in the view. */
 .teams-row {
@@ -623,12 +658,17 @@ form.distribute-teams-form, form.clear-teams-form {
     justify-content: center;
 }
 
-.dropdown-menu.judge-dropdown {
+.dropdown-menu.judge-dropdown, .dropdown-menu.teams-dropdown {
     width: 100%;
     border: 3px solid var(--p-orange);
 }
 
-.dropdown-menu.judge-dropdown .dropdown-item:hover {
+.dropdown-menu.teams-dropdown {
+    width: fit-content;
+}
+
+.dropdown-menu.judge-dropdown .dropdown-item:hover,
+.dropdown-menu.teams-dropdown .dropdown-item:hover {
     width: 100%;
     background: var(--p-orange);
     color: var(--white);

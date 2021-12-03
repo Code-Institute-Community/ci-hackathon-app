@@ -55,7 +55,9 @@ class SlackProvider(OAuth2Provider):
                 'slack_display_name': user.get('display_name'),
                 'email': user.get('email', None),
                 'profile_image': user.get('image_original'),
-                'about': user.get('title')}
+                'about': user.get('title'),
+                'timezone': user.get('timezone')
+        }
 
     def get_default_scope(self):
         return ['identify']

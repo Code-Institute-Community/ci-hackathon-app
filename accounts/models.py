@@ -3,7 +3,7 @@ from enum import Enum
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from .lists import LMS_MODULES_CHOICES
+from .lists import LMS_MODULES_CHOICES, TIMEZONE_CHOICES
 from teams.lists import LMS_LEVELS
 
 
@@ -95,6 +95,13 @@ class CustomUser(AbstractUser):
         default=False,
         help_text=("Set to True if a user signs up through an external "
                    "registration link")
+    )
+
+    timezone = models.CharField(
+        max_length=255,
+        blank=False,
+        default='Europe/London',
+        choices=TIMEZONE_CHOICES,
     )
 
     class Meta:

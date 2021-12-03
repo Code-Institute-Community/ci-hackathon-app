@@ -76,6 +76,11 @@
                         {{ user.human_readable_current_lms_module|title }}
                     </p>
 
+                    <label for="latestModule">Timezone</label>
+                    <p id="latestModule">
+                        {{ user.timezone|title }}
+                    </p>
+
                     <label for="website">Website</label>
                     <p id="website" class="profile-website-url">
                         {% if user.website_url %}

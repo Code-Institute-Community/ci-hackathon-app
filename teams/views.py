@@ -1,4 +1,6 @@
+from datetime import datetime, timedelta
 import json
+import pytz
 import re
 import requests
 
@@ -10,11 +12,13 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from accounts.decorators import can_access
 from accounts.models import UserType
+from accounts.lists import TIMEZONE_CHOICES
 from hackathon.models import Hackathon, HackTeam, HackProject
 from teams.helpers import choose_team_sizes, group_participants,\
                           choose_team_levels, find_all_combinations,\
                           distribute_participants_to_teams,\
-                          create_teams_in_view, update_team_participants
+                          create_teams_in_view, update_team_participants, \
+                          calculate_timezone_offset
 from teams.forms import HackProjectForm, EditTeamName
 
 SLACK_GROUP_IM_ENDPOINT = 'https://slack.com/api/conversations.open/'
@@ -265,3 +269,49 @@ def create_group_im(request, team_id):
         messages.success(request, 'Group IM successfully created')
 
     return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+
+
+@login_required
+def view_team_calendar(request, team_id):
+    """ View the team calendar showing what timezone each team member is
+    located at """
+    hack_team = get_object_or_404(HackTeam, id=team_id)
+    timezone = request.GET.get('timezone') or request.user.timezone
+    tz = pytz.timezone(timezone)
+    user_tz_offset = (datetime.now(tz).utcoffset().total_seconds()/60/60)
+    headers = [{'display_name': 'Time', 'description': '',
+                'timezone': timezone}]
+
+    for member in hack_team.participants.all():
+        offset = calculate_timezone_offset(member.timezone, user_tz_offset)
+        quantifier = 'ahead of' if offset > 0 else 'behind'
+        headers.append({
+            'display_name': f'{member.slack_display_name}',
+            'description': (f'{member.slack_display_name} is {abs(offset)}hrs '
+                            f'{quantifier} {timezone}'),
+            'timezone': member.timezone,
+        })
+
+    calendar = []
+    for i in range(24):
+        row = [f'{i}:00']
+        for member in hack_team.participants.all():
+            offset = calculate_timezone_offset(member.timezone, user_tz_offset)
+            if i + offset >= 24:
+                _time = (i + offset) - 24
+            elif i + offset < 0:
+                _time = 24 + i - abs(offset)
+            else:
+                _time = i + offset
+            row.append(f'{int(_time)}:00')
+        calendar.append(row)
+
+    return render(request, 'team_calendar.html', {
+        'hack_team': hack_team,
+        'team_id': team_id,
+        'redirect_url': f'/teams/{team_id}/',
+        'calendar': calendar,
+        'headers': headers,
+        'timezones': TIMEZONE_CHOICES,
+        'selected_timezone': timezone,
+    })

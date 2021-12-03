@@ -8,8 +8,8 @@
         {% else %}
         <form action="/teams/{{team.id}}/create_group_im/" method="POST">
         {% csrf_token %}
-        <button class="btn btn-sm btn-ci">
-            <i class="fab fa-slack fa-lg ml-0 mr-2 mt-1 mb-1 p-orange"></i>
+        <button class="dropdown-item">
+            <i class="fab fa-slack fa-lg ml-0 mr-2 mt-1 mb-1 black"></i>
             Create Group IM in Slack
         </button>
         </form>
