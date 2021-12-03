@@ -45,4 +45,3 @@ def extract_userid(username):
 def is_working_time(num):
     _num = int(num.split(':')[0])
     return 8 <= _num <= 20
-    return num
