@@ -100,7 +100,7 @@ def create_teams(request):
                 messages.success(request, "Teams updated successfully!")
             return redirect(reverse('hackathon:view_hackathon',
                                     kwargs={'hackathon_id': hackathon_id}))
-    else: 
+    else:
         return redirect(reverse('hackathon:hackathon-list'))
 
 
@@ -276,6 +276,12 @@ def view_team_calendar(request, team_id):
     """ View the team calendar showing what timezone each team member is
     located at """
     hack_team = get_object_or_404(HackTeam, id=team_id)
+    if (request.user not in hack_team.participants.all()
+            and request.user.user_type not in [
+                UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
+                UserType.PARTNER_ADMIN]):
+        messages.error(request, 'You do not have access to view this page')
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
     timezone = request.GET.get('timezone') or request.user.timezone
     tz = pytz.timezone(timezone)
     user_tz_offset = (datetime.now(tz).utcoffset().total_seconds()/60/60)

@@ -66,7 +66,7 @@
                         No Facilitator assigned
                         {% endif %}
                     </p>
-                    {% endif %}
+
                     <div class="team-menu-dropdown-container">
                         <div class="dropdown mb-2">
                             <button class="btn btn-ci dropdown-toggle form-control" 
@@ -76,12 +76,12 @@
                             <div id="teams-dropdown" class="dropdown-menu teams-dropdown" aria-labelledby="dropdownMenuButton">
                                 {% include 'includes/create_slack_mpim.html' %}
                                 <a role="button" class="dropdown-item" href="{% url 'view_team_calendar' team_id=team.id %}">
-                                    <i class="far fa-calendar-alt mr-3"></i> View Team Calendar
+                                    <i class="far fa-calendar-alt mr-3 p-orange"></i> View Team Calendar
                                 </a>
                             </div>
                         </div>
                     </div>
-                    
+                    {% endif %}
                     {% if showcase %}
                     <div class="share-linkedin">
                         <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
