@@ -2,7 +2,163 @@
 {% load static %}
 {% block content %}
 
-<h1>FAQ</h1>
-<!-- help needed -->
+<h1>Frequently Asked Questions</h1>
+<h3 class="mt-3">
+    1. WHAT IS A HACKATHON?
+</h3>
+<p>A hackathon (also known as a hack day, hackfest, datathon or codefest) is a
+    design sprint-like event; often, in which computer programmers and others
+    involved in software development, including UX/graphic designers, project
+    managers, subject matter experts, and others collaborate intensively on
+    software projects.
+</p>
+<p>
+    The goal of a hackathon is to create functioning software or hardware prototype
+    by the end of the event which usually lasts a few days. Hackathons tend to have a specific
+    focus, which can include the programming language used, the operating system,
+    an application, an API, or the subject and the demographic group of the programmers.
+</p>
+<p>
+    (Wikipedia, 2021)
+</p>
+<h3 class="mt-5">
+    2. WHO SHOULD JOIN?
+</h3>
+<p>
+    Any interested student, alumni, staff or partner can join a hackathon.</p>
+<p>
+    Participating in a hackathon is a great way to learn more about how it is
+    to work in a fast paced development team. You will be using version control
+    to share code with your team members, troubleshoot code and create a project
+    towards very challenging deadlines.
+</p>
+<p>
+    We encourage participation, but would only suggest to join if you are
+    currently ahead of your schedule and do not have any project deadline
+    close to the hackathon date. 
+</p>
+<h3 class="mt-5">
+    3. WHAT DO I NEED?
+</h3>
+<ul>
+    <li>
+        A computer with a good internet connection
+    </li>
+    <li>
+        Access to the Code Institute Slack Workspace (if you cannot access the
+        workspace, please contact Student Care)
+    </li>
+    <li>
+        A Zoom account (this will be used for video conferencing during the
+        hackathon)
+    </li>
+    <li>Access to a development IDE (we recommend Gitpod.io as code can easily
+        be shared amongst the team and has great GitHub integration)
+    </li>
+    <li>
+        An open mind and willingness to learn
+    </li>
+</ul>
+<h3 class="mt-5">
+    4. DO I JUST NEED TO SIGNUP TO THE PLATFORM OR DO I NEED TO DO ANYTHING ELSE?
+</h3>
+<p>
+    Apart from signing in to the platform with your Slack Account, each time
+    you want to participate in a Hackathon you will need to enroll to that
+    specific hackathon. 
+</p>
+<p>
+    You can do that either from the start page, the
+    <a href="{% url 'hackathon:hackathon-list' %}">View Hackathons</a> page 
+    or (if you have a direct link) from the detail view of the hackathon directly;
+    simply click on the <strong>"Enroll as participant"</strong> button when
+    the registration is open.
+</p>
+<h3 class="mt-5">
+    5. HOW DO I KNOW THAT I AM REGISTERED FOR A HACKATHON?
+</h3>
+<p>
+    <ol>
+        <li>
+            Log in and go to the <a href="{% url 'hackathon:hackathon-list' %}">View Hackathons</a> page
+        </li>
+        <li>
+            Find the hackathon you want to check if you are registered to
+        </li>
+        <li>
+            Check that the status is <strong>"You are enrolled in this hackathon!"</strong>
+        </li>
+        <li>
+            If it does not say <strong>"You are enrolled in this hackathon!"</strong>, either
+            click on <strong>"Enroll as participant"</strong> (if the button is visible) or
+            contact <a href="mailto:{{support_email}}">{{support_email}}</a>
+        </li>
+    </ol>
+</p>
+
+<h3 class="mt-5">
+    6. HOW DO I FORM OR JOIN A TEAM AND WHY?
+</h3>
+<p>
+    You need a team to participate in a hackathon, otherwise the workload to
+    get everything done within time will be too great and more importantly you
+    will not get the wanted learning outcomes. Learning about what it means to
+    work as part of a development team is the main benefit of participating in
+    a team.
+</p>
+<p>
+    In most cases participants sign up on their own, so teams are semi-randomly
+    assigned to get an even mix of experience in each of the teams.
+</p>
+<h3 class="mt-5">
+    7. ARE THERE PRIZES FOR THE HACK CATEGORIES?
+</h3>
+<p>
+    Prizes depend on the individual hackathons and sponsorship availability.
+</p>
+<h3 class="mt-5">
+    8. WHO JUDGES THE WINNERS?
+</h3>
+<p>
+    The winning team will be decided by a jury made up of Code Institute staff
+    and depending on the hackathon industry experts and/or partners of Code
+    Institute. 
+</p>
+<h3 class="mt-5">
+    9. WHAT IS THE EVALUATION CRITERIA FOR THE SELECTION OF THE WINNING TEAM?
+</h3>
+<p>
+    The jury will analyze and evaluate all works submitted by each team
+    according to the following evaluation criteria: 
+</p>
+<ul>
+    <li>
+        Effective Use of Course Knowledge
+    </li>
+    <li>
+        Usability and Practicality
+    </li>
+    <li>
+        Team Collaboration
+    </li>
+    <li>
+        Presentation and Adherence to Theme
+    </li>
+    <li>
+        Awesomeness
+    </li>
+</ul>
+<p>
+    (this can vary depending on the hackathon, but will be visible on the
+    hackathon itself)
+</p>
+<h3 class="mt-5">
+    10. WHAT IS THE THEME FOR THE HACKATHON?
+</h3>
+<p>
+    Hackathon themes vary depending on the hackathon itself. The theme will be
+    visible on the hackathon signup page or on the hackathon page itself.
+</p>
+
 
 {% endblock %}

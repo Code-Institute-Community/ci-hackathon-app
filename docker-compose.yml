@@ -1,0 +1,48 @@
+version: "3.4"
+
+services:
+  hackathon-app:
+    image: hackathon-app
+    volumes:
+      - ./staticfiles/:/hackathon-app/staticfiles/
+      - ./data/:/hackathon-app/data/
+      - ./.env:/hackathon-app/.env
+
+      # code
+      - ./accounts/:/hackathon-app/accounts/
+      - ./custom_slack_provider/:/hackathon-app/custom_slack_provider/
+      - ./hackadmin/:/hackathon-app/hackadmin/
+      - ./hackathon/:/hackathon-app/hackathon/
+      - ./home/:/hackathon-app/home/
+      - ./images/:/hackathon-app/images/
+      - ./main/:/hackathon-app/main/
+      - ./profiles/:/hackathon-app/profiles/
+      - ./resources/:/hackathon-app/resources/
+      - ./showcase/:/hackathon-app/showcase/
+      - ./submissions/:/hackathon-app/submissions/
+      - ./teams/:/hackathon-app/teams/
+      - ./templates/:/hackathon-app/templates/
+      - ./static/:/hackathon-app/static/
+
+    environment:
+      - ENV_FILE=/hackathon-app/.env
+    entrypoint: ['python3', 'manage.py', 'runserver', '0.0.0.0:8000']
+    ports:
+      - "8000:8000"
+
+  mysql:
+    image: docker.io/mysql:5.6.36
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+    # Do NOT use for production
+    environment:
+      MYSQL_ROOT_PASSWORD: gummyball
+      MYSQL_DATABASE: hackathons
+      MYSQL_USER: hackathon_user
+      MYSQL_PASSWORD: gummyball
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+
+  smtp:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "8025:8025"

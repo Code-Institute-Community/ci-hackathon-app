@@ -1,0 +1,15 @@
+{% load static %}
+
+<div class="col-sm-12 col-md-6 col-lg-3 index-square">
+    {% if showcase.showcase_image %}
+    <div class="index-square-content" style="background-image: url('{{showcase.showcase_image}}')">
+    {% else %}
+    <div class="index-square-content" style="background-image: url({% static 'img/hackathon-bg.png' %})">
+    {% endif %}
+        <a href="showcase/{{showcase.id}}">
+            <div class="index-square-text">
+                <h1>{{showcase.display_name}}</h1>
+            </div>
+        </a>
+    </div>
+</div>

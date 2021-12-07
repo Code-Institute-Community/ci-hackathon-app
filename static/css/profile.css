@@ -25,6 +25,31 @@
 .card .hackathon-card .btn {
     color: var(--p-grey);
 }
+
+.user-info label {
+    font-size: .85rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    min-width: 100%;
+    color: var(--p-orange);
+}
+
+.user-info p {
+    font-size: 1.2rem;
+}
+
+.profile-about {
+    white-space: pre-wrap;
+}
+
+.edit-profile div form p label {
+    display: block;
+}
+
+.card .card-body p.profile-website-url a {
+    text-transform: lowercase;
+    font-size: 1rem;
+}
 /* For specific color targeting of 'o' chars in keeping with the CI Logo */
 
 .ci-orange {

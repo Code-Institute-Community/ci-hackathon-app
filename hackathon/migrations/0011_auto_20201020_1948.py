@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='hackproject',
             name='created_by',
-            field=models.ForeignKey(default='', on_delete=django.db.models.deletion.CASCADE, related_name='hackprojects', to='auth.user'),
+            field=models.ForeignKey(default='', on_delete=django.db.models.deletion.CASCADE, related_name='hackprojects', to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
         migrations.AddField(

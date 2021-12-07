@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+{% load teams_tags %}
+{% load account_tags %}
+
+{% block extra_meta %}
+
+{% if showcase %}
+<meta property='og:title' content='{{showcase.hack_project.display_name}}'/>
+    {% if showcase.get_image %}
+    <meta property='og:image' content='{{showcase.image_url}}'/>
+    {% endif %}
+<meta property='og:description' content='{{showcase.hack_project.description}}'/>
+<meta property='og:url' content='{{showcase.url}}'/>
+<meta property='og:author' content='Team {{showcase.hack_project.hackteam.display_name}}'/>
+{% endif %}
+
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+{% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+<div class="row">
+    <div class="col teams-page">
+        
+        <div class="container-fluid p-3">
+            {% include 'includes/back_button.html' with redirect_url=redirect_url button_label='Back To The Team' %}
+
+            <div class="row">
+                <div class="col">
+                    <p class="alert alert-info">
+                        Marked are the hours of 8am - 8pm in the team member's respective timezone based on your own (or selected) timezone.
+                    </p>
+                    <div>
+                        <form>
+                            <div class="input-group mb-3">
+                                <select class="form-control" name="timezone">
+                                    {% for tz in timezones %}
+                                    <option {% if selected_timezone == tz.0 %}selected{% endif %}>{{tz.0}}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary btn-sm ci-btn">Update Timezone</button>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    
+                    <table class="table table-responsive-sm table-sm calendar">
+                        <thead>
+                            <tr>
+                                {% for header in headers %}
+                                <td title="{{header.description}}">
+                                    <strong>{{header.display_name}}</strong><br>
+                                    <i>{{header.timezone}}</i>
+                                </td>
+                                {% endfor%}
+                            </tr>
+                        </thead>
+                        <thead>
+                            {% for cal in calendar %}
+                            <tr>
+                                {% for i in cal %}
+                                {% if i|is_working_time and not forloop.first %}
+                                <td class="working">
+                                {% else %}
+                                <td>
+                                {% endif %}
+                                    {{i}}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </thead>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endwith %}
+
+{% include 'upload_image.html' %}
+{% include 'includes/rename_team.html' %}
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

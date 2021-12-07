@@ -1,0 +1,74 @@
+[
+    {
+        "model": "home.review",
+        "pk": 1,
+        "fields": {
+            "created": "2021-10-15T14:06:20.759Z",
+            "updated": "2021-10-15T14:06:20.759Z",
+            "created_by": 1,
+            "content": "What a great hackathon! It was a wonderful experience and I would definitely do it again.",
+            "rating": 5.0,
+            "visible": true
+        }
+    },
+    {
+        "model": "home.review",
+        "pk": 2,
+        "fields": {
+            "created": "2021-10-15T14:06:58.417Z",
+            "updated": "2021-10-15T14:08:00.918Z",
+            "created_by": 1,
+            "content": "My team was brilliant! We had some challenges with getting git working as a team, but pulled together in the end.",
+            "rating": 4.5,
+            "visible": true
+        }
+    },
+    {
+        "model": "home.review",
+        "pk": 3,
+        "fields": {
+            "created": "2021-10-15T14:07:55.174Z",
+            "updated": "2021-10-15T14:07:55.174Z",
+            "created_by": 1,
+            "content": "Hackathons are a great experience. This was my first hackathon that I have participated in and I would do it all again. A great event, a great idea, a great project.",
+            "rating": 5.0,
+            "visible": true
+        }
+    },
+    {
+        "model": "home.review",
+        "pk": 4,
+        "fields": {
+            "created": "2021-10-15T14:09:43.521Z",
+            "updated": "2021-10-15T14:09:43.521Z",
+            "created_by": 1,
+            "content": "I liked the hackathon experience, but it was really tough. So much work and I did not really understand how version control works in a team. In the end we got a project out and I am happy about it.",
+            "rating": 4.5,
+            "visible": true
+        }
+    },
+    {
+        "model": "home.review",
+        "pk": 5,
+        "fields": {
+            "created": "2021-10-15T14:11:14.466Z",
+            "updated": "2021-10-15T14:11:14.466Z",
+            "created_by": 1,
+            "content": "A wonderful experience! Working with other people on a software project is so rewarding. It was really engaging and I am taking so much away from this from version control to deployment. Definitely will do it again!",
+            "rating": 5.0,
+            "visible": true
+        }
+    },
+    {
+        "model": "home.review",
+        "pk": 6,
+        "fields": {
+            "created": "2021-10-19T14:17:00.676Z",
+            "updated": "2021-10-19T14:17:00.676Z",
+            "created_by": 1,
+            "content": "The communication in my team was not great, there were a lot of inexperienced people and I am not happy with our end product. I do like the concept of a hackathon though. Maybe next time I will be paired with people with more experience.",
+            "rating": 2.5,
+            "visible": false
+        }
+    }
+]

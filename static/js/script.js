@@ -1,68 +1,131 @@
-function toastMessage(tag, message) {
-    // Sets the toast HTML.
-    $(".toast-wrapper").html(
-        `<div class="toast" data-delay="5000">
-            <div class="toast-header bg-p-blue">
-                <strong class="mr-auto text-white">${tag}</strong>
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body">${message}</div>
-        </div>`
-    );
-    if ($("#enroll-judge").text() === "Withdraw as Judge") {
-        $("#enroll-judge").text("Enroll as Judge")
-    } else if ($("#enroll-judge").text() === "Enroll as Judge") {
-        $("#enroll-judge").text("Withdraw as Judge")
-    } else if ($("#enroll-part").text() === "Enroll as Participant") {
-        $("#enroll-part").text("Withdraw from the Hackaton")
-    } else {
-        $("#enroll-part").text("Enroll as Participant")
-    }
-
-    // Fires the toast.
-    $(".toast").toast("show");
-}
-        
-// Sends the enrollment form with fetch.
-function enroll(formData, formUrl) {
-    // Sends form to Django view
-    fetch(formUrl, {
-        method: "POST",
-        body: formData,
-        credentials: "same-origin",
-    })
-    .then((response) => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            console.log(response)
-            throw Error(response.statusText);
-        }
-    })
-    // Fires off a toast notification
-    .then(data => toastMessage(data.tag, data.message))
-    // Catches any errors and displays their text message
-    .catch(error => toastMessage("Error", error))
-}
-            
-
-// Watches the form for submission, then fires the Fetch function
-$("#enroll-form").on("submit", function (ev) {
-    // stops form from sending
-    ev.preventDefault();
-    
-    // The data sent in the form POST request.
-    const formData = new FormData(this);
-
-    // The URL for the form
-    const formUrl = this.action;
-
-    // Fires the main fetch function
-    enroll(formData, formUrl);
-});
-
+/* jshint esversion: 8, jquery: true */
 $(document).ready(function(){
-    $( "#accordion" ).accordion();
+    $('.edit-image').click(setUpoadImageType);
+    filterUsersByHackathon();
+
+    $('.delete').submit(function(event){
+        let confirmation = confirm("Do you really want to remove this team member?");
+        if(!confirmation){
+            event.preventDefault();
+        }
+    });
+
+    $('.hackadmin-add-participant').click(function(){
+        let participantId = $(this).data('participant-id');
+        $('.participant_id').val(participantId);
+    });
+
+    $('.hackadmin-add-judge').click(function(){
+        let judgeId = $(this).data('judge-id');
+        $('.judge_id').val(judgeId);
+    });
+
+    $('#add_participant_hackathon_id').change(function(){
+        let hackathonId = $(this).val();
+        $(`.hackadmin-team-select`).hide();
+        $(`#hackadmin-team-select-${hackathonId}`).show();
+    });
+    enableReviewsSlider();
 });
+
+function setUpoadImageType(){
+    let imageType = $(this).data('imageType');
+    let identifier = $(this).data('identifier');
+    $('#image-upload-type').val(imageType);
+    $('#image-upload-identifier').val(identifier);
+}
+
+function filterUsersByHackathon(){
+    $('#hackathonFilter').change(function(){
+        let userCount = 0;
+        let elementValue = $(this).val();
+        $('#usersTable tbody tr').each(function(){
+            if(elementValue == '0'){
+                $(this).removeClass('hide-row');
+                userCount++;
+            } else {
+                if($(this).data('hackathons').split(',').includes(elementValue)){
+                    $(this).removeClass('hide-row');
+                    userCount++;
+                } else {
+                    $(this).addClass('hide-row');
+                }
+            }
+        });
+        $('#userCount').text(userCount);
+    });
+
+    $('.downloadTable').click(function(){
+        let csvContent = '';
+        let tableId = $(this).data('tableid');
+        let rows = $(`#${tableId} tr:not(.hide-row)`);
+        rows.each(function(){
+            let tds = $(this).children();
+            let rowText = [];
+            tds.each(function(){
+                rowText.push($(this).text().trim());
+            });
+            csvContent +=rowText.join(',') + '\n';
+        });
+
+        let link = document.createElement('a');
+        link.id = 'download-csv';
+        link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csvContent));
+        link.setAttribute('download', `${tableId}_${new Date().getTime()}.csv`);
+        document.body.appendChild(link);
+        document.querySelector('#download-csv').click();
+        document.body.removeChild(link);
+    });
+
+    $('.downloadTeams').click(function(){
+        let csvContent = '';
+        let tableId = $(this).data('tableid');
+        let rows = $(`#${tableId} tr:not(.hide-row)`);
+        rows.each(function(){
+            let tds = $(this).children();
+            console.log(rows)
+            let rowText = [];
+            let c = 0
+            tds.each(function(){
+                if (c == 1){
+                    rowText.push('"' + $(this).text().split('\n').map(x => x.trim()).filter(x => x != '').join('\n') + '"');
+                } else {
+                    rowText.push($(this).text().trim());
+                }
+                c++;
+            });
+            csvContent +=rowText.join(',') + '\n';
+        });
+
+        let link = document.createElement('a');
+        link.id = 'download-csv';
+        link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csvContent));
+        link.setAttribute('download', `${tableId}_${new Date().getTime()}.csv`);
+        document.body.appendChild(link);
+        document.querySelector('#download-csv').click();
+        document.body.removeChild(link);
+    });
+}
+
+function enableReviewsSlider(){
+    $('.reviews-slider .next-step').click(function() {
+        let active_elem = $('.reviews-content.active');
+        let next_elem = active_elem.next();
+        if (next_elem && next_elem.hasClass('reviews-content')) {
+            active_elem.removeClass('active');
+            next_elem.addClass('active');
+            active_elem.hide();
+            next_elem.hide().fadeIn();
+        }
+    });
+    $('.reviews-slider .prev-step').click(function() {
+        let active_elem = $('.reviews-content.active');
+        let prev_elem = active_elem.prev();
+        if (prev_elem && prev_elem.hasClass('reviews-content')) {
+            active_elem.removeClass('active');
+            prev_elem.addClass('active');
+            active_elem.hide();
+            prev_elem.hide().fadeIn();
+        }
+    });
+}

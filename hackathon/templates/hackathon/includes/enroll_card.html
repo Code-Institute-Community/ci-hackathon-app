@@ -1,0 +1,10 @@
+{% if not hackathon.max_participants_reached %}
+<form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}">
+    <button id="enroll-part" type="submit" 
+        class="btn btn-ci mt-4 mb-2 form-control">
+            <i class="fas fa-user-plus mr-2"></i>Enroll as Participant
+    </button>
+</form>
+{% endif %}

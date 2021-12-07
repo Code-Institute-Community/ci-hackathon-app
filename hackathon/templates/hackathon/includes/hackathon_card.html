@@ -1,30 +1,101 @@
-<article class="card shadow hack-card">
-  <div class="card-body">
-    <h5 class="p-orange card-title">{{ hackathon.display_name }}</h5>
-    <p class="card-subtitle mb-2 text-muted"><i class="far fa-calendar-alt p-2"></i> {{ hackathon.start_date }} - {{ hackathon.end_date }}</p>
-    <p class="card-text"><i class="fas fa-info-circle p-2"></i> {{ hackathon.description }}</p>
-    {% if hackathon.organiser %}
-      <p><span class="pr-2">Organiser:</span> <a href="#" class="card-link"><span class="dark-text">{{ hackathon.organiser }}</span></a></p>
-    {% endif %}
-    <a href="{% url 'hackathon:hackathon_detail' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
+{% load static %}
+{% load account_tags %}
 
-    <!-- Edit and Delete buttons, only visible for admin users -->
-    {% if user.is_authenticated and user.is_superuser %}
-      <!-- Warn user if hackathon is ongoing or ended before loading edit form - trigger edit modal -->
-      {% if hackathon.start_date|date:"jS F Y H:i" <= today|date:"jS F Y H:i" %}
-        <a class="btn btn-ci mr-3" type="button" data-toggle="modal" data-target="#edit-modal-{{ hackathon.id }}">
-          Edit
-        </a>
-      {% else %}
-        <a href="{% url 'hackathon:update_hackathon' hackathon.id %}" class="btn btn-ci mr-3">
-          Edit
-        </a>
-      {% endif %}
-      <a class="btn btn-ci" type="button" data-toggle="modal" data-target="#delete-modal-{{ hackathon.id }}">
-        Delete Event
-      </a>
-    {% endif %}
-  </div>
+<article class="card hack-card">
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-md-12 col-lg-3">
+
+                {% if hackathon.hackathon_image %}
+                <img src="{{hackathon.hackathon_image}}" class="w-100 p-2" alt="Hackathon image">
+                {% else %}
+                <img src="{% static 'img/ci-hackathon--square.png' %}" class="w-100 p-2" alt="Hackathon image">
+                {% endif %}
+      
+            </div>
+            <div class="col-md-12 col-lg-9">
+                {% with authorised_types_on_card='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+                <h5 class="p-orange card-title"><a href="/hackathon/{{hackathon.id}}/" class="ci-link">{{ hackathon.display_name }}</a>
+                    {% if request.user.user_type|is_types:authorised_types_on_card %}
+                    <span class="badge badge-secondary ml-2">{{hackathon.status}}</span>
+                  {% endif %}
+                </h5>
+                <p class="card-subtitle mb-2 text-muted"><i class="far fa-calendar-alt p-2"></i> {{ hackathon.start_date }} - {{ hackathon.end_date }}</p>
+                {% if request.user.is_authenticated %}
+                <p class="card-subtitle mb-2 text-muted"><i class="fas fa-building p-2"></i> Open to all {{ hackathon.organisation }} students &amp; alumni</p>
+                {% if hackathon.end_date|date:"YmdHis" <= today|date:"YmdHis" or hackathon.status == 'finished' %}
+                {% if request.user in hackathon.participants.all %}
+                <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user p-2"></i>You participated in this hackathon</p>
+                {% else %}
+                <p class="card-subtitle mb-2 text-muted"><i class="fas fa-user-plus p-2"></i>Registration closed for this hackathon</p>
+                {% endif %}
+                {% else %}
+                {% if hackathon.status == 'registration_open' %}
+                    {% if hackathon.max_participants_reached %}
+                        <p class="card-subtitle mb-2 text-muted"><i class="fas fa-user-plus p-2"></i>Registrations closed.</p>
+                    {% elif request.user not in hackathon.participants.all %}
+                        <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Registrations open!</p>
+                    {% elif request.user in hackathon.participants.all %}
+                        <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user p-2"></i>You are enrolled in this hackathon!</p>
+                    {% endif %}
+                {% elif hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' or hackathon.status == 'hack_prep' %}
+                {% if request.user in hackathon.participants.all %}
+                <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>You are participating in this hackathon</p>
+                {% elif hackathon.status == 'hack_prep' %}
+                <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Hackathon is currently being prepared.</p>
+                {% else %}
+                <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Hackathon currently ongoing.</p>
+                {% endif %}
+                {% else %}
+                <p class="card-subtitle mb-2 ci-orange"><i class="fas fa-user-plus p-2"></i>Registrations starting soon!</p>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+
+                <p class="card-subtitle mb-2">
+                <i class="fas fa-info-circle p-2"></i>{{hackathon.tag_line}}
+                </p>
+
+                {% if request.user.user_type|is_types:authorised_types_on_card %}
+                <p class="card-subtitle mb-2">
+                <i class="fas fa-users p-2"></i>Participants: {{ hackathon.participants.all|length }} / Teams: {{ hackathon.teams.all|length }}</p>
+                {% endif %}
+
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'hackathon:view_hackathon' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
+                {% else %}
+                <a href="{% url 'hackathon:view_hackathon_public' hackathon.id %}" class="btn btn-ci mr-3">Read More</a>
+                {% endif %}
+
+                {% if request.user.is_authenticated and hackathon.status == 'registration_open' and not request.user.user_type|is_types:authorised_types_on_card and request.user not in hackathon.participants.all %}
+                <div class="enroll-hackathon-card">{% include 'hackathon/includes/enroll_card.html' %}</div>
+                {% endif %}
+                {% endwith %}
+                
+                {% with authorised_types_on_card='SUPERUSER,FACILITATOR_ADMIN,PARTNER_ADMIN' %}
+                <!-- Edit and Delete buttons, only visible for admin users -->
+                {% if request.user.is_authenticated and request.user.user_type|is_type:authorised_types_on_card %}
+                <!-- Warn user if hackathon is ongoing or ended before loading edit form - trigger edit modal -->
+                {% if hackathon.start_date|date:"YmdHis" <= today|date:"YmdHis" %}
+                    <a class="btn btn-ci mr-3" type="button" data-toggle="modal" data-target="#edit-modal-{{ hackathon.id }}">
+                    Edit
+                    </a>
+                {% else %}
+                    <a href="{% url 'hackathon:update_hackathon' hackathon.id %}" class="btn btn-ci mr-3">
+                    Edit
+                    </a>
+                {% endif %}
+                <a class="btn btn-ci" type="button" data-toggle="modal" data-target="#delete-modal-{{ hackathon.id }}">
+                    Delete Event
+                </a>
+                {% endif %}
+                {% endwith %}
+
+            </div>
+        </div>
+
+    </div>
 </article>
 
 <!-- Delete modal - pass in hackathon id to modal id to enable rendering details and deleting correct hackathon event -->
@@ -40,7 +111,7 @@
       </div>
       <div class="modal-body">
         <!-- Warn user if hackathon has started and is in progress - dates need to be formatted to work correctly -->
-        {% if hackathon.start_date|date:"jS F Y H:i" <= today|date:"jS F Y H:i" and hackathon.end_date|date:"jS F Y H:i" >= today|date:"jS F Y H:i" %}
+        {% if hackathon.start_date|date:"YmdHis" <= today|date:"YmdHis" and hackathon.end_date|date:"YmdHis" >= today|date:"YmdHis" %}
           {{ hackathon.display_name }} is currently ongoing, do you really want to delete it?
         {% else %}
           Do you really want to delete {{ hackathon.display_name }}?
@@ -67,7 +138,7 @@
       </div>
       <div class="modal-body">
         <!-- Warn user if hackathon has started and is in progress - dates need to be formatted to work correctly -->
-        {% if hackathon.start_date|date:"jS F Y H:i" <= today|date:"jS F Y H:i" and hackathon.end_date|date:"jS F Y H:i" >= today|date:"jS F Y H:i" %}
+        {% if hackathon.start_date|date:"YmdHis" <= today|date:"YmdHis" and hackathon.end_date|date:"YmdHis" >= today|date:"YmdHis" %}
           {{ hackathon.display_name }} is currently ongoing, do you really want to update it?
         {% else %}
           <!-- Warn user if hackathon has ended - dates need to be formatted to work correctly -->

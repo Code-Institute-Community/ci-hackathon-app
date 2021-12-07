@@ -1,0 +1,14 @@
+{% load static %}
+
+<div class="card card-no-border team-member-card ml-auto mr-auto">
+
+    <a href="{% url 'show_profile' user_id=member.id %}" class="ci-link"><h6 class="card-text text-center mb-3">{{member.slack_display_name}}</h6></a>
+    {% if member.profile_image %}
+        <img class="card-img-top team-member-img"
+            src="{{member.profile_image}}" alt="Profile Image">
+    {% else %}
+    <!-- Greasemann, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons -->
+    <img class="card-img-top team-member-img"
+        src="{% static 'img/profiles/profile.png' %}" alt="Profile Image">
+    {% endif %}
+</div>

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="card">
+    <div class="card-body">
+
+        {% if hack_mentors_formset.get_queryset|length > 0 %}
+        
+        <form method="POST" class="hack-award-submission p-3">
+            {% csrf_token %}
+            {{ hack_mentors_formset.management_form }}
+            {% for form in hack_mentors_formset %}
+            <div class="row">
+                <div class="col-md-12 col-lg-6">
+                    {{ form.id|as_crispy_field }}
+                    {{ form.display_name|as_crispy_field }}
+                </div>
+                <div class="col-md-12 col-lg-6">
+                    {{ form.mentor|as_crispy_field }}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-primary pl-5 pr-5">Save Facilitators</button>
+                </div>
+            </div>
+        </form>
+
+        {% else %}
+
+        <p>
+            No teams assigned yet.
+        </p>
+
+        <p>
+            Please <a class="ci-link font-weight-bold" href="/hackathon/{{hackathon.id}}/change_teams/">distribute teams</a> first to be able to assign your mentors.
+        </p>
+
+        <p class="m-0 mt-5">
+            <a role="button" class="btn btn-secondary" href="/hackathon/{{hackathon.id}}/"><i class="fas fa-chevron-left mr-2"></i> Back to the Hackathon</a>
+        </p>
+
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

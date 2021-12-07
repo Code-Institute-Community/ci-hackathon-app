@@ -1,18 +1,51 @@
 <ul class="pagination justify-content-center">
     {% if page_obj.has_previous %}
-        <li class="page-item"><a class="page-link" href="?page=1" aria-label="First">
-            <span aria-hidden="true">&laquo;</span></a>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+    {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">
+                <span><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+            </a>
         </li>
-        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
-    {% else %}
-        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a></li>
     {% endif %}
-        <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{ page_obj.number }}<span class="sr-only">(current)</span></a></li>
+    
+    {% if page_obj.number|add:'-1' > 1 %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.number|add:'-2' }}">&hellip;</a>
+        </li>
+    {% endif %}
+    
+    {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+            <li class="page-item active">
+                <a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a>
+            </li>
+        {% elif i > page_obj.number|add:'-2' and i < page_obj.number|add:'2' %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+    
+    {% if page_obj.paginator.num_pages > page_obj.number|add:'1' %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.number|add:'2' }}">&hellip;</a>
+        </li>
+    {% endif %}
+    
     {% if page_obj.has_next %}
-        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
-        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
-            <span aria-hidden="true">&raquo;</span></a></li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </a>
+        </li>
     {% else %}
-        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a></li>
+        <li class="page-item" disable>
+            <a class="page-link" href="#">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </a>
+        </li>
     {% endif %}
+    
 </ul>

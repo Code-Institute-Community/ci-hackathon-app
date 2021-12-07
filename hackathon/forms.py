@@ -1,13 +1,17 @@
 from django import forms
-from .models import Hackathon
+
+from accounts.models import Organisation
+from .models import Hackathon, HackProject, HackAward, HackTeam, \
+                    HackProjectScoreCategory, HackAwardCategory
+from .lists import STATUS_TYPES_CHOICES
 
 
 class HackathonForm(forms.ModelForm):
     """ A form to enable users to add hackathon events via the frontend site.
-     The form renders the fields that require value inputs from the user, along with some basic validation. """
+    The form renders the fields that require value inputs from the user,
+    along with some basic validation. """
     display_name = forms.CharField(
         label='Display Name',
-        min_length=5,
         max_length=254,
         widget=forms.TextInput(
             attrs={
@@ -16,21 +20,21 @@ class HackathonForm(forms.ModelForm):
         ),
         required=True
     )
+    tag_line = forms.CharField(
+        label="Tag Line",
+        max_length=254,
+    )
     description = forms.CharField(
         label="Description",
-        min_length=10,
-        max_length=3000,
         widget=forms.Textarea(
             attrs={
-                'rows': 3,
+                'rows': 4,
                 'placeholder': 'Tell us more about this event...'
             }
-        ),
-        required=True
+        )
     )
     theme = forms.CharField(
         label='Theme',
-        min_length=5,
         max_length=254,
         widget=forms.TextInput(
             attrs={
@@ -63,7 +67,118 @@ class HackathonForm(forms.ModelForm):
             }
         ),
     )
+    status = forms.CharField(
+        label="Status",
+        required=True,
+        widget=forms.Select(choices=STATUS_TYPES_CHOICES),
+    )
+    team_size = forms.IntegerField(
+        label="Team Size",
+        required=True,
+        widget=forms.TextInput(attrs={'min': 3, 'max': 6, 'type': 'number'})
+    )
+    organisation = forms.ModelChoiceField(
+        label="Organisation",
+        queryset=Organisation.objects.order_by('display_name'),
+    )
+    score_categories = forms.ModelMultipleChoiceField(
+        queryset=HackProjectScoreCategory.objects.filter(is_active=True),
+        widget=forms.SelectMultiple(attrs={
+            'size': '5'
+        })
+    )
+    is_public = forms.BooleanField(required=False)
+    max_participants = forms.IntegerField(
+        label="Max Number Of Participants (leave empty for no max)",
+        required=False,
+        widget=forms.TextInput({'type': 'number'})
+    )
 
     class Meta:
         model = Hackathon
-        fields = ['display_name', 'description', 'theme', 'start_date', 'end_date']
+        fields = ['display_name', 'description', 'theme', 'start_date',
+                  'end_date', 'status', 'organisation', 'score_categories',
+                  'team_size', 'tag_line', 'is_public', 'max_participants',
+                  ]
+
+    def __init__(self, *args, **kwargs):
+        super(HackathonForm, self).__init__(*args, **kwargs)
+        self.fields['organisation'].empty_label = None
+
+
+class ChangeHackathonStatusForm(forms.ModelForm):
+    status = forms.CharField(
+        label="Status",
+        required=True,
+        widget=forms.Select(choices=STATUS_TYPES_CHOICES),
+    )
+
+    class Meta:
+        model = Hackathon
+        fields = ['start_date', 'end_date', 'status']
+        widgets = {
+            'start_date': forms.HiddenInput(),
+            'end_date': forms.HiddenInput()
+            }
+
+
+class HackTeamForm(forms.ModelForm):
+    display_name = forms.CharField(
+        label="Team Name",
+        required=True,
+        disabled=True,
+    )
+
+    class Meta:
+        model = HackTeam
+        fields = ['id', 'display_name', 'mentor']
+
+    def __init__(self, *args, **kwargs):
+        hackathon_id = kwargs.pop('hackathon_id', None)
+        hackathon = Hackathon.objects.filter(id=hackathon_id).first()
+        super(HackTeamForm, self).__init__(*args, **kwargs)
+
+        if hackathon:
+            judges = hackathon.judges.all().order_by('slack_display_name')
+            self.fields['mentor'] = forms.ModelChoiceField(
+                queryset=judges)
+            self.fields['mentor'].required = False
+            self.fields['mentor'].label = 'Facilitator'
+
+
+class HackAwardForm(forms.ModelForm):
+    """ Form to create or edit HackAwards """
+    hack_award_category = forms.ModelChoiceField(
+        label="Award Type",
+        queryset=HackAwardCategory.objects.order_by('display_name'),
+        required=True,
+    )
+
+    winning_project = forms.ModelChoiceField(
+        label="Winning Project",
+        queryset=HackProject.objects.order_by('display_name'),
+        required=False
+    )
+
+    class Meta:
+        model = HackAward
+        fields = ('id', 'hack_award_category', 'winning_project')
+
+    def __init__(self, *args, **kwargs):
+        hackathon_id = kwargs.pop('hackathon_id', None)
+        hackathon = Hackathon.objects.filter(id=hackathon_id).first()
+        super(HackAwardForm, self).__init__(*args, **kwargs)
+        # Prepopulate dropdowns so only hackathon specific award categories and
+        # winning_projects can be chosen if a hackathon_id is specified
+        if hackathon:
+            hack_projects = HackProject.objects.filter(
+                    hackteam__in=hackathon.teams.all()).order_by(
+                        'display_name')
+            hack_award_categories = HackAwardCategory.objects.filter(
+                    award__in=hackathon.awards.all()).order_by(
+                        'display_name')
+            self.fields['hack_award_category'] = forms.ModelChoiceField(
+                queryset=hack_award_categories)
+            self.fields['winning_project'] = forms.ModelChoiceField(
+                queryset=hack_projects)
+            self.fields['winning_project'].required = False

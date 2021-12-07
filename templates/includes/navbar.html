@@ -1,5 +1,10 @@
 {% load static %}
+{% load account_tags %}
 
+{% load account socialaccount %}
+{% get_providers as socialaccount_providers %}
+
+{% with authorised_admins='SUPERUSER,FACILITATOR_ADMIN,PARTNER_ADMIN' %}
 <nav class="navbar navbar-expand-lg navbar-light bg-navbar">
     <div class="container">
         <a href="{% url 'home' %}" class="navbar-brand"></a>
@@ -11,31 +16,41 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'home' %}">Home</a>
                 </li>
+                {% if request.user.user_type|is_types:authorised_admins %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarHackathons" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         Hackathons
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarHackathons">
+                        <!-- TODO: Separate between different admin users -->
+                        <a class="dropdown-item" href="{% url 'hackathon:create_hackathon' %}">Create Hackathon</a>
                         <a class="dropdown-item" href="{% url 'hackathon:hackathon-list' %}">View Hackathons</a>
-                        <!-- Create event link only available for admin users -->
-                        {% if user.is_authenticated and user.is_superuser %}
-                            <a class="dropdown-item" href="{% url 'hackathon:create_hackathon' %}">Create Hackathon</a>
-                        {% endif %}
-                        <a class="dropdown-item" href="#">Winning Projects</a>
-                        <a class="dropdown-item" href="#">Awards</a>
                     </div>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'hackathon:hackathon-list' %}">Hackathons</a>
+                </li>
+                {% endif %}
+                {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarResources" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         Resources
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarResources">
-                        <a class="dropdown-item" href="#">FAQs</a>
-                        <a class="dropdown-item" href="{% url 'judging_criteria' %}">Judging Criteria</a>
+                        <a class="dropdown-item" href="{% url 'faq' %}">FAQs</a>
                         <a class="dropdown-item" href="{% url 'resources' %}">Useful Resources</a>
                     </div>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'faq' %}">FAQs</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'view_showcases' %}">Project Showcase</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarAccount" role="button" data-toggle="dropdown"
@@ -44,12 +59,17 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarAccount">
                         {% if not user.is_authenticated %}
+                            {% if not socialaccount_providers %}
                             <a class="dropdown-item" href="{%  url 'account_signup' %}">Register</a>
+                            {% endif %}
                             <a class="dropdown-item" href="{% url 'account_login' %}">Login</a>
                         {% else %}
                             <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
-                            {% if user.is_superuser %}
-                                <a class="dropdown-item" href="{% url 'admin:index' %}">Admin Panel</a>
+                            {% if request.user.user_type|is_type:"SUPERUSER" %}
+                                <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">Django Admin</a>
+                            {% endif %}
+                            {% if request.user.user_type|is_types:authorised_admins %}
+                                <a class="dropdown-item" href="{% url 'hackadmin:hackadmin_panel' %}">Hack Admin</a>
                             {% endif %}
                             <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
                         {% endif %}
@@ -59,3 +79,4 @@
         </div>
     </div>
 </nav>
+{% endwith %}

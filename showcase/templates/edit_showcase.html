@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="display_name" value="{{project.display_name}}">
+    <input type="hidden" name="created_by" value="{{request.user.id}}">
+    {{form.hack_project}}
+    {{form.showcase_participants|as_crispy_field}}
+    {{form.is_public|as_crispy_field}}
+    <p class="showcase-public-text">
+        Setting your project showcase to public will make the project and team
+        page available to the general public on the "Showcase" section of the
+        this website.
+    </p>
+    <p class="showcase-public-text">
+        Your project details (e.g. description, technologies and screenshots)
+        will be visible and if your name is selected above your full name will
+        be displayed with a link to your website as defined in on your profile page.
+    </p>
+    <p class="showcase-public-text">
+        This will allow you to show or hide the full team or some individuals
+        in the team to showcase your skills and add to your portfolio.
+        It can also be changed at any time.
+    </p>
+    {% if showcase_image %}
+    <div class="card showcase-image-edit">
+        <div class="card-body">
+            <div class="card-title">
+                Current Showcase Image
+            </div>
+            <div class="card-text">
+                <img src="{{showcase_image}}" alt="Showcase Display Image">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <input type="file" name="image">
+
+    <button class="ci-btn mt-3" type="submit">Publish Project</button>
+</form>
+
+{% endblock %}

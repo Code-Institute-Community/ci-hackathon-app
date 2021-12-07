@@ -1,0 +1,40 @@
+<div class="row partner-form pt-5 pb-5">
+    <div class="col text-center">
+
+        <h1 class="index-square-heading heading-lg mb-4">Want To Partner On A Hackathon?</h1>
+
+        <form method="POST" action="{% url 'save_partnership_contact_form' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="company" class="form-label">Company</label>
+                <input type="text" class="form-control" id="company" name="company" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="contactName" class="form-label">Contact Name</label>
+                <input type="text" class="form-control" id="contact_name" name="contact_name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="phone" class="form-control" id="phone" name="phone" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Hackathon Idea</label>
+                <textarea class="form-control" id="description" rows="4" name="description" required></textarea>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-ci-white">Get In Touch!</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>

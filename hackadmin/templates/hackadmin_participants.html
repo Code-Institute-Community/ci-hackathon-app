@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load hackadmin_tags %}
+
+{% block content %}
+
+{% include 'includes/back_button.html' with redirect_url="/hackadmin/" button_label="Back To HackAdmin" %}
+
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title"><h5>{{hackathon.display_name}}</h5></div>
+                <div class="card-text mt-5">
+                    
+                    <ul class="nav nav-tabs" id="participantsTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link ci-link active" id="participants-tab" data-toggle="tab" href="#participants" role="tab" aria-controls="participants" aria-selected="true">
+                                Participants
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ci-link" id="teams-tab" data-toggle="tab" href="#teams" role="tab" aria-controls="teams" aria-selected="false">Teams</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ci-link" id="mentors-tab" data-toggle="tab" href="#mentors" role="tab" aria-controls="mentors" aria-selected="fase">Facilitators</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ci-link" id="judges-tab" data-toggle="tab" href="#judges" role="tab" aria-controls="judges" aria-selected="false">Judges</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link ci-link" id="awardees-tab" data-toggle="tab" href="#awardees" role="tab" aria-controls="awardees" aria-selected="false">Awardees</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="participantsTabContent">
+                        <div class="tab-pane fade show active" id="participants" role="tabpanel" aria-labelledby="participants-tab">
+                            {% include 'includes/list_participants.html' with participants=hackathon.participants.all %}
+                        </div>
+                        <div class="tab-pane fade" id="teams" role="tabpanel" aria-labelledby="teams-tab">
+                            {% include 'includes/list_teams.html' with teams=hackathon.teams.all %}
+                        </div>
+                        <div class="tab-pane fade" id="mentors" role="tabpanel" aria-labelledby="mentors-tab">
+                            {% include 'includes/list_mentors.html' %}
+                        </div>
+                        <div class="tab-pane fade" id="judges" role="tabpanel" aria-labelledby="judges-tab">
+                            {% include 'includes/list_judges.html' with judges=hackathon.judges.all %}
+                        </div>
+                        <div class="tab-pane fade" id="awardees" role="tabpanel" aria-labelledby="awardees-tab">
+                            {% include 'includes/list_awardees.html' %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

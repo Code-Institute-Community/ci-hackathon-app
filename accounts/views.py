@@ -7,15 +7,17 @@ from .forms import EditProfileForm
 
 @login_required
 def edit_profile(request):
-    """ 
-        If the request is POST and the form is valid, save the form and redirect to profile.
-        Otherwise, display current user instance in EditProfileForm on edit_profile.html.
+    """
+        If the request is POST and the form is valid, save the form and
+        redirect to profile. Otherwise, display current user instance in
+        EditProfileForm on edit_profile.html.
     """
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
 
         if form.is_valid():
             form.save()
+            messages.success(request, 'Profile updated successfully.')
             return redirect('profile')
 
         else:

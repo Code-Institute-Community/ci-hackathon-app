@@ -4,7 +4,7 @@ __pycache__/
 .venv/
 .vscode/
 .vs/
-.env
+*.env
 env.py
 *.py[cod]
 *.sqlite3
@@ -13,3 +13,5 @@ settings.json
 venv/
 .idea/
 MYNOTES.md
+staticfiles
+data/

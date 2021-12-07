@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="row mb-4">
+    <div class="col">
+
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h4>Add Award for Hackathon</h4>
+                </div>
+                <div class="card-text">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="update_type" value="add">
+                        {{form.hack_award_category|as_crispy_field}}
+                        <button type="submit" class="btn btn-primary">Add Award</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% if awards %}
+<div class="row">
+    <div class="col">
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h4>Awards for {{hackathon.display_name}}</h4>
+                </div>
+                <div class="card-text">
+                    {% for award in awards %}
+                    <div class="card mb-2">
+                        <div class="card-body p-2">
+                            
+                            {% if not award.winning_project %}
+                            <form method="POST" class="edit-awards-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{award.id}}">
+                                <input type="hidden" name="update_type" value="delete">
+                                <strong>{{award.hack_award_category }}</strong>
+                                <button class="btn btn-danger btn-sm float-right">X</button>
+                            </form>
+                            {% endif %}
+                            {% if award.winning_project %}
+                            <strong>{{ award.hack_award_category }}</strong><br>
+                            Winner: {{ award.winning_project }}
+                            {% else %}
+                            No winner assigned yet.
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

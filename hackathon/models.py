@@ -1,10 +1,8 @@
 from django.db import models
-from django.utils import timezone
-from datetime import datetime
 
 from accounts.models import CustomUser as User
 from accounts.models import Organisation
-from .lists import STATUS_TYPES_CHOICES, JUDGING_STATUS_CHOICES
+from .lists import STATUS_TYPES_CHOICES
 
 # Optional fields are ony set to deal with object deletion issues.
 # If this isn't a problem, they can all be changed to required fields.
@@ -22,7 +20,7 @@ class Hackathon(models.Model):
     """Model representing a Hackathon. It is connected by a foreign key to
     User, HackAwards and HackTeam. Optional Fields: judges, organiser.
     "awards" and "teams" are related tables. They have been moved to
-    HackAwardCategory and HackTeam respectively. Please see comments there."""
+    HackAward and HackTeam respectively. Please see comments there."""
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
@@ -30,52 +28,76 @@ class Hackathon(models.Model):
                                    on_delete=models.CASCADE,
                                    related_name="hackathons")
     display_name = models.CharField(default="", max_length=254, blank=False)
-    description = models.TextField(blank=False)
-    theme = models.CharField(max_length=264, blank=False)
+    tag_line = models.CharField(default="", max_length=254, blank=False,
+                                help_text=("Short description which will be "
+                                           "displayed in the Hackathon List "
+                                           "view."))
+    description = models.TextField(blank=False,
+                                   help_text=("Longer description which will "
+                                              "be displayed in the Hackathon "
+                                              "Detail view. Usually includes "
+                                              "schedule and other details."))
+    theme = models.CharField(default="", max_length=264, blank=False)
     start_date = models.DateTimeField(blank=False)
     end_date = models.DateTimeField(blank=False)
+    team_size = models.IntegerField(default=3)
     # Hackathons can have numerous judges and
     # users could be the judges of more than one Hackathon: Many to Many
     judges = models.ManyToManyField(User,
                                     blank=True,
-                                    related_name='hackathon_judges')
+                                    related_name='judged_hackathons')
     # Hackathons can have multiple participants judges and
     # users could be participating in more than one Hackathon: Many to Many
-    participants = models.ManyToManyField(User,
-                                    blank=True,
-                                    related_name='hackathon_participants')
+    participants = models.ManyToManyField(
+        User, blank=True, related_name='participated_hackathons')
+    # Hackathons can have multiple score categories and score categories
+    # Can belong to multiple hackahtons: Many to Many
+    score_categories = models.ManyToManyField(
+        'HackProjectScoreCategory',
+        blank=True,
+        related_name='hackathon_score_categories')
     # One organiser could organise more than one Hackathon: One To Many
     organiser = models.ForeignKey(User,
                                   null=True,
                                   blank=True,
                                   on_delete=models.SET_NULL,
-                                  related_name="hackathon_organiser")
+                                  related_name="organised_hackathons")
     organisation = models.ForeignKey(Organisation,
                                      null=True,
                                      blank=True,
                                      on_delete=models.SET_NULL,
-                                     related_name='hackathon_organisation')
+                                     related_name='hackathons')
     status = models.CharField(
-        max_length=10,
+        max_length=20,
         blank=False,
         default='draft',
         choices=STATUS_TYPES_CHOICES
     )
-    judging_status = models.CharField(
-        max_length=16,
-        blank=False,
-        default='not_yet_started',
-        choices=JUDGING_STATUS_CHOICES
+    hackathon_image = models.TextField(
+        default="",
+        blank=True,
+        help_text=("Hackathon image.")
     )
-    
+    is_public = models.BooleanField(default=False)
+    max_participants = models.IntegerField(default=None, null=True, blank=True)
 
     def __str__(self):
         return self.display_name
 
+    class Meta:
+        verbose_name = "Hackathon"
+        verbose_name_plural = "Hackathons"
+
+    def max_participants_reached(self):
+        if not self.max_participants:
+            return False
+
+        return self.participants.count() >= self.max_participants
+
 
 class HackAwardCategory(models.Model):
-    """Model representing a HackAwardCategory. It is connected by a foreign key to
-    User, Hackathon and HackProject. Optional fields: winning_project."""
+    """Model representing a HackAwardCategory which represents a type of award
+    that can be won at a hackathon"""
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     # Each model can only be created by one user: One To Many
@@ -84,23 +106,47 @@ class HackAwardCategory(models.Model):
                                    related_name="hackawardcategories")
     display_name = models.CharField(default="", max_length=254)
     description = models.TextField()
+    ranking = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.display_name
+
+    class Meta:
+        verbose_name = "Hack Award Category"
+        verbose_name_plural = "Hack Award Categories"
+
+
+class HackAward(models.Model):
+    """Model representing a HackAward. This is the connection between the
+    Hackathon, HackAwardCategory and (winning) HackProject"""
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    # Each model can only be created by one user: One To Many
+    created_by = models.ForeignKey(User,
+                                   on_delete=models.CASCADE,
+                                   related_name="hackawards")
     # a Category will only apply to one Hackathon and
     # a Hackathon has numerous categories: One to Many.
     # If the category was going to be reused, instead, use Many to Many.
     hackathon = models.ForeignKey(Hackathon,
                                   on_delete=models.CASCADE,
                                   related_name="awards")
+    hack_award_category = models.ForeignKey(HackAwardCategory,
+                                            on_delete=models.CASCADE,
+                                            related_name="award")
     # One category can have one winner: One to One
-    winning_project = models.OneToOneField("HackProject",
-                                           null=True,
-                                           blank=True,
-                                           on_delete=models.SET_NULL)
+    winning_project = models.ForeignKey("HackProject",
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL)
 
     def __str__(self):
-        return self.display_name
+        return f'{self.hack_award_category}, {self.hackathon}'
 
     class Meta:
-        verbose_name_plural = "Hack award categories"
+        unique_together = ['hackathon', 'hack_award_category']
+        verbose_name = "Hack Award"
+        verbose_name_plural = "Hack Awards"
 
 
 class HackTeam(models.Model):
@@ -113,12 +159,23 @@ class HackTeam(models.Model):
                                    on_delete=models.CASCADE,
                                    related_name="hackteams")
     display_name = models.CharField(default="", max_length=254)
+    header_image = models.TextField(
+        default="",
+        blank=True,
+        help_text=("Image displayed at the top of the team's page.")
+    )
     # users could be the participants of more than one Hackathon, on different
     # teams and a team is made of a number of participants - Many to Many
     # Issue is that a user could join more than one team on the same Hackathon.
     # Could use a custom save method to prevent it.
     participants = models.ManyToManyField(User,
-                                          related_name='hackteam')
+                                          related_name="hackteam")
+    # A team has one mentor, a mentor has numerous teams: One to Many.
+    mentor = models.ForeignKey(User,
+                               null=True,
+                               blank=True,
+                               on_delete=models.SET_NULL,
+                               related_name="mentored_teams")
     # A team participates in one Hackathon and
     # a Hackathon has numerous teams: One to Many.
     hackathon = models.ForeignKey(Hackathon,
@@ -129,9 +186,18 @@ class HackTeam(models.Model):
                                    null=True,
                                    blank=True,
                                    on_delete=models.SET_NULL)
+    communication_channel = models.CharField(
+        default="", max_length=255, blank=True,
+        help_text=("Usually a link to the Slack group IM, but can be a link "
+                   "to something else."))
 
     def __str__(self):
         return self.display_name
+
+    class Meta:
+        verbose_name = "Hack Team"
+        verbose_name_plural = "Hack Teams"
+        unique_together = ["display_name", "hackathon"]
 
 
 class HackProject(models.Model):
@@ -149,20 +215,34 @@ class HackProject(models.Model):
         related_name="hackproject",)
     display_name = models.CharField(default="", max_length=255)
     description = models.TextField(max_length=500)
+    technologies_used = models.CharField(
+        default="", max_length=1024,
+        help_text=("Add any technologies that were used for this project"))
+    project_image = models.TextField(
+        default="",
+        blank=True,
+        help_text=("Image displayed next to the project on the team's page.")
+    )
+    screenshot = models.TextField(
+        default="",
+        blank=True,
+        help_text=("Project screenshot displayed on the team's page "
+                   "underneath the project information")
+    )
     github_url = models.URLField(default="", max_length=255)
     deployed_url = models.URLField(default="", max_length=255)
     submission_time = models.DateTimeField(auto_now_add=True)
     speaker_name = models.CharField(default="", max_length=225)
     share_permission = models.BooleanField(default=True)
-    # A project has one mentor, a mentor has numerous projects: One to Many.
-    mentor = models.ForeignKey(User,
-                               null=True,
-                               blank=True,
-                               on_delete=models.SET_NULL,
-                               related_name="hackproject_mentor")
 
     def __str__(self):
         return self.display_name
+
+    def get_showcase(self):
+       try:
+          return self.showcase
+       except:
+          return None
 
 
 class HackProjectScore(models.Model):
@@ -203,6 +283,7 @@ class HackProjectScoreCategory(models.Model):
     # these fields set the scale
     min_score = models.IntegerField(default=1)
     max_score = models.IntegerField(default=10)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.category

@@ -1,9 +1,10 @@
 from django.test import TestCase
 from django.utils import timezone
-from django.contrib.auth.models import User
+from accounts.models import CustomUser, Organisation
 
 from hackathon.models import (Hackathon,
                               HackTeam,
+                              HackAward,
                               HackAwardCategory,
                               HackProject,
                               HackProjectScore,
@@ -15,7 +16,8 @@ class HackathonTests(TestCase):
 
     def setUp(self):
         """Sets up the models for testing"""
-        user = User.objects.create(username="testuser")
+        user = CustomUser.objects.create(slack_display_name="testuser")
+        organisation = Organisation.objects.create()
 
         hackathon = Hackathon.objects.create(
             created_by=user,
@@ -30,24 +32,30 @@ class HackathonTests(TestCase):
             hackathon=hackathon)
         team.participants.set([user])
 
-        HackAwardCategory.objects.create(
+        award_category = HackAwardCategory.objects.create(
             created_by=user,
             display_name="testaward",
-            description="lorem ipsum",
-            hackathon=hackathon)
+            description="lorem ipsum")
+        
+        hack_award = HackAward.objects.create(
+            created_by=user,
+            hack_award_category=award_category,
+            hackathon=hackathon,
+        )
 
         project = HackProject.objects.create(
             created_by=user,
             display_name="testproject",
             description="lorem ipsum",
-            github_link="https://www.test.com/",
-            collab_link="https://www.test.com/")
+            github_url="https://www.test.com/",
+            deployed_url="https://www.test.com/")
 
         score_category = HackProjectScoreCategory.objects.create(
             created_by=user,
             category="testcategory",
             min_score=1,
-            max_score=15)
+            max_score=15,
+            is_active=True)
         score_category.save()
 
         HackProjectScore.objects.create(
@@ -69,6 +77,11 @@ class HackathonTests(TestCase):
         """Tests the string method on the hackathon."""
         self.assertEqual(str(HackAwardCategory.objects.get(pk=1)),
                          ('testaward'))
+    
+    def test_hackaward_str(self):
+        """Tests the string method on the hackathon."""
+        self.assertEqual(str(HackAward.objects.get(pk=1)),
+                         'testaward, hacktest')
 
     def test_hackproject_str(self):
         """Tests the string method on the hackathon."""

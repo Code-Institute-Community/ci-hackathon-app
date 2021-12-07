@@ -1,0 +1,124 @@
+{% load static %}
+
+<div class="row mt-3 mb-2 mt-4 ml-4"> 
+    <div class="col">
+        <h3>Project: {{ team.project.display_name}}</h3>
+    </div>
+</div>
+
+<div class="row mt-3 mb-5 ml-4 mr-4"> 
+    <div class="col-md-12 col-lg-3">
+        <div class="card">
+            {% if request.user in team.participants.all and not showcase and team.hackathon.status == 'hack_in_progress' %}
+            <button class="btn btn-secondary btn-sm edit-image" 
+                data-image-type="project_image"
+                data-identifier="{{team.project.id}}"
+                data-toggle="modal" data-target="#uploadImageModal">
+                <i class="fas fa-pen mr-2"></i>Edit</button>
+            {% endif %}
+            {% if showcase.showcase_image %}
+            <img src="{{showcase.showcase_image}}" onerror="this.src = {% static 'img/ci-hackathon--square.png' %}" width="100%" alt="Project Image" />
+            {% elif team.project.project_image %}
+                <img src="{{team.project.project_image}}" onerror="this.src = {% static 'img/ci-hackathon--square.png' %}" width="100%" alt="Project Image" />
+            {% else %}
+                <img src="{% static 'img/ci-hackathon--square.png' %}" width="100%" alt="Project Image" />
+            {% endif %}
+        </div>
+        {% if request.user in team.participants.all and not showcase %}
+            {% if team.hackathon.status == 'hack_in_progress' %}
+            <a role="button" class="btn btn-ci mt-2 w-100" href="{% url 'create_project' team_id=team.id %}">Edit Project</a>
+            {% elif team.project and team.hackathon.status == 'finished' %}
+            <a role="button" class="btn btn-ci mt-2 w-100" href="{% url 'create_project' team_id=team.id %}">Edit Project</a>
+            {% elif team.hackathon.status == 'judging' %}
+            <div class="enrollments-closed mt-4 mb-2 p-3">
+                Judging in progress, you cannot edit your project anymore.
+            </div>
+            {% endif%}
+        <a role="button" class="btn btn-ci mt-2 w-100" href="{% url 'create_or_update_showcase' team_id=team.id %}">
+            {% if team.get_showcase %}Edit{% else %}Add{% endif %} Showcase
+        </a>
+        {% endif %}
+        {% if not showcase and team.project.get_showcase %}
+        <a role="button" class="btn btn-primary mt-2 w-100" href="{% url 'view_showcase' showcase_id=team.project.get_showcase.id %}">
+            View Showcase
+        </a>
+        {% endif %}
+    </div>
+    <div class="col-md-12 col-lg-9">
+
+        <div class="card mb-2">
+            <div class="card-body mb-0">
+                <div class="card-title">
+                    <h4>Description</h4>
+                </div>
+                <div class="card-text">
+                    {% if team.project.description %}
+                        {{team.project.description}}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="card-title">
+                    <h4>Technologies used</h4>
+                </div>
+                <div class="card-text">
+                    {% if team.project.technologies_used %}
+                        {{team.project.technologies_used}}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="card-title">
+                    <h4>Code / Deployement</h4>
+                </div>
+                <div class="card-text">
+                    {% if team.project.technologies_used %}
+                        <p class="mb-0">
+                            <strong>GitHub Repo:</strong> <a class="teams-link ci-link"
+                                target="_blank"
+                                href="{{team.project.github_url}}">{{team.project.github_url}}</a>
+                        </p>
+                        <p class="mb-0">
+                            <strong>Deployed at: </strong> <a class="teams-link ci-link"
+                                target="_blank"
+                                href="{{team.project.deployed_url}}">{{team.project.deployed_url}}</a>
+                        </p>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="card-title">
+                    
+                    <h4>Screenshot
+                        {% if request.user in team.participants.all and not showcase and team.hackathon.status == 'hack_in_progress' %}
+                        <button class="btn btn-secondary btn-sm edit-image screenshot-image" 
+                        data-image-type="screenshot"
+                        data-identifier="{{team.project.id}}"
+                        data-toggle="modal" data-target="#uploadImageModal">
+                        <i class="fas fa-pen mr-2"></i>Edit</button>
+                        {% endif %}
+                    </h4>
+
+                </div>
+                <div class="card-text">
+                    {% if team.project.screenshot %}
+                        <img src="{{team.project.screenshot}}" class="project-screenshot" />
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

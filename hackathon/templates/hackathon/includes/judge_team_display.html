@@ -1,0 +1,24 @@
+{% load custom_tags %}
+
+{% if request.user in hackathon.judges.all %}
+<div class="enrollments-closed mt-4 mb-2 p-3">
+    
+        {% with mentored_teams=request.user|get_mentored_team:hackathon %}
+        {% if mentored_teams %}
+        <strong>My Teams:</strong>
+        <ul class="m-0">
+        {% for mentored_team in mentored_teams %}
+            <li>
+                <strong>
+                    <a class="ci-link ml-2" href="/teams/{{mentored_team.id}}/">{{mentored_team}}</a>
+                </strong>   
+            </li>
+        {% endfor %}
+        </ul>   
+        {% else %}
+        You are currently don't have a team assigned to you.
+        {% endif %}
+        {% endwith %}
+    
+</div>
+{% endif %}

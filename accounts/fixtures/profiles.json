@@ -14,7 +14,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T21:39:10.940Z",
             "slack_display_name":"Luke_Skywalker",
-            "user_type":"participant",
             "current_lms_module":"programme_preliminaries",
             "organisation":1,
             "groups":[
@@ -40,7 +39,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T21:43:53.334Z",
             "slack_display_name":"C-3PO",
-            "user_type":"participant",
             "current_lms_module":"alumni",
             "organisation":1,
             "groups":[
@@ -66,8 +64,7 @@
             "is_active":true,
             "date_joined":"2020-10-26T21:45:59.264Z",
             "slack_display_name":"R2-D2",
-            "user_type":"participant",
-            "current_lms_module":"python_fundamentals",
+            "current_lms_module":"python_essentials",
             "organisation":1,
             "groups":[
                 
@@ -92,7 +89,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T21:48:44.064Z",
             "slack_display_name":"Darth_Vader",
-            "user_type":"staff",
             "current_lms_module":"staff",
             "organisation":1,
             "groups":[
@@ -118,8 +114,7 @@
             "is_active":true,
             "date_joined":"2020-10-26T21:53:11.458Z",
             "slack_display_name":"Leia_Organa",
-            "user_type":"participant",
-            "current_lms_module":"javascript_fundamentals",
+            "current_lms_module":"javascript_essentials",
             "organisation":1,
             "groups":[
                 
@@ -144,8 +139,7 @@
             "is_active":true,
             "date_joined":"2020-10-26T21:54:54.941Z",
             "slack_display_name":"Owen_Lars",
-            "user_type":"participant",
-            "current_lms_module":"html_fundamentals",
+            "current_lms_module":"html_essentials",
             "organisation":1,
             "groups":[
                 
@@ -170,7 +164,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T21:57:45.272Z",
             "slack_display_name":"Obi-Wan_Kenobi",
-            "user_type":"staff",
             "current_lms_module":"staff",
             "organisation":1,
             "groups":[
@@ -196,7 +189,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:00:34.989Z",
             "slack_display_name":"Anakin_Skywalker",
-            "user_type":"participant",
             "current_lms_module":"programming_paradigms",
             "organisation":1,
             "groups":[
@@ -222,8 +214,7 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:02:30.940Z",
             "slack_display_name":"Chewbacca",
-            "user_type":"participant",
-            "current_lms_module":"css_fundamentals",
+            "current_lms_module":"css_essentials",
             "organisation":1,
             "groups":[
                 
@@ -248,7 +239,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:04:02.107Z",
             "slack_display_name":"Han_Solo",
-            "user_type":"participant",
             "current_lms_module":"data_centric_development",
             "organisation":1,
             "groups":[
@@ -274,7 +264,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:05:58.558Z",
             "slack_display_name":"Yoda",
-            "user_type":"admin",
             "current_lms_module":"staff",
             "organisation":1,
             "groups":[
@@ -300,8 +289,7 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:08:52.279Z",
             "slack_display_name":"Palpatine",
-            "user_type":"participant",
-            "current_lms_module":"full_stack_frameworks with django",
+            "current_lms_module":"full_stack_frameworks_with_django",
             "organisation":1,
             "groups":[
                 
@@ -326,8 +314,7 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:10:28.037Z",
             "slack_display_name":"Boba_Fett",
-            "user_type":"participant",
-            "current_lms_module":"python_fundamentals",
+            "current_lms_module":"python_essentials",
             "organisation":1,
             "groups":[
                 
@@ -352,7 +339,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:13:13.056Z",
             "slack_display_name":"Qui-Gon_Jinn",
-            "user_type":"staff",
             "current_lms_module":"staff",
             "organisation":1,
             "groups":[
@@ -378,7 +364,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:16:45.860Z",
             "slack_display_name":"Padme_Amidala",
-            "user_type":"participant",
             "current_lms_module":"interactive_frontend_development",
             "organisation":1,
             "groups":[
@@ -404,7 +389,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:20:27.772Z",
             "slack_display_name":"Mace_Windu",
-            "user_type":"staff",
             "current_lms_module":"staff",
             "organisation":1,
             "groups":[
@@ -430,7 +414,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:22:47.130Z",
             "slack_display_name":"Dooku",
-            "user_type":"participant",
             "current_lms_module":"user_centric_frontend_development",
             "organisation":1,
             "groups":[
@@ -456,7 +439,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:25:11.784Z",
             "slack_display_name":"Jango_Fett",
-            "user_type":"participant",
             "current_lms_module":"interactive_frontend_development",
             "organisation":1,
             "groups":[
@@ -482,7 +464,6 @@
             "is_active":true,
             "date_joined":"2020-10-26T22:28:36.422Z",
             "slack_display_name":"Shmi_Skywalker",
-            "user_type":"participant",
             "current_lms_module":"practical_python",
             "organisation":1,
             "groups":[

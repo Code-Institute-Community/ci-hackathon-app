@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+
+{% if hack_awards_formset.get_queryset|length == 0 %}
+<div class="alert alert-danger" role="alert">
+    This Hackathon does not have any awards. Please create at least one award to determine a winner.
+    <a role="button" class="btn btn-primary btn-sm" href="/hackathon/{{hackathon.id}}/awards/">Add Now</a>
+</div>
+{% endif %}
+
+<h3 class="table_titles"> {{ hackathon }} Scores </h3>
+{% if scores_table %}
+<div class="card mb-3 judge-scores-card">
+    <table class="table table-bordered final_score_table w-100 m-0 p-0">
+        <thead>
+            <tr class="table_titles">
+                {% for header in scores_table.headers %}
+                {% if forloop.counter == 1%}
+                <th scope="col" class="text-left">
+                    {{header}} <i class="fas fa-info-circle ml-2" title="Teams with no projects yet:{{teams_without_projects}}"></i>
+                </th>
+                {% else %}
+                <th scope="col">{{header}}</th>
+                {% endif %}
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in scores_table.rows %}
+            <tr>
+                {% for col in row %}
+                <!-- class="not-counted-scores" -->
+                <td {% if forloop.counter == 1%}class="text-left"{% elif forloop.last %} scope="row"{% endif %}>{{col}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if hack_awards_formset.get_queryset|length > 0 %}
+<div class="card">
+    <div class="card-body">
+        
+        <form method="POST" class="hack-award-submission p-3">
+            {% csrf_token %}
+            {{ hack_awards_formset.management_form }}
+            {% for form in hack_awards_formset %}
+            <div class="row">
+                <div class="col-md-12 col-lg-6">
+                    {{ form.id|as_crispy_field }}
+                    {{ form.hack_award_category|as_crispy_field }}
+                </div>
+                <div class="col-md-12 col-lg-6">
+                    {{ form.winning_project|as_crispy_field }}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-primary pl-5 pr-5">Save Awards</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endif %}
+
+{% else %}
+
+<div class="card">
+    <div class="card-body">
+        {% if hackathon.teams.all|length == 0 %}
+        <strong>No teams added yet.</strong>
+        {% else %}
+        <strong>No scores added yet.</strong>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

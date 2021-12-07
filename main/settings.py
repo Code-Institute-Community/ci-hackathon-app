@@ -1,16 +1,25 @@
 import os
-if os.path.exists(".env"):
-    from dotenv import load_dotenv
-    load_dotenv()
+
+from django.core.management.utils import get_random_secret_key
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+from dotenv import load_dotenv
+
+ENV_FILE = os.getenv('ENV_FILE', '.env')
+
+if ENV_FILE:
+    load_dotenv(ENV_FILE)
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", get_random_secret_key())
 
 DEBUG = "DEVELOPMENT" in os.environ
 
 ALLOWED_HOSTS = []
-host = os.environ.get("SITE_NAME")
+host = os.environ.get("SITE_NAME", '*')
 if host:
     ALLOWED_HOSTS.append(host)
 
@@ -31,10 +40,13 @@ INSTALLED_APPS = [
     # custom apps
     "accounts",
     "hackathon",
+    "hackadmin",
     "home",
+    "images",
     "profiles",
     "resources",
-    "submissions",
+    "showcase",
+    "teams",
 ]
 
 MIDDLEWARE = [
@@ -85,35 +97,52 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = os.environ.get(
+    'EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+if EMAIL_BACKEND == 'django.core.mail.backends.smtp.EmailBackend':
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False') == 'True'
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 25))
+    EMAIL_HOST = os.environ.get('EMAIL_HOST')
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    DEFAULT_FROM_EMAIL = (os.environ.get('DEFAULT_FROM_EMAIL')
+                          or os.environ.get("SUPPORT_EMAIL"))
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 ACCOUNT_SIGNUP_FORM_CLASS = "accounts.forms.SignupForm"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_EMAIL_REQUIRED=True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = None
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
 ACCOUNT_USERNAME_MIN_LENGTH = 4
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = os.environ.get('ACCOUNT_DEFAULT_HTTP_PROTOCOL',
+                                               'https')
 LOGIN_URL = "/accounts/login/"
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/post_login/"
 
 
 WSGI_APPLICATION = "main.wsgi.application"
 
-
-if "DATABASE_URL" in os.environ:
-    print("Postgres DATABASE_URL found.")
+if not DEBUG:
     DATABASES = {
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL"))
+        'default': {
+            'ATOMIC_REQUESTS': True,
+            'CONN_MAX_AGE': 0,
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': os.getenv('DBHOST'),  # '127.0.0.1',
+            'NAME': os.getenv('DBNAME'),  #'hackathons',
+            'OPTIONS': {},
+            'PASSWORD': os.getenv('DBPASS'),
+            'PORT': os.getenv('DBPORT', '3306'),
+            'USER': os.getenv('DBUSER'),
+        },
     }
 else:
-    print("Postgres DATABASE_URL not found, using db.sqlite3")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+            "NAME": os.path.join(BASE_DIR, "data", "db.sqlite3"),
         }
     }
 
@@ -140,12 +169,45 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
-STATICFILES_LOCATION = "static"
-STATIC_URL = "/static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_LOCATION = 'static'
+STATIC_URL = os.environ.get("STATIC_URL", "static/")
+STATIC_ROOT = os.environ.get("STATIC_ROOT",
+                             os.path.join(BASE_DIR, "staticfiles"))
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 
 MEDIAFILES_LOCATION = "media"
-MEDIA_URL = "/media/"
+MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+SLACK_ENABLED = os.environ.get("SLACK_ENABLED") == 'True'
+
+if SLACK_ENABLED:
+    SLACK_WORKSPACE = os.environ.get('SLACK_WORKSPACE')
+    SLACK_BOT_TOKEN = os.environ.get('SLACK_BOT_TOKEN')
+    INSTALLED_APPS += ['custom_slack_provider']
+    SOCIALACCOUNT_PROVIDERS = {
+        'custom_slack_provider': {
+            'SCOPE': ['identity.basic', 'identity.email'],
+        }
+    }
+
+SUPPORT_EMAIL = os.environ.get("SUPPORT_EMAIL")
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
+
+if os.environ.get('SENTRY_DSN'):
+    sentry_sdk.init(
+        dsn=os.environ.get('SENTRY_DSN'),
+        integrations=[DjangoIntegration()]
+    )

@@ -1,8 +1,64 @@
+{% load custom_tags %}
+
+{% if hackathon.status == 'registration_open' and not hackathon.max_participants_reached %}
 <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
     {% csrf_token %}
     <!--It only sends the hackathon ID.-->
-    <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
+    <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}">
     <!-- Must be one long string for the JS script to switch words correctly.
     An alternative would be to have two different buttons.-->
-    <button id="enroll-part" type="submit" class="btn btn-ci mb-2">{% if user in HackTeam.participants.all %}Withdraw from the Hackaton{% else %}Enroll as Participant{% endif %}</button>
+    <button id="enroll-part" type="submit" 
+        class="btn btn-ci mt-4 mb-2 form-control">
+        {% if user in hackathon.participants.all %}
+            <i class="fas fa-user-times mr-2"></i>Withdraw from the Hackaton
+        {% else %}
+            <i class="fas fa-user-plus mr-2"></i>Enroll as Participant
+        {% endif %}
+    </button>
 </form>
+{% elif hackathon.status == 'hack_prep' %}
+
+    {% if request.user in hackathon.participants.all %}
+    <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}">
+        <button id="enroll-part" type="submit" class="btn btn-ci mt-4 mb-2 form-control">
+            <i class="fas fa-user-times mr-2"></i>Withdraw from the Hackaton
+        </button>
+    </form>
+    <div class="enrollments-closed mt-4 mb-2 p-3">
+        The hackathon is currently being prepared. Teams will be announced soon.
+    </div>
+    {% else %}
+    <div class="enrollments-closed mt-4 mb-2 p-3">
+        Registrations for this hackathon are currently not open.
+    </div>
+    {% endif %}
+
+{% else %}
+
+<div class="enrollments-closed mt-4 mb-2 p-3">
+    {% if request.user in hackathon.participants.all %}
+        {% if hackathon.status in 'hack_in_progress, judging, finished' %}
+            {% with participant_team=request.user|get_assigned_team:hackathon %}
+            {% if participant_team %}
+            <strong>My Team:
+                <a class="ci-link ml-2" href="/teams/{{participant_team.id}}/">{{participant_team}}</a>
+            </strong>
+            <div class="mt-2 slack-mpim">
+                {% include 'includes/create_slack_mpim.html' with team=participant_team %}
+            </div>
+            {% else %}
+            You have not been assigned a team yet.
+            {% endif %}
+            {% endwith %}
+        {% else %}
+            You are participating in this hackathon.
+        {% endif %}
+    {% else %}
+        Registrations for this hackathon are currently not open.
+    {% endif %}
+
+</div>
+
+{% endif %}

@@ -1,0 +1,18 @@
+{% if create_group_im %}
+    {% if request.user in team.participants.all or request.user == team.mentor %}
+        {% if team.communication_channel %}
+        <a role="button" class="btn btn-sm btn-ci" href="{{team.communication_channel}}" taget="_blank">
+            <i class="fab fa-slack fa-lg ml-0 mr-2 mt-1 mb-1 p-orange"></i>
+            Go To Slack Group
+        </a>
+        {% else %}
+        <form action="/teams/{{team.id}}/create_group_im/" method="POST">
+        {% csrf_token %}
+        <button class="dropdown-item">
+            <i class="fab fa-slack fa-lg ml-0 mr-2 mt-1 mb-1 black"></i>
+            Create Group IM in Slack
+        </button>
+        </form>
+        {% endif %}
+    {% endif %}
+{% endif %}
