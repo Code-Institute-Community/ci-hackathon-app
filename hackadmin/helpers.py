@@ -17,6 +17,7 @@ CSV_COLUMNS = [
 
 def extract_badges_for_hackathon(hackathon, issue_date, format='json'):
     """ Extracts a list of badges to award to participants """
+    print("\n\n\nextract_badges_for_hackathon helper function CALLED\n\n\n")
     badges = {}
     awards = hackathon.awards.order_by('hack_award_category__ranking')
     participants = [
@@ -63,6 +64,8 @@ def extract_badges_for_hackathon(hackathon, issue_date, format='json'):
 
     badges.setdefault('facilitators', [])
     for team in hackathon.teams.all():
+        print("\n CRITICAL LINE RAN")
+        print(f"{team.mentor.first_name=}")
         badges['facilitators'].append({
             'first_name': team.mentor.first_name,
             'name': team.mentor.full_name or team.mentor.slack_display_name,
