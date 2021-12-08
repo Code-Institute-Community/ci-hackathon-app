@@ -591,11 +591,17 @@ form.distribute-teams-form, form.clear-teams-form {
 }
 
 .teams-dropdown {
-    transform: translate3d(-130px, 38px, 0) !important;
+    transform: translate3d(-100px, 38px, 0) !important;
 }
 
 .black {
     color: var(--black);
+}
+
+.dropdown-item:hover .fab.p-orange,
+.dropdown-item:hover .fas.p-orange,
+.dropdown-item:hover .far.p-orange {
+    color: var(--white);
 }
 
 /* Team Calendar Page */

@@ -60,8 +60,18 @@ def sync_slack_users(users, keys, interval):
         user_info = requests.get(
             USER_DETAIL_URL,
             params={'token': settings.SLACK_BOT_TOKEN, 'user': user_id})
+
         if user_info.status_code != 200:
-            logger.info(f'User {user_id} not found.')
+            logger.error(
+                f'User {user_id} not found. Error: {user_info.reason}')
+            time.sleep(interval)
+            continue
+        elif user_info.json().get('ok') is False:
+            error_msg = user_info.json().get('error')
+            logger.error(f'User {user_id} not found. Slack Error: {error_msg}')
+            time.sleep(interval)
+            continue
+
         get_keys_and_update_user(user_info.json()['user'], keys, user)
         logger.info(f'User {user_id} updated successfully.')
         time.sleep(interval)
