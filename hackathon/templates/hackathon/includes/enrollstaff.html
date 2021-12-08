@@ -1,3 +1,5 @@
+{% load custom_tags %}
+
 {% if request.user not in hackathon.participants.all %}
 <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
     {% csrf_token %}
@@ -17,6 +19,14 @@
 </form>
 {% endif %}
 {% if request.user not in hackathon.judges.all %}
+{% if hackathon.status in 'hack_in_progress, judging, finished' %}
+    {% with participant_team=request.user|get_assigned_team:hackathon %}
+    {% if participant_team %}
+    <h6 class="dropdown-header">My Team</h6>
+    <a class="dropdown-item" href="/teams/{{participant_team.id}}/"><i class="fas fa-users mr-2"></i>{{participant_team}}</a>
+    {% endif %}
+    {% endwith %}
+{% else %}
 <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
     {% csrf_token %}
     <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
@@ -32,5 +42,6 @@
         {% endif %}
     </button>
 </form>
+{% endif %}
 {% endif %}
 

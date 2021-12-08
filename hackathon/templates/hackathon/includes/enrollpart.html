@@ -46,7 +46,7 @@
                 <a class="ci-link ml-2" href="/teams/{{participant_team.id}}/">{{participant_team}}</a>
             </strong>
             <div class="mt-2 slack-mpim">
-                {% include 'includes/create_slack_mpim.html' with team=participant_team %}
+                {% include 'includes/create_slack_mpim.html' with team=participant_team button_class='btn btn-sm btn-ci' %}
             </div>
             {% else %}
             You have not been assigned a team yet.
