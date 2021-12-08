@@ -21,7 +21,7 @@
     {% csrf_token %}
     <input type="hidden" name="hackathon-id" value="{{ hackathon.id }}" />
     <button id="enroll-judge" type="submit" class="dropdown-item" 
-        {% if hackathon.status == 'finished' or hackathon.status == 'deleted' %}
+        {% if hackathon.status == 'finished' or hackathon.status == 'deleted' or hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
             disabled
         {% endif %}
     >
