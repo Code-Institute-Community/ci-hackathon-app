@@ -130,7 +130,6 @@ def view_team(request, team_id):
     create_group_im = (settings.SLACK_ENABLED and settings.SLACK_BOT_TOKEN)
 
     mentor_profile = None
-    print(f"\n\n{settings=}")
     if team.mentor and settings.SLACK_WORKSPACE:
         mentor_slack_id = team.mentor.username.split('_')[0]
         mentor_profile = (f'https://{settings.SLACK_WORKSPACE}.slack.com/'

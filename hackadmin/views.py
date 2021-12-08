@@ -38,24 +38,20 @@ def hackathon_participants(request, hackathon_id):
     by individual hackathon """
     # TODO: Filter hackathons by user type, PARTNER_ADMIN should not have
     # access to all hackathons and users
-    print(" +++++++++++++++++++++++ \n"*3)
     slack_url = None
     hackathon = get_object_or_404(Hackathon, id=hackathon_id)
     mentors = [{
         'team': team,
         'mentor': team.mentor
         } for team in hackathon.teams.all()]
-    print(f"{mentors=}\n")
     if settings.SLACK_ENABLED:
         slack_url = f'https://{settings.SLACK_WORKSPACE}.slack.com/team/'
     badges_csv = 'data:text/csv;charset=utf-8,' + extract_badges_for_hackathon(
             hackathon, date.today().isoformat(), format='csv')
-    print(f"\n\n{badges_csv=}\n")
     awardees = [awardee for category, values in extract_badges_for_hackathon(
             hackathon, date.today().isoformat()).items()
             for awardee in values
             if category not in ['participants', 'judges', 'facilitators']]
-    print(f"{awardees=}")
     return render(request, 'hackadmin_participants.html', {
         'hackathon': hackathon,
         'mentors': mentors,
