@@ -52,7 +52,6 @@ def hackathon_participants(request, hackathon_id):
             hackathon, date.today().isoformat()).items()
             for awardee in values
             if category not in ['participants', 'judges', 'facilitators']]
-    print(awardees)
     return render(request, 'hackadmin_participants.html', {
         'hackathon': hackathon,
         'mentors': mentors,

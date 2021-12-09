@@ -63,16 +63,17 @@ def extract_badges_for_hackathon(hackathon, issue_date, format='json'):
 
     badges.setdefault('facilitators', [])
     for team in hackathon.teams.all():
-        badges['facilitators'].append({
-            'first_name': team.mentor.first_name,
-            'name': team.mentor.full_name or team.mentor.slack_display_name,
-            'email': team.mentor.email,
-            'issue_date': issue_date,
-            'team': team.display_name,
-            'project': team.project.display_name if team.project else '',
-            'award': 'Hackathon Facilitators',
-            'award_ranking': 'n/a',
-        })
+        if team.mentor:
+            badges['facilitators'].append({
+                'first_name': team.mentor.first_name,
+                'name': team.mentor.full_name or team.mentor.slack_display_name,
+                'email': team.mentor.email,
+                'issue_date': issue_date,
+                'team': team.display_name,
+                'project': team.project.display_name if team.project else '',
+                'award': 'Hackathon Facilitators',
+                'award_ranking': 'n/a',
+            })
 
     projects = [team.project for team in hackathon.teams.all()
                 if team.project]
