@@ -43,7 +43,8 @@ def home(request):
         organisation=1).order_by('-start_date')
 
     winning_awards = HackAward.objects.filter(
-        hack_award_category__ranking=1).order_by('-hackathon__start_date')
+        hack_award_category__ranking=1, hackathon__status='finished'
+            ).order_by('-hackathon__start_date')
     winning_showcases = [award.winning_project.get_showcase()
                          for award in winning_awards
                          if (award.winning_project
