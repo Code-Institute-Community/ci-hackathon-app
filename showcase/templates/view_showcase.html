@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% load teams_tags %}
+{% load account_tags %}
+
+{% block extra_meta %}
+
+<meta property='og:title' content='{{showcase.hack_project.display_name}}'/>
+    {% if showcase.get_image %}
+    <meta property='og:image' content='{{showcase.image_url}}'/>
+    {% endif %}
+<meta property='og:description' content='{{showcase.hack_project.description}}'/>
+<meta property='og:url' content='{{showcase.url}}'/>
+<meta property='og:author' content='Team {{showcase.hack_project.hackteam.display_name}}'/>
+
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col teams-page">
+
+        <div class="container-fluid">
+            {% if team.header_image %}
+            <div class="row teams-header" 
+                style="background-image:url('{{ team.header_image }}')">
+            {% else %}
+            <div class="row teams-header" 
+                style="background-image:url({% static 'img/ci-hackathon--horizontal.png' %})">
+            {% endif %}
+                <div class="team-name">
+                    <h2>Team: <i>{{team}}</i></h2>
+                </div>
+            </div>
+
+            <div class="row mb-2 mt-5 ml-4"> 
+                <div class="col">
+
+                    <h3>About the team</h3>
+                    <div class="share-linkedin">
+                        <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
+                        <script type="IN/Share" data-url="{{showcase.url}}"></script>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3 team-members-display">              
+                <div class="col my-3 text-center">
+                    {% for member in showcase.showcase_participants.all %}
+                    {% include 'includes/showcase_member.html' %}
+                    {% endfor %}
+
+                    {% for anon in anon_members %}
+                    {% include 'includes/anon_member.html' %}
+                    {% endfor %}
+                </div>
+            </div>
+            
+            {% if team.project %}
+                {% include 'includes/project.html' %}
+            {% else %}
+                {% include 'includes/empty_project.html' %}
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}
