@@ -3,20 +3,6 @@
 {% load teams_tags %}
 {% load account_tags %}
 
-{% block extra_meta %}
-
-{% if showcase %}
-<meta property='og:title' content='{{showcase.hack_project.display_name}}'/>
-    {% if showcase.get_image %}
-    <meta property='og:image' content='{{showcase.image_url}}'/>
-    {% endif %}
-<meta property='og:description' content='{{showcase.hack_project.description}}'/>
-<meta property='og:url' content='{{showcase.url}}'/>
-<meta property='og:author' content='Team {{showcase.hack_project.hackteam.display_name}}'/>
-{% endif %}
-
-{% endblock %}
-
 {% block css %}
 <link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" />
 {% endblock %}
@@ -36,7 +22,7 @@
                 style="background-image:url({% static 'img/ci-hackathon--horizontal.png' %})">
             {% endif %}
                 <div class="team-name">
-                    {% if request.user in team.participants.all and not showcase and team.hackathon.status == 'hack_in_progress' %}
+                    {% if request.user in team.participants.all and team.hackathon.status == 'hack_in_progress' %}
                     <button class="btn btn-secondary btn-sm edit-image"
                         data-image-type="header_image"
                         data-identifier="{{team.id}}"
@@ -44,7 +30,7 @@
                         <i class="fas fa-pen mr-2"></i>Edit</button>
                     {% endif %}
                     <h2>Team: <i>{{team}}</i>
-                        {% if request.user in team.participants.all and not showcase and team.hackathon.status == 'hack_in_progress' %}
+                        {% if request.user in team.participants.all and team.hackathon.status == 'hack_in_progress' %}
                         <a role="button" data-toggle="modal" data-target="#renameTeamModal">
                         <i class="fas fa-pen ml-3" title="Rename team"></i></a>
                         {% endif %}
@@ -82,34 +68,14 @@
                         </div>
                     </div>
                     {% endif %}
-                    {% if showcase %}
-                    <div class="share-linkedin">
-                        <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
-                        <script type="IN/Share" data-url="{{showcase.url}}"></script>
-                    </div>
-                    {% endif %}
                 </div>
             </div>
 
             <div class="row mt-3 team-members-display">              
                 <div class="col my-3 text-center">
-                    {% if showcase %}
-
-                        {% for member in showcase.showcase_participants.all %}
-                        {% include 'includes/showcase_member.html' %}
-                        {% endfor %}
-
-                        {% for anon in anon_members %}
-                        {% include 'includes/anon_member.html' %}
-                        {% endfor %}
-                    
-                    {% else %}
-
-                        {% for member in team.participants.all %}
-                        {% include 'includes/member.html' %}
-                        {% endfor %}
-
-                    {% endif %}
+                    {% for member in team.participants.all %}
+                    {% include 'includes/member.html' %}
+                    {% endfor %}
                 </div>
             </div>
             

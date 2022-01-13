@@ -31,7 +31,6 @@ SLACK_GROUP_IM_ENDPOINT = 'https://slack.com/api/conversations.open/'
 def change_teams(request, hackathon_id):
     """ Page that handles the logic of automatically distributing the teams
     for a hackathon and allows for the admin to re-arrange the team members """
-    print("Teams")
     edit = False
     hackathon = Hackathon.objects.get(id=hackathon_id)
     participants = hackathon.participants.all()
@@ -157,7 +156,7 @@ def create_project(request, team_id):
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
     if request.method == 'POST':
-        if hack_project: 
+        if hack_project:
             form = HackProjectForm(request.POST, instance=hack_project.get())
         else:
             form = HackProjectForm(request.POST)

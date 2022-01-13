@@ -9,12 +9,14 @@
 <div class="row mt-3 mb-5 ml-4 mr-4"> 
     <div class="col-md-12 col-lg-3">
         <div class="card">
-            {% if request.user in team.participants.all and not showcase and team.hackathon.status == 'hack_in_progress' %}
-            <button class="btn btn-secondary btn-sm edit-image" 
-                data-image-type="project_image"
-                data-identifier="{{team.project.id}}"
-                data-toggle="modal" data-target="#uploadImageModal">
-                <i class="fas fa-pen mr-2"></i>Edit</button>
+            {% if request.user in team.participants.all and not showcase %}
+                {% if team.hackathon.status == 'hack_in_progress' or team.hackathon.status == 'finished' %}
+                <button class="btn btn-secondary btn-sm edit-image"
+                    data-image-type="project_image"
+                    data-identifier="{{team.project.id}}"
+                    data-toggle="modal" data-target="#uploadImageModal">
+                    <i class="fas fa-pen mr-2"></i>Edit</button>
+                {% endif %}
             {% endif %}
             {% if showcase.showcase_image %}
             <img src="{{showcase.showcase_image}}" onerror="this.src = {% static 'img/ci-hackathon--square.png' %}" width="100%" alt="Project Image" />

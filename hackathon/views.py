@@ -197,7 +197,7 @@ def check_projects_scores(request, hackathon_id):
 
         hack_awards_formset = HackAwardFormSet(
             form_kwargs={'hackathon_id': hackathon_id},
-            queryset=HackAward.objects.filter(hackathon=hackathon))
+            queryset=hackathon.awards.all())
 
         return render(request, 'hackathon/final_score.html', {
             'hackathon': hackathon.display_name,
@@ -373,7 +373,6 @@ def view_hackathon_public(request, hackathon_id):
     """ A limited view of the hackathon page for the public """
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     redirect_url = (request.META.get('HTTP_REFERER') or reverse('home'))
-    print(f"REFERER: {request.META.get('HTTP_REFERER')}")
     if hackathon.status == 'deleted':
         messages.error(request, 'This hackathon does not exist.')
         return redirect(redirect_url)

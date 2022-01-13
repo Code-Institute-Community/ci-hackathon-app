@@ -55,8 +55,8 @@ function changeTeamScores(movedElement, movedElementParentId, targetElementId){
         teamScoreSpan.innerText = parseInt(teamScoreSpan.innerText) + movedLevel;
         let removeScoreSpan = document.getElementById(movedElementParentId +'_score');
         if(removeScoreSpan != null) {
-            removeScoreSpan.innerText = parseInt(removeScoreSpan.innerText) - movedLevel;   
-        }   
+            removeScoreSpan.innerText = parseInt(removeScoreSpan.innerText) - movedLevel;
+        }
     }
 }
 
@@ -110,7 +110,6 @@ function addNewTeam(){
 
 function confirmBeforeAction(className, action, msg){
     $(className).on(action, function(event){
-        
         if(leftover_participants.length > 0) {
             let confirm_msg = 'Some participants have not been assigned to a team. Do you still want to proceed?';
             let confirmation = window.confirm(msg);
