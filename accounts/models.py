@@ -1,4 +1,6 @@
+from datetime import datetime
 from enum import Enum
+import pytz
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -119,8 +121,16 @@ class CustomUser(AbstractUser):
         return {
             'userid': self.id,
             'name': self.slack_display_name or self.email,
-            'level': LMS_LEVELS.get(self.current_lms_module) or 1
+            'level': LMS_LEVELS.get(self.current_lms_module) or 1,
+            'timezone': self.timezone_to_offset(),
+            'num_hackathons': len(self.participated_hackathons.all())
         }
+
+    def timezone_to_offset(self):
+        if not self.timezone:
+            return
+        offset = datetime.now(pytz.timezone(self.timezone)).strftime('%z')
+        return f'UTC{offset[:-2]}'
 
     @property
     def user_type(self):

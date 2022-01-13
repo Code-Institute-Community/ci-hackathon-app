@@ -31,6 +31,7 @@ SLACK_GROUP_IM_ENDPOINT = 'https://slack.com/api/conversations.open/'
 def change_teams(request, hackathon_id):
     """ Page that handles the logic of automatically distributing the teams
     for a hackathon and allows for the admin to re-arrange the team members """
+    print("Teams")
     edit = False
     hackathon = Hackathon.objects.get(id=hackathon_id)
     participants = hackathon.participants.all()
@@ -43,7 +44,7 @@ def change_teams(request, hackathon_id):
         team_sizes = sorted(choose_team_sizes(participants, team_size))
         if len(team_sizes) == 0:
             return render(request, 'change_teams.html',
-                        {'num_participants': len(participants)})
+                          {'num_participants': len(participants)})
         grouped_participants, hackathon_level = group_participants(
             participants, len(team_sizes))
         team_levels = sorted(choose_team_levels(len(team_sizes), hackathon_level))
@@ -70,7 +71,7 @@ def change_teams(request, hackathon_id):
 
     return render(request, 'change_teams.html', {
         'hackathon_id': hackathon_id,
-        'num_participants': len(participants), 
+        'num_participants': len(participants),
         'teams': teams,
         'leftover_participants': participants_still_to_distribute,
         'edit': edit,
@@ -92,13 +93,13 @@ def create_teams(request):
             with transaction.atomic():
                 create_teams_in_view(request.user, teams, hackathon_id)
                 messages.success(request, "Teams assigned successfully!")
-            return redirect(reverse('hackathon:view_hackathon',
+            return redirect(reverse('hackathon:change_teams',
                                     kwargs={'hackathon_id': hackathon_id}))
         else:
             with transaction.atomic():
                 update_team_participants(request.user, teams, hackathon_id)
                 messages.success(request, "Teams updated successfully!")
-            return redirect(reverse('hackathon:view_hackathon',
+            return redirect(reverse('hackathon:change_teams',
                                     kwargs={'hackathon_id': hackathon_id}))
     else:
         return redirect(reverse('hackathon:hackathon-list'))
@@ -118,7 +119,7 @@ def clear_teams(request):
             team.delete()
         return redirect(reverse('hackathon:change_teams',
                                 kwargs={'hackathon_id': hackathon_id}))
-    else: 
+    else:
         return redirect(reverse('hackathon:hackathon-list'))
 
 

@@ -3,7 +3,8 @@ let teams = JSON.parse(document.getElementById('_teams').textContent);
 let leftover_participants = JSON.parse(document.getElementById('_leftover_participants').textContent);
 
 addNewTeam();
-distributeTeams();
+confirmBeforeAction('.clear-teams-form', 'submit', 'Do you really want to clear all teams and re-distribute them?')
+confirmBeforeAction('.distribute-teams-form', 'submit', 'Some participants have not been assigned to a team. Do you still want to proceed?')
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -16,6 +17,7 @@ function drag(ev) {
 function drop(ev) {
     /* Drop event which triggers functions to update the team score and the
     team object used to create or edit the teams */
+    console.log(ev.target.nodeName)
     let targetElement;
     ev.preventDefault();
     let data = ev.dataTransfer.getData('text');
@@ -24,11 +26,21 @@ function drop(ev) {
     if(ev.target.nodeName == 'LI') {
         targetElement = ev.target.parentElement.id;
         ev.target.parentElement.appendChild(movingElement);
-    } else {
+    } else if(ev.target.nodeName == 'SPAN'){
+        targetElement = ev.target.parentElement.parentElement.id;
+        ev.target.parentElement.parentElement.appendChild(movingElement);
+    } else if(ev.target.nodeName == 'H5') {
+        targetElement = ev.target.nextElementSibling.id;
+        ev.target.nextElementSibling.appendChild(movingElement);
+    } else if(ev.target.nodeName == 'DIV') {
+        targetElement = ev.target.children[1].id;
+        console.log(ev.target.children[1])
+        ev.target.children[1].appendChild(movingElement);
+    }
+    else {
         targetElement = ev.target.id;
         ev.target.appendChild(movingElement);
     }
-
     changeTeamData(movingElement, movingElementParent.id, targetElement);
     changeTeamScores(movingElement, movingElementParent.id, targetElement);
 }
@@ -41,11 +53,10 @@ function changeTeamScores(movedElement, movedElementParentId, targetElementId){
     if (targetElementId != 'leftover_participants'){
         let teamScoreSpan = document.getElementById(targetElementId +'_score');
         teamScoreSpan.innerText = parseInt(teamScoreSpan.innerText) + movedLevel;
-    }
-
-    if(movedElementParentId.includes('team')) {
         let removeScoreSpan = document.getElementById(movedElementParentId +'_score');
-        removeScoreSpan.innerText = parseInt(removeScoreSpan.innerText) - movedLevel;
+        if(removeScoreSpan != null) {
+            removeScoreSpan.innerText = parseInt(removeScoreSpan.innerText) - movedLevel;   
+        }   
     }
 }
 
@@ -53,23 +64,28 @@ function changeTeamData(movedElement, movedElementParentId, targetElementId){
     /* Removes the participant from the team the participant was previously 
     part of and adds it to the new team in the team data object which is used
     to create or edit the teams */
-    let team = movedElementParentId.includes('team')
-                ? teams[movedElementParentId]
-                : leftover_participants;
-    let targetTeam = targetElementId.includes('team')
-                    ? teams[targetElementId]
-                    : leftover_participants;
+    if (movedElementParentId == targetElementId) {
+        return
+    }
+    let movedElementParent= document.getElementById(movedElementParentId);
+    console.log(movedElementParent)
+
+    let team = movedElementParentId.includes('leftover_participants')
+                ? leftover_participants
+                : teams[movedElementParentId];
+    let targetTeam = targetElementId.includes('leftover_participants')
+                    ? leftover_participants
+                    : teams[targetElementId];
     let userid = movedElement.dataset.userid;
     let user = team.filter(x => x.userid == userid)[0];
-    targetTeam.push(user)
-
-    if(movedElementParentId.includes('team')){
-        teams[movedElementParentId] = teams[movedElementParentId]
-                                        .filter(x => x.userid != userid);
-    } else {
+    if(movedElementParentId.includes('leftover_participants')){
         leftover_participants = leftover_participants
                                     .filter(x => x.userid != userid);
+    } else {
+        teams[movedElementParentId] = teams[movedElementParentId]
+                                        .filter(x => x.userid != userid);
     }
+    targetTeam.push(user)
     $('input[name="teams"]').val(JSON.stringify(teams));
 }
 
@@ -92,11 +108,13 @@ function addNewTeam(){
     });
 }
 
-function distributeTeams(){
-    $('.distribute-teams-form').on('submit', function(event){
+function confirmBeforeAction(className, action, msg){
+    $(className).on(action, function(event){
+        
         if(leftover_participants.length > 0) {
             let confirm_msg = 'Some participants have not been assigned to a team. Do you still want to proceed?';
-            let confirmation = window.confirmconfirm_msg(confirm_msg);
+            let confirmation = window.confirm(msg);
+            console.log(teams)
             if(!confirmation){
                 event.preventDefault();
             }
