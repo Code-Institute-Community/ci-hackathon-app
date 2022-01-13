@@ -169,7 +169,7 @@ class HackTeam(models.Model):
     # Issue is that a user could join more than one team on the same Hackathon.
     # Could use a custom save method to prevent it.
     participants = models.ManyToManyField(User,
-                                          related_name="hackteam")
+                                          related_name="participated_hackteams")
     # A team has one mentor, a mentor has numerous teams: One to Many.
     mentor = models.ForeignKey(User,
                                null=True,

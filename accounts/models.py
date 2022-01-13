@@ -123,7 +123,8 @@ class CustomUser(AbstractUser):
             'name': self.slack_display_name or self.email,
             'level': LMS_LEVELS.get(self.current_lms_module) or 1,
             'timezone': self.timezone_to_offset(),
-            'num_hackathons': len(self.participated_hackathons.all())
+            'num_hackathons': self.participated_hackteams.count(),
+            'participant_label': self.participant_label(),
         }
 
     def timezone_to_offset(self):
@@ -131,6 +132,14 @@ class CustomUser(AbstractUser):
             return
         offset = datetime.now(pytz.timezone(self.timezone)).strftime('%z')
         return f'UTC{offset[:-2]}'
+
+    def participant_label(self):
+        if self.participated_hackteams.count() == 0:
+            return 'Hackathon Newbie'
+        elif self.participated_hackteams.count() < 3:
+            return 'Hackathon Enthusiast'
+        else:
+            return 'Hackathon Veteran'
 
     @property
     def user_type(self):

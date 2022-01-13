@@ -24,13 +24,7 @@
                         <span class="member-name">{{ member.name }}</span>
                         <span class="badge bg-primary">level: {{ member.level }}</span>
                         <span class="badge bg-secondary">{{member.timezone}}</span>
-                        {% if member.num_hackathons < 2 %}
-                        <span class="badge bg-warning">No prior Hackathons</span>
-                        {% elif member.num_hackathons > 1 and member.num_hackathons < 3 %}
-                        <span class="badge some-participation">Hackathon Enthusiast</span>
-                        {% else %}
-                        <span class="badge a-lot-participation">Hackathon Veteran</span>
-                        {% endif %}
+                        {% include 'includes/participant_label.html' with participant=member %}
                 </li>
                 {% endfor %}
             </ol>
@@ -53,14 +47,7 @@
                     <span class="member-name">{{ participant.name }}</span>
                     <span class="badge bg-primary">level: {{ participant.level }}</span>
                     <span class="badge bg-secondary">{{participant.timezone}}</span>
-                    {% if participant.num_hackathons < 2 %}
-                    <span class="badge bg-warning">No prior Hackathons</span>
-                    {% elif participant.num_hackathons > 1 and participant.num_hackathons < 3 %}
-                    <span class="badge some-participation">Hackathon Enthusiast</span>
-                    {% else %}
-                    <span class="badge a-lot-participation">Hackathon Veteran</span>
-                    {% endif %}
-                        
+                    {% include 'includes/participant_label.html' with participant=participant %}
                 </li>
                 {% endfor %}
                 {% endif %}
