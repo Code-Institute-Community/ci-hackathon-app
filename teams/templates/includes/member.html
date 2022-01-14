@@ -4,9 +4,9 @@
 
     <a href="{% url 'show_profile' user_id=member.id %}" class="ci-link">
         <h6 class="card-text text-center mb-3">{{member.slack_display_name}}
-            <div class="team-member-label">
+            <span class="team-member-label">
                 {% include 'includes/participant_label.html' with participant=member %}
-            </div>
+            </span>
         </h6>
     </a>
     {% if member.profile_image %}

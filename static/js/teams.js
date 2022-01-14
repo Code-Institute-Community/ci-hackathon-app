@@ -3,8 +3,8 @@ let teams = JSON.parse(document.getElementById('_teams').textContent);
 let leftover_participants = JSON.parse(document.getElementById('_leftover_participants').textContent);
 
 addNewTeam();
-confirmBeforeAction('.clear-teams-form', 'submit', 'Do you really want to clear all teams and re-distribute them?')
-confirmBeforeAction('.distribute-teams-form', 'submit', 'Some participants have not been assigned to a team. Do you still want to proceed?')
+confirmBeforeAction('.clear-teams-form', 'submit', 'Do you really want to clear all teams and re-distribute them?');
+confirmBeforeAction('.distribute-teams-form', 'submit', 'Some participants have not been assigned to a team. Do you still want to proceed?');
 
 function allowDrop(ev) {
     ev.preventDefault();
@@ -17,7 +17,6 @@ function drag(ev) {
 function drop(ev) {
     /* Drop event which triggers functions to update the team score and the
     team object used to create or edit the teams */
-    console.log(ev.target.nodeName)
     let targetElement;
     ev.preventDefault();
     let data = ev.dataTransfer.getData('text');
@@ -34,7 +33,6 @@ function drop(ev) {
         ev.target.nextElementSibling.appendChild(movingElement);
     } else if(ev.target.nodeName == 'DIV') {
         targetElement = ev.target.children[1].id;
-        console.log(ev.target.children[1])
         ev.target.children[1].appendChild(movingElement);
     }
     else {
@@ -65,11 +63,8 @@ function changeTeamData(movedElement, movedElementParentId, targetElementId){
     part of and adds it to the new team in the team data object which is used
     to create or edit the teams */
     if (movedElementParentId == targetElementId) {
-        return
+        return;
     }
-    let movedElementParent= document.getElementById(movedElementParentId);
-    console.log(movedElementParent)
-
     let team = movedElementParentId.includes('leftover_participants')
                 ? leftover_participants
                 : teams[movedElementParentId];
@@ -79,13 +74,11 @@ function changeTeamData(movedElement, movedElementParentId, targetElementId){
     let userid = movedElement.dataset.userid;
     let user = team.filter(x => x.userid == userid)[0];
     if(movedElementParentId.includes('leftover_participants')){
-        leftover_participants = leftover_participants
-                                    .filter(x => x.userid != userid);
+        leftover_participants = leftover_participants.filter(x => x.userid != userid);
     } else {
-        teams[movedElementParentId] = teams[movedElementParentId]
-                                        .filter(x => x.userid != userid);
+        teams[movedElementParentId] = teams[movedElementParentId].filter(x => x.userid != userid);
     }
-    targetTeam.push(user)
+    targetTeam.push(user);
     $('input[name="teams"]').val(JSON.stringify(teams));
 }
 
@@ -111,9 +104,7 @@ function addNewTeam(){
 function confirmBeforeAction(className, action, msg){
     $(className).on(action, function(event){
         if(leftover_participants.length > 0) {
-            let confirm_msg = 'Some participants have not been assigned to a team. Do you still want to proceed?';
             let confirmation = window.confirm(msg);
-            console.log(teams)
             if(!confirmation){
                 event.preventDefault();
             }

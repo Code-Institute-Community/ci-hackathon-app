@@ -118,12 +118,14 @@ class CustomUser(AbstractUser):
         return self.current_lms_module.replace('_', ' ')
 
     def to_team_member(self):
+        teams = self.participated_hackteams.filter(
+            hackathon__status='finished')
         return {
             'userid': self.id,
             'name': self.slack_display_name or self.email,
             'level': LMS_LEVELS.get(self.current_lms_module) or 1,
             'timezone': self.timezone_to_offset(),
-            'num_hackathons': self.participated_hackteams.count(),
+            'num_hackathons': teams.count(),
             'participant_label': self.participant_label(),
         }
 
@@ -134,9 +136,11 @@ class CustomUser(AbstractUser):
         return f'UTC{offset[:-2]}'
 
     def participant_label(self):
-        if self.participated_hackteams.count() == 0:
+        teams = self.participated_hackteams.filter(
+            hackathon__status='finished')
+        if teams.count() == 0:
             return 'Hackathon Newbie'
-        elif self.participated_hackteams.count() < 3:
+        elif teams.count() < 2:
             return 'Hackathon Enthusiast'
         else:
             return 'Hackathon Veteran'

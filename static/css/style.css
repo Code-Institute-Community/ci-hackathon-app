@@ -504,6 +504,7 @@ form.distribute-teams-form, form.clear-teams-form {
 }
 
 .team-member-label {
+    display: block;
     color: var(--white);
 }
 
