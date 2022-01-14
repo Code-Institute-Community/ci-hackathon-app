@@ -17,7 +17,13 @@
     --img-highlighter: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
     --contact-bg: linear-gradient(48deg, rgb(229, 71, 37) 50%, rgb(255, 49, 134));
     --star-rating: #f2d230;
-    --s-teal-half-opacity: rgba(35, 187, 187, 0.5)
+    --s-teal-half-opacity: rgba(35, 187, 187, 0.5);
+    --bronze: #e99644;
+    --bronze-font: #5c3105;
+    --silver: #dddddd;
+    --silver-font: #535353;
+    --gold: #ffd700;
+    --gold-font: #635403;
 }
 
 html,
@@ -493,29 +499,30 @@ form.distribute-teams-form, form.clear-teams-form {
     color: var(--white);
 }
 
-.team-drop-area li span:not(.member-name), div.team-member-label {
+.team-drop-area li span:not(.member-name), .team-member-label {
     font-size: 0.9em;
 }
 
-div.team-member-label {
+.team-member-label {
     color: var(--white);
 }
 
-.team-drop-area li span.no-participation,
-div.team-member-label span.no-participation {
-    color: var(--p-grey);
-    background: var(--s-grey);
+.team-drop-area li span.newbie,
+.team-member-label span.newbie {
+    color: var(--bronze-font);
+    background: var(--bronze);
 }
 
-.team-drop-area li span.some-participation,
-div.team-member-label span.some-participation {
-    color: var(--p-grey);
-    background: var(--s-teal-half-opacity);
+.team-drop-area li span.enthusiast,
+.team-member-label span.enthusiast {
+    color: var(--silver-font);
+    background: var(--silver);
 }
 
-.team-drop-area li span.a-lot-participation,
-div.team-member-label span.a-lot-participation {
-    background: var(--s-teal);
+.team-drop-area li span.veteran,
+.team-member-label span.veteran {
+    color: var(--gold-font);
+    background: var(--gold);
 }
 
 .team-drop-area li span.member-name {
