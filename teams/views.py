@@ -43,7 +43,7 @@ def change_teams(request, hackathon_id):
         team_sizes = sorted(choose_team_sizes(participants, team_size))
         if len(team_sizes) == 0:
             return render(request, 'change_teams.html',
-                        {'num_participants': len(participants)})
+                          {'num_participants': len(participants)})
         grouped_participants, hackathon_level = group_participants(
             participants, len(team_sizes))
         team_levels = sorted(choose_team_levels(len(team_sizes), hackathon_level))
@@ -70,7 +70,7 @@ def change_teams(request, hackathon_id):
 
     return render(request, 'change_teams.html', {
         'hackathon_id': hackathon_id,
-        'num_participants': len(participants), 
+        'num_participants': len(participants),
         'teams': teams,
         'leftover_participants': participants_still_to_distribute,
         'edit': edit,
@@ -92,13 +92,13 @@ def create_teams(request):
             with transaction.atomic():
                 create_teams_in_view(request.user, teams, hackathon_id)
                 messages.success(request, "Teams assigned successfully!")
-            return redirect(reverse('hackathon:view_hackathon',
+            return redirect(reverse('hackathon:change_teams',
                                     kwargs={'hackathon_id': hackathon_id}))
         else:
             with transaction.atomic():
                 update_team_participants(request.user, teams, hackathon_id)
                 messages.success(request, "Teams updated successfully!")
-            return redirect(reverse('hackathon:view_hackathon',
+            return redirect(reverse('hackathon:change_teams',
                                     kwargs={'hackathon_id': hackathon_id}))
     else:
         return redirect(reverse('hackathon:hackathon-list'))
@@ -118,7 +118,7 @@ def clear_teams(request):
             team.delete()
         return redirect(reverse('hackathon:change_teams',
                                 kwargs={'hackathon_id': hackathon_id}))
-    else: 
+    else:
         return redirect(reverse('hackathon:hackathon-list'))
 
 
@@ -156,7 +156,7 @@ def create_project(request, team_id):
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
     if request.method == 'POST':
-        if hack_project: 
+        if hack_project:
             form = HackProjectForm(request.POST, instance=hack_project.get())
         else:
             form = HackProjectForm(request.POST)

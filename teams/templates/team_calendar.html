@@ -3,20 +3,6 @@
 {% load teams_tags %}
 {% load account_tags %}
 
-{% block extra_meta %}
-
-{% if showcase %}
-<meta property='og:title' content='{{showcase.hack_project.display_name}}'/>
-    {% if showcase.get_image %}
-    <meta property='og:image' content='{{showcase.image_url}}'/>
-    {% endif %}
-<meta property='og:description' content='{{showcase.hack_project.description}}'/>
-<meta property='og:url' content='{{showcase.url}}'/>
-<meta property='og:author' content='Team {{showcase.hack_project.hackteam.display_name}}'/>
-{% endif %}
-
-{% endblock %}
-
 {% block css %}
 <link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" />
 {% endblock %}

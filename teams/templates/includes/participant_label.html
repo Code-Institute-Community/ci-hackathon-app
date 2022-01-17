@@ -1,0 +1,9 @@
+{% if participant.participant_label == 'Hackathon Newbie' %}
+<span class="badge newbie" title="This is my first hackathon">
+{% elif participant.participant_label == 'Hackathon Enthusiast' %}
+<span class="badge enthusiast" title="This is my 2nd or 3rd hackathon.">
+{% else %}
+<span class="badge veteran" title="Another hackathon?! Bring it on!">
+{% endif %}
+{{participant.participant_label}}
+</span>

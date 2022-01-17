@@ -18,4 +18,5 @@
         <input type="hidden" name="hackathon_id" value="{{hackathon_id}}" />
         <button type="submit" class="btn btn-danger distribute-team">Clear Teams</button>
     </form>
+    <a href="{% url 'hackathon:view_hackathon' hackathon_id=hackathon_id %}" class="btn btn-secondary float-lg-right">Back To Hackathon</a>
 </div>

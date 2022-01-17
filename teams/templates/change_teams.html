@@ -20,7 +20,12 @@
                 <li id="{{team_name}}-{{ forloop.counter0 }}"
                     data-level={{member.level}}
                     data-userid={{member.userid}}
-                    draggable="true" ondragstart="drag(event)">{{ member.name }} (level: {{ member.level }})</li>
+                    draggable="true" ondragstart="drag(event)">
+                        <span class="member-name">{{ member.name }}</span>
+                        <span class="badge bg-primary">level: {{ member.level }}</span>
+                        <span class="badge bg-secondary">{{member.timezone}}</span>
+                        {% include 'includes/participant_label.html' with participant=member %}
+                </li>
                 {% endfor %}
             </ol>
         </div>
@@ -30,15 +35,20 @@
     </div>
 
     <section class="card shadow mb-3 mt-3">
-        <div class="card-body">
+        <div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
             <h5 class="p-orange card-title">Leftover Participants</h5>
-            <ol class="team-drop-area" id="leftover_participants" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <ol class="team-drop-area" id="leftover_participants">
                 {% if leftover_participants %}
                 {% for participant in leftover_participants %}
                 <li id="leftover_participants-{{ forloop.counter0 }}" 
                     data-level={{ participant.level }}
                     data-userid={{ participant.userid }}
-                    draggable="true" ondragstart="drag(event)">{{ participant.name }} (level: {{ participant.level }})</li>
+                    draggable="true" ondragstart="drag(event)">
+                    <span class="member-name">{{ participant.name }}</span>
+                    <span class="badge bg-primary">level: {{ participant.level }}</span>
+                    <span class="badge bg-secondary">{{participant.timezone}}</span>
+                    {% include 'includes/participant_label.html' with participant=participant %}
+                </li>
                 {% endfor %}
                 {% endif %}
             </ol>

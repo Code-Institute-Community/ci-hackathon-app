@@ -13,7 +13,7 @@ def view_showcases(request):
     """ Shows the project showcase page """
     showcase_settings = ShowcaseSiteSettings.objects.first()
     if not showcase_settings:
-        return render(request, 'showcase.html', {
+        return render(request, 'showcases.html', {
             'top_results': None,
             'all_showcases': None,
         })
@@ -40,7 +40,7 @@ def view_showcases(request):
     page = request.GET.get('page')
     paginated_showcases = paginator.get_page(page)
 
-    return render(request, 'showcase.html', {
+    return render(request, 'showcases.html', {
         'top_results': top_results,
         'all_showcases': paginated_showcases,
     })
@@ -58,7 +58,7 @@ def view_showcase(request, showcase_id):
     anon_members = range(len(team.participants.all())
                          - len(showcase.showcase_participants.all()))
 
-    return render(request, 'team.html', {
+    return render(request, 'view_showcase.html', {
         'team': team,
         'rename_team_form': None,
         'showcase': showcase,
