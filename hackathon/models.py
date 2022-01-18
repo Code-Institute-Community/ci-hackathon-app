@@ -80,6 +80,9 @@ class Hackathon(models.Model):
     )
     is_public = models.BooleanField(default=True)
     max_participants = models.IntegerField(default=None, null=True, blank=True)
+    channel_prefix = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text=("Only use lowercase and dash ('-') for spaces"))
 
     def __str__(self):
         return self.display_name
