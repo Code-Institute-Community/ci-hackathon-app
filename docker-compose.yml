@@ -1,5 +1,5 @@
 services:
-  hackathon-app:
+  hackathon-app: &hackathon-app-main
     image: hackathon-app
     volumes:
       - ./staticfiles/:/hackathon-app/staticfiles/
@@ -58,7 +58,19 @@ services:
   smtp:
     image: mailhog/mailhog:v1.0.1
     ports:
-      - "8026:8025"
+      - "8025:8025"
 
   redis:
-    image: redis
+    image: redis:6.2.4
+    ports:
+     - "6379:6379"
+
+  worker:
+    <<: *hackathon-app-main
+    entrypoint: ["celery", "-A", "main", "worker", "-l", "INFO"]
+    ports: []
+
+    # environment:
+    #   - ENV_FILE=/hackathon-app/.env
+    # volumes:
+    #   - ./.env:/hackathon-app/.env
