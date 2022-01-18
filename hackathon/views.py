@@ -254,7 +254,8 @@ def create_hackathon(request):
             'score_categories': HackProjectScoreCategory.objects.filter(
                 is_active=True)[:5]})
 
-        return render(request, template, {"form": form})
+        return render(request, template, {
+            "form": form, "slack_enabled": settings.SLACK_ENABLED})
 
     else:
         form = HackathonForm(request.POST)
@@ -315,6 +316,7 @@ def update_hackathon(request, hackathon_id):
         context = {
             "form": form,
             "hackathon_id": hackathon_id,
+            "slack_enabled": settings.SLACK_ENABLED,
         }
 
         return render(request, "hackathon/create-event.html", context)

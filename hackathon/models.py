@@ -87,6 +87,9 @@ class Hackathon(models.Model):
         blank=True,
         help_text=("Link to the Google Form for registrations.")
     )
+    channel_prefix = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text=("Only use lowercase and dash ('-') for spaces"))
 
     def __str__(self):
         return self.display_name

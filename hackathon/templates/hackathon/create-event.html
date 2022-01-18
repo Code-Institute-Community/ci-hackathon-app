@@ -40,6 +40,11 @@
         <div class="col-12">
           {{ form.organisation|as_crispy_field }}
         </div>
+        {% if slack_enabled %}
+        <div class="col-12">
+            {{ form.channel_prefix|as_crispy_field }}
+        </div>
+        {% endif %}
         <div class="col-12 col-md-6 mb-3">
           {{ form.team_size|as_crispy_field }}
         </div>

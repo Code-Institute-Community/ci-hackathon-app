@@ -105,6 +105,12 @@ class HackathonForm(forms.ModelForm):
         widget=forms.TextInput({'type': 'number', 'placeholder': 'Leave empty for no max'})
     )
 
+    channel_prefix = forms.CharField(
+        label="Channel Prefix",
+        required=True,
+        widget=forms.TextInput(),
+    )
+
     class Meta:
         model = Hackathon
         fields = ['display_name', 'description', 'theme', 'start_date',
