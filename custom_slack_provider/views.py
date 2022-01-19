@@ -1,7 +1,7 @@
 import logging
 import requests
-from requests.auth import AuthBase
 
+from custom_slack_provider.slack import CustomSlackClient
 from accounts.models import CustomUser
 from django.core.exceptions import PermissionDenied
 from requests import RequestException
@@ -30,18 +30,6 @@ from .provider import SlackProvider
 
 logger = logging.getLogger(__name__)
 
-AUTHORIZATION_HEADER = {'Authorization': "Bearer %s"}
-
-
-class AuthBearer(AuthBase):
-    """ Custom requests authentication class for header """
-    def __init__(self, token):
-        self.token = token
-
-    def __call__(self, request):
-        request.headers["authorization"] = "Bearer " + self.token
-        return request
-
 
 class SlackOAuth2Adapter(OAuth2Adapter):
     provider_id = SlackProvider.id
@@ -56,41 +44,16 @@ class SlackOAuth2Adapter(OAuth2Adapter):
         return self.get_provider().sociallogin_from_response(request,
                                                              extra_data)
 
-    def get_identity(self, token):
-        resp = requests.get(
-            self.identity_url,
-            auth=AuthBearer(token),
-        )
-        resp = resp.json()
-
-        if not resp.get('ok'):
-            raise OAuth2Error(f'UserInfo Exception: {resp.get("error")}')
-
-        return resp
-
-    def get_user_info(self, token, userid):
-        user_info = requests.get(
-            self.user_detail_url,
-            params={'user': userid},
-            auth=AuthBearer(token),
-        )
-        user_info = user_info.json()
-
-        if not user_info.get('ok'):
-            raise OAuth2Error(f'UserInfo Exception: {user_info.get("error")}')
-
-        return user_info.get('user', {})
-
     def get_data(self, token):
-        # Verify the user first
-        resp = self.get_identity(token)
+        # Verify user's identity and retrieve userid
+        user_slack_client = CustomSlackClient(token)
+        resp = user_slack_client.get_identity()
 
         userid = resp.get('user', {}).get('id')
-        user_info = requests.get(
-            self.user_detail_url,
-            params={'token': settings.SLACK_BOT_TOKEN, 'user': userid}
-        )
-        user_info = self.get_user_info(token, userid)
+
+        bot_slack_client = CustomSlackClient(settings.SLACK_BOT_TOKEN)
+        user_info = bot_slack_client.get_user_info(userid)
+
         display_name = user_info.get('profile',
                                      {}).get('display_name_normalized')
         teamid = resp.get('team').get('id')
