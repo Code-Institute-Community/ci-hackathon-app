@@ -40,7 +40,8 @@ class CustomSlackSocialAdapter(DefaultSocialAccountAdapter):
         """
         username = data.get('username')
         full_name = data.get('full_name')
-        slack_display_name = data.get('slack_display_name')
+        slack_display_name = (data.get('slack_display_name')
+                              or full_name or data.get('email').split('@')[0])
         first_name = data.get('first_name')
         last_name = data.get('last_name')
         email = data.get('email')
