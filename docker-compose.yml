@@ -25,7 +25,7 @@ services:
 
     environment:
       - ENV_FILE=/hackathon-app/.env
-      - DEVELOPMENT=1
+      - STATIC_URL=https://codeinstitute-webpublic.s3.eu-west-1.amazonaws.com/hackathon_staticfiles/1.62-a/
     entrypoint: ['python3', 'manage.py', 'runserver', '0.0.0.0:8000']
     ports:
       - "8000:8000"
@@ -64,13 +64,3 @@ services:
     image: redis:6.2.4
     ports:
      - "6379:6379"
-
-  worker:
-    <<: *hackathon-app-main
-    entrypoint: ["celery", "-A", "main", "worker", "-l", "INFO"]
-    ports: []
-
-    # environment:
-    #   - ENV_FILE=/hackathon-app/.env
-    # volumes:
-    #   - ./.env:/hackathon-app/.env

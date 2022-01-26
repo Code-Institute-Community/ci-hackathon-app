@@ -9,7 +9,15 @@ from smtplib import SMTPException
 
 from accounts.models import EmailTemplate, SlackSiteSettings
 
+from celery import shared_task
+from django.conf import settings
+
+from accounts.models import CustomUser as User
+from hackathon.models import Hackathon
+from custom_slack_provider.slack import CustomSlackClient
+
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 @shared_task
@@ -34,3 +42,34 @@ def send_email_from_template(user_email, user_name, hackathon_display_name, temp
              "Please create it on the Django Admin Panel"))
     except SMTPException:
         logger.exception("There was an issue sending the email.")
+def log_user_numbers():
+    users = User.objects.count()
+    logger.info(f'Number of users currently: {users}')
+    return
+
+
+@shared_task
+def create_new_slack_channel(hackathon_id, channel_name):
+    """ Create a new Slack Channel/Conversation in an existing Workspace """
+    if not settings.SLACK_ENABLED:
+        logger.info("Slack not enabled.")
+        return
+
+    hackathon = Hackathon.objects.get(id=hackathon_id)
+    logger.info(
+        (f"Creating new Slack channel {channel_name} for hackathon "
+         f"{hackathon.display_name} in Slack Workspace "
+         f"{settings.SLACK_WORKSPACE}({settings.SLACK_TEAM_ID})"))
+    slack_client = CustomSlackClient(settings.SLACK_BOT_TOKEN)
+    channel_id = slack_client.create_slack_channel(
+        channel_name, is_private=True)
+    logger.info(f"Channel with id {channel_id} created.")
+
+    if not channel_id:
+        logger.error("No Channel Id found.")
+        return
+
+    channel_url = f'https://{settings.SLACK_WORKSPACE}.slack.com/archives/{channel_id}'  # noqa: E501
+    hackathon.channel_url = channel_url
+    hackathon.save()
+    logger.info(f"Hackathon {hackathon.display_name} updated successfully.")
