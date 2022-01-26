@@ -64,13 +64,3 @@ class CustomSlackClient():
         new_channel = self._make_slack_post_request(
             self.create_conversation_url, data=data)
         return new_channel.get('channel', {})
-
-    @staticmethod
-    def trigger_welcome_workflow(data):
-        res = requests.post(settings.SLACK_WELCOME_WORKFLOW_WEBHOOK,
-                            data=json.dumps(data))
-
-        # A 200 response has an empty body
-        if res.status_code == 200:
-            return {'ok': True}
-        return res.json()
