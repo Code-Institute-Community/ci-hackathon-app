@@ -109,8 +109,9 @@ class HackathonForm(forms.ModelForm):
 
     channel_name = forms.CharField(
         required=False,
-        label="Channel Prefix",
+        label="Channel Name",
         widget=forms.TextInput(),
+        help_text="Only use lower case letters, numbers and hyphen (-)"
     )
 
     channel_url = forms.CharField(
