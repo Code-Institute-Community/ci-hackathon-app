@@ -80,9 +80,14 @@ class Hackathon(models.Model):
     )
     is_public = models.BooleanField(default=True)
     max_participants = models.IntegerField(default=None, null=True, blank=True)
-    channel_prefix = models.CharField(
+    channel_name = models.CharField(
         max_length=255, null=True, blank=True,
         help_text=("Only use lowercase and dash ('-') for spaces"))
+    channel_url = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text=("Url"))
+    channel_admins = models.ManyToManyField(
+        User, blank=True, related_name="administered_channels")
 
     def __str__(self):
         return self.display_name
