@@ -1,3 +1,4 @@
+import json
 import requests
 from requests.auth import AuthBase
 
@@ -16,12 +17,13 @@ class AuthBearer(AuthBase):
 
 class SlackException(Exception):
     def __init__(self, msg):
-        raise Exception(msg)
+        self.message = msg
 
 
 class CustomSlackClient():
     identity_url = 'https://slack.com/api/users.identity'
     user_detail_url = 'https://slack.com/api/users.info'
+    create_conversation_url = 'https://slack.com/api/conversations.create'
 
     def __init__(self, token):
         self.token = token
@@ -59,6 +61,16 @@ class CustomSlackClient():
             "is_private": is_private,
             "team_id": settings.SLACK_TEAM_ID,
         }
-        new_channel = self._make_slack_post_request(self.user_detail_url,
-                                                    data=data)
+        new_channel = self._make_slack_post_request(
+            self.create_conversation_url, data=data)
         return new_channel.get('channel', {})
+
+    @staticmethod
+    def trigger_welcome_workflow(data):
+        res = requests.post(settings.SLACK_WELCOME_WORKFLOW_WEBHOOK,
+                            data=json.dumps(data))
+
+        # A 200 response has an empty body
+        if res.status_code == 200:
+            return {'ok': True}
+        return res.json()
