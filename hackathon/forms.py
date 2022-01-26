@@ -1,6 +1,8 @@
 from django import forms
+from easy_select2 import Select2Multiple
 
 from accounts.models import Organisation
+from accounts.models import CustomUser as User
 from .models import Hackathon, HackProject, HackAward, HackTeam, \
                     HackProjectScoreCategory, HackAwardCategory, Event
 from .lists import STATUS_TYPES_CHOICES
@@ -105,10 +107,25 @@ class HackathonForm(forms.ModelForm):
         widget=forms.TextInput({'type': 'number', 'placeholder': 'Leave empty for no max'})
     )
 
-    channel_prefix = forms.CharField(
+    channel_name = forms.CharField(
+        required=False,
         label="Channel Prefix",
-        required=True,
         widget=forms.TextInput(),
+    )
+
+    channel_url = forms.CharField(
+        required=False,
+        label="Channel Url",
+        widget=forms.TextInput(attrs={
+            'readonly': True,
+        }),
+    )
+
+    channel_admins = forms.ModelMultipleChoiceField(
+        label="Channel Admins",
+        required=False,
+        queryset=User.objects.all(),
+        widget=Select2Multiple(select2attrs={'width': '100%'})
     )
 
     class Meta:
@@ -116,7 +133,8 @@ class HackathonForm(forms.ModelForm):
         fields = ['display_name', 'description', 'theme', 'start_date',
                   'end_date', 'status', 'organisation', 'score_categories',
                   'team_size', 'tag_line', 'is_public', 'max_participants',
-                  'allow_external_registrations', 'registration_form'
+                  'allow_external_registrations', 'registration_form',
+                  'channel_name', 'channel_url', 'channel_admins',
                   ]
 
     def __init__(self, *args, **kwargs):
