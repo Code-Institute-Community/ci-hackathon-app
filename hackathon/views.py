@@ -23,7 +23,7 @@ from .forms import HackathonForm, ChangeHackathonStatusForm,\
                    HackAwardForm, HackTeamForm, EventForm
 from .lists import AWARD_CATEGORIES
 from .helpers import format_date, query_scores, create_judges_scores_table
-from .tasks import send_email_from_template
+from .tasks import send_email_from_template, create_new_slack_channel
 
 from accounts.models import UserType
 from accounts.decorators import can_access, has_access_to_hackathon
@@ -283,7 +283,15 @@ def create_hackathon(request):
             hackathon_name = form.instance.display_name
            
             # Save the form
-            form.save()
+            hackathon = form.save()
+
+            # Create a new slack channel for hackathon
+            # if the channel_name is filled in
+            if hackathon.channel_name:
+                create_new_slack_channel.apply_async(kwargs={
+                    'channel_name': hackathon.channel_name,
+                    'hackathon_id': hackathon.id
+                })
             # Taking the first 3 award categories and creating them for the
             # newly created hackathon.
             hack_award_categories = HackAwardCategory.objects.filter(
@@ -310,6 +318,7 @@ def create_hackathon(request):
 def update_hackathon(request, hackathon_id):
     """ Allow users to edit hackathon event """
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    channel_name = hackathon.channel_name
     if request.method == 'GET':
         form = HackathonForm(instance=hackathon)
 
@@ -324,7 +333,6 @@ def update_hackathon(request, hackathon_id):
     else:
         form = HackathonForm(request.POST, instance=hackathon)
         # Convert start and end date strings to datetime and validate
-
         start_date = format_date(request.POST.get('start_date'))
         end_date = format_date(request.POST.get('end_date'))
         now = datetime.now()
@@ -347,6 +355,11 @@ def update_hackathon(request, hackathon_id):
         if form.is_valid():
             form.instance.updated = now
             form.save()
+            if channel_name != request.POST.get('channel_name'):
+                create_new_slack_channel.apply_async(kwargs={
+                    'channel_name': hackathon.channel_name,
+                    'hackathon_id': hackathon.id
+                })
             messages.success(
                 request, (f'Thanks, {hackathon.display_name} has been '
                           f'successfully updated!'))

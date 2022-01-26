@@ -4,9 +4,14 @@
 
 {% block css %}
   <!-- XDSoft DateTimePicker -->
-  <link rel="stylesheet"
+    <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
         integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
+    {{ form.media.css }}
+    <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'admin/js/jquery.init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
+    {{ form.media.js }}
 {% endblock %}
 
 {% block content %}
@@ -42,8 +47,24 @@
         </div>
         {% if slack_enabled %}
         <div class="col-12">
-            {{ form.channel_prefix|as_crispy_field }}
+            {{ form.channel_name|as_crispy_field }}
         </div>
+        <div class="col-12">
+            <div id="div_id_channel_admins" class="form-group">
+                <label for="id_channel_admins" class="">Channel Admins</label>                    
+                {{form.channel_admins }}
+                <small id="hint_id_channel_admins" class="form-text text-muted">These users will be added to the channel automatically.</small>
+        </div>
+        </div>
+        {% if hackathon_id and form.channel_url.value %}
+        <div class="col-12">
+            {{form.channel_url|as_crispy_field }}
+        </div>
+        {% else %}
+        <div class="col-12">
+            {{ form.channel_url.as_hidden }}
+        </div>
+        {% endif %}
         {% endif %}
         <div class="col-12 col-md-6 mb-3">
           {{ form.team_size|as_crispy_field }}
@@ -84,6 +105,7 @@
 {% endblock %}
 
 {% block js %}
+    
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
           integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous">
   </script>
