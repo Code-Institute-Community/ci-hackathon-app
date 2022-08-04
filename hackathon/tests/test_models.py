@@ -36,7 +36,7 @@ class HackathonTests(TestCase):
             created_by=user,
             display_name="testaward",
             description="lorem ipsum")
-        
+
         hack_award = HackAward.objects.create(
             created_by=user,
             hack_award_category=award_category,
