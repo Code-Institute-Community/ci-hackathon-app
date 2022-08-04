@@ -7,6 +7,7 @@ from unittest.mock import patch, Mock
 from .provider import SlackProvider
 from custom_slack_provider.slack import CustomSlackClient, SlackException
 from django.core.management import call_command
+from 
 
 
 class SlackOAuth2Tests(OAuth2TestsMixin, TestCase):
@@ -60,14 +61,37 @@ class SlackClientTest(TestCase):
         mock_response.json.return_value = {'ok': False,
                                            'error': 'Slack Error'}
         try:
-            client._make_slack_get_request(url='test')
+            client._make_slack_post_request(url='test', data={})
         except SlackException as e:
             self.assertTrue(isinstance(e, SlackException))
             self.assertEquals(e.message, 'Slack Error')
 
-    @patch('custom_slack_provider.slack.CustomSlackClient._make_slack_get_request')
+    @patch('custom_slack_provider.slack.CustomSlackClient._make_slack_get_request')  # noqa: 501
     def test_get_identity(self, _make_slack_get_request):
         _make_slack_get_request.return_value = {'user': {'id': 1}}
         client = CustomSlackClient(self.token)
         response = client.get_identity()
         self.assertEqual(response['user']['id'], 1)
+
+    def test__extract_userid_from_username(self):
+        valid_username = 'US123123_T123123'
+        invalid_username = 'bob@bob.com'
+        client = CustomSlackClient(self.token)
+        userid = client._extract_userid_from_username(valid_username)
+        self.assertEqual(userid, 'US123123')
+        try:
+            userid = client._extract_userid_from_username(invalid_username)
+        except SlackException as e:
+            self.assertTrue(isinstance(e, SlackException))
+            self.assertEquals(e.message, 'Error adding user to channel')
+
+    @patch('custom_slack_provider.slack.CustomSlackClient._make_slack_post_request')  # noqa: 501
+    def test_add_user_to_slack_channel(self, _make_slack_post_request):
+        _make_slack_post_request.return_value = {
+            'ok': True,
+            'channel': {'id': 'CH123123'}
+        }
+        client = CustomSlackClient(self.token)
+        response = client.add_user_to_slack_channel(username='UA123123_T15666',
+                                                    channel_id='CH123123')
+        self.assertEqual(response['channel']['id'], 'CH123123')

@@ -1,4 +1,4 @@
-import json
+import re
 import requests
 from requests.auth import AuthBase
 
@@ -24,6 +24,7 @@ class CustomSlackClient():
     identity_url = 'https://slack.com/api/users.identity'
     user_detail_url = 'https://slack.com/api/users.info'
     create_conversation_url = 'https://slack.com/api/conversations.create'
+    invite_conversation_url = 'https://slack.com/api/conversations.invite'
 
     def __init__(self, token):
         self.token = token
@@ -64,3 +65,20 @@ class CustomSlackClient():
         new_channel = self._make_slack_post_request(
             self.create_conversation_url, data=data)
         return new_channel.get('channel', {})
+
+    def _extract_userid_from_username(self, username):
+        """ Extracts the Slack userid from a hackathon platform userid
+        when Slack is enabled and the account was created with a valid userid
+        schema: [SLACK_USER_ID]_[WORKSPACE_TEAM_ID]"""
+        if not re.match(r'[A-Z0-9]*[_]T[A-Z0-9]*', username):
+            raise SlackException('Error adding user to channel')
+        return username.split('_')[0]
+
+    def add_user_to_slack_channel(self, username, channel_id):
+        data = {
+            "user": self._extract_userid_from_username(username),
+            "channel": channel_id,
+        }
+        user_added = self._make_slack_post_request(
+            self.invite_conversation_url, data=data)
+        return user_added
