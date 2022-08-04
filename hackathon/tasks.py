@@ -14,7 +14,7 @@ from django.conf import settings
 
 from accounts.models import CustomUser as User
 from hackathon.models import Hackathon
-from custom_slack_provider.slack import CustomSlackClient
+from custom_slack_provider.slack import CustomSlackClient, SlackException
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -61,8 +61,10 @@ def create_new_slack_channel(hackathon_id, channel_name):
          f"{hackathon.display_name} in Slack Workspace "
          f"{settings.SLACK_WORKSPACE}({settings.SLACK_TEAM_ID})"))
     slack_client = CustomSlackClient(settings.SLACK_BOT_TOKEN)
-    channel_id = slack_client.create_slack_channel(
+    channel = slack_client.create_slack_channel(
         channel_name, is_private=True)
+
+    channel_id = channel.get('id')
     logger.info(f"Channel with id {channel_id} created.")
 
     if not channel_id:
@@ -73,3 +75,11 @@ def create_new_slack_channel(hackathon_id, channel_name):
     hackathon.channel_url = channel_url
     hackathon.save()
     logger.info(f"Hackathon {hackathon.display_name} updated successfully.")
+
+    logger.info("Adding channel admins")
+    for admin in hackathon.channel_admins.all():
+        try:
+            slack_client.add_user_to_slack_channel(admin.username, channel_id)
+        except SlackException:
+            logger.exception((f"Could not add user with id {admin.id} "
+                              f"to channel {channel_id}."))
