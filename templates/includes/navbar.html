@@ -65,6 +65,7 @@
                             <a class="dropdown-item" href="{% url 'account_login' %}">Login</a>
                         {% else %}
                             <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
+                            <a class="dropdown-item" href="{% url 'self_assess_competencies' %}">My Competencies</a>
                             {% if request.user.user_type|is_type:"SUPERUSER" %}
                                 <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">Django Admin</a>
                             {% endif %}

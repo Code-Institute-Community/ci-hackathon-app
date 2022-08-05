@@ -26,6 +26,8 @@ $(document).ready(function(){
         $(`#hackadmin-team-select-${hackathonId}`).show();
     });
     enableReviewsSlider();
+    openCompetencyDifficultyInPopup();
+    closePopup();
 });
 
 function setUpoadImageType(){
@@ -128,4 +130,24 @@ function enableReviewsSlider(){
             prev_elem.hide().fadeIn();
         }
     });
+}
+
+
+function openCompetencyDifficultyInPopup(){
+    $('#openCompetencyDifficultyPopup').click(function(){
+        // const params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=500,height=350,left=-1000,top=-1000`;
+        const params = `width=500,height=350,left=-1000,top=-1000`;
+        const window_name = 'Create Competency Difficulty'
+        window.open(create_competency_difficulty_url, window_name, params);
+    })
+}
+
+function closePopup(){
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString);
+    let close_popup = urlParams.get('close_popup')
+    if(close_popup){
+        window.opener.location.reload();
+        window.close();
+    }
 }
