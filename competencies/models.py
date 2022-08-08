@@ -54,7 +54,8 @@ class Competency(models.Model):
     def get_user_rating(self, user):
         try:
             return self.competency_assessment_ratings.get(
-                user_assessment__user=user)
+                user_assessment__user=user,
+                user_assessment__is_visible=True)
         except ObjectDoesNotExist:
             return
 
