@@ -10,11 +10,20 @@
 {% block content %}
 
 {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+
+
+
 <div class="row">
     <div class="col teams-page">
         
         <div class="container-fluid p-3">
             {% include 'includes/back_button.html' with redirect_url=redirect_url button_label='Back To The Team' %}
+
+            <div class="row mb-2 mt-3">
+                <div class="col">
+                   <h4>Our Team's Competencies</h4>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col">
