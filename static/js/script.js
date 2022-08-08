@@ -28,6 +28,7 @@ $(document).ready(function(){
     enableReviewsSlider();
     openCompetencyDifficultyInPopup();
     closePopup();
+    toggleCompetencyAssessmentIcon();
 });
 
 function setUpoadImageType(){
@@ -150,4 +151,32 @@ function closePopup(){
         window.opener.location.reload();
         window.close();
     }
+}
+
+function toggleCompetencyAssessmentIcon() {
+    $('.competency-assessment-radio').change(function(){
+        console.log($(this))
+        let current_selection = $(this).parent().parent().parent().find('label i[class$="-fill"]');
+        if(current_selection.length > 0){
+            _changeClass(current_selection[0]);
+        }
+        let new_selection = $(this).parent().find('label i');
+        _changeClass(new_selection[0]);
+        _chageSelection($(this).data('form'), $(this).data('rating'))
+    })
+}
+
+function _changeClass(element){
+    let _class = element.classList[1];
+    element.classList.remove(_class);
+    if(_class.indexOf('-fill') == -1){
+        element.classList.add(_class + '-fill');
+    } else {
+        element.classList.add(_class.replace('-fill',''));
+    }
+}
+
+
+function _chageSelection(form_num, rating){
+    $(`#id_form-${form_num}-rating`).val(rating);
 }

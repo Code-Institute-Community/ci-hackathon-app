@@ -31,6 +31,10 @@ body {
     height: 100%;
 }
 
+html form.w-100 {
+    max-width: 100%;
+}
+
 body * {
     font-family: Montserrat, sans-serif;
 }
@@ -822,6 +826,27 @@ img.showcase-image-edit {
     border-bottom-left-radius: 0;
     margin: 0;
     font-size: 1rem;
+}
+
+.card .card-body a.btn.btn-large {
+    font-size: .95rem;
+}
+
+#competenciesTable i {
+    font-size: 1.3rem;
+}
+
+#competenciesTable input[type="radio"] {
+    visibility: hidden;
+}
+
+.disabled-select {
+    pointer-events: none;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color: var(--black);
+    padding: 0;
 }
 
 /* Media Queries */

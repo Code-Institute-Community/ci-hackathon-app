@@ -3,56 +3,71 @@
 
 {% block content %}
 
+<div class="row mb-4">
+    <div class="col">
 
-{% if competencies %}
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h4>Create New Compentency for Participant Self-Assessment</h4>
+                </div>
+                <div class="card-text">
+                    
+                    <a role="button" href="{% url 'create_competency' %}" class="btn btn-ci">Create Competency</a>
 
-<div class="table-responsive">
-    <table class="table table-sm mt-5" id="competenciesTable">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Perceived Difficulty</th>
-            <th scope="col"># Want To Know About It</th>
-            <th scope="col"># Learning It</th>
-            <th scope="col"># Know It</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for competency in competencies %}
-          <tr>
-                <td>
-                    {{ competency.name }}
-                </td>
-                <td>
-                    {{ competency.perceived_difficulty }}
-                </td>
-                <td>
-                    
-                </td>
-                <td>
-                    
-                </td>
-                <td>
-                    
-                </td>
-                <td>
-                <button>
-                    <i class="bi bi-pencil-fill"></i>
-                </button>
-                <button>
-                    <i class="bi bi-trash-fill"></i>
-                </button>
-            </td>
-          </tr>
-          {% endfor %}
-    </table>
+                    {% if competencies %}
+                    <div class="table-responsive">
+                        <table class="table table-sm mt-3" id="competenciesTable">
+                            <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Perceived Difficulty</th>
+                                <th scope="col"># Want To Know About It</th>
+                                <th scope="col"># Learning It</th>
+                                <th scope="col"># Know It</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for competency in competencies %}
+                                <tr>
+                                    <td>
+                                        {{ competency.display_name }}
+                                    </td>
+                                    <td>
+                                        {{ competency.perceived_difficulty }}
+                                    </td>
+                                    <td>
+                                        n/a
+                                    </td>
+                                    <td>
+                                        n/a
+                                    </td>
+                                    <td>
+                                        n/a
+                                    </td>
+                                    <td class="text-center">
+                                    <a class="btn ci-btn p-0" href="{% url 'edit_competency' competency_id=competency.id %}">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    <button class="btn ci-btn p-0">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+
+                    {% else %}
+                    No competencies to self-assess available. 
+                    {% endif %}
+                
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
-
-
-{% else %}
-No competencies to self-assess available. 
-{% endif %}
-
 
 {% endblock %}

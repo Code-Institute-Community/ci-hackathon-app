@@ -1,15 +1,91 @@
 {% extends "base.html" %}
 {% load static %}
+{% load competencies_tags %}
 
 {% block content %}
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+    
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h4>Self-Assess Your Competencies</h4>
+                    </div>
+                    <div class="card-text">
+                        
+                        {% if competencies %}
+                        <form method="POST" class="w-100">
+                            {% csrf_token %}
+                            {{form.user.as_hidden}}
+                            {{form.is_visible|as_crispy_field}}
+                            {{ formset.management_form }}
+                            <div class="table-responsive">
+                                <table class="table table-sm mt-3" id="competenciesTable">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Competency</th>
+                                        <th scope="col" class="text-center">No Knowledge</th>
+                                        <th scope="col" class="text-center">Want to Learn</th>
+                                        <th scope="col" class="text-center">Learning it now</th>
+                                        <th scope="col" class="text-center">Know it</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for form in formset %}
+                                        <tr>
+                                            <td>
+                                                {{form.id}}
+                                                {{form.user_assessment.as_hidden}}
+                                                {{form.rating.as_hidden}}
+                                                {{form.competency}}
+                                                
+                                            </td>
+                                            
+                                            <td class="text-center">
+                                                <div class="form-check form-check-inline">
+                                                    <label for="id_form-{{forloop.counter0}}-none"><i class="bi bi-square{% if form.rating.value == 'no_knowledge' %}-fill{% endif %}" title="I don't know anything about this competency"></i></label>
+                                                    <input type="radio" data-form="{{forloop.counter0}}" data-rating="no_knowledge" value="{% if form.rating.value == 'no_knowledge' %}true{% endif %}" name="form-{{forloop.counter0}}-rating-ui" id="id_form-{{forloop.counter0}}-none" class="competency-assessment-radio">
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="form-check form-check-inline">
+                                                    <label for="id_form-{{forloop.counter0}}-want_to_know"><i class="bi bi-lightbulb{% if form.rating.value == 'want_to_know' %}-fill{% endif %}" title="I would like to know about this competency"></i></label>
+                                                    <input type="radio" data-form="{{forloop.counter0}}" data-rating="want_to_know" value="{% if form.rating.value == 'want_to_know' %}true{% endif %}" name="form-{{forloop.counter0}}-rating-ui" id="id_form-{{forloop.counter0}}-want_to_know" class="competency-assessment-radio">
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="form-check form-check-inline">
+                                                    <label for="id_form-{{forloop.counter0}}-learning" ><i class="bi bi-arrow-up-right-circle{% if form.rating.value == 'learning' %}-fill{% endif %}" title="I am in the process of learning this competency"></i></label>
+                                                    <input type="radio" data-form="{{forloop.counter0}}" data-rating="learning" value="{% if form.rating.value == 'learning' %}true{% endif %}" name="form-{{forloop.counter0}}-rating-ui" id="id_form-{{forloop.counter0}}-learning" class="competency-assessment-radio">
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="form-check form-check-inline">
+                                                    <label for="id_form-{{forloop.counter0}}-know_it"><i class="bi bi-hand-thumbs-up{% if form.rating.value == 'know_it' %}-fill{% endif %}" title="I know this competency"></i></label>
+                                                    <input type="radio" data-form="{{forloop.counter0}}" data-rating="know_it" value="{% if form.rating.value == 'know_it' %}true{% endif %}" name="form-{{forloop.counter0}}-rating-ui" id="id_form-{{forloop.counter0}}-know_it" class="competency-assessment-radio">
+                                                </div>
+                                            </td>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                            <a role="button" class="btn btn-secondary btn-large" href="{% url 'profile' %}">Back</a>
+                            <button class="btn btn-ci">Save</button>
+                        </form>
 
-{% if competencies %}
-
-
-{% else %}
-No competencies to self-assess available.
-{% endif %}
+                        {% else %}
+                        No competencies to self-assess available.
+                        {% endif %}
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}
