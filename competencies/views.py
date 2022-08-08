@@ -138,7 +138,7 @@ def self_assess_competencies(request):
         initial=[]
         competency_assessments=[]
         if competency_assessment:
-            assessment_competencies = assessment_competencies
+            assessment_competencies = competency_assessment.competencies
             if assessment_competencies.count() < competencies.count():
                 competency_ids = [competency.id for competency in competencies]
                 exclude_ids = [competency.id

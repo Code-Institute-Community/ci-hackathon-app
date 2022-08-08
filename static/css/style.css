@@ -833,11 +833,28 @@ img.showcase-image-edit {
 }
 
 #competenciesTable i {
+    cursor: pointer;
+}
+
+#competenciesTable i,
+i.rating-display {
     font-size: 1.3rem;
 }
 
 #competenciesTable input[type="radio"] {
     visibility: hidden;
+}
+
+i.bi-arrow-up-right-circle-fill {
+    color: var(--s-teal);
+}
+
+i.bi-lightbulb-fill {
+    color: var(--s-yellow);
+}
+
+i.bi-hand-thumbs-up-fill {
+    color: var(--p-blue);
 }
 
 .disabled-select {
