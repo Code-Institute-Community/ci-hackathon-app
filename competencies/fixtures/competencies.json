@@ -1,0 +1,221 @@
+[
+    {
+        "model": "competencies.competencydifficulty",
+        "pk": 1,
+        "fields": {
+            "created": "2022-08-05T11:37:54.601Z",
+            "updated": "2022-08-05T11:37:54.601Z",
+            "created_by": 1,
+            "display_name": "Easy",
+            "numeric_difficulty": 1.0
+        }
+    },
+    {
+        "model": "competencies.competencydifficulty",
+        "pk": 2,
+        "fields": {
+            "created": "2022-08-05T11:40:28.237Z",
+            "updated": "2022-08-05T11:40:28.237Z",
+            "created_by": 1,
+            "display_name": "Intermediate",
+            "numeric_difficulty": 2.0
+        }
+    },
+    {
+        "model": "competencies.competencydifficulty",
+        "pk": 3,
+        "fields": {
+            "created": "2022-08-05T11:43:34.855Z",
+            "updated": "2022-08-05T11:43:34.855Z",
+            "created_by": 1,
+            "display_name": "Hard",
+            "numeric_difficulty": 4.0
+        }
+    },
+    {
+        "model": "competencies.competencydifficulty",
+        "pk": 4,
+        "fields": {
+            "created": "2022-08-05T13:57:47.318Z",
+            "updated": "2022-08-05T13:57:47.318Z",
+            "created_by": 1,
+            "display_name": "Very Hard",
+            "numeric_difficulty": 5.0
+        }
+    },
+    {
+        "model": "competencies.competencydifficulty",
+        "pk": 5,
+        "fields": {
+            "created": "2022-08-05T13:59:26.450Z",
+            "updated": "2022-08-05T13:59:26.451Z",
+            "created_by": 1,
+            "display_name": "Technical",
+            "numeric_difficulty": 1.2
+        }
+    },
+    {
+        "model": "competencies.competencydifficulty",
+        "pk": 6,
+        "fields": {
+            "created": "2022-08-05T13:59:45.617Z",
+            "updated": "2022-08-05T13:59:45.617Z",
+            "created_by": 1,
+            "display_name": "Normal",
+            "numeric_difficulty": 2.5
+        }
+    },
+    {
+        "model": "competencies.competencydifficulty",
+        "pk": 7,
+        "fields": {
+            "created": "2022-08-05T14:02:05.685Z",
+            "updated": "2022-08-05T14:02:05.685Z",
+            "created_by": 1,
+            "display_name": "Noob",
+            "numeric_difficulty": 0.5
+        }
+    },
+    {
+        "model": "competencies.competencydifficulty",
+        "pk": 8,
+        "fields": {
+            "created": "2022-08-05T14:02:32.024Z",
+            "updated": "2022-08-05T14:02:32.024Z",
+            "created_by": 1,
+            "display_name": "Noobs",
+            "numeric_difficulty": 0.6
+        }
+    },
+    {
+        "model": "competencies.competencydifficulty",
+        "pk": 9,
+        "fields": {
+            "created": "2022-08-05T14:02:56.550Z",
+            "updated": "2022-08-05T14:02:56.550Z",
+            "created_by": 1,
+            "display_name": "Nooobs!",
+            "numeric_difficulty": 0.7
+        }
+    },
+    {
+        "model": "competencies.competency",
+        "pk": 1,
+        "fields": {
+            "created": "2022-08-05T14:17:38.220Z",
+            "updated": "2022-08-05T14:17:38.220Z",
+            "created_by": 1,
+            "display_name": "HTML",
+            "perceived_difficulty": 1,
+            "is_visible": true
+        }
+    },
+    {
+        "model": "competencies.competency",
+        "pk": 2,
+        "fields": {
+            "created": "2022-08-05T14:23:41.673Z",
+            "updated": "2022-08-05T14:56:13.462Z",
+            "created_by": 1,
+            "display_name": "CSS",
+            "perceived_difficulty": 1,
+            "is_visible": true
+        }
+    },
+    {
+        "model": "competencies.competency",
+        "pk": 3,
+        "fields": {
+            "created": "2022-08-05T14:23:49.767Z",
+            "updated": "2022-08-05T14:23:49.767Z",
+            "created_by": 1,
+            "display_name": "JavaScript",
+            "perceived_difficulty": 2,
+            "is_visible": true
+        }
+    },
+    {
+        "model": "competencies.competency",
+        "pk": 4,
+        "fields": {
+            "created": "2022-08-05T14:24:11.521Z",
+            "updated": "2022-08-05T14:24:11.521Z",
+            "created_by": 1,
+            "display_name": "Python",
+            "perceived_difficulty": 3,
+            "is_visible": true
+        }
+    },
+    {
+        "model": "competencies.competency",
+        "pk": 5,
+        "fields": {
+            "created": "2022-08-05T14:24:17.102Z",
+            "updated": "2022-08-05T14:24:17.102Z",
+            "created_by": 1,
+            "display_name": "Django",
+            "perceived_difficulty": 4,
+            "is_visible": true
+        }
+    },
+    {
+        "model": "competencies.competency",
+        "pk": 6,
+        "fields": {
+            "created": "2022-08-05T14:24:23.195Z",
+            "updated": "2022-08-05T14:24:23.195Z",
+            "created_by": 1,
+            "display_name": "Kanban",
+            "perceived_difficulty": 1,
+            "is_visible": true
+        }
+    },
+    {
+        "model": "competencies.competency",
+        "pk": 7,
+        "fields": {
+            "created": "2022-08-05T14:24:29.380Z",
+            "updated": "2022-08-05T14:24:29.380Z",
+            "created_by": 1,
+            "display_name": "Readme",
+            "perceived_difficulty": 1,
+            "is_visible": true
+        }
+    },
+    {
+        "model": "competencies.competency",
+        "pk": 8,
+        "fields": {
+            "created": "2022-08-05T14:24:35.502Z",
+            "updated": "2022-08-05T14:24:35.502Z",
+            "created_by": 1,
+            "display_name": "Wireframes",
+            "perceived_difficulty": 1,
+            "is_visible": true
+        }
+    },
+    {
+        "model": "competencies.competency",
+        "pk": 9,
+        "fields": {
+            "created": "2022-08-05T14:24:42.333Z",
+            "updated": "2022-08-05T14:24:42.333Z",
+            "created_by": 1,
+            "display_name": "SCRUM",
+            "perceived_difficulty": 2,
+            "is_visible": true
+        }
+    },
+    {
+        "model": "competencies.competency",
+        "pk": 10,
+        "fields": {
+            "created": "2022-08-05T14:24:48.822Z",
+            "updated": "2022-08-05T14:24:48.822Z",
+            "created_by": 1,
+            "display_name": "Presenting",
+            "perceived_difficulty": 1,
+            "is_visible": true
+        }
+    }
+]

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="row mb-4">
+    <div class="col">
+
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h4>Create New Compentency for Participant Self-Assessment</h4>
+                </div>
+                <div class="card-text">
+
+                    <form method="POST">
+                        {% csrf_token%}
+                        {{form.display_name|as_crispy_field}}
+                        
+                        <div class="input-group competency-difficulty-select mb-3">
+                            {{form.perceived_difficulty}}
+                            <a role="button" class="btn btn-outline-secondary" type="button" id="openCompetencyDifficultyPopup">
+                                <i class="bi bi-plus-circle-fill"></i>
+                            </a>
+                          </div>
+                        <a role="button" href="{% url 'list_competencies' %}" class="btn btn-secondary btn-large">Back</a>
+                        <button class="btn btn-ci">Save</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% url 'create_competency_difficulty' as create_competency_difficulty_url %}
+<script>var create_competency_difficulty_url ='{{create_competency_difficulty_url}}';</script>
+
+{% endblock %}

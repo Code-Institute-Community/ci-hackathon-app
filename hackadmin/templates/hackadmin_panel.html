@@ -10,7 +10,8 @@
                 <div class="card-title">Hack Admin</div>
                 <div class="card-text">
                     <div>
-                        <a href="/hackadmin/all_users/" class="ci-link">View All Users</a>
+                        <p class="m-0"><a href="{% url 'hackadmin:all_users' %}" class="ci-link">View All Users</a></p>
+                        <p class="m-0"><a href="{% url 'list_competencies' %}" class="ci-link">View All Competencies</a></p>
                     </div>
                     {% if hackathons %}
 

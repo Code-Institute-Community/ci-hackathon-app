@@ -26,6 +26,9 @@ $(document).ready(function(){
         $(`#hackadmin-team-select-${hackathonId}`).show();
     });
     enableReviewsSlider();
+    openCompetencyDifficultyInPopup();
+    closePopup();
+    toggleCompetencyAssessmentIcon();
 });
 
 function setUpoadImageType(){
@@ -128,4 +131,50 @@ function enableReviewsSlider(){
             prev_elem.hide().fadeIn();
         }
     });
+}
+
+
+function openCompetencyDifficultyInPopup(){
+    $('#openCompetencyDifficultyPopup').click(function(){
+        const params = `width=500,height=350,left=-1000,top=-1000`;
+        const window_name = 'Create Competency Difficulty';
+        window.open(create_competency_difficulty_url, window_name, params);
+    })
+}
+
+function closePopup(){
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString);
+    let close_popup = urlParams.get('close_popup');
+    if(close_popup){
+        window.opener.location.reload();
+        window.close();
+    }
+}
+
+function toggleCompetencyAssessmentIcon() {
+    $('.competency-assessment-radio').change(function(){
+        let current_selection = $(this).parent().parent().parent().find('label i.fas');
+        if(current_selection.length > 0){
+            _changeClass(current_selection[0]);
+        }
+        let new_selection = $(this).parent().find('label i');
+        _changeClass(new_selection[0]);
+        _chageSelection($(this).data('form'), $(this).data('rating'));
+    });
+}
+
+function _changeClass(element){
+    if(element.classList.contains('fas')){
+        element.classList.remove('fas');
+        element.classList.add('far');
+    } else {
+        element.classList.remove('far');
+        element.classList.add('fas');
+    }
+}
+
+
+function _chageSelection(form_num, rating){
+    $(`#id_form-${form_num}-rating`).val(rating);
 }

@@ -31,6 +31,10 @@ body {
     height: 100%;
 }
 
+html form.w-100 {
+    max-width: 100%;
+}
+
 body * {
     font-family: Montserrat, sans-serif;
 }
@@ -809,6 +813,72 @@ img.showcase-image-edit {
 /* Hackathon Stats */
 .hide-row{
     display:none;
+}
+
+/* Competencies */
+.input-group.competency-difficulty-select select {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group.competency-difficulty-select a.btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin: 0;
+    font-size: 1rem;
+}
+
+.card .card-body a.btn.btn-large {
+    font-size: .95rem;
+}
+
+#competenciesTable.table td {
+    vertical-align: middle;
+}
+
+#competenciesTable.table td label {
+    margin: 0;
+}
+
+#competenciesTable i {
+    cursor: pointer;
+}
+
+#competenciesDisplayTable i.fas,
+#competenciesDisplayTable i.fas:hover {
+    transform: scale(1);
+    cursor: default;
+    vertical-align: middle;
+}
+
+#competenciesTable i,
+i.rating-display {
+    font-size: 1.3rem;
+}
+
+#competenciesTable input[type="radio"] {
+    visibility: hidden;
+}
+
+i.fas.fa-arrow-alt-circle-up {
+    color: var(--s-teal);
+}
+
+i.fas.fa-lightbulb {
+    color: var(--s-yellow);
+}
+
+i.fas.fa-thumbs-up {
+    color: var(--p-blue);
+}
+
+.disabled-select {
+    pointer-events: none;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color: var(--black);
+    padding: 0;
 }
 
 /* Media Queries */

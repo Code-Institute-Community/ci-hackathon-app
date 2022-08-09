@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% load teams_tags %}
+{% load account_tags %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+{% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+
+
+
+<div class="row">
+    <div class="col teams-page">
+        
+        <div class="container-fluid p-3">
+            {% include 'includes/back_button.html' with redirect_url=redirect_url button_label='Back To The Team' %}
+
+            <div class="row mb-2 mt-3">
+                <div class="col">
+                   <h4>Our Hack Team Competencies & Experience</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    
+                    <table class="table table-responsive-sm" id="competenciesDisplayTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Competency
+                                </th>
+                                {% for participant in hack_team.participants.all %}
+                                <th class="text-center">
+                                    {{participant.slack_display_name}}
+                                </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <thead>
+                            {% for comp in competencies %}
+                            <tr>
+                                <td>
+                                    {{comp.display_name}}
+                                </td>
+                                {% for participant in hack_team.participants.all %}
+                                <td class="text-center">
+                                    {% get_participant_rating participant comp as level %}
+                                    {% if level == 'know_it' %}
+                                    <i class="fas fa-thumbs-up rating-display" title="I know this competency"></i>
+                                    {% elif level == 'want_to_know' %}
+                                    <i class="fas fa-lightbulb rating-display" title="I would like to know about this competency"></i>
+                                    {% elif level == 'learning' %}
+                                    <i class="fas fa-arrow-alt-circle-up rating-display" title="I am in the process of learning this competency"></i>
+                                    {% else %}
+                                    &nbsp;
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </thead>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endwith %}
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

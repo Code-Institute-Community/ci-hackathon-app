@@ -10,6 +10,7 @@ services:
 
       # code
       - ./accounts/:/hackathon-app/accounts/
+      - ./competencies/:/hackathon-app/competencies/
       - ./custom_slack_provider/:/hackathon-app/custom_slack_provider/
       - ./hackadmin/:/hackathon-app/hackadmin/
       - ./hackathon/:/hackathon-app/hackathon/
@@ -26,6 +27,7 @@ services:
 
     environment:
       - ENV_FILE=/hackathon-app/.env
+      - DEVELOPMENT=1
     entrypoint: ['python3', 'manage.py', 'runserver', '0.0.0.0:8000']
     ports:
       - "8000:8000"
@@ -45,4 +47,4 @@ services:
   smtp:
     image: mailhog/mailhog:v1.0.1
     ports:
-      - "8025:8025"
+      - "8026:8025"

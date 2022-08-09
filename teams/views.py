@@ -13,12 +13,14 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from accounts.decorators import can_access
 from accounts.models import UserType
 from accounts.lists import TIMEZONE_CHOICES
+from competencies.models import Competency
 from hackathon.models import Hackathon, HackTeam, HackProject
-from teams.helpers import choose_team_sizes, group_participants,\
-                          choose_team_levels, find_all_combinations,\
-                          distribute_participants_to_teams,\
-                          create_teams_in_view, update_team_participants, \
-                          calculate_timezone_offset
+from teams.helpers import (
+    choose_team_sizes, group_participants,
+    choose_team_levels, find_all_combinations,
+    distribute_participants_to_teams,
+    create_teams_in_view, update_team_participants,
+    calculate_timezone_offset)
 from teams.forms import HackProjectForm, EditTeamName
 
 SLACK_GROUP_IM_ENDPOINT = 'https://slack.com/api/conversations.open/'
@@ -320,4 +322,16 @@ def view_team_calendar(request, team_id):
         'headers': headers,
         'timezones': TIMEZONE_CHOICES,
         'selected_timezone': timezone,
+    })
+
+
+@login_required
+def view_team_competencies(request, team_id):
+    hack_team = get_object_or_404(HackTeam, id=team_id)
+    competencies = Competency.objects.filter(is_visible=True)
+    redirect_url = reverse('view_team', kwargs={'team_id': team_id})
+    return render(request, 'team_competencies.html', {
+        'hack_team': hack_team,
+        'competencies': competencies,
+        'redirect_url': redirect_url,
     })

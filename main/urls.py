@@ -16,4 +16,5 @@ urlpatterns = [
                                namespace='hackathon')),
     path("showcase/", include("showcase.urls")),
     path("teams/", include("teams.urls")),
+    path("competencies/", include("competencies.urls")),
 ]

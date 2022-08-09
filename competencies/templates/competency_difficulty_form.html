@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Create New Difficulty Rating for Compentency</title>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Rubik&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+            integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+            integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+            crossorigin="anonymous">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+            integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous">
+        </script>
+        <script src="{% static 'js/script.js' %}"></script>
+    </head>
+    <body>
+        {% include "includes/messages.html" %}
+        
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+            
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h4>Create New Difficulty Rating for Compentency</h4>
+                            </div>
+                            <div class="card-text">
+            
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    {{ form.display_name|as_crispy_field }}
+                                    {{ form.numeric_difficulty|as_crispy_field }}
+                                    <button type="submit" class="btn btn-ci">Save</button>
+                                </form>
+            
+                            </div>
+                        </div>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+        {% if messages %}
+            <script>
+            // Fires toast popups if there are messages
+                $(".toast").toast("show");
+            </script>
+        {% endif %}
+
+    </body>
+</html>
+
+
+

@@ -3,6 +3,7 @@ import json
 
 from django.template import Library
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 register = Library()
 
@@ -45,3 +46,11 @@ def extract_userid(username):
 def is_working_time(num):
     _num = int(num.split(':')[0])
     return 8 <= _num <= 20
+
+
+@register.simple_tag
+def get_participant_rating(participant, competency):
+    try:
+        return competency.get_user_rating(participant).rating
+    except (ObjectDoesNotExist, AttributeError):
+        return
