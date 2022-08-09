@@ -154,7 +154,7 @@ function closePopup(){
 
 function toggleCompetencyAssessmentIcon() {
     $('.competency-assessment-radio').change(function(){
-        let current_selection = $(this).parent().parent().parent().find('label i[class$="-fill"]');
+        let current_selection = $(this).parent().parent().parent().find('label i.fas');
         if(current_selection.length > 0){
             _changeClass(current_selection[0]);
         }
@@ -165,12 +165,12 @@ function toggleCompetencyAssessmentIcon() {
 }
 
 function _changeClass(element){
-    let _class = element.classList[1];
-    element.classList.remove(_class);
-    if(_class.indexOf('-fill') == -1){
-        element.classList.add(_class + '-fill');
+    if(element.classList.contains('fas')){
+        element.classList.remove('fas');
+        element.classList.add('far');
     } else {
-        element.classList.add(_class.replace('-fill',''));
+        element.classList.remove('far');
+        element.classList.add('fas');
     }
 }
 

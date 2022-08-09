@@ -832,8 +832,23 @@ img.showcase-image-edit {
     font-size: .95rem;
 }
 
+#competenciesTable.table td {
+    vertical-align: middle;
+}
+
+#competenciesTable.table td label {
+    margin: 0;
+}
+
 #competenciesTable i {
     cursor: pointer;
+}
+
+#competenciesDisplayTable i.fas,
+#competenciesDisplayTable i.fas:hover {
+    transform: scale(1);
+    cursor: default;
+    vertical-align: middle;
 }
 
 #competenciesTable i,
@@ -845,15 +860,15 @@ i.rating-display {
     visibility: hidden;
 }
 
-i.bi-arrow-up-right-circle-fill {
+i.fas.fa-arrow-alt-circle-up {
     color: var(--s-teal);
 }
 
-i.bi-lightbulb-fill {
+i.fas.fa-lightbulb {
     color: var(--s-yellow);
 }
 
-i.bi-hand-thumbs-up-fill {
+i.fas.fa-thumbs-up {
     color: var(--p-blue);
 }
 

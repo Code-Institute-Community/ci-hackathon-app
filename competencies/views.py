@@ -1,8 +1,11 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import modelformset_factory
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 
+from accounts.models import UserType
+from accounts.decorators import can_access
 from competencies.forms import (
     CompetencyForm, CompetencyDifficultyForm,
     CompetencyAssessmentForm, 
@@ -18,11 +21,19 @@ from competencies.models import (
     CompetencyAssessment, CompetencyAssessmentRating)
 
 
+@login_required
+@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN],
+            redirect_url='hackathon:hackathon-list')
 def list_competencies(request):
     competencies = Competency.objects.order_by('display_name')
     return render(request, 'list_competencies.html', {'competencies': competencies})
 
 
+@login_required
+@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN],
+            redirect_url='hackathon:hackathon-list')
 def create_competency_difficulty(request):
     if request.method == 'POST':
         form = CompetencyDifficultyForm(request.POST)
@@ -41,6 +52,10 @@ def create_competency_difficulty(request):
         return render(request, 'competency_difficulty_form.html', {'form': form})
 
 
+@login_required
+@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN],
+            redirect_url='hackathon:hackathon-list')
 def edit_competency_difficulty(request, competency_difficulty_id):
     competency_difficulty = get_object_or_404(CompetencyDifficulty,
                                               id=competency_difficulty_id)
@@ -61,6 +76,10 @@ def edit_competency_difficulty(request, competency_difficulty_id):
         return render(request, 'competency_difficulty_form.html', {'form': form})
 
 
+@login_required
+@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN],
+            redirect_url='hackathon:hackathon-list')
 def create_competency(request):
     if request.method == 'POST':
         form = CompetencyForm(request.POST)
@@ -78,6 +97,10 @@ def create_competency(request):
         return render(request, 'competency_form.html', {'form': form})
 
 
+@login_required
+@can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
+             UserType.PARTNER_ADMIN],
+            redirect_url='hackathon:hackathon-list')
 def edit_competency(request, competency_id):
     competency = get_object_or_404(Competency,
                                    id=competency_id)
@@ -96,7 +119,7 @@ def edit_competency(request, competency_id):
         form = CompetencyForm(instance=competency)
     return render(request, 'competency_form.html', {'form': form})
 
-
+@login_required
 def self_assess_competencies(request):
     data = request.POST.copy()
     competencies = Competency.objects.filter(is_visible=True)
@@ -140,7 +163,7 @@ def self_assess_competencies(request):
         return redirect(reverse('self_assess_competencies'))
     else:        
         initial=[]
-        competency_assessments=[]
+        competency_assessments=CompetencyAssessmentRating.objects.none()
         if competency_assessment:
             assessment_competencies = competency_assessment.competencies
             if assessment_competencies.count() < competencies.count():
@@ -156,7 +179,10 @@ def self_assess_competencies(request):
                                 c.id for c in competency_assessments]]
             else:
                 competency_assessments = assessment_competencies.all()
-            
+        else:
+            initial = [{'competency': competency}
+                           for competency in competencies.all()]
+
         CompetencyAssessmentRatingFormSet = modelformset_factory(
             CompetencyAssessmentRating, fields=(
                 'user_assessment', 'competency', 'rating'),

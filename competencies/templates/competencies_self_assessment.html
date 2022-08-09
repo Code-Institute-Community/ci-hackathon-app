@@ -45,25 +45,37 @@
                                             
                                             <td class="text-center">
                                                 <div class="form-check form-check-inline">
-                                                    <label for="id_form-{{forloop.counter0}}-none"><i class="bi bi-square{% if form.rating.value == 'no_knowledge' %}-fill{% endif %}" title="I don't know anything about this competency"></i></label>
+                                                    <label for="id_form-{{forloop.counter0}}-none">
+                                                        <i class="{% if form.rating.value == 'no_knowledge' %}fas{% else %}far{% endif %} fa-square"
+                                                           title="I don't know anything about this competency"></i>
+                                                    </label>
                                                     <input type="radio" data-form="{{forloop.counter0}}" data-rating="no_knowledge" value="{% if form.rating.value == 'no_knowledge' %}true{% endif %}" name="form-{{forloop.counter0}}-rating-ui" id="id_form-{{forloop.counter0}}-none" class="competency-assessment-radio">
                                                 </div>
                                             </td>
                                             <td class="text-center">
                                                 <div class="form-check form-check-inline">
-                                                    <label for="id_form-{{forloop.counter0}}-want_to_know"><i class="bi bi-lightbulb{% if form.rating.value == 'want_to_know' %}-fill{% endif %}" title="I would like to know about this competency"></i></label>
+                                                    <label for="id_form-{{forloop.counter0}}-want_to_know">
+                                                        <i class="{% if form.rating.value == 'want_to_know' %}fas{% else %}far{% endif %} fa-lightbulb"
+                                                           title="I would like to know about this competency"></i>
+                                                    </label>
                                                     <input type="radio" data-form="{{forloop.counter0}}" data-rating="want_to_know" value="{% if form.rating.value == 'want_to_know' %}true{% endif %}" name="form-{{forloop.counter0}}-rating-ui" id="id_form-{{forloop.counter0}}-want_to_know" class="competency-assessment-radio">
                                                 </div>
                                             </td>
                                             <td class="text-center">
                                                 <div class="form-check form-check-inline">
-                                                    <label for="id_form-{{forloop.counter0}}-learning" ><i class="bi bi-arrow-up-right-circle{% if form.rating.value == 'learning' %}-fill{% endif %}" title="I am in the process of learning this competency"></i></label>
+                                                    <label for="id_form-{{forloop.counter0}}-learning" >
+                                                        <i class="{% if form.rating.value == 'learning' %}fas{% else %}far{% endif %} fa-arrow-alt-circle-up"
+                                                           title="I am in the process of learning this competency"></i>
+                                                    </label>
                                                     <input type="radio" data-form="{{forloop.counter0}}" data-rating="learning" value="{% if form.rating.value == 'learning' %}true{% endif %}" name="form-{{forloop.counter0}}-rating-ui" id="id_form-{{forloop.counter0}}-learning" class="competency-assessment-radio">
                                                 </div>
                                             </td>
                                             <td class="text-center">
                                                 <div class="form-check form-check-inline">
-                                                    <label for="id_form-{{forloop.counter0}}-know_it"><i class="bi bi-hand-thumbs-up{% if form.rating.value == 'know_it' %}-fill{% endif %}" title="I know this competency"></i></label>
+                                                    <label for="id_form-{{forloop.counter0}}-know_it">
+                                                        <i class="{% if form.rating.value == 'know_it' %}fas{% else %}far{% endif %} fa-thumbs-up"
+                                                           title="I know this competency"></i>
+                                                    </label>
                                                     <input type="radio" data-form="{{forloop.counter0}}" data-rating="know_it" value="{% if form.rating.value == 'know_it' %}true{% endif %}" name="form-{{forloop.counter0}}-rating-ui" id="id_form-{{forloop.counter0}}-know_it" class="competency-assessment-radio">
                                                 </div>
                                             </td>
