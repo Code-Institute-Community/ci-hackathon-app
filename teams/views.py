@@ -15,11 +15,12 @@ from accounts.models import UserType
 from accounts.lists import TIMEZONE_CHOICES
 from competencies.models import Competency
 from hackathon.models import Hackathon, HackTeam, HackProject
-from teams.helpers import choose_team_sizes, group_participants,\
-                          choose_team_levels, find_all_combinations,\
-                          distribute_participants_to_teams,\
-                          create_teams_in_view, update_team_participants, \
-                          calculate_timezone_offset
+from teams.helpers import (
+    choose_team_sizes, group_participants,
+    choose_team_levels, find_all_combinations,
+    distribute_participants_to_teams,
+    create_teams_in_view, update_team_participants,
+    calculate_timezone_offset)
 from teams.forms import HackProjectForm, EditTeamName
 
 SLACK_GROUP_IM_ENDPOINT = 'https://slack.com/api/conversations.open/'

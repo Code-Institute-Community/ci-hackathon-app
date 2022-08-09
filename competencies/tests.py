@@ -1,11 +1,12 @@
 from django.test import TestCase
 
 from accounts.models import CustomUser as User, Organisation
-from competencies.helpers import get_or_create_competency_assessment, \
-                                 populate_competency_assessment_for_formset
-from competencies.models import Competency, CompetencyAssessment, \
-                                CompetencyDifficulty, \
-                                CompetencyAssessmentRating
+from competencies.helpers import (
+    get_or_create_competency_assessment,
+    populate_competency_assessment_for_formset)
+from competencies.models import (
+    Competency, CompetencyDifficulty,
+    CompetencyAssessment, CompetencyAssessmentRating)
 
 
 class CompetencyAssessmentTest(TestCase):
@@ -19,7 +20,7 @@ class CompetencyAssessmentTest(TestCase):
             username="testuser2",
             slack_display_name="testuser2",
         )
-        
+
         self.assessment = CompetencyAssessment.objects.create(
             user=self.user2,
             is_visible=False,

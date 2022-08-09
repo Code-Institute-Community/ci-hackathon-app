@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from competencies.models import Competency, CompetencyDifficulty, \
-                                CompetencyAssessment, \
-                                CompetencyAssessmentRating
+from competencies.models import (
+    Competency, CompetencyDifficulty,
+    CompetencyAssessment, CompetencyAssessmentRating)
 
 admin.site.register(CompetencyDifficulty)
 admin.site.register(Competency)

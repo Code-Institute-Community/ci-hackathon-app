@@ -3,15 +3,19 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.forms import modelformset_factory
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 
-from competencies.forms import CompetencyForm, CompetencyDifficultyForm, \
-                               CompetencyAssessmentForm, \
-                               CompetencyAssessmentRatingForm, RequiredModelFormSet
-from competencies.helpers import get_or_create_competency_assessment, \
-                                 populate_competency_assessment_for_formset
-from competencies.models import Competency, CompetencyDifficulty, \
-                                CompetencyAssessment, \
-                                CompetencyAssessmentRating
+from competencies.forms import (
+    CompetencyForm, CompetencyDifficultyForm,
+    CompetencyAssessmentForm, 
+    CompetencyAssessmentRatingForm,
+    RequiredModelFormSet)
 
+from competencies.helpers import (
+    get_or_create_competency_assessment,
+    populate_competency_assessment_for_formset)
+
+from competencies.models import (
+    Competency, CompetencyDifficulty,
+    CompetencyAssessment, CompetencyAssessmentRating)
 
 
 def list_competencies(request):

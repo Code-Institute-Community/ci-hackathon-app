@@ -1,8 +1,9 @@
 from django import forms
 from django.forms import BaseModelFormSet
 
-from competencies.models import Competency, CompetencyDifficulty, \
-                                CompetencyAssessment, CompetencyAssessmentRating
+from competencies.models import (
+    Competency, CompetencyDifficulty,
+    CompetencyAssessment, CompetencyAssessmentRating)
 
 
 class RequiredModelFormSet(BaseModelFormSet):
@@ -35,9 +36,11 @@ class CompetencyAssessmentForm(forms.ModelForm):
     is_visible = forms.BooleanField(
         required=False,
         label="Make my assessment visible to my teams and facilitators")
+
     class Meta:
         model = CompetencyAssessment
         fields = ['user', 'is_visible']
+
 
 class CompetencyAssessmentRatingForm(forms.ModelForm):
     competency = forms.ModelChoiceField(
@@ -45,6 +48,7 @@ class CompetencyAssessmentRatingForm(forms.ModelForm):
         widget=forms.Select(attrs={
             'class': 'form-control disabled-select',
         }))
+
     class Meta:
         model = CompetencyAssessmentRating
         fields = ['id', 'user_assessment', 'competency', 'rating']

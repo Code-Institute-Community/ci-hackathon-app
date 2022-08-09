@@ -136,9 +136,8 @@ function enableReviewsSlider(){
 
 function openCompetencyDifficultyInPopup(){
     $('#openCompetencyDifficultyPopup').click(function(){
-        // const params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=500,height=350,left=-1000,top=-1000`;
         const params = `width=500,height=350,left=-1000,top=-1000`;
-        const window_name = 'Create Competency Difficulty'
+        const window_name = 'Create Competency Difficulty';
         window.open(create_competency_difficulty_url, window_name, params);
     })
 }
@@ -146,7 +145,7 @@ function openCompetencyDifficultyInPopup(){
 function closePopup(){
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
-    let close_popup = urlParams.get('close_popup')
+    let close_popup = urlParams.get('close_popup');
     if(close_popup){
         window.opener.location.reload();
         window.close();
@@ -155,15 +154,14 @@ function closePopup(){
 
 function toggleCompetencyAssessmentIcon() {
     $('.competency-assessment-radio').change(function(){
-        console.log($(this))
         let current_selection = $(this).parent().parent().parent().find('label i[class$="-fill"]');
         if(current_selection.length > 0){
             _changeClass(current_selection[0]);
         }
         let new_selection = $(this).parent().find('label i');
         _changeClass(new_selection[0]);
-        _chageSelection($(this).data('form'), $(this).data('rating'))
-    })
+        _chageSelection($(this).data('form'), $(this).data('rating'));
+    });
 }
 
 function _changeClass(element){
