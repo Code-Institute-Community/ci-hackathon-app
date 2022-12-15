@@ -3,6 +3,7 @@ import logging
 
 from django.db import transaction, IntegrityError
 from django.forms import modelformset_factory
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.conf import settings
 from django.contrib import messages
@@ -18,7 +19,7 @@ from .lists import AWARD_CATEGORIES
 from .helpers import format_date, query_scores, create_judges_scores_table
 
 from accounts.models import UserType
-from accounts.decorators import can_access
+from accounts.decorators import can_access, has_access_to_hackathon
 
 DEFAULT_SCORES = {
     'team_name': '',
@@ -31,18 +32,18 @@ logger = logging.getLogger(__name__)
 
 
 def list_hackathons(request):
-    """ Lists all hackathons available to a given student
-
-        TODO: Fix permissions as below
-        EXTERNAL_USER should only see Hackathons set to `is_public=True`
-        Any PARTNER_* users should see all hackathons where the oranisation
-        is the same as the user's and all public hackathons
-        Any other user should see all CI hackathons and all public hackathons
-        SUPERUSER and STAFF should see all hackathons
-
-    """
-    hackathons = Hackathon.objects.filter(organisation=1).exclude(
-        status='deleted').order_by('-start_date')
+    """ Lists all hackathons available to a given student """
+    if request.user.is_authenticated and (request.user.is_superuser or request.user.is_staff):
+        hackathons = Hackathon.objects.exclude(
+            status='deleted').order_by('-start_date')
+    elif request.user.is_authenticated and request.user.organisation:
+        orgs = [1]
+        orgs.append(request.user.organisation.id)
+        hackathons = Hackathon.objects.filter(Q(organisation__in=orgs) | Q(is_public=True)).exclude(
+            status='deleted').order_by('-start_date')
+    else:
+        hackathons = Hackathon.objects.filter(is_public=True).exclude(
+            status='deleted').order_by('-start_date')
 
     paginator = Paginator(hackathons, 8)
     page = request.GET.get('page')
@@ -220,6 +221,7 @@ def create_hackathon(request):
         form = HackathonForm(initial={
             'organisation': 1,
             'team_size': 3,
+            'is_public': True,
             'score_categories': HackProjectScoreCategory.objects.filter(
                 is_active=True)[:5]})
 
@@ -339,6 +341,7 @@ def update_hackathon_status(request, hackathon_id):
 
 
 @login_required
+@has_access_to_hackathon()
 def view_hackathon(request, hackathon_id):
     """
     Login required decorator used to prevent user from navigating using URL
@@ -352,6 +355,12 @@ def view_hackathon(request, hackathon_id):
     # TODO: Add check if the user has access to this specific hackathon based
     # on the user_type (e.g. external and partner hackathons)
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    if (hackathon.organisation.id != 1
+            and hackathon.organisation.id != request.user.organisation.id
+            and not (request.user.is_superuser or request.user.is_staff)):
+        messages.error(request, 'You cannot access this page.')
+        return redirect(reverse('hackathon:hackathon-list'))     
+
     teams = HackTeam.objects.filter(hackathon_id=hackathon_id).order_by(
         'display_name')
     paginator = Paginator(teams, 3)
@@ -400,6 +409,7 @@ def delete_hackathon(request, hackathon_id):
 
 
 @login_required
+@has_access_to_hackathon()
 def enroll_toggle(request):
     if request.method == "POST":
         judge_user_types = [

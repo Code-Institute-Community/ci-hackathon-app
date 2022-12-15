@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.db.models import Q
 from django.shortcuts import render, redirect, reverse
 
 from .forms import PartnershipRequestForm
@@ -10,7 +11,7 @@ from .helpers import send_partnership_request_email
 
 from hackathon.models import Hackathon, HackAward
 
-PUBLIC_STATUSES = [
+UPCOMING_STATUSES = [
     'published', 'registration_open', 'hack_prep', 'hack_in_progress',
     'judging'
 ]
@@ -34,22 +35,49 @@ def home(request):
     for any public hackathons (e.g. future and ongoing with CI as organisation)
     """
     partnership_form = PartnershipRequestForm()
-    upcoming_hackathons = Hackathon.objects.filter(
-        status__in=PUBLIC_STATUSES,
-        organisation=1).order_by('-start_date')
+    if not request.user.is_authenticated:
+        upcoming_hackathons = Hackathon.objects.filter(
+            is_public=True,
+            status__in=UPCOMING_STATUSES).order_by('-start_date')
 
-    recent_hackathons = Hackathon.objects.filter(
-        status='finished',
-        organisation=1).order_by('-start_date')
+        recent_hackathons = Hackathon.objects.filter(
+            is_public=True,
+            status='finished',
+            organisation=1).order_by('-start_date')
 
-    winning_awards = HackAward.objects.filter(
-        hack_award_category__ranking=1, hackathon__status='finished'
-            ).order_by('-hackathon__start_date')
+        winning_awards = HackAward.objects.filter(
+            hack_award_category__ranking=1, hackathon__status='finished', hackathon__is_public=True
+                ).order_by('-hackathon__start_date')
+    else:
+        if request.user.is_superuser or request.user.is_staff:
+            hackathons = Hackathon.objects.exclude(
+                status='deleted').order_by('-start_date')
+        elif request.user.organisation:
+            orgs = [1]
+            orgs.append(request.user.organisation.id)
+            hackathons = Hackathon.objects.filter(Q(organisation__in=orgs) | Q(is_public=True)).exclude(
+                status='deleted').order_by('-start_date')
+        else:
+            hackathons = Hackathon.objects.filter(is_public=True).exclude(
+                status='deleted').order_by('-start_date')
+        
+        upcoming_hackathons = Hackathon.objects.filter(
+            id__in=[hackathon.id for hackathon in hackathons],
+            status__in=UPCOMING_STATUSES).order_by('-start_date')
+
+        recent_hackathons = Hackathon.objects.filter(
+            id__in=[hackathon.id for hackathon in hackathons],
+            status='finished').order_by('-start_date')
+
+        winning_awards = HackAward.objects.filter(
+            hackathon__id__in=[hackathon.id for hackathon in hackathons],
+            hack_award_category__ranking=1, hackathon__status='finished'
+                ).order_by('-hackathon__start_date')
+
     winning_showcases = [award.winning_project.get_showcase()
-                         for award in winning_awards
-                         if (award.winning_project
-                             and award.winning_project.get_showcase())]
-
+                            for award in winning_awards
+                            if (award.winning_project
+                                and award.winning_project.get_showcase())]
     reviews = Review.objects.filter(visible=True).order_by('-rating')
 
     return render(request, 'home/index.html',  {
