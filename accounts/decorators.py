@@ -36,10 +36,11 @@ def has_access_to_hackathon(redirect_url=None, redirect_kwargs={}):
             if request.user.is_superuser or request.user.is_staff:
                 return view_function(request, *args, **kwargs)
 
-            hackathon_id = kwargs.get('hackathon_id')
+            hackathon_id = kwargs.get('hackathon_id') or request.POST.get('hackathon-id')
             hackathon = get_object_or_404(Hackathon, id=hackathon_id)
             if (hackathon.organisation.id != 1
-                    and hackathon.organisation.id != request.user.organisation.id):
+                    and hackathon.organisation.id != request.user.organisation.id
+                    and hackathon.is_public is False):
                 messages.error(request, 'You cannot access this page.')
                 return redirect(reverse('hackathon:hackathon-list'))
 
@@ -64,7 +65,8 @@ def has_access_to_team(redirect_url=None, redirect_kwargs={}):
                 return redirect(reverse('hackathon:hackathon-list'))
 
             if (team.hackathon.organisation.id != 1
-                    and team.hackathon.organisation.id != request.user.organisation.id):
+                    and team.hackathon.organisation.id != request.user.organisation.id
+                    and team.hackathon.is_public is False):
                 messages.error(request, 'You cannot access this page.')
                 return redirect(reverse('hackathon:hackathon-list'))
 

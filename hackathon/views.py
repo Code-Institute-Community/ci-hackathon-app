@@ -355,12 +355,6 @@ def view_hackathon(request, hackathon_id):
     # TODO: Add check if the user has access to this specific hackathon based
     # on the user_type (e.g. external and partner hackathons)
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
-    if (hackathon.organisation.id != 1
-            and hackathon.organisation.id != request.user.organisation.id
-            and not (request.user.is_superuser or request.user.is_staff)):
-        messages.error(request, 'You cannot access this page.')
-        return redirect(reverse('hackathon:hackathon-list'))     
-
     teams = HackTeam.objects.filter(hackathon_id=hackathon_id).order_by(
         'display_name')
     paginator = Paginator(teams, 3)
