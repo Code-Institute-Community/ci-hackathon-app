@@ -75,9 +75,9 @@ def home(request):
                 ).order_by('-hackathon__start_date')
 
     winning_showcases = [award.winning_project.get_showcase()
-                            for award in winning_awards
-                            if (award.winning_project
-                                and award.winning_project.get_showcase())]
+                         for award in winning_awards
+                         if (award.winning_project
+                             and award.winning_project.get_showcase())]
     reviews = Review.objects.filter(visible=True).order_by('-rating')
 
     return render(request, 'home/index.html',  {
