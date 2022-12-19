@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 
-from accounts.decorators import can_access
+from accounts.decorators import can_access, has_access_to_team
 from accounts.models import UserType
 from accounts.lists import TIMEZONE_CHOICES
 from competencies.models import Competency
@@ -125,6 +125,7 @@ def clear_teams(request):
 
 
 @login_required
+@has_access_to_team()
 def view_team(request, team_id):
     """ View the detailed team information for a HackTeam """
     team = get_object_or_404(HackTeam, id=team_id)
@@ -148,6 +149,7 @@ def view_team(request, team_id):
 
 
 @login_required
+@has_access_to_team()
 def create_project(request, team_id):
     """ Create a new HackProject for a team """
     hack_team = get_object_or_404(HackTeam, id=team_id)
@@ -187,6 +189,7 @@ def create_project(request, team_id):
 
 
 @login_required
+@has_access_to_team()
 def rename_team(request, team_id):
     """ Change the name of a HackTeam """
     hack_team = get_object_or_404(HackTeam, id=team_id)
@@ -209,6 +212,7 @@ def rename_team(request, team_id):
 
 
 @login_required
+@has_access_to_team()
 def create_group_im(request, team_id):
     """ Creates a new group IM in slack """
     if request.method != 'POST':
@@ -274,6 +278,7 @@ def create_group_im(request, team_id):
 
 
 @login_required
+@has_access_to_team()
 def view_team_calendar(request, team_id):
     """ View the team calendar showing what timezone each team member is
     located at """
@@ -326,6 +331,7 @@ def view_team_calendar(request, team_id):
 
 
 @login_required
+@has_access_to_team()
 def view_team_competencies(request, team_id):
     hack_team = get_object_or_404(HackTeam, id=team_id)
     competencies = Competency.objects.filter(is_visible=True)

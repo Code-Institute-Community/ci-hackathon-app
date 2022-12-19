@@ -78,7 +78,7 @@ class Hackathon(models.Model):
         blank=True,
         help_text=("Hackathon image.")
     )
-    is_public = models.BooleanField(default=False)
+    is_public = models.BooleanField(default=True)
     max_participants = models.IntegerField(default=None, null=True, blank=True)
 
     def __str__(self):

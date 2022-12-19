@@ -1,3 +1,4 @@
+from django.shortcuts import reverse
 from django.test import TestCase
 from accounts.models import CustomUser, Organisation
 from django.utils import timezone
@@ -10,17 +11,19 @@ class TestHackathonViews(TestCase):
 
     def setUp(self):
         """Sets up the models for testing"""
-        user = CustomUser.objects.create(username="testuser")
-        staff_user = CustomUser.objects.create(username="staffuser")
-        staff_user.is_staff = True
-        staff_user.save()
-        super_user = CustomUser.objects.create(username="super_user")
-        super_user.is_staff = True
-        super_user.is_superuser = True
-        super_user.save()
-        organisation = Organisation.objects.create()
-        Hackathon.objects.create(
-            created_by=user,
+        organisation = Organisation.objects.create(display_name="CI")
+        self.partner_org = Organisation.objects.create(display_name="Partner")
+        self.user = CustomUser.objects.create(username="testuser", organisation=organisation)
+        self.partner_user = CustomUser.objects.create(username="partnertestuser", organisation=self.partner_org)
+        self.staff_user = CustomUser.objects.create(username="staffuser")
+        self.staff_user.is_staff = True
+        self.staff_user.save()
+        self.super_user = CustomUser.objects.create(username="super_user")
+        self.super_user.is_staff = True
+        self.super_user.is_superuser = True
+        self.super_user.save()
+        self.hackathon = Hackathon.objects.create(
+            created_by=self.user,
             status='published',
             display_name="hacktest",
             description="lorem ipsum",
@@ -31,8 +34,7 @@ class TestHackathonViews(TestCase):
     def test_render_hackathon_list(self):
         """Tests the correct rendering of the hackathon list page,
         including contexts."""
-        user = CustomUser.objects.get(pk=1)
-        self.client.force_login(user)
+        self.client.force_login(self.user)
         response = self.client.get('/hackathon/')
 
         # Confirms the correct template, context items and queryset
@@ -48,8 +50,7 @@ class TestHackathonViews(TestCase):
 
     def test_update_hackathon_status(self):
         """ Tests that the status changes """
-        super_user = CustomUser.objects.get(pk=3)
-        self.client.force_login(super_user)
+        self.client.force_login(self.super_user)
 
         hackathon = Hackathon.objects.get(pk=1)
         status_before = hackathon.status
@@ -70,10 +71,9 @@ class TestHackathonViews(TestCase):
         self.assertEqual(response.status_code, 302)
 
         # Confirms the "enroll.html" template shows only for staff.
-        user = CustomUser.objects.get(pk=1)
-        user.is_staff = True
-        user.save()
-        self.client.force_login(user)
+        self.user.is_staff = True
+        self.user.save()
+        self.client.force_login(self.user)
 
         response = self.client.get('/hackathon/1/')
         self.assertTemplateUsed(response,
@@ -82,8 +82,7 @@ class TestHackathonViews(TestCase):
     def test_judge_enroll_toggle(self):
         """Tests that judges can correctly enroll and withdraw"""
 
-        user = CustomUser.objects.get(pk=1)
-        self.client.force_login(user)
+        self.client.force_login(self.user)
 
         response = self.client.post('/hackathon/enroll/',
                                     {'hackathon-id': 1},
@@ -93,28 +92,169 @@ class TestHackathonViews(TestCase):
 
         # Confirms a non-staff user is refused
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(user in hackathon.participants.all())
-        self.assertFalse(user in hackathon.judges.all())
+        self.assertTrue(self.user in hackathon.participants.all())
+        self.assertFalse(self.user in hackathon.judges.all())
 
         # confirms staff can be enrolled as a judge
-        staff_user = CustomUser.objects.get(pk=2)
-        staff_user.is_staff = True
-        staff_user.save()
-        self.client.force_login(staff_user)
+        self.staff_user.is_staff = True
+        self.staff_user.save()
+        self.client.force_login(self.staff_user)
 
         response = self.client.post('/hackathon/enroll/',
-                                    {'hackathon-id': 1,
+                                    {'hackathon-id': self.hackathon.id,
                                      'enrollment-type': 'judge'},
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest')
 
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(staff_user in hackathon.judges.all())
+        self.assertTrue(self.staff_user in hackathon.judges.all())
 
         # Confirms staff can withdraw
         response = self.client.post('/hackathon/enroll/',
-                                    {'hackathon-id': 1,
+                                    {'hackathon-id': self.hackathon.id,
                                      'enrollment-type': 'judge'},
                                     HTTP_X_REQUESTED_WITH='XMLHttpRequest')
 
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(staff_user in hackathon.judges.all())
+        self.assertFalse(self.staff_user in hackathon.judges.all())
+
+    def test_has_access_to_right_hackathons(self):
+        hackathon = Hackathon.objects.create(
+            created_by=self.user,
+            status='published',
+            display_name="hacktest",
+            description="lorem ipsum",
+            start_date=f'{timezone.now()}',
+            end_date=f'{timezone.now()}',
+            organisation=self.partner_org,
+            is_public=False)
+        
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('hackathon:view_hackathon', kwargs={'hackathon_id': hackathon.id}))
+        self.assertEquals(response.status_code, 302)
+        
+        self.client.force_login(self.partner_user)
+        response = self.client.get(reverse('hackathon:view_hackathon', kwargs={'hackathon_id': hackathon.id}))
+        self.assertEquals(response.status_code, 200)
+
+        self.client.force_login(self.staff_user)
+        response = self.client.get(reverse('hackathon:view_hackathon', kwargs={'hackathon_id': hackathon.id}))
+        self.assertEquals(response.status_code, 200)
+
+        self.client.force_login(self.super_user)
+        response = self.client.get(reverse('hackathon:view_hackathon', kwargs={'hackathon_id': hackathon.id}))
+        self.assertEquals(response.status_code, 200)
+
+        hackathon.is_public = True
+        hackathon.save()
+
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('hackathon:view_hackathon', kwargs={'hackathon_id': hackathon.id}))
+        self.assertEquals(response.status_code, 200)
+
+        hackathon.is_public = False
+        hackathon.save()
+        self.user.organisation = self.partner_org
+        self.user.save()
+
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('hackathon:view_hackathon', kwargs={'hackathon_id': hackathon.id}))
+        self.assertEquals(response.status_code, 200)
+    
+    def test_partner_enroll(self):
+        hackathon = Hackathon.objects.create(
+            created_by=self.user,
+            status='published',
+            display_name="hacktest",
+            description="lorem ipsum",
+            start_date=f'{timezone.now()}',
+            end_date=f'{timezone.now()}',
+            organisation=self.partner_org,
+            is_public=False)
+        
+        self.client.force_login(self.user)
+        self.client.post('/hackathon/enroll/',
+                         {'hackathon-id': hackathon.id},
+                         HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertTrue(self.user not in hackathon.participants.all())
+
+        self.client.force_login(self.staff_user)
+        self.client.post('/hackathon/enroll/',
+                         {'hackathon-id': hackathon.id, 'enrollment-type': 'judge'},
+                         HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertTrue(self.staff_user in hackathon.judges.all())
+
+        self.client.force_login(self.super_user)
+        self.client.post('/hackathon/enroll/',
+                         {'hackathon-id': hackathon.id, 'enrollment-type': 'judge'},
+                         HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertTrue(self.super_user in hackathon.judges.all())
+
+        hackathon.is_public = True
+        hackathon.save()
+
+        self.client.force_login(self.user)
+        self.client.post('/hackathon/enroll/',
+                         {'hackathon-id': hackathon.id},
+                         HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertTrue(self.user in hackathon.participants.all())
+
+        hackathon.is_public = False
+        hackathon.save()
+        self.user.organisation = self.partner_org
+        self.user.save()
+
+        # Check if it can also be removed
+        self.client.force_login(self.user)
+        self.client.post('/hackathon/enroll/',
+                         {'hackathon-id': hackathon.id},
+                         HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertTrue(self.super_user not in hackathon.participants.all())
+
+    def test_list_partner_hackathons(self):
+        hackathon = Hackathon.objects.create(
+            created_by=self.user,
+            status='published',
+            display_name="hacktest",
+            description="lorem ipsum",
+            start_date=f'{timezone.now()}',
+            end_date=f'{timezone.now()}',
+            organisation=self.partner_org,
+            is_public=False)
+
+        # if this is more than 5, the response results will have to be paginated
+        # because they are capped at 5
+        num_hackathons = Hackathon.objects.count()
+
+        self.client.force_login(self.user)
+        self.assertTrue(num_hackathons <= 5)
+        response = self.client.get(reverse('hackathon:hackathon-list'))
+        hackathons = [hackathon.id for hackathon in response.context['hackathons']]
+        self.assertTrue(hackathon.id not in hackathons)
+
+        self.client.force_login(self.staff_user)
+        response = self.client.get(reverse('hackathon:hackathon-list'))
+        hackathons = [hackathon.id for hackathon in response.context['hackathons']]
+        self.assertTrue(hackathon.id in hackathons)
+
+        self.client.force_login(self.super_user)
+        response = self.client.get(reverse('hackathon:hackathon-list'))
+        hackathons = [hackathon.id for hackathon in response.context['hackathons']]
+        self.assertTrue(hackathon.id in hackathons)
+
+        hackathon.is_public = True
+        hackathon.save()
+        
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('hackathon:hackathon-list'))
+        hackathons = [hackathon.id for hackathon in response.context['hackathons']]
+        self.assertTrue(hackathon.id in hackathons)
+
+        hackathon.is_public = False
+        hackathon.save()
+        self.user.organisation = self.partner_org
+        self.user.save()
+
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('hackathon:hackathon-list'))
+        hackathons = [hackathon.id for hackathon in response.context['hackathons']]
+        self.assertTrue(hackathon.id in hackathons)

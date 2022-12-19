@@ -23,7 +23,7 @@ class CompetencyAssessmentTest(TestCase):
 
         self.assessment = CompetencyAssessment.objects.create(
             user=self.user2,
-            is_visible=False,
+            is_visible=True,
         )
 
         competency_difficulty = CompetencyDifficulty.objects.create(

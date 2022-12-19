@@ -12,7 +12,7 @@
         <h2 class="p-orange text-center mb-4">Hackathons</h2>
         {% for hackathon in hackathons %}
             {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
-            {% if hackathon.organisation.id == 1 or hackathon.organisation == user.organisation or request.user.user_type|is_types:authorised_types %}
+            {% if hackathon.organisation.id == 1 or hackathon.organisation.id == request.user.organisation.id or request.user.user_type|is_types:authorised_types %}
                 {% if hackathon.status != 'draft' or request.user == hackathon.created_by %}
                     {% if not hackathon.status == 'deleted' %}
                         {% include 'hackathon/includes/hackathon_card.html' %}

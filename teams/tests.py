@@ -1,7 +1,9 @@
 from django.core.management import call_command
+from django.shortcuts import reverse
 from django.test import TestCase, tag
+from django.utils import timezone
 
-from accounts.models import CustomUser
+from accounts.models import CustomUser, Organisation
 from hackathon.models import Hackathon, HackTeam
 from .helpers import choose_team_sizes, choose_team_levels,\
                      group_participants, find_group_combinations,\
@@ -164,3 +166,41 @@ class TeamsViewsTestCase(TestCase):
         response = self.client.get('/hackathon/1/change_teams/')
         self.assertEqual(200, response.status_code)
         self.assertTemplateUsed('change_teams.html')
+
+    def test_has_access_to_right_teams(self):
+        partner_org = Organisation.objects.create(display_name='partner')
+        hackathon = Hackathon.objects.create(
+            created_by=self.admin_user,
+            status='published',
+            display_name="hacktest",
+            description="lorem ipsum",
+            organisation=partner_org,
+            start_date=f'{timezone.now()}',
+            end_date=f'{timezone.now()}',
+            is_public=False)
+        
+        hackteam = HackTeam.objects.create(created_by=self.admin_user, display_name='team1', hackathon=hackathon)
+        
+        self.client.force_login(self.participant_user)
+        response = self.client.get(reverse('view_team', kwargs={'team_id': hackteam.id}))
+        self.assertEquals(response.status_code, 302)
+        
+        self.client.force_login(self.admin_user)
+        response = self.client.get(reverse('view_team', kwargs={'team_id': hackteam.id}))
+        self.assertEquals(response.status_code, 200)
+
+        hackathon.is_public = True
+        hackathon.save()
+
+        self.client.force_login(self.participant_user)
+        response = self.client.get(reverse('view_team', kwargs={'team_id': hackteam.id}))
+        self.assertEquals(response.status_code, 200)
+
+        hackathon.is_public = False
+        hackathon.save()
+        self.participant_user.organisation = partner_org
+        self.participant_user.save()
+
+        self.client.force_login(self.participant_user)
+        response = self.client.get(reverse('view_team', kwargs={'team_id': hackteam.id}))
+        self.assertEquals(response.status_code, 200)
