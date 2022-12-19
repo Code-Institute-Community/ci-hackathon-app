@@ -1,16 +1,16 @@
-{% if create_group_im %}
-    {% if request.user in team.participants.all or request.user == team.mentor %}
+{% if create_private_channel %}
+    {% if request.user in team.participants.all or request.user == team.mentor or non_participant_superuser %}
         {% if team.communication_channel %}
         <a role="button" class="{{button_class}}" href="{{team.communication_channel}}" taget="_blank">
             <i class="fab fa-slack fa-lg ml-0 mr-2 mt-1 mb-1 p-orange"></i>
-            Go To Slack Group
+            Go To Private Slack Channel
         </a>
         {% else %}
-        <form action="/teams/{{team.id}}/create_group_im/" method="POST">
+        <form action="/teams/{{team.id}}/create_private_channel/" method="POST">
         {% csrf_token %}
         <button class="{{button_class}}">
             <i class="fab fa-slack fa-lg ml-0 mr-2 mt-1 mb-1 p-orange"></i>
-            Create Slack Group
+            Create Private Slack Channel
         </button>
         </form>
         {% endif %}

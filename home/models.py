@@ -1,7 +1,7 @@
 from django.db import models
 
 from accounts.models import CustomUser as User
-from showcase.models import SingletonModel
+from main.models import SingletonModel
 
 
 class Review(models.Model):

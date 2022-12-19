@@ -6,7 +6,13 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 from .lists import LMS_MODULES_CHOICES, TIMEZONE_CHOICES
+from main.models import SingletonModel
 from teams.lists import LMS_LEVELS
+
+COMMUNICATION_CHANNEL_TYPES = [
+    ('slack_private_channel', 'Private Slack Channel'),
+    ('other', 'Other'),
+]
 
 
 class UserType(Enum):
@@ -144,6 +150,13 @@ class CustomUser(AbstractUser):
             return 'Hackathon Enthusiast'
         else:
             return 'Hackathon Veteran'
+    
+    def is_participant(self, hackathon):
+        if not hackathon:
+            return False
+        
+        return self in hackathon.participants.all()
+
 
     @property
     def user_type(self):
@@ -180,3 +193,20 @@ class CustomUser(AbstractUser):
             else:
                 # A non-specified group
                 return None
+
+
+class SlackSiteSettings(SingletonModel):
+    """ Model to set how the showcase should be constructed"""
+    slack_admins = models.ManyToManyField(CustomUser,
+                                          related_name="slacksitesettings")
+    enable_welcome_emails = models.BooleanField(default=True)
+    communication_channel_type = models.CharField(
+        max_length=50, choices=COMMUNICATION_CHANNEL_TYPES,
+        default='slack_private_channel')
+
+    def __str__(self):
+        return "Slack Settings"
+
+    class Meta:
+        verbose_name = 'Slack Site Settings'
+        verbose_name_plural = 'Slack Site Settings'

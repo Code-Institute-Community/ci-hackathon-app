@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 
 from .models import CustomUser, Organisation
+from accounts.models import SlackSiteSettings
 
 
 class CustomUserAdmin(BaseUserAdmin):
@@ -38,7 +39,7 @@ class CustomUserAdmin(BaseUserAdmin):
 
     form = UserChangeForm
     add_form = UserCreationForm
-    list_display = ('email', 'full_name', 'is_superuser', 'user_type',
+    list_display = ('email', 'username', 'full_name', 'is_superuser', 'user_type',
                     'is_external')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups',
                    'is_external')
@@ -52,3 +53,5 @@ class CustomUserAdmin(BaseUserAdmin):
 admin.site.login = login_required(admin.site.login)
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Organisation)
+
+admin.site.register(SlackSiteSettings)
