@@ -53,5 +53,4 @@ class CustomUserAdmin(BaseUserAdmin):
 admin.site.login = login_required(admin.site.login)
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Organisation)
-
 admin.site.register(SlackSiteSettings)
