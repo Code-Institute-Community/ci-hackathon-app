@@ -6,6 +6,7 @@ from django.db import models
 from .lists import ORDER_BY_CATEGORY_CHOICES
 from accounts.models import CustomUser as User
 from hackathon.models import HackProject, Hackathon
+from main.models import SingletonModel
 
 
 class Showcase(models.Model):
@@ -68,24 +69,6 @@ class Showcase(models.Model):
     @property
     def image_url(self):
         return f'{self.url}image/{self.hash.hex}/'
-
-
-class SingletonModel(models.Model):
-    """ Singleton model for Showcases """
-    class Meta:
-        abstract = True
-
-    def save(self, *args, **kwargs):
-        self.pk = 1
-        super(SingletonModel, self).save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        pass
-
-    @classmethod
-    def load(cls):
-        obj, created = cls.objects.get_or_create(pk=1)
-        return obj
 
 
 class ShowcaseSiteSettings(SingletonModel):

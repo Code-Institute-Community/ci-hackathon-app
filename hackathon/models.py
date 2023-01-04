@@ -188,7 +188,7 @@ class HackTeam(models.Model):
                                    on_delete=models.SET_NULL)
     communication_channel = models.CharField(
         default="", max_length=255, blank=True,
-        help_text=("Usually a link to the Slack group IM, but can be a link "
+        help_text=("Usually a link to the Private Slack Channel, but can be a link "
                    "to something else."))
 
     def __str__(self):

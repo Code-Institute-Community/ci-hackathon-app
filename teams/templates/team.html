@@ -60,7 +60,7 @@
                               Team Actions
                             </button>
                             <div id="teams-dropdown" class="dropdown-menu teams-dropdown" aria-labelledby="dropdownMenuButton">
-                                {% include 'includes/create_slack_mpim.html' with button_class='dropdown-item' %}
+                                {% include 'includes/create_slack_private_channel.html' with button_class='dropdown-item' %}
                                 <a role="button" class="dropdown-item" href="{% url 'view_team_calendar' team_id=team.id %}">
                                     <i class="far fa-calendar-alt mr-3 p-orange"></i> View Team Calendar
                                 </a>
