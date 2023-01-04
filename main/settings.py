@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "crispy_forms",
+    "django_celery_results",
 
     # custom apps
     "accounts",
@@ -100,14 +101,14 @@ SITE_ID = 1
 
 EMAIL_BACKEND = os.environ.get(
     'EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+DEFAULT_FROM_EMAIL = (os.environ.get('DEFAULT_FROM_EMAIL')
+                      or os.environ.get("SUPPORT_EMAIL"))
 if EMAIL_BACKEND == 'django.core.mail.backends.smtp.EmailBackend':
     EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False') == 'True'
     EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 25))
     EMAIL_HOST = os.environ.get('EMAIL_HOST')
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-    DEFAULT_FROM_EMAIL = (os.environ.get('DEFAULT_FROM_EMAIL')
-                          or os.environ.get("SUPPORT_EMAIL"))
 
 AUTH_USER_MODEL = "accounts.CustomUser"
 ACCOUNT_SIGNUP_FORM_CLASS = "accounts.forms.SignupForm"
@@ -163,6 +164,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Celery
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', 'redis://redis:6379')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379')  # noqa: E501
+CELERY_ACCEPT_CONTENT = os.environ.get('CELERY_ACCEPT_CONTENT', 'application/json').split(',')  # noqa: E501
+CELERY_TASK_SERIALIZER = os.environ.get('CELERY_TASK_SERIALIZER', 'json')
+CELERY_RESULT_SERIALIZER = os.environ.get('CELERY_RESULT_SERIALIZER', 'json')
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"

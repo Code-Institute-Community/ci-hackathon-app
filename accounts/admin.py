@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 
-from .models import CustomUser, Organisation
+from .models import CustomUser, Organisation, EmailTemplate
 from accounts.models import SlackSiteSettings
 
 
@@ -49,8 +49,13 @@ class CustomUserAdmin(BaseUserAdmin):
     readonly_fields = ('last_login', 'date_joined', 'user_type')
 
 
+class EmailTemplateAdmin(admin.ModelAdmin):
+    list_display = ('display_name', 'subject', 'template_name', 'is_active', )
+
+
 # sign-in via allauth required before accessing the admin panel
 admin.site.login = login_required(admin.site.login)
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Organisation)
 admin.site.register(SlackSiteSettings)
+admin.site.register(EmailTemplate, EmailTemplateAdmin)

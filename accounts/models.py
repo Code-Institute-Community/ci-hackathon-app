@@ -210,3 +210,20 @@ class SlackSiteSettings(SingletonModel):
     class Meta:
         verbose_name = 'Slack Site Settings'
         verbose_name_plural = 'Slack Site Settings'
+
+
+class EmailTemplate(models.Model):
+    display_name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+    template_name = models.CharField(max_length=255, unique=True)
+    subject = models.CharField(max_length=1048)
+    plain_text_message = models.TextField()
+    html_message = models.TextField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Email Template'
+        verbose_name_plural = 'Email Templates'
+
+    def __str__(self):
+        return self.display_name
