@@ -20,7 +20,7 @@ from teams.helpers import (
     choose_team_levels, find_all_combinations,
     distribute_participants_to_teams,
     create_teams_in_view, update_team_participants,
-    calculate_timezone_offset)
+    calculate_timezone_offset, invite_users_to_slack_channel)
 from teams.forms import HackProjectForm, EditTeamName
 
 SLACK_CHANNEL_ENDPOINT = 'https://slack.com/api/conversations.create'
@@ -135,7 +135,8 @@ def view_team(request, team_id):
         and not request.user.is_participant(team.hackathon))
     rename_team_form = EditTeamName(instance=team)
     create_private_channel = (settings.SLACK_ENABLED is not None
-                              and settings.SLACK_BOT_TOKEN is not None)
+                              and settings.SLACK_BOT_TOKEN is not None
+                              and settings.SLACK_ADMIN_TOKEN is not None)
 
     mentor_profile = None
     if team.mentor and settings.SLACK_WORKSPACE:
@@ -239,8 +240,8 @@ def create_private_channel(request, team_id):
                         'for this team.'))
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
-    if (not (settings.SLACK_ENABLED or settings.SLACK_BOT_TOKEN
-            or settings.SLACK_WORKSPACE) or slack_site_settings.communication_channel_type != 'slack_private_channel'):
+    if (not (settings.SLACK_ENABLED or settings.SLACK_BOT_TOKEN or settings.SLACK_ADMIN_TOKEN
+             or settings.SLACK_WORKSPACE) or slack_site_settings.communication_channel_type != 'slack_private_channel'):
         messages.error(request, 'This feature is currently not enabled.')
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
@@ -253,7 +254,9 @@ def create_private_channel(request, team_id):
         'name': channel_name,
         'is_private': True,
     }
-    headers = {'Authorization': f'Bearer {settings.SLACK_BOT_TOKEN}'}
+    # Cannot use Bot Token to create a channel if workspace settings
+    # specify only Admins and Owners can create channels 
+    headers = {'Authorization': f'Bearer {settings.SLACK_ADMIN_TOKEN}'}
     create_response = requests.get(SLACK_CHANNEL_ENDPOINT, params=params,
                                    headers=headers)
     if not create_response.status_code == 200:
@@ -291,24 +294,34 @@ def create_private_channel(request, team_id):
     # Add admins to channel for administration purposes
     for admin in slack_site_settings.slack_admins.all():
         users.append(admin.username)
+    
+    # First need to add Slack Bot to then add users to channel
+    invite_bot_params = {
+        'channel': channel,
+        'users': settings.SLACK_BOT_ID,
+    }
+    response = invite_users_to_slack_channel(
+        endpoint=SLACK_CHANNEL_INVITE_ENDPOINT,
+        headers=headers,
+        params=invite_bot_params)
+    
+    if not response['ok']:
+        messages.error(request, response['error'])
+        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
-    invite_params = {
+    invite_team_params = {
         'channel': channel,
         'users': ','.join([user.split('_')[0]
                            for user in users if pattern.match(user)]),
     }
-    response = requests.post(SLACK_CHANNEL_INVITE_ENDPOINT,
-                             params=invite_params, headers=headers)
-
-    if not response.status_code == 200:
-        messages.error(request, ('An unexpected error occurred creating the '
-                                 'Private Slack Channel.'))
-        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
-
-    response = response.json()
-    if not response.get('ok'):
-        messages.error(request, (f'An error occurred creating the Private Slack Channel. '
-                                 f'Error code: {response.get("error")}'))
+    headers = {'Authorization': f'Bearer {settings.SLACK_BOT_TOKEN}'}
+    response = invite_users_to_slack_channel(
+        endpoint=SLACK_CHANNEL_INVITE_ENDPOINT,
+        headers=headers,
+        params=invite_team_params)
+    
+    if not response['ok']:
+        messages.error(request, response['error'])
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
     if len(users) < len(team.participants.all()):

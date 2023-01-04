@@ -185,6 +185,8 @@ if SLACK_ENABLED:
     SLACK_WORKSPACE = os.environ.get('SLACK_WORKSPACE')
     SLACK_TEAM_ID = os.environ.get('SLACK_TEAM_ID')
     SLACK_BOT_TOKEN = os.environ.get('SLACK_BOT_TOKEN')
+    SLACK_BOT_ID = os.environ.get('SLACK_BOT_ID')
+    SLACK_ADMIN_TOKEN = os.environ.get('SLACK_ADMIN_TOKEN')
     INSTALLED_APPS += ['custom_slack_provider']
     SOCIALACCOUNT_PROVIDERS = {
         'custom_slack_provider': {
