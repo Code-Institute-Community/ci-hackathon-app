@@ -360,7 +360,8 @@ def view_hackathon(request, hackathon_id):
     paginator = Paginator(teams, 3)
     page = request.GET.get('page')
     paged_teams = paginator.get_page(page)
-    create_private_channel = (settings.SLACK_ENABLED and settings.SLACK_ADMIN_TOKEN)
+    create_private_channel = (settings.SLACK_ENABLED and settings.SLACK_BOT_TOKEN
+                              and settings.SLACK_ADMIN_TOKEN)
 
     context = {
         'hackathon': hackathon,
