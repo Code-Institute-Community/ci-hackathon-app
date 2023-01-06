@@ -17,6 +17,7 @@ from .forms import HackathonForm, ChangeHackathonStatusForm,\
                    HackAwardForm, HackTeamForm
 from .lists import AWARD_CATEGORIES
 from .helpers import format_date, query_scores, create_judges_scores_table
+from .tasks import send_email_from_template
 
 from accounts.models import UserType
 from accounts.decorators import can_access, has_access_to_hackathon
@@ -416,14 +417,17 @@ def enroll_toggle(request):
                                       id=request.POST.get("hackathon-id"))
         if request.user in hackathon.judges.all():
             hackathon.judges.remove(request.user)
+            send_email_from_template.apply_async(args=[request.user.email, request.user.first_name, hackathon.display_name, 'withdraw_judge'])
             messages.success(request, "You have withdrawn from judging.")
         elif request.user in hackathon.participants.all():
             hackathon.participants.remove(request.user)
+            send_email_from_template.apply_async(args=[request.user.email, request.user.first_name, hackathon.display_name, 'withdraw_participant'])
             messages.success(request,
                              "You have withdrawn from this Hackaton.")
         elif (request.POST.get('enrollment-type') == 'judge'
                 and request.user.user_type in judge_user_types):
             hackathon.judges.add(request.user)
+            send_email_from_template.apply_async(args=[request.user.email, request.user.first_name, hackathon.display_name, 'enroll_judge'])
             messages.success(request, "You have enrolled as a facilitator/judge.")  # noqa: E501
         else:
             if hackathon.max_participants_reached():
@@ -432,6 +436,7 @@ def enroll_toggle(request):
                 return redirect(reverse('hackathon:view_hackathon', kwargs={
                     'hackathon_id': request.POST.get("hackathon-id")}))
             hackathon.participants.add(request.user)
+            send_email_from_template.apply_async(args=[request.user.email, request.user.first_name, hackathon.display_name, 'enroll_participant'])
             messages.success(request, "You have enrolled successfully.")
 
         return redirect(reverse(

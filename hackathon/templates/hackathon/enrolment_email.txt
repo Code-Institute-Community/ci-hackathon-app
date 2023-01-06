@@ -1,0 +1,36 @@
+<p>Hi {student},</p>
+
+<p>Thank you so much for registering for the {hackathon}!</p>
+
+<p>
+    <strong>What does participation involve?</strong><br>
+    You'll be assigned to a team, and work together building a project based on the assigned theme in a limited number of days. Don't worry if you have limited coding experience, all levels are welcome, and we encourage alumni to participate!
+</p>
+
+<p>
+    <strong>What am I committing to?</strong><br>
+    We recommend at bare minimum you dedicate a minimum of 8-10 hours over the duration of the Hackathon. You will be expected to actively contribute to your team, not just observe.
+    Please check your calendar and confirm that you are available before registering, as dropping out really lets your team down, and the team will be one person fewer.
+</p>
+
+<p>
+    <strong>IMPORTANT!</strong><br>
+    Please ensure your Profile is up to date, especially the 'Latest Module' entry. This is vital for the team selection process. We try our best to balance the teams fairly, so it really helps you and your team to be accurate with your profile.
+</p>
+
+<p>
+    <strong>Register for the Intro Webinar!</strong><br>
+    Please check the <a href="https://code-institute-room.slack.com/archives/CDAFARB71" target="_blank">#hackathon</a> channel for details on how to register for the intro and project presentations webinar.
+</p>
+
+<p>
+    <strong>Need Help?</strong><br>
+    Please ask any questions in the <a href="https://code-institute-room.slack.com/archives/CDAFARB71" target="_blank">#hackathon</a> channel, the HackTeam are ready and happy to help out. You can ask them a question by using the @hackteam tag on slack.
+</p>
+
+<p>Thanks again for signing up, we are excited to see what you and your team will create! Remember, hackathons are about team-building, learning and most importantly having fun.
+
+<p>
+    Happy Hacking!<br>
+    The Code Institute Community Team
+</p>

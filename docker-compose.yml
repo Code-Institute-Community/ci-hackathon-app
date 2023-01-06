@@ -33,6 +33,16 @@ services:
       - "8000:8000"
     tty: true
     stdin_open: true
+  
+  hackathon-worker:
+    image: hackathon-app
+    environment:
+      - ENV_FILE=/hackathon-app/.env
+      - DEVELOPMENT=1
+    entrypoint: ["celery", "-A", "main", "worker", "-l",  "info"]
+    volumes:
+      - ./data/:/hackathon-app/data/
+      - ./.env:/hackathon-app/.env
 
   mysql:
     image: docker.io/mysql:5.6.36
@@ -45,8 +55,12 @@ services:
       MYSQL_PASSWORD: gummyball
     volumes:
       - ./data/mysql:/var/lib/mysql
+      - ./hackathon/:/hackathon-app/hackathon/
 
   smtp:
     image: mailhog/mailhog:v1.0.1
     ports:
       - "8026:8025"
+
+  redis:
+    image: redis
