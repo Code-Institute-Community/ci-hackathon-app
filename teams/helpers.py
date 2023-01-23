@@ -234,15 +234,42 @@ def calculate_timezone_offset(timezone, timezone_offset):
     return offset - timezone_offset
 
 
+def create_slack_channel(endpoint, headers, params):
+    create_response = requests.get(endpoint, params=params, headers=headers)
+    if create_response.status_code != 200:
+        return {
+            'ok': False,
+            'error': ('An error occurred creating the Private Slack Channel. '
+                      f'Error code: {create_response.get("error")}')
+        }
+
+    create_response = create_response.json()
+    if not create_response.get('ok'):
+        if create_response.get('error') == 'name_taken':
+            error_msg = (f'An error occurred creating the Private Slack Channel. '
+                         f'A channel with the name "{params["name"]}" already '
+                         f'exists. Please change your team name and try again '
+                         f'or contact an administrator')
+        else:
+            error_msg = (f'An error occurred creating the Private Slack Channel. '
+                         f'Error code: {create_response.get("error")}')
+        return {
+            'ok': False,
+            'error': error_msg
+        }
+
+    return create_response
+
+
 def invite_users_to_slack_channel(endpoint, headers, params):
     response = requests.post(endpoint, params=params, headers=headers)
-    if not response.status_code == 200:
+    if response.status_code != 200:
         return {
             'ok': False,
             'error': ('An unexpected error occurred creating the '
                       'Private Slack Channel.')
         }
-    
+
     response = response.json()
     if not response.get('ok'):
         return {
@@ -250,5 +277,5 @@ def invite_users_to_slack_channel(endpoint, headers, params):
             'error': ('An error occurred creating the Private Slack Channel. '
                       f'Error code: {response.get("error")}')
         }
-    
+
     return {'ok': True, 'response': response}
