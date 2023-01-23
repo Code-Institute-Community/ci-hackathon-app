@@ -42,10 +42,6 @@ def send_email_from_template(user_email, user_name, hackathon_display_name, temp
              "Please create it on the Django Admin Panel"))
     except SMTPException:
         logger.exception("There was an issue sending the email.")
-def log_user_numbers():
-    users = User.objects.count()
-    logger.info(f'Number of users currently: {users}')
-    return
 
 
 @shared_task

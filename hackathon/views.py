@@ -17,11 +17,8 @@ from .forms import HackathonForm, ChangeHackathonStatusForm,\
                    HackAwardForm, HackTeamForm
 from .lists import AWARD_CATEGORIES
 from .helpers import format_date, query_scores, create_judges_scores_table
-<<<<<<< HEAD
 from .tasks import send_email_from_template
-=======
 from .tasks import create_new_slack_channel
->>>>>>> Updating views to create channel
 
 from accounts.models import UserType
 from accounts.decorators import can_access, has_access_to_hackathon
