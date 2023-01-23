@@ -20,7 +20,8 @@ from teams.helpers import (
     choose_team_levels, find_all_combinations,
     distribute_participants_to_teams,
     create_teams_in_view, update_team_participants,
-    calculate_timezone_offset, invite_users_to_slack_channel)
+    calculate_timezone_offset, invite_users_to_slack_channel,
+    create_slack_channel)
 from teams.forms import HackProjectForm, EditTeamName
 
 SLACK_CHANNEL_ENDPOINT = 'https://slack.com/api/conversations.create'
@@ -246,9 +247,9 @@ def create_private_channel(request, team_id):
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
     # Create new channel
-    date_str = datetime.now().strftime('%y%m')
+    date_str = datetime.now().strftime('%b-%y').lower()
     team_name = re.sub('[^A-Za-z0-9]+', '', team.display_name.lower())
-    channel_name = f'{date_str}-hackathon-{team_name}'
+    channel_name = f'{date_str}-hackathon-{team.hackathon.id}-{team_name}'
     params = {
         'team_id': settings.SLACK_TEAM_ID,
         'name': channel_name,
@@ -257,27 +258,12 @@ def create_private_channel(request, team_id):
     # Cannot use Bot Token to create a channel if workspace settings
     # specify only Admins and Owners can create channels 
     headers = {'Authorization': f'Bearer {settings.SLACK_ADMIN_TOKEN}'}
-    create_response = requests.get(SLACK_CHANNEL_ENDPOINT, params=params,
-                                   headers=headers)
-    if not create_response.status_code == 200:
-        messages.error(request, (f'An error occurred creating the Private Slack Channel. '
-                                 f'Error code: {create_response.get("error")}'))
+    channel_response = create_slack_channel(SLACK_CHANNEL_ENDPOINT, headers, params)
+    if not response['ok']:
+        messages.error(request, response['error'])
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
-    
-    create_response = create_response.json()
-    if not create_response.get('ok'):
-        if create_response.get('error') == 'name_taken':
-            error_msg = (f'An error occurred creating the Private Slack Channel. '
-                         f'A channel with the name "{channel_name}" already '
-                         f'exists. Please change your team name and try again '
-                         f'or contact an administrator')
-        else:
-            error_msg = (f'An error occurred creating the Private Slack Channel. '
-                         f'Error code: {create_response.get("error")}')
-        messages.error(request, error_msg)
-        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
-    
-    channel = create_response.get('channel', {}).get('id')
+
+    channel = channel_response.get('channel', {}).get('id')
     communication_channel = (f'https://{settings.SLACK_WORKSPACE}.slack.com/'
                              f'app_redirect?channel={channel}')
     team.communication_channel = communication_channel
