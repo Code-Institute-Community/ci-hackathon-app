@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "django_celery_results",
     "crispy_forms",
-    "django_celery_results",
     "easy_select2",
 
     # custom apps
