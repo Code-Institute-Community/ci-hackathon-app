@@ -147,6 +147,7 @@ def test_404(request):
     response.status_code = 404
     return response
 
+
 def codeofconduct(request):
     """
         A view to show the hackathon code of conduct.
