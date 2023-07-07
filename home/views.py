@@ -146,3 +146,9 @@ def test_404(request):
     response = render(request, '404.html')
     response.status_code = 404
     return response
+
+def codeofconduct(request):
+    """
+        A view to show the hackathon code of conduct.
+    """
+    return render(request, 'code-of-conduct.html')

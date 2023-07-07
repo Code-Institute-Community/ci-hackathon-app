@@ -77,3 +77,5 @@ def edit_resource(request, resource_id):
     }
 
     return render(request, template, context)
+
+

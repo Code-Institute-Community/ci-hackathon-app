@@ -7,4 +7,5 @@ urlpatterns = [
     path('delete/<int:resource_id>/', views.delete_resource,
          name='delete_resource'),
     path('edit/<int:resource_id>/', views.edit_resource, name='edit_resource'),
+
 ]
