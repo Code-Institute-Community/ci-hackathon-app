@@ -136,6 +136,13 @@ def useful_resources(request):
     return render(request, "useful-resources.html")
 
 
+def codeofconduct(request):
+    """
+        A view to show the hackathon code of conduct.
+    """
+    return render(request, 'code-of-conduct.html')
+
+
 def test_500(request):
     response = render(request, '500.html')
     response.status_code = 500
@@ -147,9 +154,3 @@ def test_404(request):
     response.status_code = 404
     return response
 
-
-def codeofconduct(request):
-    """
-        A view to show the hackathon code of conduct.
-    """
-    return render(request, 'code-of-conduct.html')
