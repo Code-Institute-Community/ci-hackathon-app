@@ -1,6 +1,7 @@
 import logging
 import requests
 
+from custom_slack_provider.slack import CustomSlackClient
 from accounts.models import CustomUser
 from django.core.exceptions import PermissionDenied
 from requests import RequestException
@@ -44,27 +45,15 @@ class SlackOAuth2Adapter(OAuth2Adapter):
                                                              extra_data)
 
     def get_data(self, token):
-        # Verify the user first
-        resp = requests.get(
-            self.identity_url,
-            params={'token': token}
-        )
-        resp = resp.json()
-
-        if not resp.get('ok'):
-            raise OAuth2Error(f'UserInfo Exception: {resp.get("error")}')
+        # Verify user's identity and retrieve userid
+        user_slack_client = CustomSlackClient(token)
+        resp = user_slack_client.get_identity()
 
         userid = resp.get('user', {}).get('id')
-        user_info = requests.get(
-            self.user_detail_url,
-            params={'token': settings.SLACK_BOT_TOKEN, 'user': userid}
-        )
-        user_info = user_info.json()
 
-        if not user_info.get('ok'):
-            raise OAuth2Error(f'UserInfo Exception: {user_info.get("error")}')
+        bot_slack_client = CustomSlackClient(settings.SLACK_BOT_TOKEN)
+        user_info = bot_slack_client.get_user_info(userid)
 
-        user_info = user_info.get('user', {})
         display_name = user_info.get('profile',
                                      {}).get('display_name_normalized')
         teamid = resp.get('team').get('id')
