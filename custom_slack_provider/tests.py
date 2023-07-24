@@ -7,7 +7,6 @@ from unittest.mock import patch, Mock
 from .provider import SlackProvider
 from custom_slack_provider.slack import CustomSlackClient, SlackException
 from django.core.management import call_command
-from 
 
 
 class SlackOAuth2Tests(OAuth2TestsMixin, TestCase):
@@ -36,6 +35,7 @@ class SlackClientTest(TestCase):
     def test__make_slack_get_request(self, get):
         mock_response = Mock()
         mock_response.json.return_value = {'ok': True}
+        mock_response.status_code = 200
         get.return_value = mock_response
         client = CustomSlackClient(self.token)
         response = client._make_slack_get_request(url='test')
@@ -53,6 +53,7 @@ class SlackClientTest(TestCase):
     def test__make_slack_post_request(self, post):
         mock_response = Mock()
         mock_response.json.return_value = {'ok': True}
+        mock_response.status_code = 200
         post.return_value = mock_response
         client = CustomSlackClient(self.token)
         response = client._make_slack_post_request(url='test', data={})
@@ -86,12 +87,12 @@ class SlackClientTest(TestCase):
             self.assertEquals(e.message, 'Error adding user to channel')
 
     @patch('custom_slack_provider.slack.CustomSlackClient._make_slack_post_request')  # noqa: 501
-    def test_add_user_to_slack_channel(self, _make_slack_post_request):
+    def test_invite_users_to_slack_channel(self, _make_slack_post_request):
         _make_slack_post_request.return_value = {
             'ok': True,
             'channel': {'id': 'CH123123'}
         }
         client = CustomSlackClient(self.token)
-        response = client.add_user_to_slack_channel(username='UA123123_T15666',
-                                                    channel_id='CH123123')
+        response = client.invite_users_to_slack_channel(users='UA123123_T15666',
+                                                        channel='CH123123')
         self.assertEqual(response['channel']['id'], 'CH123123')

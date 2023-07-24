@@ -203,6 +203,12 @@ class SlackSiteSettings(SingletonModel):
     communication_channel_type = models.CharField(
         max_length=50, choices=COMMUNICATION_CHANNEL_TYPES,
         default='slack_private_channel')
+    remove_admin_from_channel = models.BooleanField(
+        default=True,
+        help_text=("The user linked to the ADMIN_BOT_TOKEN will automatically "
+                   "be added to any new channels. If this is ticked, the user " 
+                   "will be removed from private team channels if they are not "
+                   "part of the team, facilitator or the slack admins"))
 
     def __str__(self):
         return "Slack Settings"
