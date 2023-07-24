@@ -7,7 +7,7 @@ from unittest.mock import patch, Mock
 
 from accounts.models import Organisation, CustomUser as User
 from hackathon.models import Hackathon
-from hackathon.tasks import create_new_slack_channel
+from hackathon.tasks import create_new_hackathon_slack_channel
 
 
 class TaskTests(TestCase):
@@ -29,7 +29,7 @@ class TaskTests(TestCase):
     @override_settings(CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
                        CELERY_ALWAYS_EAGER=True,
                        BROKER_BACKEND='memory')
-    def test_create_new_slack_channel(self):
+    def test_create_new_hackathon_slack_channel(self):
         channel_id = 'CH123123'
         responses.add(
             responses.POST, 'https://slack.com/api/conversations.create',
@@ -37,7 +37,7 @@ class TaskTests(TestCase):
         responses.add(
             responses.POST, 'https://slack.com/api/conversations.invite',
             json={'ok': True}, status=200)
-        create_new_slack_channel.apply_async(args=[
+        create_new_hackathon_slack_channel.apply_async(args=[
             self.hackathon.id, self.user.username])
 
         import time; time.sleep(3)
