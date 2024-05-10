@@ -1,4 +1,5 @@
 from django.urls import path
+from teams.views import change_teams
 from .views import (
     list_hackathons,
     create_hackathon,
@@ -13,8 +14,9 @@ from .views import (
     judge_teams,
     assign_mentors,
     view_hackathon_public,
+    CalendarView,
 )
-from teams.views import change_teams
+
 
 urlpatterns = [
     path('', list_hackathons, name="hackathon-list"),
@@ -41,4 +43,5 @@ urlpatterns = [
          name="judge_teams"),
     path('<int:hackathon_id>/assign_mentors/', assign_mentors,
          name="assign_mentors"),
+    path('calendar/', CalendarView.as_view(), name='calendar'), 
 ]

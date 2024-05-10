@@ -296,3 +296,12 @@ class HackProjectScoreCategory(models.Model):
 
     class Meta:
         verbose_name_plural = "Hack project score categories"
+
+class Event(models.Model):
+    title = models.CharField(max_length=200)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.title

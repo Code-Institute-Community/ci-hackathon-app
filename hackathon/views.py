@@ -1,5 +1,6 @@
 from datetime import datetime
 import logging
+import calendar
 
 from django.db import transaction, IntegrityError
 from django.forms import modelformset_factory
@@ -10,9 +11,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
+from django.utils.safestring import mark_safe
+from django.views.generic import ListView
 
 from .models import Hackathon, HackTeam, HackProjectScore,\
-                    HackProjectScoreCategory, HackAwardCategory, HackAward
+                    HackProjectScoreCategory, HackAwardCategory, HackAward, Event
 from .forms import HackathonForm, ChangeHackathonStatusForm,\
                    HackAwardForm, HackTeamForm
 from .lists import AWARD_CATEGORIES
@@ -21,6 +24,10 @@ from .tasks import send_email_from_template
 
 from accounts.models import UserType
 from accounts.decorators import can_access, has_access_to_hackathon
+
+#Calendar for hackathon
+import calendar
+from django.shortcuts import render
 
 DEFAULT_SCORES = {
     'team_name': '',
@@ -550,3 +557,16 @@ def assign_mentors(request, hackathon_id):
             messages.error(request,
                            (f"An unexpected error occurred: "
                             f"{hack_mentors_formset.errors}"))
+
+
+class CalendarView(ListView):
+    """
+    This view is used to display a calendar of events
+    """
+    model = Event
+    template_name = 'your_app/calendar.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['events'] = Event.objects.all()
+        return context

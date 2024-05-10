@@ -128,7 +128,8 @@
                     {{ hackathon.description|safe|linebreaks }}
                 </div>
             </div>
-
+            <!--  Render calendar  -->
+            <div id="calendar" style="height: 600px;"></div>
             <h1 class="page-title" id="teams">Teams:</h1>
 
             {% if request.user.user_type|is_types:authorised_types or hackathon.status in 'hack_in_progress, judging, finished' %}
@@ -182,6 +183,7 @@
                 </div>
                 {% endif %}
             </div>
+            
             <div class="row">
                 <div class="col-sm-12">
                     {% include 'hackathon/includes/paginator.html' with page_obj=teams %}
@@ -196,10 +198,34 @@
             {% endif %}
 
         </div>
-    </div>
+    </div>      
+    <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+    <script>
+            var calendarOptions = {
+                    week: {
+                        eventView: ['time'],
+                        taskView: false
+                    },
+                    calendars: [
+                        {
+                            id: 'cal1',
+                            name: 'Personal',
+                            color: '#03bd9e',
+                            bgColor: '#03bd9e',
+                            dragBgColor: '#03bd9e',
+                            borderColor: '#03bd9e'
+                        }
+                    ],
+                    useCreationPopup: true,
+                    useDetailPopup: true
+                };
 
+                var calendar = new tui.Calendar(document.getElementById('calendar'), calendarOptions);
+    </script>
+
+        
+      
     {% endwith %}
-
     {% include 'upload_image.html' %}
     {% include 'hackathon/includes/change_status.html' %}
 {% endblock %}

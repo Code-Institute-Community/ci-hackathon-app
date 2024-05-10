@@ -22,3 +22,10 @@
     } */
 
 }
+
+/* Hide Unwanted Calendar sections */ 
+.tui-full-calendar-weekday-schedule.tui-full-calendar-schedule-milestone,
+.tui-full-calendar-weekday-schedule.tui-full-calendar-schedule-task,
+.tui-full-calendar-weekday-schedule.tui-full-calendar-schedule-allday {
+    display: none;
+}
