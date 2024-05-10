@@ -14,7 +14,7 @@ from .views import (
     judge_teams,
     assign_mentors,
     view_hackathon_public,
-    CalendarView,
+    event_list,
 )
 
 
@@ -43,5 +43,5 @@ urlpatterns = [
          name="judge_teams"),
     path('<int:hackathon_id>/assign_mentors/', assign_mentors,
          name="assign_mentors"),
-    path('calendar/', CalendarView.as_view(), name='calendar'), 
+    path('events/', event_list, name='event-list'),
 ]

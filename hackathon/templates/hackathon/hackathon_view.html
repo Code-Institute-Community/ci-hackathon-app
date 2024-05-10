@@ -200,28 +200,42 @@
         </div>
     </div>      
     <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
-    <script>
-            var calendarOptions = {
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var calendar = new tui.Calendar(document.getElementById('calendar'), {
                     week: {
                         eventView: ['time'],
                         taskView: false
                     },
-                    calendars: [
-                        {
-                            id: 'cal1',
-                            name: 'Personal',
-                            color: '#03bd9e',
-                            bgColor: '#03bd9e',
-                            dragBgColor: '#03bd9e',
-                            borderColor: '#03bd9e'
-                        }
-                    ],
+                    scheduleView: ['time'],  // Displays only time schedules
                     useCreationPopup: true,
                     useDetailPopup: true
-                };
+                });
 
-                var calendar = new tui.Calendar(document.getElementById('calendar'), calendarOptions);
-    </script>
+                fetch('/hackathon/events/')
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(event => {
+                            calendar.createEvents([{
+                                id: event.id,
+                                calendarId: event.calendarId,
+                                title: event.title,
+                                category: event.category,
+                                dueDateClass: event.dueDateClass,
+                                start: new Date(event.start),
+                                end: new Date(event.end),
+                            }]);
+                        });
+                    })
+                    .catch(err => console.error('Error loading events:', err));
+            });
+        </script>
+
+
+
+
+
 
         
       

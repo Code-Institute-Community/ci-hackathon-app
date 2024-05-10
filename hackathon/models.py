@@ -298,10 +298,13 @@ class HackProjectScoreCategory(models.Model):
         verbose_name_plural = "Hack project score categories"
 
 class Event(models.Model):
+    calendar_id = models.CharField(max_length=50, default='1')  # Assuming a default calendar ID
     title = models.CharField(max_length=200)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    description = models.TextField(blank=True)
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    category = models.CharField(max_length=50, default='time')
+    due_date_class = models.CharField(max_length=50, blank=True, default='')
 
     def __str__(self):
         return self.title
+

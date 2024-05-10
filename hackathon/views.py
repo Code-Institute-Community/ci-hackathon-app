@@ -13,6 +13,8 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.views.generic import ListView
+from django.http import JsonResponse
+from django.core.serializers.json import DjangoJSONEncoder
 
 from .models import Hackathon, HackTeam, HackProjectScore,\
                     HackProjectScoreCategory, HackAwardCategory, HackAward, Event
@@ -559,14 +561,28 @@ def assign_mentors(request, hackathon_id):
                             f"{hack_mentors_formset.errors}"))
 
 
-class CalendarView(ListView):
-    """
-    This view is used to display a calendar of events
-    """
-    model = Event
-    template_name = 'your_app/calendar.html'
+def event_list(request):
+    events = Event.objects.all()
+    event_list = [{
+        'id': str(event.id),
+        'calendarId': event.calendar_id,
+        'title': event.title,
+        'category': event.category,
+        'dueDateClass': event.due_date_class,
+        'start': event.start.strftime('%Y-%m-%dT%H:%M:%S'),
+        'end': event.end.strftime('%Y-%m-%dT%H:%M:%S'),
+    } for event in events]
+    return JsonResponse(event_list, safe=False, encoder=DjangoJSONEncoder)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['events'] = Event.objects.all()
-        return context
+
+# class CalendarView(ListView):
+#     """
+#     This view is used to display a calendar of events
+#     """
+#     model = Event
+#     template_name = 'your_app/calendar.html'
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['events'] = Event.objects.all()
+#         return context
