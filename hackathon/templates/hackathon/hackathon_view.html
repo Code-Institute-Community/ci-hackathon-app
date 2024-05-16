@@ -5,6 +5,37 @@
 
 {% block content %}
     <!-- Render Hackathon details & Registration button -->
+    <style>
+        /* Custom popup styles */
+        .toastui-calendar-detail-container {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: fixed;
+            z-index: 1000;
+            width: 300px;
+            /* Adjust as needed */
+            overflow: hidden;
+            word-wrap: break-word;
+            /* Ensure long words break within the container */
+            white-space: normal;
+            /* Allow normal wrapping */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .toastui-calendar-detail-container .toastui-calendar-icon {
+            display: none;
+        }
+        .toastui-calendar-floating-layer > div.toastui-calendar-event-detail-popup-slot > div > div.toastui-calendar-detail-container > div.toastui-calendar-popup-section.toastui-calendar-section-detail > div:nth-child(2) {
+            display: none;
+        }
+        .toastui-calendar-detail-container .toastui-calendar-section-button {
+            display: none;
+        }
+    </style>
     <div class="row">
         <div class="col-md-12 col-lg-4">
 
@@ -128,7 +159,7 @@
                     {{ hackathon.description|safe|linebreaks }}
                 </div>
             </div>
-            <!--  Render calendar  -->
+            <!--  Calender is rendered here  -->
             <div id="calendar" style="height: 600px;"></div>
             <h1 class="page-title" id="teams">Teams:</h1>
 
@@ -198,40 +229,60 @@
             {% endif %}
 
         </div>
-    </div>      
+    </div>    
+      
     <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var calendar = new tui.Calendar(document.getElementById('calendar'), {
-                    week: {
-                        eventView: ['time'],
-                        taskView: false
-                    },
-                    scheduleView: ['time'],  // Displays only time schedules
-                    useCreationPopup: true,
-                    useDetailPopup: true
-                });
+            // Creates new instance of calendar and renders it in the #calendar div  
+                document.addEventListener('DOMContentLoaded', function () {
+                    var calendar = new tui.Calendar(document.getElementById('calendar'), {
+                        week: {
+                            eventView: ['time'],
+                            taskView: false
+                        },
+                        scheduleView: ['time'],  // Displays only time schedules
+                        useCreationPopup: false,
+                        useDetailPopup: true,
+                    });
+                    
+                    function openPopup() {
+                        document.querySelector('.custom-popup').style.display = 'block';
+                    }
 
-                fetch('/hackathon/events/')
-                    .then(response => response.json())
-                    .then(data => {
-                        data.forEach(event => {
-                            calendar.createEvents([{
-                                id: event.id,
-                                calendarId: event.calendarId,
-                                title: event.title,
-                                category: event.category,
-                                dueDateClass: event.dueDateClass,
-                                start: new Date(event.start),
-                                end: new Date(event.end),
-                            }]);
+                    calendar.on('clickSchedule', function (event) {
+                        var schedule = event.schedule;
+                        console.log('poop');
+                        calendar.setPopupDetail({
+                            title: schedule.title,
+                            location: schedule.location,
+                            start: schedule.start,
+                            end: schedule.end,
+                            isAllDay: schedule.isAllDay,
+                            state: schedule.state
                         });
-                    })
-                    .catch(err => console.error('Error loading events:', err));
-            });
+                    });
+                    
+                    // API call to the events endpoint to fetch events and render them on the calendar
+                    fetch('/hackathon/events/')
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(event => { // Iterates through the events db and creates them on the calendar
+                                calendar.createEvents([{
+                                    id: event.id,
+                                    calendarId: event.calendarId,
+                                    title: event.title,
+                                    body: event.body,
+                                    category: event.category,
+                                    start: new Date(event.start),
+                                    end: new Date(event.end),
+                                }]);
+                            });
+                        })
+                        .catch(err => console.error('Error loading events:', err)); // Logs error to console if events cannot be loaded
+                });
         </script>
-
+        
 
 
 

@@ -260,6 +260,13 @@ def create_hackathon(request):
         if form.is_valid():
             form.instance.created_by = request.user
             form.instance.organiser = request.user
+            hackathon_name = form.instance.display_name
+            # Create the event in the calendar for the intro webinar
+            Event.objects.create(
+                    title=f'{hackathon_name} Intro Webinar',
+                    start=form.instance.start_date,
+                    body=f'The intro webinar for the {hackathon_name} hackathon',
+                )
             form.save()
             # Taking the first 3 award categories and creating them for the
             # newly created hackathon.
@@ -562,27 +569,17 @@ def assign_mentors(request, hackathon_id):
 
 
 def event_list(request):
-    events = Event.objects.all()
+    """ 
+    Get a list of events for the calendar from the events db
+    """
+    event_list_data = Event.objects.all()
     event_list = [{
         'id': str(event.id),
         'calendarId': event.calendar_id,
         'title': event.title,
         'category': event.category,
-        'dueDateClass': event.due_date_class,
+        'body': event.body,
         'start': event.start.strftime('%Y-%m-%dT%H:%M:%S'),
         'end': event.end.strftime('%Y-%m-%dT%H:%M:%S'),
-    } for event in events]
+    } for event in event_list_data]
     return JsonResponse(event_list, safe=False, encoder=DjangoJSONEncoder)
-
-
-# class CalendarView(ListView):
-#     """
-#     This view is used to display a calendar of events
-#     """
-#     model = Event
-#     template_name = 'your_app/calendar.html'
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['events'] = Event.objects.all()
-#         return context
