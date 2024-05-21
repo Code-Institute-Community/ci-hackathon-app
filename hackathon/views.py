@@ -311,11 +311,11 @@ def create_hackathon(request):
             )
 
             # Update the bodies of the events with the Google Calendar links
-            intro_webinar_event.body += f' Click <a href="{intro_webinar_link}">here</a> to add this event to your Google Calendar.'
+            intro_webinar_event.body += f' Click <a href="{intro_webinar_link}" target="_blank">here</a> to add this event to your Google Calendar.'
             intro_webinar_event.google_calendar_link = intro_webinar_link
             intro_webinar_event.save()
 
-            presentations_webinar_event.body += f' Click <a href="{presentations_webinar_link}">here</a> to add this event to your Google Calendar.'
+            presentations_webinar_event.body += f' Click <a href="{presentations_webinar_link}" target="_blank">here</a> to add this event to your Google Calendar.'
             presentations_webinar_event.google_calendar_link = presentations_webinar_link
             presentations_webinar_event.save()
 
