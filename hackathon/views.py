@@ -1,6 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import calendar
+import urllib
 
 from django.db import transaction, IntegrityError
 from django.forms import modelformset_factory
@@ -39,6 +40,24 @@ DEFAULT_SCORES = {
 }
 
 logger = logging.getLogger(__name__)
+
+
+def create_google_calendar_link(title, start, end, location='', details=''):
+    """ Create a Google Calendar link for an event """
+    base_url = "https://www.google.com/calendar/render"
+    start = start.strftime('%Y%m%dT%H%M%S')
+    end = end.strftime('%Y%m%dT%H%M%S')
+
+    query = {
+        "action": "TEMPLATE",
+        "text": title,
+        "dates": f"{start}/{end}",
+        "location": location,
+        "details": details
+    }
+
+    url = f"{base_url}?{urllib.parse.urlencode(query)}"
+    return url
 
 
 def list_hackathons(request):
@@ -261,19 +280,46 @@ def create_hackathon(request):
             form.instance.created_by = request.user
             form.instance.organiser = request.user
             hackathon_name = form.instance.display_name
-            # Create the event in the calendar for the intro webinar
+            # Get the dates from the form
             intro_webinar_date = form.cleaned_data.get('intro_webinar_date')
             presentations_webinar_date = form.cleaned_data.get('presentations_date')
-            Event.objects.create(
-                    title=f'{hackathon_name} Intro Webinar',
-                    start=intro_webinar_date,
-                    body=f'The intro webinar for the {hackathon_name} hackathon',
-                )
-            Event.objects.create(
-                    title=f'{hackathon_name} Presentations Webinar',
-                    start=presentations_webinar_date,
-                    body=f'The project presentations webinar for the {hackathon_name} hackathon',
-                )
+
+            # Create the events
+            intro_webinar_event = Event.objects.create(
+                title=f'{hackathon_name} Intro Webinar',
+                start=intro_webinar_date,
+                body=f'The project presentations webinar for the {hackathon_name} hackathon.'
+            )
+
+            presentations_webinar_event = Event.objects.create(
+                title=f'{hackathon_name} Presentations Webinar',
+                start=presentations_webinar_date,
+                body=f'The project presentations webinar for the {hackathon_name} hackathon.'
+            )
+
+            # Create Google Calendar links
+            intro_webinar_link = create_google_calendar_link(
+                intro_webinar_event.title,
+                intro_webinar_event.start,
+                intro_webinar_event.start + timedelta(hours=1),  # Assuming the event lasts 1 hour
+            )
+
+            presentations_webinar_link = create_google_calendar_link(
+                presentations_webinar_event.title,
+                presentations_webinar_event.start,
+                presentations_webinar_event.start + timedelta(hours=1),  # Assuming the event lasts 1 hour
+            )
+
+            # Update the bodies of the events with the Google Calendar links
+            intro_webinar_event.body += f' Click <a href="{intro_webinar_link}">here</a> to add this event to your Google Calendar.'
+            intro_webinar_event.google_calendar_link = intro_webinar_link
+            intro_webinar_event.save()
+
+            presentations_webinar_event.body += f' Click <a href="{presentations_webinar_link}">here</a> to add this event to your Google Calendar.'
+            presentations_webinar_event.google_calendar_link = presentations_webinar_link
+            presentations_webinar_event.save()
+
+            # Save the form
             form.save()
             # Taking the first 3 award categories and creating them for the
             # newly created hackathon.

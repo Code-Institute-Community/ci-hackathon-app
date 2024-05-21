@@ -311,6 +311,7 @@ class Event(models.Model):
     body = models.TextField(max_length=500, default="")
     isReadOnly = models.BooleanField(default=True)
     category = models.CharField(max_length=50, default='time')
+    google_calendar_link = models.URLField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         """
