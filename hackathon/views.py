@@ -262,10 +262,17 @@ def create_hackathon(request):
             form.instance.organiser = request.user
             hackathon_name = form.instance.display_name
             # Create the event in the calendar for the intro webinar
+            intro_webinar_date = form.cleaned_data.get('intro_webinar_date')
+            presentations_webinar_date = form.cleaned_data.get('presentations_date')
             Event.objects.create(
                     title=f'{hackathon_name} Intro Webinar',
-                    start=form.instance.start_date,
+                    start=intro_webinar_date,
                     body=f'The intro webinar for the {hackathon_name} hackathon',
+                )
+            Event.objects.create(
+                    title=f'{hackathon_name} Presentations Webinar',
+                    start=presentations_webinar_date,
+                    body=f'The project presentations webinar for the {hackathon_name} hackathon',
                 )
             form.save()
             # Taking the first 3 award categories and creating them for the

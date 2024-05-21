@@ -245,10 +245,6 @@
                         useCreationPopup: false,
                         useDetailPopup: true,
                     });
-                    
-                    function openPopup() {
-                        document.querySelector('.custom-popup').style.display = 'block';
-                    }
 
                     calendar.on('clickSchedule', function (event) {
                         var schedule = event.schedule;
@@ -283,13 +279,6 @@
                 });
         </script>
         
-
-
-
-
-
-        
-      
     {% endwith %}
     {% include 'upload_image.html' %}
     {% include 'hackathon/includes/change_status.html' %}

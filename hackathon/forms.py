@@ -33,6 +33,30 @@ class HackathonForm(forms.ModelForm):
             }
         )
     )
+    intro_webinar_date = forms.DateTimeField(
+        label="Intro Webinar Date",
+        input_formats=['%d/%m/%Y %H:%M'],
+        required=True,
+        widget=forms.DateTimeInput(
+            format='%d/%m/%Y %H:%M',
+            attrs={
+                'placeholder': 'DD/MM/YYYY HH:MM',
+                'autocomplete': 'off'
+            }
+        ),
+    )
+    presentations_date = forms.DateTimeField(
+        label="Presentations Date",
+        input_formats=['%d/%m/%Y %H:%M'],
+        required=True,
+        widget=forms.DateTimeInput(
+            format='%d/%m/%Y %H:%M',
+            attrs={
+                'placeholder': 'DD/MM/YYYY HH:MM',
+                'autocomplete': 'off'
+            }
+        ),
+    )
     theme = forms.CharField(
         label='Theme',
         max_length=254,

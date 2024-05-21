@@ -32,4 +32,31 @@ $(document).ready(function () {
     mask: true,
     dayOfWeekStart: 1,
   });
+
+  $('#id_intro_webinar_date').datetimepicker({
+    format: 'd/m/Y H:i',
+    lazyInit: true,
+    step: 30,
+    minDate: defaultStartDate,
+    defaultDate: defaultStartDate,
+    defaultTime: '08:00',
+    minTime: '08:00',
+    maxTime: '18:30',
+    yearStart: today.getFullYear(),
+    mask: true,
+    dayOfWeekStart: 1,
+  });
+  $('#id_presentations_date').datetimepicker({
+    format: 'd/m/Y H:i',
+    lazyInit: true,
+    step: 30,
+    minDate: defaultStartDate,
+    defaultDate: defaultStartDate,
+    defaultTime: '08:00',
+    minTime: '08:00',
+    maxTime: '18:30',
+    yearStart: today.getFullYear(),
+    mask: true,
+    dayOfWeekStart: 1,
+  });
 });
