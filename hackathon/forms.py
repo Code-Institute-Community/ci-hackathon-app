@@ -88,6 +88,7 @@ class HackathonForm(forms.ModelForm):
         })
     )
     is_public = forms.BooleanField(required=False)
+    is_register = forms.BooleanField(required=False, label="Users can register for this event", initial=True)
     max_participants = forms.IntegerField(
         label="Max Number Of Participants (leave empty for no max)",
         required=False,
