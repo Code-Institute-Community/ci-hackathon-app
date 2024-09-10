@@ -55,6 +55,24 @@ class HackathonForm(forms.ModelForm):
                 'placeholder': 'DD/MM/YYYY HH:MM',
                 'autocomplete': 'off'
             }
+        ),    
+    )
+    intro_webinar_zoom_url = forms.CharField(
+        label='Intro URL',
+        max_length=254,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Link to the intro zoom call...'
+            }
+        ),
+    )
+    presentations_webinar_zoom_url = forms.CharField(
+        label='Presentations URL',
+        max_length=254,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Link to the presentations zoom call...'
+            }
         ),
     )
     theme = forms.CharField(

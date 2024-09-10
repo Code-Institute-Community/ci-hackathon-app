@@ -284,17 +284,22 @@ def create_hackathon(request):
             intro_webinar_date = form.cleaned_data.get('intro_webinar_date')
             presentations_webinar_date = form.cleaned_data.get('presentations_date')
 
+
+            # Zoom meeting info for the body of the calendar event
+            zoom_intro_link = form.cleaned_data.get('intro_webinar_zoom_url')
+            zoom_presentations_link = form.cleaned_data.get('presentations_webinar_zoom_url')
+
             # Create the events
             intro_webinar_event = Event.objects.create(
                 title=f'{hackathon_name} Intro Webinar',
                 start=intro_webinar_date,
-                body=f'The project presentations webinar for the {hackathon_name} hackathon.'
+                body=f'The intro webinar for the {hackathon_name} hackathon.\n\n Use <a href="{zoom_intro_link}" target="_blank">this</a> link to join the webinar and use the password "code" to join.',
             )
 
             presentations_webinar_event = Event.objects.create(
                 title=f'{hackathon_name} Presentations Webinar',
                 start=presentations_webinar_date,
-                body=f'The project presentations webinar for the {hackathon_name} hackathon.'
+                body=f'The project presentations webinar for the {hackathon_name} hackathon.\n\n Use <a href="{zoom_presentations_link}" target="_blank">this</a> link to join the webinar and use the password "code" to join.'
             )
 
             # Create Google Calendar links
@@ -311,11 +316,11 @@ def create_hackathon(request):
             )
 
             # Update the bodies of the events with the Google Calendar links
-            intro_webinar_event.body += f' Click <a href="{intro_webinar_link}" target="_blank">here</a> to add this event to your Google Calendar.'
+            intro_webinar_event.body += f' \n\nClick <a href="{intro_webinar_link}" target="_blank">here</a> to add this event to your Google Calendar.'
             intro_webinar_event.google_calendar_link = intro_webinar_link
             intro_webinar_event.save()
 
-            presentations_webinar_event.body += f' Click <a href="{presentations_webinar_link}" target="_blank">here</a> to add this event to your Google Calendar.'
+            presentations_webinar_event.body += f' \n\nClick <a href="{presentations_webinar_link}" target="_blank">here</a> to add this event to your Google Calendar.'
             presentations_webinar_event.google_calendar_link = presentations_webinar_link
             presentations_webinar_event.save()
 
