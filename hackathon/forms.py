@@ -88,11 +88,20 @@ class HackathonForm(forms.ModelForm):
         })
     )
     is_public = forms.BooleanField(required=False)
-    is_register = forms.BooleanField(required=False, label="Users can register for this event")
-    max_participants = forms.IntegerField(
-        label="Max Number Of Participants (leave empty for no max)",
+    is_register = forms.BooleanField(required=False, label="Allow external registrations")
+    google_registration_form = forms.URLField(
+        label="Registration Form url",
         required=False,
-        widget=forms.TextInput({'type': 'number'})
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Add form url if the event is open to external participants'
+            }
+        )
+    )
+    max_participants = forms.IntegerField(
+        label="Max Participants",
+        required=False,
+        widget=forms.TextInput({'type': 'number', 'placeholder': 'Leave empty for no max'})
     )
 
     class Meta:

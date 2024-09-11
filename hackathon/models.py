@@ -81,6 +81,11 @@ class Hackathon(models.Model):
     is_public = models.BooleanField(default=True)
     max_participants = models.IntegerField(default=None, null=True, blank=True)
     is_register = models.BooleanField(default=True)
+    google_registrations_form = models.URLField(
+        default="",
+        blank=True,
+        help_text=("Link to the Google Form for registrations.")
+    )
 
     def __str__(self):
         return self.display_name
