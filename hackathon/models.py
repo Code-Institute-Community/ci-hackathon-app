@@ -81,7 +81,6 @@ class Hackathon(models.Model):
     is_public = models.BooleanField(default=True)
     max_participants = models.IntegerField(default=None, null=True, blank=True)
     is_register = models.BooleanField(default=True)
-    max_participants = models.IntegerField(default=None, null=True, blank=True)
 
     def __str__(self):
         return self.display_name
