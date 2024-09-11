@@ -1,8 +1,5 @@
 {% load custom_tags %}
-{% if not hackathon.is_register %}
-    <a href="https://forms.gle/Hp7N8RF6LzyPHobi7" target="_blank" class="btn btn-ci mt-4 mb-2 form-control">
-            Click here to register your interest</a>
-{% elif hackathon.status == 'registration_open' and not hackathon.max_participants_reached %}
+{% if hackathon.status == 'registration_open' and not hackathon.max_participants_reached %}
 <form id="enroll-form" action="{% url 'hackathon:enroll_toggle' %}" method="POST">
     {% csrf_token %}
     <!--It only sends the hackathon ID.-->
