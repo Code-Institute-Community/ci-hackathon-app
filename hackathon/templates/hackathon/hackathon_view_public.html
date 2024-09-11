@@ -23,7 +23,7 @@
 
                 <div class="row">
                     <div class="col p-0">
-                        {% if not hackathon.is_register %}
+                        {% if hackathon.is_register %}
                             <a role="button" class="btn btn-ci mt-3 w-100" href="{{ hackathon.google_registration_form }}" target="_blank">Register your interest</a>
                         {% else %}
                             <a role="button" class="btn btn-ci mt-3 w-100" href="{% url 'account_login' %}">Login To Register</a>
