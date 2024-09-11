@@ -97,6 +97,7 @@
                                 <p class="hackathon-sub-details"><i class="fas fa-laptop"></i> Theme: {{ hackathon.theme }}</p>
                                 {% if request.user.user_type|is_types:authorised_types %}
                                 <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{ hackathon.status }}</p>
+                                <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Is Register: {{ hackathon.is_register }}</p>
                                 <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
                                 <p class="hackathon-sub-details"><i class="fas fa-users"></i>
                                     Participants: {{ hackathon.participants.all|length }} / Teams: {{ hackathon.teams.all|length }}</p>

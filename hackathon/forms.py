@@ -88,7 +88,7 @@ class HackathonForm(forms.ModelForm):
         })
     )
     is_public = forms.BooleanField(required=False)
-    is_register = forms.BooleanField(required=False, label="Users can register for this event", initial=True)
+    is_register = forms.BooleanField(required=False, label="Users can register for this event")
     max_participants = forms.IntegerField(
         label="Max Number Of Participants (leave empty for no max)",
         required=False,
@@ -100,6 +100,7 @@ class HackathonForm(forms.ModelForm):
         fields = ['display_name', 'description', 'theme', 'start_date',
                   'end_date', 'status', 'organisation', 'score_categories',
                   'team_size', 'tag_line', 'is_public', 'max_participants',
+                  'is_register'
                   ]
 
     def __init__(self, *args, **kwargs):
