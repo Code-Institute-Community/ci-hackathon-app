@@ -80,7 +80,7 @@ class Hackathon(models.Model):
     )
     is_public = models.BooleanField(default=True)
     max_participants = models.IntegerField(default=None, null=True, blank=True)
-    is_register = models.BooleanField(default=True)
+    allow_external_registrations = models.BooleanField(default=False)
     registration_form = models.URLField(
         default="",
         blank=True,
