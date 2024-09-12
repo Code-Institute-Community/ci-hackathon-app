@@ -55,14 +55,20 @@
         <div class="col-12 mb-3">
           {{ form.score_categories|as_crispy_field }}
         </div>
-        <div class="col-12 col-md-6 mb-3">
+        <div class="col-12 col-md-12 mb-3">
           {{ form.is_public|as_crispy_field }}
         </div>
         <div class="col-12 col-md-6 mb-3">
+          {{ form.allow_external_registrations|as_crispy_field }}
+        </div>
+        <div class="col-6 col-md-6 mb-3" id="google-registration-form-wrapper" style="display: none;" >
+          {{ form.registration_form|as_crispy_field }}
+        </div>
+        <div class="col-12 col-md-12 mb-12">
           {{ form.max_participants|as_crispy_field }}
         </div>
         <div class="col-12 mb-5">
-          <input type="submit" class="btn-ci mr-2">
+          <input type="submit" class="btn-ci mr-2" value="Submit">
           <a href="{% url 'hackathon:hackathon-list' %}" type="button" class="btn-ci button">Cancel</a>
         </div>
       </div>
@@ -77,4 +83,23 @@
           integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous">
   </script>
   <script src="{% static 'js/datetimepicker.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const isRegisterCheckbox = document.querySelector('#id_allow_external_registrations');
+      const googleRegistrationFormWrapper = document.querySelector('#google-registration-form-wrapper');
+
+      function toggleGoogleRegistrationForm() {
+        if (isRegisterCheckbox.checked) {
+          googleRegistrationFormWrapper.style.display = 'block';
+        } else {
+          googleRegistrationFormWrapper.style.display = 'none';
+        }
+      }
+
+      isRegisterCheckbox.addEventListener('change', toggleGoogleRegistrationForm);
+
+      // Initial check
+      toggleGoogleRegistrationForm();
+    });
+  </script>
 {% endblock %}

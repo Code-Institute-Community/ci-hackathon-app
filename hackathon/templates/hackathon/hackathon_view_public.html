@@ -23,7 +23,11 @@
 
                 <div class="row">
                     <div class="col p-0">
-                        <a role="button" class="btn btn-ci mt-3 w-100" href="{% url 'account_login' %}">Login To Register</a>
+                        {% if hackathon.allow_external_registrations %}
+                            <a role="button" class="btn btn-ci mt-3 w-100" href="{{ hackathon.registration_form }}" target="_blank">Register your interest</a>
+                        {% else %}
+                            <a role="button" class="btn btn-ci mt-3 w-100" href="{% url 'account_login' %}">Login To Register</a>
+                        {% endif %}
                     </div>
                 </div>
 

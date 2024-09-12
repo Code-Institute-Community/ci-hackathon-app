@@ -88,10 +88,21 @@ class HackathonForm(forms.ModelForm):
         })
     )
     is_public = forms.BooleanField(required=False)
-    max_participants = forms.IntegerField(
-        label="Max Number Of Participants (leave empty for no max)",
+    allow_external_registrations = forms.BooleanField(required=False, label="Allow external registrations")
+    registration_form = forms.URLField(
+        label="External Registration Form",
         required=False,
-        widget=forms.TextInput({'type': 'number'})
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Add form url if the event is open to external participants', 
+                'type':'url',
+            }
+        )
+    )
+    max_participants = forms.IntegerField(
+        label="Max Participants",
+        required=False,
+        widget=forms.TextInput({'type': 'number', 'placeholder': 'Leave empty for no max'})
     )
 
     class Meta:
@@ -99,6 +110,7 @@ class HackathonForm(forms.ModelForm):
         fields = ['display_name', 'description', 'theme', 'start_date',
                   'end_date', 'status', 'organisation', 'score_categories',
                   'team_size', 'tag_line', 'is_public', 'max_participants',
+                  'allow_external_registrations', 'registration_form'
                   ]
 
     def __init__(self, *args, **kwargs):
