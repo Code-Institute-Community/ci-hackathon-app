@@ -89,7 +89,7 @@ class HackathonForm(forms.ModelForm):
     )
     is_public = forms.BooleanField(required=False)
     is_register = forms.BooleanField(required=False, label="Allow external registrations")
-    google_registration_form = forms.URLField(
+    registration_form = forms.URLField(
         label="External Registration Form",
         required=False,
         widget=forms.TextInput(
@@ -109,7 +109,7 @@ class HackathonForm(forms.ModelForm):
         fields = ['display_name', 'description', 'theme', 'start_date',
                   'end_date', 'status', 'organisation', 'score_categories',
                   'team_size', 'tag_line', 'is_public', 'max_participants',
-                  'is_register', 'google_registration_form'
+                  'is_register', 'registration_form'
                   ]
 
     def __init__(self, *args, **kwargs):
