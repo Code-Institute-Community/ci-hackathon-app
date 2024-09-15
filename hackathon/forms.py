@@ -2,7 +2,7 @@ from django import forms
 
 from accounts.models import Organisation
 from .models import Hackathon, HackProject, HackAward, HackTeam, \
-                    HackProjectScoreCategory, HackAwardCategory
+                    HackProjectScoreCategory, HackAwardCategory, Event
 from .lists import STATUS_TYPES_CHOICES
 
 
@@ -236,3 +236,52 @@ class HackAwardForm(forms.ModelForm):
             self.fields['winning_project'] = forms.ModelChoiceField(
                 queryset=hack_projects)
             self.fields['winning_project'].required = False
+
+
+class EventForm(forms.ModelForm):
+    """ Form to create or update an Event """
+    
+    calendar_id = forms.CharField(
+        label="Calendar ID",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    title = forms.CharField(
+        label="Title",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    start = forms.DateTimeField(
+        label="Start Time",
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
+    )
+    end = forms.DateTimeField(
+        label="End Time",
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
+    )
+    body = forms.CharField(
+        label="Description",
+        widget=forms.Textarea(attrs={'rows': 4, 'class': 'form-control'})
+    )
+    isReadOnly = forms.BooleanField(
+        label="Read Only",
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+    category = forms.CharField(
+        label="Category",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    google_calendar_link = forms.URLField(
+        label="Google Calendar Link",
+        required=False,
+        widget=forms.URLInput(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = Event
+        fields = [
+            'calendar_id', 'title', 'start', 'end', 'body',
+            'isReadOnly', 'category', 'google_calendar_link'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(EventForm, self).__init__(*args, **kwargs)

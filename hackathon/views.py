@@ -20,7 +20,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from .models import Hackathon, HackTeam, HackProjectScore,\
                     HackProjectScoreCategory, HackAwardCategory, HackAward, Event
 from .forms import HackathonForm, ChangeHackathonStatusForm,\
-                   HackAwardForm, HackTeamForm
+                   HackAwardForm, HackTeamForm, EventForm
 from .lists import AWARD_CATEGORIES
 from .helpers import format_date, query_scores, create_judges_scores_table
 from .tasks import send_email_from_template
@@ -641,3 +641,30 @@ def event_list(request):
         'end': event.end.strftime('%Y-%m-%dT%H:%M:%S'),
     } for event in event_list_data]
     return JsonResponse(event_list, safe=False, encoder=DjangoJSONEncoder)
+
+
+@login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+def change_event(request, hackathon_id, event_id=None):
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    event = get_object_or_404(Event, pk=event_id) if event_id else None
+
+    if request.method == 'POST':
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.hackathon = hackathon
+            event.save()
+            messages.success(request, "Event saved successfully!")
+            return redirect(reverse('hackathon:change_event', kwargs={'hackathon_id': hackathon_id}))
+        else:
+            messages.error(request, "Please correct the errors below.")
+            print(form.errors)  # Debug: Print form errors to the console
+    else:
+        form = EventForm(instance=event)
+
+    return render(request, 'hackathon/change_event.html', {
+        'hackathon': hackathon,
+        'form': form,
+        'event': event,
+    })

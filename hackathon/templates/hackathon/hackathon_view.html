@@ -55,6 +55,9 @@
                                 <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/update">
                                     <i class="fas fa-pen mr-2"></i>Edit Hackathon
                                 </a>
+                                <a role="button" class="dropdown-item" href="{% url 'hackathon:change_event' hackathon.id %}">
+                                    <i class="fas fa-user-cog mr-2"></i>Change Events
+                                </a>
                                 <a role="button" class="dropdown-item" href="/hackadmin/{{hackathon.id}}/participants/">
                                     <i class="fas fa-user-cog mr-2"></i>View Hackathon Stats
                                 </a>
