@@ -250,17 +250,21 @@
                     .then(response => response.json())
                     .then(data => {
                         console.log("Fetched events:", data);  // Add this line to verify the fetched events
-                        data.forEach(event => { // Iterates through the events db and creates them on the calendar
-                            calendar.createEvents([{
-                                id: event.id,
-                                title: event.title,
-                                body: event.body,
-                                category: event.category,
-                                start: new Date(event.start),
-                                end: new Date(event.end),
-                                backgroundColor: '#f05323'
-                            }]);
-                        });
+                        if (data.length === 0) {
+                            document.getElementById('calendar-container').style.display = 'none';
+                        } else {
+                            data.forEach(event => { // Iterates through the events db and creates them on the calendar
+                                calendar.createEvents([{
+                                    id: event.id,
+                                    title: event.title,
+                                    body: event.body,
+                                    category: event.category,
+                                    start: new Date(event.start),
+                                    end: new Date(event.end),
+                                    backgroundColor: '#f05323'
+                                }]);
+                            });
+                        }
                     })
                     .catch(err => console.error('Error loading events:', err)); // Logs error to console if events cannot be loaded
     
