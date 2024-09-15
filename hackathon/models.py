@@ -304,8 +304,6 @@ class Event(models.Model):
     Model representing an event in the calendar.
     """
     hackathon = models.ForeignKey('Hackathon', on_delete=models.CASCADE, related_name='events')
-    calendar_id = models.CharField(
-        max_length=50, default='1')  # Assuming a default calendar ID
     title = models.CharField(max_length=200)
     start = models.DateTimeField()
     end = models.DateTimeField()

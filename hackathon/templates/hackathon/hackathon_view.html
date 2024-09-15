@@ -2,6 +2,7 @@
 {% load static %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}"/>
+    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css">
 {% endblock %}
 {% load custom_tags %}
 {% load account_tags %}
@@ -55,7 +56,7 @@
                                 <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/update">
                                     <i class="fas fa-pen mr-2"></i>Edit Hackathon
                                 </a>
-                                <a role="button" class="dropdown-item" href="{% url 'hackathon:change_event' hackathon.id %}">
+                                <a role="button" class="dropdown-item" href="{% url 'hackathon:hackathon_events' hackathon.id %}">
                                     <i class="fas fa-user-cog mr-2"></i>Change Events
                                 </a>
                                 <a role="button" class="dropdown-item" href="/hackadmin/{{hackathon.id}}/participants/">
@@ -136,12 +137,14 @@
                 </div>
             </div>
             <!--  Calender is rendered here  -->
-            <div id="calendar" style="height: 600px;"></div>
-            <div class="col d-flex justify-content-center">
-                <button id="prev-button"> < </button>
-                <button id="next-button"> > </button>
+            <div id="calendar-container">
+                <div id="calendar" style="height: 600px;"></div>
+                <div class="col d-flex justify-content-center">
+                    <button id="prev-button">
+                        < </button>
+                            <button id="next-button"> > </button>
+                </div>
             </div>
-            
 
             <h1 class="page-title" id="teams">Teams:</h1>
 
@@ -214,65 +217,66 @@
     </div>    
       
     <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
-
     <script>
-        // Creates new instance of calendar and renders it in the #calendar div  
         document.addEventListener('DOMContentLoaded', function () {
-            var calendar = new tui.Calendar(document.getElementById('calendar'), {
-                week: {
-                    startDayOfWeek: (new Date()).getDay(),
-                    eventView: ['time'],
-                    taskView: false
-                },
-                scheduleView: ['time'],  // Displays only time schedules
-                useCreationPopup: false,
-                useDetailPopup: true,
-            });
-    
-            calendar.on('clickSchedule', function (event) {
-                var schedule = event.schedule;
-                console.log('poop');
-                calendar.setPopupDetail({
-                    title: schedule.title,
-                    location: schedule.location,
-                    start: schedule.start,
-                    end: schedule.end,
-                    isAllDay: schedule.isAllDay,
-                    state: schedule.state
+            var hackathonId = "{{ hackathon.id }}";
+            var calendarContainer = document.getElementById('calendar-container');
+            if (calendarContainer) {
+                var calendar = new tui.Calendar(document.getElementById('calendar'), {
+                    week: {
+                        startDayOfWeek: (new Date()).getDay(),
+                        eventView: ['time'],
+                        taskView: false
+                    },
+                    scheduleView: ['time'],
+                    useCreationPopup: false,
+                    useDetailPopup: true,
                 });
-            });
-            
-            // API call to the events endpoint to fetch events and render them on the calendar
-            fetch('/hackathon/events/')
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(event => { // Iterates through the events db and creates them on the calendar
-                        calendar.createEvents([{
-                            id: event.id,
-                            calendarId: event.calendarId,
-                            title: event.title,
-                            body: event.body,
-                            category: event.category,
-                            start: new Date(event.start),
-                            end: new Date(event.end),
-                            backgroundColor: '#f05323',
-                        }]);
+    
+                calendar.on('clickSchedule', function (event) {
+                    var schedule = event.schedule;
+                    calendar.setPopupDetail({
+                        title: schedule.title,
+                        location: schedule.location,
+                        start: schedule.start,
+                        end: schedule.end,
+                        isAllDay: schedule.isAllDay,
+                        state: schedule.state
                     });
-                })
-                .catch(err => console.error('Error loading events:', err)); // Logs error to console if events cannot be loaded
+                });
     
-            // Get the buttons
-            var prevButton = document.getElementById('prev-button');
-            var nextButton = document.getElementById('next-button');
+                // API call to the events endpoint to fetch events for the specific hackathon
+                fetch(`/hackathon/${hackathonId}/events_endpoint/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Fetched events:", data);  // Add this line to verify the fetched events
+                        data.forEach(event => { // Iterates through the events db and creates them on the calendar
+                            calendar.createEvents([{
+                                id: event.id,
+                                title: event.title,
+                                body: event.body,
+                                category: event.category,
+                                start: new Date(event.start),
+                                end: new Date(event.end),
+                                backgroundColor: '#f05323'
+                            }]);
+                        });
+                    })
+                    .catch(err => console.error('Error loading events:', err)); // Logs error to console if events cannot be loaded
     
-            // Add event listeners to the buttons
-            prevButton.addEventListener('click', function() {
-                calendar.prev();
-            });
+                // Get the buttons
+                var prevButton = document.getElementById('prev-button');
+                var nextButton = document.getElementById('next-button');
     
-            nextButton.addEventListener('click', function() {
-                calendar.next();
-            });
+                // Add event listeners to the buttons
+                prevButton.addEventListener('click', function () {
+                    calendar.prev();
+                });
+    
+                nextButton.addEventListener('click', function () {
+                    calendar.next();
+                });
+            }
         });
     </script>
         

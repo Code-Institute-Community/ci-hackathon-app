@@ -239,14 +239,11 @@ class HackAwardForm(forms.ModelForm):
 
 
 class EventForm(forms.ModelForm):
-    """ Form to create or update an Event """
-    
-    calendar_id = forms.CharField(
-        label="Calendar ID",
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
+    """
+      Form to create or update an Event 
+    """
     title = forms.CharField(
-        label="Title",
+        label="Webinar Title",
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     start = forms.DateTimeField(
@@ -271,7 +268,7 @@ class EventForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     google_calendar_link = forms.URLField(
-        label="Google Calendar Link",
+        label="Calendar Link",
         required=False,
         widget=forms.URLInput(attrs={'class': 'form-control'})
     )
@@ -279,7 +276,7 @@ class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = [
-            'calendar_id', 'title', 'start', 'end', 'body',
+            'title', 'start', 'end', 'body',
             'isReadOnly', 'category', 'google_calendar_link'
         ]
 

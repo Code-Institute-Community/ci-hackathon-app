@@ -15,6 +15,9 @@ from .views import (
     assign_mentors,
     view_hackathon_public,
     event_list,
+    hackathon_events,
+    delete_event,
+    hackathon_events_endpoint,
     change_event,
 )
 
@@ -49,4 +52,10 @@ urlpatterns = [
           name='change_event'),
     path('hackathon/<int:hackathon_id>/event/<int:event_id>/', change_event,
           name='change_event'),
+    path('hackathon/<int:hackathon_id>/events/', hackathon_events, 
+         name='hackathon_events'),
+    path('hackathon/<int:hackathon_id>/event/<int:event_id>/delete/', delete_event, 
+         name='delete_event'),  
+    path('<int:hackathon_id>/events_endpoint/', hackathon_events_endpoint, 
+         name='hackathon_events_endpoint'),       
 ]

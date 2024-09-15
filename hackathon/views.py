@@ -435,6 +435,7 @@ def view_hackathon(request, hackathon_id):
     paginator = Paginator(teams, 3)
     page = request.GET.get('page')
     paged_teams = paginator.get_page(page)
+    events_count = Event.objects.filter(hackathon=hackathon).count()
     create_private_channel = (settings.SLACK_ENABLED and settings.SLACK_BOT_TOKEN
                               and settings.SLACK_ADMIN_TOKEN)
 
@@ -443,6 +444,7 @@ def view_hackathon(request, hackathon_id):
         'teams': paged_teams,
         'change_status_form': ChangeHackathonStatusForm(instance=hackathon),
         'create_private_channel': create_private_channel,
+        'events_count': events_count,
     }
 
     return render(request, "hackathon/hackathon_view.html", context)
@@ -626,11 +628,12 @@ def assign_mentors(request, hackathon_id):
                             f"{hack_mentors_formset.errors}"))
 
 
-def event_list(request):
+def event_list(request, hackathon_id):
     """ 
-    Get a list of events for the calendar from the events db
+    Get a list of events for the calendar from the events db for a specific hackathon
     """
-    event_list_data = Event.objects.all()
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    event_list_data = Event.objects.filter(hackathon=hackathon)
     event_list = [{
         'id': str(event.id),
         'calendarId': event.calendar_id,
@@ -641,6 +644,37 @@ def event_list(request):
         'end': event.end.strftime('%Y-%m-%dT%H:%M:%S'),
     } for event in event_list_data]
     return JsonResponse(event_list, safe=False, encoder=DjangoJSONEncoder)
+
+
+@login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+def hackathon_events(request, hackathon_id):
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    events = Event.objects.filter(hackathon=hackathon)
+
+    if not events.exists():
+        return redirect('hackathon:change_event', hackathon_id=hackathon_id)
+
+    return render(request, 'hackathon/hackathon_events.html', {
+        'hackathon': hackathon,
+        'events': events,
+    })
+
+
+@login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+def hackathon_events_endpoint(request, hackathon_id):
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    events = Event.objects.filter(hackathon=hackathon)
+    events_data = [{
+        'id': event.id,
+        'title': event.title,
+        'body': event.body,
+        'category': event.category,
+        'start': event.start.isoformat(),
+        'end': event.end.isoformat(),
+    } for event in events]
+    return JsonResponse(events_data, safe=False)
 
 
 @login_required
@@ -656,10 +690,9 @@ def change_event(request, hackathon_id, event_id=None):
             event.hackathon = hackathon
             event.save()
             messages.success(request, "Event saved successfully!")
-            return redirect(reverse('hackathon:change_event', kwargs={'hackathon_id': hackathon_id}))
+            return redirect(reverse('hackathon:hackathon_events', kwargs={'hackathon_id': hackathon_id}))
         else:
             messages.error(request, "Please correct the errors below.")
-            print(form.errors)  # Debug: Print form errors to the console
     else:
         form = EventForm(instance=event)
 
@@ -668,3 +701,11 @@ def change_event(request, hackathon_id, event_id=None):
         'form': form,
         'event': event,
     })
+
+@login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+def delete_event(request, hackathon_id, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    event.delete()
+    messages.success(request, "Event deleted successfully!")
+    return redirect('hackathon:hackathon_events', hackathon_id=hackathon_id)
