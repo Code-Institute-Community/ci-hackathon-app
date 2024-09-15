@@ -28,17 +28,17 @@
         <div class="col-12">
           {{ form.title|as_crispy_field }}
         </div>
-        <div class="col-12">
+        <div class="col-12" id="webinar_start_date">
           {{ form.start|as_crispy_field }}
         </div>
-        <div class="col-12">
+        <div class="col-12" id="webinar_end_date">
           {{ form.end|as_crispy_field }}
         </div>
         <div class="col-12">
           {{ form.body|as_crispy_field }}
         </div>
         <div class="col-12">
-          {{ form.google_calendar_link|as_crispy_field }}
+          {{ form.webinar_link|as_crispy_field }}
         </div>
         <div class="col-12">
           <button type="submit" class="btn btn-primary">Save</button>

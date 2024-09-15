@@ -33,7 +33,7 @@ $(document).ready(function () {
     dayOfWeekStart: 1,
   });
 
-  $('#id_intro_webinar_date').datetimepicker({
+  $('#webinar_start_date').datetimepicker({
     format: 'd/m/Y H:i',
     lazyInit: true,
     step: 30,
@@ -46,7 +46,7 @@ $(document).ready(function () {
     mask: true,
     dayOfWeekStart: 1,
   });
-  $('#id_presentations_date').datetimepicker({
+  $('#webinar_end_date').datetimepicker({
     format: 'd/m/Y H:i',
     lazyInit: true,
     step: 30,

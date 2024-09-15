@@ -309,7 +309,7 @@ class Event(models.Model):
     end = models.DateTimeField()
     body = models.TextField(max_length=500, default="")
     isReadOnly = models.BooleanField(default=True)
-    google_calendar_link = models.URLField(blank=True, null=True)
+    webinar_link = models.URLField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         """

@@ -280,50 +280,7 @@ def create_hackathon(request):
             form.instance.created_by = request.user
             form.instance.organiser = request.user
             hackathon_name = form.instance.display_name
-            # Get the dates from the form
-            intro_webinar_date = form.cleaned_data.get('intro_webinar_date')
-            presentations_webinar_date = form.cleaned_data.get('presentations_date')
-
-
-            # Zoom meeting info for the body of the calendar event
-            zoom_intro_link = form.cleaned_data.get('intro_webinar_zoom_url')
-            zoom_presentations_link = form.cleaned_data.get('presentations_webinar_zoom_url')
-
-            # Create the events
-            intro_webinar_event = Event.objects.create(
-                title=f'{hackathon_name} Intro Webinar',
-                start=intro_webinar_date,
-                body=f'The intro webinar for the {hackathon_name} hackathon.\n\n Use <a href="{zoom_intro_link}" target="_blank">this</a> link to join the webinar and use the password "code" to join.',
-            )
-
-            presentations_webinar_event = Event.objects.create(
-                title=f'{hackathon_name} Presentations Webinar',
-                start=presentations_webinar_date,
-                body=f'The project presentations webinar for the {hackathon_name} hackathon.\n\n Use <a href="{zoom_presentations_link}" target="_blank">this</a> link to join the webinar and use the password "code" to join.'
-            )
-
-            # Create Google Calendar links
-            intro_webinar_link = create_google_calendar_link(
-                intro_webinar_event.title,
-                intro_webinar_event.start,
-                intro_webinar_event.start + timedelta(hours=1),  # Assuming the event lasts 1 hour
-            )
-
-            presentations_webinar_link = create_google_calendar_link(
-                presentations_webinar_event.title,
-                presentations_webinar_event.start,
-                presentations_webinar_event.start + timedelta(hours=1),  # Assuming the event lasts 1 hour
-            )
-
-            # Update the bodies of the events with the Google Calendar links
-            intro_webinar_event.body += f' \n\nClick <a href="{intro_webinar_link}" target="_blank">here</a> to add this event to your Google Calendar.'
-            intro_webinar_event.google_calendar_link = intro_webinar_link
-            intro_webinar_event.save()
-
-            presentations_webinar_event.body += f' \n\nClick <a href="{presentations_webinar_link}" target="_blank">here</a> to add this event to your Google Calendar.'
-            presentations_webinar_event.google_calendar_link = presentations_webinar_link
-            presentations_webinar_event.save()
-
+           
             # Save the form
             form.save()
             # Taking the first 3 award categories and creating them for the
@@ -438,8 +395,16 @@ def view_hackathon(request, hackathon_id):
     events_count = Event.objects.filter(hackathon=hackathon).count()
     create_private_channel = (settings.SLACK_ENABLED and settings.SLACK_BOT_TOKEN
                               and settings.SLACK_ADMIN_TOKEN)
+    matching_events = Event.objects.filter(hackathon_id=hackathon_id)
+    has_events = matching_events.exists()
+    
+    
+    # Check if there are any matching events
+    has_events = matching_events.exists()
 
     context = {
+        'has_events': has_events,
+        'events': matching_events,
         'hackathon': hackathon,
         'teams': paged_teams,
         'change_status_form': ChangeHackathonStatusForm(instance=hackathon),
@@ -641,6 +606,7 @@ def event_list(request, hackathon_id):
         'body': event.body,
         'start': event.start.strftime('%Y-%m-%dT%H:%M:%S'),
         'end': event.end.strftime('%Y-%m-%dT%H:%M:%S'),
+        'webinar_link': event.webinar_link,
     } for event in event_list_data]
     return JsonResponse(event_list, safe=False, encoder=DjangoJSONEncoder)
 
@@ -667,10 +633,12 @@ def hackathon_events_endpoint(request, hackathon_id):
     events = Event.objects.filter(hackathon=hackathon)
     events_data = [{
         'id': event.id,
+        'hackathon_id': event.hackathon.id,
         'title': event.title,
         'body': event.body,
         'start': event.start.isoformat(),
         'end': event.end.isoformat(),
+        'webinar_link': event.webinar_link,
     } for event in events]
     return JsonResponse(events_data, safe=False)
 

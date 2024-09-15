@@ -136,16 +136,14 @@
                     {{ hackathon.description|safe|linebreaks }}
                 </div>
             </div>
-            <!--  Calender is rendered here  -->
+            <!--  Calender is rendered here  --> 
             <div id="calendar-container">
                 <div id="calendar" style="height: 600px;"></div>
                 <div class="col d-flex justify-content-center">
-                    <button id="prev-button">
-                        < </button>
-                            <button id="next-button"> > </button>
+                    <button id="prev-button"><</button>
+                    <button id="next-button">></button>
                 </div>
             </div>
-
             <h1 class="page-title" id="teams">Teams:</h1>
 
             {% if request.user.user_type|is_types:authorised_types or hackathon.status in 'hack_in_progress, judging, finished' %}
@@ -245,14 +243,10 @@
                     });
                 });
     
-                // API call to the events endpoint to fetch events for the specific hackathon
+                // API call to the events_endpoint to fetch events for the specific hackathon
                 fetch(`/hackathon/${hackathonId}/events_endpoint/`)
                     .then(response => response.json())
                     .then(data => {
-                        console.log("Fetched events:", data);  // Add this line to verify the fetched events
-                        if (data.length === 0) {
-                            document.getElementById('calendar-container').style.display = 'none';
-                        } else {
                             data.forEach(event => { // Iterates through the events db and creates them on the calendar
                                 calendar.createEvents([{
                                     id: event.id,
@@ -262,9 +256,9 @@
                                     start: new Date(event.start),
                                     end: new Date(event.end),
                                     backgroundColor: '#f05323'
+                                    
                                 }]);
                             });
-                        }
                     })
                     .catch(err => console.error('Error loading events:', err)); // Logs error to console if events cannot be loaded
     

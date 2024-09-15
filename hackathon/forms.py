@@ -33,48 +33,6 @@ class HackathonForm(forms.ModelForm):
             }
         )
     )
-    intro_webinar_date = forms.DateTimeField(
-        label="Intro Webinar Date",
-        input_formats=['%d/%m/%Y %H:%M'],
-        required=True,
-        widget=forms.DateTimeInput(
-            format='%d/%m/%Y %H:%M',
-            attrs={
-                'placeholder': 'DD/MM/YYYY HH:MM',
-                'autocomplete': 'off'
-            }
-        ),
-    )
-    presentations_date = forms.DateTimeField(
-        label="Presentations Date",
-        input_formats=['%d/%m/%Y %H:%M'],
-        required=True,
-        widget=forms.DateTimeInput(
-            format='%d/%m/%Y %H:%M',
-            attrs={
-                'placeholder': 'DD/MM/YYYY HH:MM',
-                'autocomplete': 'off'
-            }
-        ),    
-    )
-    intro_webinar_zoom_url = forms.CharField(
-        label='Intro URL',
-        max_length=254,
-        widget=forms.TextInput(
-            attrs={
-                'placeholder': 'Link to the intro zoom call...'
-            }
-        ),
-    )
-    presentations_webinar_zoom_url = forms.CharField(
-        label='Presentations URL',
-        max_length=254,
-        widget=forms.TextInput(
-            attrs={
-                'placeholder': 'Link to the presentations zoom call...'
-            }
-        ),
-    )
     theme = forms.CharField(
         label='Theme',
         max_length=254,
@@ -240,7 +198,7 @@ class HackAwardForm(forms.ModelForm):
 
 class EventForm(forms.ModelForm):
     """
-      Form to create or update an Event 
+    Form to create or update an Event 
     """
     title = forms.CharField(
         label="Webinar Title",
@@ -248,11 +206,27 @@ class EventForm(forms.ModelForm):
     )
     start = forms.DateTimeField(
         label="Start Time",
-        widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
+        input_formats=['%d/%m/%Y %H:%M'],
+        widget=forms.DateTimeInput(
+            format='%d/%m/%Y %H:%M',
+            attrs={
+                'placeholder': 'DD/MM/YYYY HH:MM',
+                'autocomplete': 'off',
+                'class': 'form-control'
+            }
+        )
     )
     end = forms.DateTimeField(
         label="End Time",
-        widget=forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'})
+        input_formats=['%d/%m/%Y %H:%M'],
+        widget=forms.DateTimeInput(
+            format='%d/%m/%Y %H:%M',
+            attrs={
+                'placeholder': 'DD/MM/YYYY HH:MM',
+                'autocomplete': 'off',
+                'class': 'form-control'
+            }
+        )
     )
     body = forms.CharField(
         label="Description",
@@ -263,8 +237,8 @@ class EventForm(forms.ModelForm):
         required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )
-    google_calendar_link = forms.URLField(
-        label="Calendar Link",
+    webinar_link = forms.URLField(
+        label="Webinar Link",
         required=False,
         widget=forms.URLInput(attrs={'class': 'form-control'})
     )
@@ -273,7 +247,7 @@ class EventForm(forms.ModelForm):
         model = Event
         fields = [
             'title', 'start', 'end', 'body',
-            'isReadOnly', 'google_calendar_link'
+            'isReadOnly', 'webinar_link'
         ]
 
     def __init__(self, *args, **kwargs):
