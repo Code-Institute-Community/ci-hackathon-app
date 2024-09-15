@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>{{ hackathon.name }} - Events</h2>
+  <h2>{{ hackathon.display_name }} - Webinars</h2>
   {% if events %}
     <div class="card">
       <div class="card-body">
@@ -9,8 +9,10 @@
           {% for event in events %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <div>
-                <h5>{{ event.title }}</h5>
-                <p>{{ event.start }} to {{ event.end }}</p>
+                <h5> {{ hackathon.display_name }} {{ event.title }}</h5>
+                <p>{{ event.start }}</p>
+                <p><a href="{{ event.webinar_link }}" target="_blank">Webinar Link </a></p>
+                <p>{{ event.body }}</p>
               </div>
               <div>
                 <a href="{% url 'hackathon:change_event' hackathon.id event.id %}" class="btn btn-primary btn-sm">Edit</a>
@@ -24,5 +26,5 @@
   {% else %}
     <p>No events found. <a href="{% url 'hackathon:change_event' hackathon.id %}">Add an event</a></p>
   {% endif %}
-  <a href="{% url 'hackathon:change_event' hackathon.id %}" class="btn btn-primary mt-3">Add/Edit Events</a>
+  <a href="{% url 'hackathon:change_event' hackathon.id %}" class="btn btn-primary mt-3">Add Event</a>
 {% endblock %}

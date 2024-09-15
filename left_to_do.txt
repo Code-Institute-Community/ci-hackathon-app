@@ -1,3 +1,3 @@
-- Add notification to notify participants of winners
-- Allow judges to enroll as participant, but remove staff privileges for that hackathon
-- Disallow registration if no "current LMS module" selected on profile
+- fix datetimepicker on hackathon_events
+- rename change_event template/view etc as its confusing. 
+- fix calendar display on empty hackathon. 
