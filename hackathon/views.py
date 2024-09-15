@@ -638,7 +638,6 @@ def event_list(request, hackathon_id):
         'id': str(event.id),
         'calendarId': event.calendar_id,
         'title': event.title,
-        'category': event.category,
         'body': event.body,
         'start': event.start.strftime('%Y-%m-%dT%H:%M:%S'),
         'end': event.end.strftime('%Y-%m-%dT%H:%M:%S'),
@@ -670,7 +669,6 @@ def hackathon_events_endpoint(request, hackathon_id):
         'id': event.id,
         'title': event.title,
         'body': event.body,
-        'category': event.category,
         'start': event.start.isoformat(),
         'end': event.end.isoformat(),
     } for event in events]

@@ -263,10 +263,6 @@ class EventForm(forms.ModelForm):
         required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )
-    category = forms.CharField(
-        label="Category",
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
     google_calendar_link = forms.URLField(
         label="Calendar Link",
         required=False,
@@ -277,7 +273,7 @@ class EventForm(forms.ModelForm):
         model = Event
         fields = [
             'title', 'start', 'end', 'body',
-            'isReadOnly', 'category', 'google_calendar_link'
+            'isReadOnly', 'google_calendar_link'
         ]
 
     def __init__(self, *args, **kwargs):
