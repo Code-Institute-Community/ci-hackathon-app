@@ -252,3 +252,12 @@ class EventForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        event = super(EventForm, self).save(commit=False)
+        # Append f-string to the body field
+        webinar_link = self.cleaned_data.get('webinar_link', '')
+        event.body += f'<br><br><b>Meeting Join Link:</b> <a href="{webinar_link}" target="_blank">Click here to join</a><br><b>Meeting Join Code:</b> code'
+        if commit:
+            event.save()
+        return event
