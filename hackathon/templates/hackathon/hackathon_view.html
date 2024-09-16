@@ -57,7 +57,8 @@
                                     <i class="fas fa-pen mr-2"></i>Edit Hackathon
                                 </a>
                                 <a role="button" class="dropdown-item" href="{% url 'hackathon:hackathon_events' hackathon.id %}">
-                                    <i class="fas fa-calendar mr-2"></i>Change Events
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    {% if hackathon.events.first %}Edit{% else %}Add{% endif %} Events
                                 </a>
                                 <a role="button" class="dropdown-item" href="/hackadmin/{{hackathon.id}}/participants/">
                                     <i class="fas fa-user-cog mr-2"></i>View Hackathon Stats
@@ -138,7 +139,6 @@
             </div>
             <!--  Calender is rendered here  --> 
             {% if hackathon.events.first %}
-            {{ hackathon.events.first }}
             <div id="calendar-container">
                 <div id="calendar" style="height: 600px;"></div>
                 <div class="col d-flex justify-content-center">
