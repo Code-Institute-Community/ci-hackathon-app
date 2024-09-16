@@ -310,6 +310,7 @@ class Event(models.Model):
     body = models.TextField(max_length=500, default="")
     isReadOnly = models.BooleanField(default=True)
     webinar_link = models.URLField(blank=True, null=True)
+    webinar_code = models.CharField(max_length=50, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         """

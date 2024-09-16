@@ -242,12 +242,16 @@ class EventForm(forms.ModelForm):
         required=False,
         widget=forms.URLInput(attrs={'class': 'form-control'})
     )
-
+    webinar_code = forms.CharField(
+        label="Webinar Join Code",
+        widget=forms.Textarea(attrs={'rows': 1, 'class': 'form-control'})
+    )
     class Meta:
         model = Event
         fields = [
             'title', 'start', 'end', 'body',
-            'isReadOnly', 'webinar_link'
+            'isReadOnly', 'webinar_link',
+            'webinar_code',
         ]
 
     def __init__(self, *args, **kwargs):
@@ -257,7 +261,8 @@ class EventForm(forms.ModelForm):
         event = super(EventForm, self).save(commit=False)
         # Append f-string to the body field
         webinar_link = self.cleaned_data.get('webinar_link', '')
-        event.body += f'<br><br><b>Meeting Join Link:</b> <a href="{webinar_link}" target="_blank">Click here to join</a><br><b>Meeting Join Code:</b> code'
+        webinar_code = self.cleaned_data.get('webinar_code', '')
+        event.body += f'<br><br><b>Meeting Join Link:</b> <a href="{webinar_link}" target="_blank">Click here to join</a><br><b>Meeting Join Code:</b> {webinar_code}'
         if commit:
             event.save()
         return event
