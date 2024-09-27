@@ -14,7 +14,7 @@ from django.conf import settings
 
 from custom_slack_provider.slack import CustomSlackClient
 from hackathon.models import Hackathon
-from teams.tasks import remove_admin_from_channel
+#from teams.tasks import remove_admin_from_channel
 
 
 logger = logging.getLogger(__name__)
@@ -101,7 +101,8 @@ def create_new_hackathon_slack_channel(hackathon_id, channel_name):
         return
 
     if slack_site_settings.remove_admin_from_channel:
-        remove_admin_from_channel(users_to_invite, channel)
+#        remove_admin_from_channel(users_to_invite, channel)
+        pass
 
 
 @shared_task

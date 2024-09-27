@@ -65,7 +65,7 @@ class CustomSlackClient():
             self.leave_conversation_url, data=data)
 
         if not leave_channel.get('ok'):
-            print(('An error occurred adding users to the Private Slack Channel. '
+            print(('An error occurred leaving a Slack Channel. '
                    f'Error code: {leave_channel.get("error")}'))
 
         return leave_channel
