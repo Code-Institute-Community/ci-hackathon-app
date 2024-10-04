@@ -232,11 +232,6 @@ class EventForm(forms.ModelForm):
         label="Description",
         widget=forms.Textarea(attrs={'rows': 4, 'class': 'form-control'})
     )
-    isReadOnly = forms.BooleanField(
-        label="Read Only",
-        required=False,
-        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
-    )
     webinar_link = forms.URLField(
         label="Webinar Link",
         required=False,
@@ -244,13 +239,14 @@ class EventForm(forms.ModelForm):
     )
     webinar_code = forms.CharField(
         label="Webinar Join Code",
+        required=False,
         widget=forms.Textarea(attrs={'rows': 1, 'class': 'form-control'})
     )
     class Meta:
         model = Event
         fields = [
-            'title', 'start', 'end', 'body',
-            'isReadOnly', 'webinar_link',
+            'title', 'start', 'end', 'body', 
+            'webinar_link',
             'webinar_code',
         ]
 

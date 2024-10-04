@@ -593,24 +593,6 @@ def assign_mentors(request, hackathon_id):
                             f"{hack_mentors_formset.errors}"))
 
 
-def event_list(request, hackathon_id):
-    """ 
-    Get a list of events for the calendar from the events db for a specific hackathon
-    """
-    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
-    event_list_data = Event.objects.filter(hackathon=hackathon)
-    event_list = [{
-        'id': str(event.id),
-        'calendarId': event.calendar_id,
-        'title': event.title,
-        'body': event.body,
-        'start': event.start.strftime('%Y-%m-%dT%H:%M:%S'),
-        'end': event.end.strftime('%Y-%m-%dT%H:%M:%S'),
-        'webinar_link': event.webinar_link,
-    } for event in event_list_data]
-    return JsonResponse(event_list, safe=False, encoder=DjangoJSONEncoder)
-
-
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
 def hackathon_events(request, hackathon_id):

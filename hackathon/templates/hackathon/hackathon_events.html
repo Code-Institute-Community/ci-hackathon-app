@@ -12,7 +12,7 @@
                 <h5> {{ hackathon.display_name }} {{ event.title }}</h5>
                 <p>{{ event.start }}</p>
                 <p><a href="{{ event.webinar_link }}" target="_blank">Webinar Link </a></p>
-                <p>{{ event.body }}</p>
+                <p>{{ event.body | safe }}</p>
               </div>
               <div>
                 <a href="{% url 'hackathon:change_event' hackathon.id event.id %}" class="btn btn-primary btn-sm">Edit</a>
