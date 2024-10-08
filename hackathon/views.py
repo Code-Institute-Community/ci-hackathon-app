@@ -397,11 +397,6 @@ def view_hackathon(request, hackathon_id):
                               and settings.SLACK_ADMIN_TOKEN)
     matching_events = Event.objects.filter(hackathon_id=hackathon_id)
     has_events = matching_events.exists()
-    
-    
-    # Check if there are any matching events
-    has_events = matching_events.exists()
-
     context = {
         'has_events': has_events,
         'events': matching_events,
