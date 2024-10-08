@@ -77,7 +77,7 @@ def create_new_hackathon_slack_channel(hackathon_id, channel_name):
     logger.info(f"Channel with id {channel} created.")
 
     # Add admins to channel for administration purposes
-    users = [admin.username for admin in slack_site_settings.slack_admins.all()]
+    users = [admin.username for admin in hackathon.channel_admins.all()]
     # First need to add Slack Bot to then add users to channel
     response = admin_client.invite_users_to_slack_channel(
         users=settings.SLACK_BOT_ID,
