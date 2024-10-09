@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{{ hackathon.display_name }} - Webinars</h2>
+  {% if events %}
+    <div class="card">
+      <div class="card-body">
+        <ul class="list-group">
+          {% for event in events %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <h5> {{ hackathon.display_name }} {{ event.title }}</h5>
+                <p>{{ event.start }}</p>
+                <p><a href="{{ event.webinar_link }}" target="_blank">Webinar Link </a></p>
+                <p>{{ event.body | safe }}</p>
+              </div>
+              <div>
+                <a href="{% url 'hackathon:change_event' hackathon.id event.id %}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="{% url 'hackathon:delete_event' hackathon.id event.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this event?');">Delete</a>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% else %}
+    <p>No events found. <a href="{% url 'hackathon:change_event' hackathon.id %}">Add an event</a></p>
+  {% endif %}
+  <a href="{% url 'hackathon:change_event' hackathon.id %}" class="btn btn-primary mt-3">Add Event</a>
+{% endblock %}

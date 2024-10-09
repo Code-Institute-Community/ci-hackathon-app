@@ -2,7 +2,7 @@ from django import forms
 
 from accounts.models import Organisation
 from .models import Hackathon, HackProject, HackAward, HackTeam, \
-                    HackProjectScoreCategory, HackAwardCategory
+                    HackProjectScoreCategory, HackAwardCategory, Event
 from .lists import STATUS_TYPES_CHOICES
 
 
@@ -194,3 +194,71 @@ class HackAwardForm(forms.ModelForm):
             self.fields['winning_project'] = forms.ModelChoiceField(
                 queryset=hack_projects)
             self.fields['winning_project'].required = False
+
+
+class EventForm(forms.ModelForm):
+    """
+    Form to create or update an Event 
+    """
+    title = forms.CharField(
+        label="Webinar Title",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    start = forms.DateTimeField(
+        label="Start Time",
+        input_formats=['%d/%m/%Y %H:%M'],
+        widget=forms.DateTimeInput(
+            format='%d/%m/%Y %H:%M',
+            attrs={
+                'placeholder': 'DD/MM/YYYY HH:MM',
+                'autocomplete': 'off',
+                'class': 'form-control'
+            }
+        )
+    )
+    end = forms.DateTimeField(
+        label="End Time",
+        input_formats=['%d/%m/%Y %H:%M'],
+        widget=forms.DateTimeInput(
+            format='%d/%m/%Y %H:%M',
+            attrs={
+                'placeholder': 'DD/MM/YYYY HH:MM',
+                'autocomplete': 'off',
+                'class': 'form-control'
+            }
+        )
+    )
+    body = forms.CharField(
+        label="Description",
+        widget=forms.Textarea(attrs={'rows': 4, 'class': 'form-control'})
+    )
+    webinar_link = forms.URLField(
+        label="Webinar Link",
+        required=False,
+        widget=forms.URLInput(attrs={'class': 'form-control'})
+    )
+    webinar_code = forms.CharField(
+        label="Webinar Join Code",
+        required=False,
+        widget=forms.Textarea(attrs={'rows': 1, 'class': 'form-control'})
+    )
+    class Meta:
+        model = Event
+        fields = [
+            'title', 'start', 'end', 'body', 
+            'webinar_link',
+            'webinar_code',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(EventForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        event = super(EventForm, self).save(commit=False)
+        # Append f-string to the body field
+        webinar_link = self.cleaned_data.get('webinar_link', '')
+        webinar_code = self.cleaned_data.get('webinar_code', '')
+        event.body += f'<br><br><b>Meeting Join Link:</b> <a href="{webinar_link}" target="_blank">Click here to join</a><br><b>Meeting Join Code:</b> {webinar_code}'
+        if commit:
+            event.save()
+        return event

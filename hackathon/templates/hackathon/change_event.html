@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block css %}
+  <!-- XDSoft DateTimePicker -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+        integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
+{% endblock %}
+
+{% block content %}
+
+  <section class="h-100">
+    <div class="row mb-3">
+      <div class="col-12">
+        {% if event %}
+          <h1>Edit Event</h1>
+        {% else %}
+          <h1>Create Event</h1>
+        {% endif %}
+      </div>
+    </div>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-12">
+          {{ form.title|as_crispy_field }}
+        </div>
+        <div class="col-12" >
+          {{ form.start|as_crispy_field }}
+        </div>
+        <div class="col-12" id="webinar_end_date">
+          {{ form.end|as_crispy_field }}
+        </div>
+        <div class="col-12">
+          {{ form.body|as_crispy_field }}
+        </div>
+        <div class="col-12">
+          {{ form.webinar_link|as_crispy_field }}
+        </div>
+        <div class="col-12">
+          {{ form.webinar_code|as_crispy_field }}
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </form>
+  </section>
+
+{% endblock %}
+
+{% block js %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+          integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous">
+  </script>
+  <script src="{% static 'js/datetimepicker.js' %}"></script>
+{% endblock %}

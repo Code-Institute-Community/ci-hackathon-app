@@ -1,5 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
+import calendar
+import urllib
 
 from django.db import transaction, IntegrityError
 from django.forms import modelformset_factory
@@ -10,17 +12,25 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
+from django.utils.safestring import mark_safe
+from django.views.generic import ListView
+from django.http import JsonResponse
+from django.core.serializers.json import DjangoJSONEncoder
 
 from .models import Hackathon, HackTeam, HackProjectScore,\
-                    HackProjectScoreCategory, HackAwardCategory, HackAward
+                    HackProjectScoreCategory, HackAwardCategory, HackAward, Event
 from .forms import HackathonForm, ChangeHackathonStatusForm,\
-                   HackAwardForm, HackTeamForm
+                   HackAwardForm, HackTeamForm, EventForm
 from .lists import AWARD_CATEGORIES
 from .helpers import format_date, query_scores, create_judges_scores_table
 from .tasks import send_email_from_template
 
 from accounts.models import UserType
 from accounts.decorators import can_access, has_access_to_hackathon
+
+#Calendar for hackathon
+import calendar
+from django.shortcuts import render
 
 DEFAULT_SCORES = {
     'team_name': '',
@@ -30,6 +40,24 @@ DEFAULT_SCORES = {
 }
 
 logger = logging.getLogger(__name__)
+
+
+def create_google_calendar_link(title, start, end, location='', details=''):
+    """ Create a Google Calendar link for an event """
+    base_url = "https://www.google.com/calendar/render"
+    start = start.strftime('%Y%m%dT%H%M%S')
+    end = end.strftime('%Y%m%dT%H%M%S')
+
+    query = {
+        "action": "TEMPLATE",
+        "text": title,
+        "dates": f"{start}/{end}",
+        "location": location,
+        "details": details
+    }
+
+    url = f"{base_url}?{urllib.parse.urlencode(query)}"
+    return url
 
 
 def list_hackathons(request):
@@ -251,6 +279,9 @@ def create_hackathon(request):
         if form.is_valid():
             form.instance.created_by = request.user
             form.instance.organiser = request.user
+            hackathon_name = form.instance.display_name
+           
+            # Save the form
             form.save()
             # Taking the first 3 award categories and creating them for the
             # newly created hackathon.
@@ -361,14 +392,19 @@ def view_hackathon(request, hackathon_id):
     paginator = Paginator(teams, 3)
     page = request.GET.get('page')
     paged_teams = paginator.get_page(page)
+    events_count = Event.objects.filter(hackathon=hackathon).count()
     create_private_channel = (settings.SLACK_ENABLED and settings.SLACK_BOT_TOKEN
                               and settings.SLACK_ADMIN_TOKEN)
-
+    matching_events = Event.objects.filter(hackathon_id=hackathon_id)
+    has_events = matching_events.exists()
     context = {
+        'has_events': has_events,
+        'events': matching_events,
         'hackathon': hackathon,
         'teams': paged_teams,
         'change_status_form': ChangeHackathonStatusForm(instance=hackathon),
         'create_private_channel': create_private_channel,
+        'events_count': events_count,
     }
 
     return render(request, "hackathon/hackathon_view.html", context)
@@ -550,3 +586,69 @@ def assign_mentors(request, hackathon_id):
             messages.error(request,
                            (f"An unexpected error occurred: "
                             f"{hack_mentors_formset.errors}"))
+
+
+@login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+def hackathon_events(request, hackathon_id):
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    events = Event.objects.filter(hackathon=hackathon)
+
+    if not events.exists():
+        return redirect('hackathon:change_event', hackathon_id=hackathon_id)
+
+    return render(request, 'hackathon/hackathon_events.html', {
+        'hackathon': hackathon,
+        'events': events,
+    })
+
+
+@login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+def hackathon_events_endpoint(request, hackathon_id):
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    events = Event.objects.filter(hackathon=hackathon)
+    events_data = [{
+        'id': event.id,
+        'hackathon_id': event.hackathon.id,
+        'title': event.title,
+        'body': event.body,
+        'start': event.start.isoformat(),
+        'end': event.end.isoformat(),
+        'webinar_link': event.webinar_link,
+    } for event in events]
+    return JsonResponse(events_data, safe=False)
+
+
+@login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+def change_event(request, hackathon_id, event_id=None):
+    hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    event = get_object_or_404(Event, pk=event_id) if event_id else None
+
+    if request.method == 'POST':
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.hackathon = hackathon
+            event.save()
+            messages.success(request, "Event saved successfully!")
+            return redirect(reverse('hackathon:hackathon_events', kwargs={'hackathon_id': hackathon_id}))
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = EventForm(instance=event)
+
+    return render(request, 'hackathon/change_event.html', {
+        'hackathon': hackathon,
+        'form': form,
+        'event': event,
+    })
+
+@login_required
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+def delete_event(request, hackathon_id, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    event.delete()
+    messages.success(request, "Event deleted successfully!")
+    return redirect('hackathon:hackathon_events', hackathon_id=hackathon_id)

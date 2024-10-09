@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 {% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'hackathon/css/hackathon.css' %}"/>
+    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css">
+{% endblock %}
 {% load custom_tags %}
 {% load account_tags %}
 
 {% block content %}
-    <!-- Render Hackathon details & Registration button -->
+
+
     <div class="row">
         <div class="col-md-12 col-lg-4">
 
@@ -50,6 +55,10 @@
                                 {% if request.user.user_type|is_types:superuser_types %}
                                 <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/update">
                                     <i class="fas fa-pen mr-2"></i>Edit Hackathon
+                                </a>
+                                <a role="button" class="dropdown-item" href="{% url 'hackathon:hackathon_events' hackathon.id %}">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    {% if hackathon.events.first %}Edit{% else %}Add{% endif %} Events
                                 </a>
                                 <a role="button" class="dropdown-item" href="/hackadmin/{{hackathon.id}}/participants/">
                                     <i class="fas fa-user-cog mr-2"></i>View Hackathon Stats
@@ -128,7 +137,16 @@
                     {{ hackathon.description|safe|linebreaks }}
                 </div>
             </div>
-
+            <!--  Calender is rendered here  --> 
+            {% if hackathon.events.first %}
+            <div id="calendar-container">
+                <div id="calendar" style="height: 600px;"></div>
+                <div class="col d-flex justify-content-center">
+                    <button id="prev-button"><</button>
+                    <button id="next-button">></button>
+                </div>
+            </div>
+            {% endif %}
             <h1 class="page-title" id="teams">Teams:</h1>
 
             {% if request.user.user_type|is_types:authorised_types or hackathon.status in 'hack_in_progress, judging, finished' %}
@@ -182,6 +200,7 @@
                 </div>
                 {% endif %}
             </div>
+            
             <div class="row">
                 <div class="col-sm-12">
                     {% include 'hackathon/includes/paginator.html' with page_obj=teams %}
@@ -196,10 +215,73 @@
             {% endif %}
 
         </div>
-    </div>
-
+    </div>    
+      
+    <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var hackathonId = "{{ hackathon.id }}";
+            var calendarContainer = document.getElementById('calendar-container');
+            if (calendarContainer) {
+                var calendar = new tui.Calendar(document.getElementById('calendar'), {
+                    week: {
+                        startDayOfWeek: (new Date()).getDay(),
+                        eventView: ['time'],
+                        taskView: false
+                    },
+                    scheduleView: ['time'],
+                    useCreationPopup: false,
+                    useDetailPopup: true,
+                });
+    
+                calendar.on('clickSchedule', function (event) {
+                    var schedule = event.schedule;
+                    calendar.setPopupDetail({
+                        title: schedule.title,
+                        location: schedule.location,
+                        start: schedule.start,
+                        end: schedule.end,
+                        isAllDay: schedule.isAllDay,
+                        state: schedule.state
+                    });
+                });
+    
+                // API call to the events_endpoint to fetch events for the specific hackathon
+                fetch(`/hackathon/${hackathonId}/events_endpoint/`)
+                    .then(response => response.json())
+                    .then(data => {
+                            data.forEach(event => { // Iterates through the events db and creates them on the calendar
+                                calendar.createEvents([{
+                                    id: event.id,
+                                    title: event.title,
+                                    body: event.body,
+                                    category: 'time',
+                                    start: new Date(event.start),
+                                    end: new Date(event.end),
+                                    backgroundColor: '#f05323'
+                                    
+                                }]);
+                            });
+                    })
+                    .catch(err => console.error('Error loading events:', err)); // Logs error to console if events cannot be loaded
+    
+                // Get the buttons
+                var prevButton = document.getElementById('prev-button');
+                var nextButton = document.getElementById('next-button');
+    
+                // Add event listeners to the buttons
+                prevButton.addEventListener('click', function () {
+                    calendar.prev();
+                });
+    
+                nextButton.addEventListener('click', function () {
+                    calendar.next();
+                });
+            }
+        });
+    </script>
+        
     {% endwith %}
-
     {% include 'upload_image.html' %}
     {% include 'hackathon/includes/change_status.html' %}
 {% endblock %}

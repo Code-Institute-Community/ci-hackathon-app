@@ -3,6 +3,7 @@ from django.db import models
 from accounts.models import CustomUser as User
 from accounts.models import Organisation
 from .lists import STATUS_TYPES_CHOICES
+from datetime import timedelta
 
 # Optional fields are ony set to deal with object deletion issues.
 # If this isn't a problem, they can all be changed to required fields.
@@ -296,3 +297,28 @@ class HackProjectScoreCategory(models.Model):
 
     class Meta:
         verbose_name_plural = "Hack project score categories"
+
+
+class Event(models.Model):
+    """
+    Model representing an event in the calendar.
+    """
+    hackathon = models.ForeignKey('Hackathon', on_delete=models.CASCADE, related_name='events')
+    title = models.CharField(max_length=200)
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    body = models.TextField(max_length=500, default="")
+    webinar_link = models.URLField(blank=True, null=True)
+    webinar_code = models.CharField(max_length=50, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        """
+        If the end time is not set, it will be set to start time + 1 hour.
+        
+        """
+        if not self.end:
+            self.end = self.start + timedelta(hours=1)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title

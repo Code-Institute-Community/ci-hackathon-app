@@ -32,4 +32,31 @@ $(document).ready(function () {
     mask: true,
     dayOfWeekStart: 1,
   });
+
+  $('#id_start').datetimepicker({
+    format: 'd/m/Y H:i',
+    lazyInit: true,
+    step: 30,
+    minDate: defaultStartDate,
+    defaultDate: defaultStartDate,
+    defaultTime: '08:00',
+    minTime: '08:00',
+    maxTime: '18:30',
+    yearStart: today.getFullYear(),
+    mask: true,
+    dayOfWeekStart: 1,
+  });
+  $('#id_end').datetimepicker({
+    format: 'd/m/Y H:i',
+    lazyInit: true,
+    step: 30,
+    minDate: defaultStartDate,
+    defaultDate: defaultStartDate,
+    defaultTime: '08:00',
+    minTime: '08:00',
+    maxTime: '18:30',
+    yearStart: today.getFullYear(),
+    mask: true,
+    dayOfWeekStart: 1,
+  });
 });
