@@ -69,7 +69,7 @@ class SlackClientTest(TestCase):
 
     @patch('custom_slack_provider.slack.CustomSlackClient._make_slack_get_request')  # noqa: 501
     def test_get_identity(self, _make_slack_get_request):
-        _make_slack_get_request.return_value = {'user': {'id': 1}}
+        _make_slack_get_request.return_value = {'user': {'id': 1}, 'ok': True}
         client = CustomSlackClient(self.token)
         response = client.get_identity()
         self.assertEqual(response['user']['id'], 1)
@@ -84,7 +84,7 @@ class SlackClientTest(TestCase):
             userid = client._extract_userid_from_username(invalid_username)
         except SlackException as e:
             self.assertTrue(isinstance(e, SlackException))
-            self.assertEquals(e.message, 'Error adding user to channel')
+            self.assertEquals(e.message, 'Error adding user bob@bob.com to channel')
 
     @patch('custom_slack_provider.slack.CustomSlackClient._make_slack_post_request')  # noqa: 501
     def test_invite_users_to_slack_channel(self, _make_slack_post_request):

@@ -24,11 +24,12 @@ from .forms import HackathonForm, ChangeHackathonStatusForm,\
 from .lists import AWARD_CATEGORIES
 from .helpers import format_date, query_scores, create_judges_scores_table
 from .tasks import send_email_from_template
-from .tasks import create_new_hackathon_slack_channel
+from .tasks import create_new_hackathon_slack_channel, \
+                   invite_user_to_hackathon_slack_channel, \
+                   kick_user_from_hackathon_slack_channel
 
 from accounts.models import UserType
 from accounts.decorators import can_access, has_access_to_hackathon
-from custom_slack_provider.slack import CustomSlackClient
 
 #Calendar for hackathon
 import calendar
@@ -467,7 +468,6 @@ def delete_hackathon(request, hackathon_id):
 @has_access_to_hackathon()
 def enroll_toggle(request):
     if request.method == "POST":
-        bot_client = CustomSlackClient(settings.SLACK_BOT_TOKEN)
         judge_user_types = [
             UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
             UserType.FACILITATOR_JUDGE, UserType.PARTNER_ADMIN,
@@ -482,9 +482,7 @@ def enroll_toggle(request):
         elif request.user in hackathon.participants.all():
             hackathon.participants.remove(request.user)
             if hackathon.channel_url:
-                channel = hackathon.channel_url.split('/')[-1]
-                slack_user_id = request.user.username.split('_')[0]
-                bot_client.kick_user_from_slack_channel(slack_user_id, channel)
+                kick_user_from_hackathon_slack_channel.apply_async(args=[hackathon.id, request.user.id])
             send_email_from_template.apply_async(args=[request.user.email, request.user.first_name, hackathon.display_name, 'withdraw_participant'])
             messages.success(request,
                              "You have withdrawn from this Hackaton.")
@@ -501,9 +499,7 @@ def enroll_toggle(request):
                     'hackathon_id': request.POST.get("hackathon-id")}))
             hackathon.participants.add(request.user)
             if hackathon.channel_url:
-                channel = hackathon.channel_url.split('/')[-1]
-                slack_user_id = request.user.username.split('_')[0]
-                bot_client.invite_users_to_slack_channel(slack_user_id, channel)
+                invite_user_to_hackathon_slack_channel.apply_async(args=[hackathon.id, request.user.id])
             send_email_from_template.apply_async(args=[request.user.email, request.user.first_name, hackathon.display_name, 'enroll_participant'])
             messages.success(request, "You have enrolled successfully.")
 

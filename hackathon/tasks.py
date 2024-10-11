@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from smtplib import SMTPException
 
+from accounts.models import CustomUser as User
 from accounts.models import EmailTemplate, SlackSiteSettings
 
 from celery import shared_task
@@ -60,6 +61,10 @@ def create_new_hackathon_slack_channel(hackathon_id, channel_name):
          f"{hackathon.display_name} in Slack Workspace "
          f"{settings.SLACK_WORKSPACE}({settings.SLACK_TEAM_ID})"))
 
+    # Use a workspace admin's User Token to create the channel
+    # This is required because a bot is seen as a Slack member and
+    # if a workspace is set to only allow admins to create channels
+    # creating the channel with a Bot Token will give an error
     admin_client = CustomSlackClient(settings.SLACK_ADMIN_TOKEN)
     channel_response = admin_client.create_slack_channel(
         team_id=settings.SLACK_TEAM_ID,
@@ -67,49 +72,65 @@ def create_new_hackathon_slack_channel(hackathon_id, channel_name):
         is_private=True,
     )
 
-    if not channel_response['ok']:
-        logger.error(channel_response['error'])
-
     channel = channel_response.get('channel', {}).get('id')
     channel_url = f'https://{settings.SLACK_WORKSPACE}.slack.com/archives/{channel}'
     hackathon.channel_url = channel_url
     hackathon.save()
     logger.info(f"Channel with id {channel} created.")
-
+    
     # Add admins to channel for administration purposes
-    users = [admin.username for admin in hackathon.channel_admins.all()]
-    # First need to add Slack Bot to then add users to channel
-    response = admin_client.invite_users_to_slack_channel(
-        users=settings.SLACK_BOT_ID,
-        channel=channel,
-    )
-    if not response['ok']:
-        logger.error(response['error'])
-        return
-
-    bot_client = CustomSlackClient(settings.SLACK_BOT_TOKEN)
+    admin_usernames = [admin.username for admin in hackathon.channel_admins.all()]
     pattern = re.compile(r'^U[a-zA-Z0-9]*[_]T[a-zA-Z0-9]*$')
-    users_to_invite = ','.join([user.split('_')[0]
-                                for user in users if pattern.match(user)])
-    bot_client.invite_users_to_slack_channel(
-        users=users_to_invite,
+    admin_user_ids = ','.join([username.split('_')[0]
+                               for username in admin_usernames
+                               if pattern.match(username)])
+    admin_client.invite_users_to_slack_channel(
+        users=admin_user_ids,
         channel=channel,
     )
-
-    if not response['ok']:
-        logger.error(response['error'])
-        return
-
-    if slack_site_settings.remove_admin_from_channel:
-#        remove_admin_from_channel(users_to_invite, channel)
-        pass
 
 
 @shared_task
 def invite_user_to_hackathon_slack_channel(hackathon_id, user_id):
-    bot_client = CustomSlackClient(settings.SLACK_BOT_TOKEN)
+    slack_site_settings = SlackSiteSettings.objects.first()
+    if (not (settings.SLACK_ENABLED or settings.SLACK_BOT_TOKEN or settings.SLACK_ADMIN_TOKEN
+             or settings.SLACK_WORKSPACE or not slack_site_settings)):
+        logger.info("This feature is not enabeled.")
+        return
+    
+    hackathon = Hackathon.objects.get(id=hackathon_id)
+    user = User.objects.get(id=user_id)
+    logger.info(f"Inviting user {user_id} to hackathon {hackathon_id}'s slack channel")
+
+    admin_client = CustomSlackClient(settings.SLACK_ADMIN_TOKEN)
+    channel = hackathon.channel_url.split('/')[-1]
+    pattern = re.compile(r'^U[a-zA-Z0-9]*[_]T[a-zA-Z0-9]*$')
+    slack_user_id = admin_client._extract_userid_from_username(user.username) 
+    admin_client.invite_users_to_slack_channel(
+            users=[slack_user_id],
+            channel=channel
+    )
+    logger.info(f"Successfully invited user {user_id} to hackathon {hackathon_id}'s slack channel")   
 
 
 @shared_task
-def kick_user_to_hackathon_slack_channel(user, channel):
-    pass
+def kick_user_from_hackathon_slack_channel(hackathon_id, user_id):
+    slack_site_settings = SlackSiteSettings.objects.first()
+    if (not (settings.SLACK_ENABLED or settings.SLACK_BOT_TOKEN or settings.SLACK_ADMIN_TOKEN
+             or settings.SLACK_WORKSPACE or not slack_site_settings)):
+        logger.info("This feature is not enabeled.")
+        return
+        
+    hackathon = Hackathon.objects.get(id=hackathon_id)
+    user = User.objects.get(id=user_id)
+    logger.info(f"Kicking user {user_id} to hackathon {hackathon_id}'s slack channel")
+    admin_client = CustomSlackClient(settings.SLACK_ADMIN_TOKEN)
+    channel = hackathon.channel_url.split('/')[-1]
+    pattern = re.compile(r'^U[a-zA-Z0-9]*[_]T[a-zA-Z0-9]*$')
+    slack_user_id = admin_client._extract_userid_from_username(user.username)
+    kicked = admin_client.kick_user_from_slack_channel(
+            user=slack_user_id,
+            channel=channel
+    )
+    logger.info(f"Successfully kicked user {user_id} to hackathon {hackathon_id}'s slack channel")
+

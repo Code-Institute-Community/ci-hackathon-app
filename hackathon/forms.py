@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import Q
 from easy_select2 import Select2Multiple
 
 from accounts.models import Organisation
@@ -125,7 +126,7 @@ class HackathonForm(forms.ModelForm):
     channel_admins = forms.ModelMultipleChoiceField(
         label="Channel Admins",
         required=False,
-        queryset=User.objects.all(),
+        queryset=User.objects.filter(Q(is_superuser=True) | Q(is_staff=True)),
         widget=Select2Multiple(select2attrs={'width': '100%'})
     )
 

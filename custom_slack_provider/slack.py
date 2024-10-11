@@ -28,6 +28,7 @@ class CustomSlackClient():
     user_detail_url = 'https://slack.com/api/users.info'
     create_conversation_url = 'https://slack.com/api/conversations.create'
     invite_conversation_url = 'https://slack.com/api/conversations.invite'
+    kick_conversation_url = 'https://slack.com/api/conversations.kick'
     leave_conversation_url = 'https://slack.com/api/conversations.leave'
 
     def __init__(self, token):
@@ -55,7 +56,10 @@ class CustomSlackClient():
         return resp.json()
 
     def get_identity(self):
-        return self._make_slack_get_request(self.identity_url)
+        identity = self._make_slack_get_request(self.identity_url)
+        if not identity.get('ok'):
+            raise SlackException(identity.get("error"))
+        return identity
 
     def leave_channel(self, channel):
         data = {
@@ -65,7 +69,7 @@ class CustomSlackClient():
             self.leave_conversation_url, data=data)
 
         if not leave_channel.get('ok'):
-            print(('An error occurred leaving a Slack Channel. '
+            logger.error(('An error occurred leaving a Slack Channel. '
                    f'Error code: {leave_channel.get("error")}'))
 
         return leave_channel
@@ -107,7 +111,7 @@ class CustomSlackClient():
         when Slack is enabled and the account was created with a valid userid
         schema: [SLACK_USER_ID]_[WORKSPACE_TEAM_ID]"""
         if not re.match(r'[A-Z0-9]*[_]T[A-Z0-9]*', username):
-            raise SlackException('Error adding user to channel')
+            raise SlackException('Error adding user %s to channel' % username)
         return username.split('_')[0]
 
     def invite_users_to_slack_channel(self, users, channel):
@@ -133,7 +137,7 @@ class CustomSlackClient():
             "channel": channel,
         }
         user_added = self._make_slack_post_request(
-            self.invite_conversation_url, data=data)
+            self.kick_conversation_url, data=data)
 
         if not user_added.get('ok'):
             return {

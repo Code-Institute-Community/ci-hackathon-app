@@ -193,7 +193,9 @@ class CustomUser(AbstractUser):
             else:
                 # A non-specified group
                 return None
-
+    @property
+    def is_admin(self):
+        return self.user_type in [UserType.SUPERUSER, UserType.STAFF, UserType.PARTNER_ADMIN, UserType.FACILITATOR_ADMIN]
 
 class SlackSiteSettings(SingletonModel):
     """ Model to set how the showcase should be constructed"""
