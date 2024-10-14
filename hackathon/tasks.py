@@ -15,7 +15,6 @@ from django.conf import settings
 
 from custom_slack_provider.slack import CustomSlackClient
 from hackathon.models import Hackathon
-#from teams.tasks import remove_admin_from_channel
 
 
 logger = logging.getLogger(__name__)
