@@ -79,7 +79,10 @@ def create_new_hackathon_slack_channel(hackathon_id, channel_name):
     logger.info(f"Channel with id {channel} created.")
     
     # Add admins to channel for administration purposes
-    admin_usernames = [admin.username for admin in hackathon.channel_admins.all()]
+    slack_admins = (hackathon.channel_admins.all()
+                    if slack_site_settings.use_hackathon_slack_admins
+                    else slack_site_settings.slack_admins.all())
+    admin_usernames = [admin.username for admin in slack_admins]
     pattern = re.compile(r'^U[a-zA-Z0-9]*[_]T[a-zA-Z0-9]*$')
     admin_user_ids = ','.join([username.split('_')[0]
                                for username in admin_usernames

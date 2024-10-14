@@ -211,6 +211,11 @@ class SlackSiteSettings(SingletonModel):
                    "be added to any new channels. If this is ticked, the user " 
                    "will be removed from private team channels if they are not "
                    "part of the team, facilitator or the slack admins"))
+    use_hackathon_slack_admins = models.BooleanField(
+        default=False,
+        help_text=("If ticked, the global Slack Admins will be ignored "
+                   "and the slack admins who are selected when creating "
+                   "the hackathon will be used instead"))
 
     def __str__(self):
         return "Slack Settings"

@@ -23,7 +23,6 @@ from teams.helpers import (
     create_teams_in_view, update_team_participants,
     calculate_timezone_offset)
 from teams.forms import HackProjectForm, EditTeamName
-# from teams.tasks import remove_admin_from_channel
 
 SLACK_CHANNEL_ENDPOINT = 'https://slack.com/api/conversations.create'
 SLACK_CHANNEL_INVITE_ENDPOINT = 'https://slack.com/api/conversations.invite'
@@ -47,8 +46,13 @@ def change_teams(request, hackathon_id):
         team_size = hackathon.team_size
         team_sizes = sorted(choose_team_sizes(participants, team_size))
         if len(team_sizes) == 0:
-            return render(request, 'change_teams.html',
-                          {'num_participants': len(participants)})
+            return render(request, 'change_teams.html', {
+                'num_participants': len(participants),
+                'hackathon_id': hackathon_id,
+                'teams': [],
+                'leftover_participants': [],
+                'edit': edit,
+            })
         grouped_participants, hackathon_level = group_participants(
             participants, len(team_sizes))
         team_levels = sorted(choose_team_levels(len(team_sizes), hackathon_level))
@@ -279,7 +283,10 @@ def create_private_channel(request, team_id):
         users.append(team.mentor.username)
 
     # Add admins to channel for administration purposes
-    for admin in slack_site_settings.slack_admins.all():
+    slack_admins = (team.hackathon.channel_admins.all()
+                    if slack_site_settings.use_hackathon_slack_admins
+                    else slack_site_settings.slack_admins.all())
+    for admin in slack_admins:
         users.append(admin.username)
     # First need to add Slack Bot to then add users to channel
     response = admin_client.invite_users_to_slack_channel(
@@ -311,10 +318,9 @@ def create_private_channel(request, team_id):
                         f'Please add the missing users manually.'))
     else:
         messages.success(request, 'Private Slack Channel successfully created')
-    
+
     if slack_site_settings.remove_admin_from_channel:
-#        remove_admin_from_channel.apply_async(args=[users_to_invite, channel])
-        pass
+        admin_client.leave_channel(channel)
 
     return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
