@@ -232,23 +232,3 @@ def calculate_timezone_offset(timezone, timezone_offset):
     tz = pytz.timezone(timezone)
     offset = (datetime.now(tz).utcoffset().total_seconds()/60/60)
     return offset - timezone_offset
-
-
-def invite_users_to_slack_channel(endpoint, headers, params):
-    response = requests.post(endpoint, params=params, headers=headers)
-    if not response.status_code == 200:
-        return {
-            'ok': False,
-            'error': ('An unexpected error occurred creating the '
-                      'Private Slack Channel.')
-        }
-    
-    response = response.json()
-    if not response.get('ok'):
-        return {
-            'ok': False,
-            'error': ('An error occurred creating the Private Slack Channel. '
-                      f'Error code: {response.get("error")}')
-        }
-    
-    return {'ok': True, 'response': response}

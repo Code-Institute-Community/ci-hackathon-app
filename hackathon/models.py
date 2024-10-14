@@ -87,6 +87,14 @@ class Hackathon(models.Model):
         blank=True,
         help_text=("Link to the Google Form for registrations.")
     )
+    channel_name = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text=("Only use lowercase and dash ('-') for spaces"))
+    channel_url = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text=("Url"))
+    channel_admins = models.ManyToManyField(
+        User, blank=True, related_name="administered_channels")
 
     def __str__(self):
         return self.display_name

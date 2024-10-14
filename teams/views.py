@@ -14,13 +14,14 @@ from accounts.decorators import can_access, has_access_to_team
 from accounts.models import UserType, SlackSiteSettings
 from accounts.lists import TIMEZONE_CHOICES
 from competencies.models import Competency
+from custom_slack_provider.slack import CustomSlackClient
 from hackathon.models import Hackathon, HackTeam, HackProject
 from teams.helpers import (
     choose_team_sizes, group_participants,
     choose_team_levels, find_all_combinations,
     distribute_participants_to_teams,
     create_teams_in_view, update_team_participants,
-    calculate_timezone_offset, invite_users_to_slack_channel)
+    calculate_timezone_offset)
 from teams.forms import HackProjectForm, EditTeamName
 
 SLACK_CHANNEL_ENDPOINT = 'https://slack.com/api/conversations.create'
@@ -45,8 +46,13 @@ def change_teams(request, hackathon_id):
         team_size = hackathon.team_size
         team_sizes = sorted(choose_team_sizes(participants, team_size))
         if len(team_sizes) == 0:
-            return render(request, 'change_teams.html',
-                          {'num_participants': len(participants)})
+            return render(request, 'change_teams.html', {
+                'num_participants': len(participants),
+                'hackathon_id': hackathon_id,
+                'teams': [],
+                'leftover_participants': [],
+                'edit': edit,
+            })
         grouped_participants, hackathon_level = group_participants(
             participants, len(team_sizes))
         team_levels = sorted(choose_team_levels(len(team_sizes), hackathon_level))
@@ -245,39 +251,24 @@ def create_private_channel(request, team_id):
         messages.error(request, 'This feature is currently not enabled.')
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
+    admin_client = CustomSlackClient(settings.SLACK_ADMIN_TOKEN)
     # Create new channel
-    date_str = datetime.now().strftime('%y%m')
+    date_str = datetime.now().strftime('%b-%y').lower()
     team_name = re.sub('[^A-Za-z0-9]+', '', team.display_name.lower())
-    channel_name = f'{date_str}-hackathon-{team_name}'
-    params = {
-        'team_id': settings.SLACK_TEAM_ID,
-        'name': channel_name,
-        'is_private': True,
-    }
+    channel_name = f'{date_str}-hackathon-{team.hackathon.id}-{team_name}'
     # Cannot use Bot Token to create a channel if workspace settings
     # specify only Admins and Owners can create channels 
-    headers = {'Authorization': f'Bearer {settings.SLACK_ADMIN_TOKEN}'}
-    create_response = requests.get(SLACK_CHANNEL_ENDPOINT, params=params,
-                                   headers=headers)
-    if not create_response.status_code == 200:
-        messages.error(request, (f'An error occurred creating the Private Slack Channel. '
-                                 f'Error code: {create_response.get("error")}'))
-        return redirect(reverse('view_team', kwargs={'team_id': team_id}))
+    channel_response = admin_client.create_slack_channel(
+        team_id=settings.SLACK_TEAM_ID,
+        channel_name=channel_name,
+        is_private=True,
+    )
     
-    create_response = create_response.json()
-    if not create_response.get('ok'):
-        if create_response.get('error') == 'name_taken':
-            error_msg = (f'An error occurred creating the Private Slack Channel. '
-                         f'A channel with the name "{channel_name}" already '
-                         f'exists. Please change your team name and try again '
-                         f'or contact an administrator')
-        else:
-            error_msg = (f'An error occurred creating the Private Slack Channel. '
-                         f'Error code: {create_response.get("error")}')
-        messages.error(request, error_msg)
+    if not channel_response['ok']:
+        messages.error(request, channel_response['error'])
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
-    
-    channel = create_response.get('channel', {}).get('id')
+
+    channel = channel_response.get('channel', {}).get('id')
     communication_channel = (f'https://{settings.SLACK_WORKSPACE}.slack.com/'
                              f'app_redirect?channel={channel}')
     team.communication_channel = communication_channel
@@ -292,33 +283,28 @@ def create_private_channel(request, team_id):
         users.append(team.mentor.username)
 
     # Add admins to channel for administration purposes
-    for admin in slack_site_settings.slack_admins.all():
+    slack_admins = (team.hackathon.channel_admins.all()
+                    if slack_site_settings.use_hackathon_slack_admins
+                    else slack_site_settings.slack_admins.all())
+    for admin in slack_admins:
         users.append(admin.username)
-    
     # First need to add Slack Bot to then add users to channel
-    invite_bot_params = {
-        'channel': channel,
-        'users': settings.SLACK_BOT_ID,
-    }
-    response = invite_users_to_slack_channel(
-        endpoint=SLACK_CHANNEL_INVITE_ENDPOINT,
-        headers=headers,
-        params=invite_bot_params)
+    response = admin_client.invite_users_to_slack_channel(
+        users=settings.SLACK_BOT_ID,
+        channel=channel,
+    )
     
     if not response['ok']:
         messages.error(request, response['error'])
         return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 
-    invite_team_params = {
-        'channel': channel,
-        'users': ','.join([user.split('_')[0]
-                           for user in users if pattern.match(user)]),
-    }
-    headers = {'Authorization': f'Bearer {settings.SLACK_BOT_TOKEN}'}
-    response = invite_users_to_slack_channel(
-        endpoint=SLACK_CHANNEL_INVITE_ENDPOINT,
-        headers=headers,
-        params=invite_team_params)
+    bot_client = CustomSlackClient(settings.SLACK_BOT_TOKEN)
+    users_to_invite = ','.join([user.split('_')[0]
+                                for user in users if pattern.match(user)])
+    bot_client.invite_users_to_slack_channel(
+        users=users_to_invite,
+        channel=channel,
+    )
     
     if not response['ok']:
         messages.error(request, response['error'])
@@ -332,6 +318,9 @@ def create_private_channel(request, team_id):
                         f'Please add the missing users manually.'))
     else:
         messages.success(request, 'Private Slack Channel successfully created')
+
+    if slack_site_settings.remove_admin_from_channel:
+        admin_client.leave_channel(channel)
 
     return redirect(reverse('view_team', kwargs={'team_id': team_id}))
 

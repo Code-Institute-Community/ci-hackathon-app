@@ -35,8 +35,10 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "crispy_forms",
+    "django_celery_beat",
     "django_celery_results",
+    "crispy_forms",
+    "easy_select2",
 
     # custom apps
     "accounts",
@@ -165,6 +167,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Celery
+CELERY_IMPORTS = ("hackathon.tasks", )
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', 'redis://redis:6379')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379')  # noqa: E501
 CELERY_ACCEPT_CONTENT = os.environ.get('CELERY_ACCEPT_CONTENT', 'application/json').split(',')  # noqa: E501
@@ -222,3 +225,4 @@ if os.environ.get('SENTRY_DSN'):
         dsn=os.environ.get('SENTRY_DSN'),
         integrations=[DjangoIntegration()]
     )
+

@@ -53,11 +53,11 @@ class EditProfileForm(forms.ModelForm):
     full_name = forms.CharField(
         max_length=30,
         widget=forms.TextInput(attrs={'placeholder': 'Full Name'}),
-        label='')
+        label='Name')
     slack_display_name = forms.CharField(
         max_length=30,
         widget=forms.TextInput(attrs={'placeholder': 'Slack Display Name'}),
-        label='')
+        label='Slack Display Name')
     current_lms_module = forms.CharField(
         widget=forms.Select(choices=LMS_MODULES_CHOICES),
         label="Where are you currently in the programme?"

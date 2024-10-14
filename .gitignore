@@ -17,3 +17,6 @@ staticfiles
 data/
 todo.txt
 node_modules/
+*.swp
+*.swo
+*.swn

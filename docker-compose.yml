@@ -1,5 +1,5 @@
 services:
-  hackathon-app:
+  hackathon-app: &hackathon-app-main
     image: hackathon-app
     volumes:
       - ./staticfiles/:/hackathon-app/staticfiles/
@@ -26,6 +26,7 @@ services:
     environment:
       - ENV_FILE=/hackathon-app/.env
       - DEVELOPMENT=1
+      - STATIC_URL=https://codeinstitute-webpublic.s3.eu-west-1.amazonaws.com/hackathon_staticfiles/1.62-a/
     entrypoint: ['python3', 'manage.py', 'runserver', '0.0.0.0:8000']
     ports:
       - "8000:8000"
@@ -37,10 +38,29 @@ services:
     environment:
       - ENV_FILE=/hackathon-app/.env
       - DEVELOPMENT=1
+      - STATIC_URL=https://codeinstitute-webpublic.s3.eu-west-1.amazonaws.com/hackathon_staticfiles/1.62-a/
     entrypoint: ["celery", "-A", "main", "worker", "-l",  "info"]
     volumes:
+      - ./staticfiles/:/hackathon-app/staticfiles/
       - ./data/:/hackathon-app/data/
       - ./.env:/hackathon-app/.env
+
+      # code
+      - ./accounts/:/hackathon-app/accounts/
+      - ./competencies/:/hackathon-app/competencies/
+      - ./custom_slack_provider/:/hackathon-app/custom_slack_provider/
+      - ./hackadmin/:/hackathon-app/hackadmin/
+      - ./hackathon/:/hackathon-app/hackathon/
+      - ./home/:/hackathon-app/home/
+      - ./images/:/hackathon-app/images/
+      - ./main/:/hackathon-app/main/
+      - ./profiles/:/hackathon-app/profiles/
+      - ./resources/:/hackathon-app/resources/
+      - ./showcase/:/hackathon-app/showcase/
+      - ./submissions/:/hackathon-app/submissions/
+      - ./teams/:/hackathon-app/teams/
+      - ./templates/:/hackathon-app/templates/
+      - ./static/:/hackathon-app/static/
 
   mysql:
     image: docker.io/mysql:5.6.36
@@ -58,7 +78,9 @@ services:
   smtp:
     image: mailhog/mailhog:v1.0.1
     ports:
-      - "8026:8025"
+      - "8025:8025"
 
   redis:
-    image: redis
+    image: redis:6.2.4
+    ports:
+     - "6379:6379"

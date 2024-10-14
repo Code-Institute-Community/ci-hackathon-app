@@ -3,11 +3,11 @@ import logging
 import calendar
 import urllib
 
+from django.conf import settings
 from django.db import transaction, IntegrityError
 from django.forms import modelformset_factory
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -24,6 +24,9 @@ from .forms import HackathonForm, ChangeHackathonStatusForm,\
 from .lists import AWARD_CATEGORIES
 from .helpers import format_date, query_scores, create_judges_scores_table
 from .tasks import send_email_from_template
+from .tasks import create_new_hackathon_slack_channel, \
+                   invite_user_to_hackathon_slack_channel, \
+                   kick_user_from_hackathon_slack_channel
 
 from accounts.models import UserType
 from accounts.decorators import can_access, has_access_to_hackathon
@@ -254,7 +257,8 @@ def create_hackathon(request):
             'score_categories': HackProjectScoreCategory.objects.filter(
                 is_active=True)[:5]})
 
-        return render(request, template, {"form": form})
+        return render(request, template, {
+            "form": form, "slack_enabled": settings.SLACK_ENABLED})
 
     else:
         form = HackathonForm(request.POST)
@@ -282,7 +286,15 @@ def create_hackathon(request):
             hackathon_name = form.instance.display_name
            
             # Save the form
-            form.save()
+            hackathon = form.save()
+
+            # Create a new slack channel for hackathon
+            # if the channel_name is filled in
+            if hackathon.channel_name:
+                create_new_hackathon_slack_channel.apply_async(kwargs={
+                    'channel_name': hackathon.channel_name,
+                    'hackathon_id': hackathon.id
+                })
             # Taking the first 3 award categories and creating them for the
             # newly created hackathon.
             hack_award_categories = HackAwardCategory.objects.filter(
@@ -309,12 +321,14 @@ def create_hackathon(request):
 def update_hackathon(request, hackathon_id):
     """ Allow users to edit hackathon event """
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
+    channel_name = hackathon.channel_name
     if request.method == 'GET':
         form = HackathonForm(instance=hackathon)
 
         context = {
             "form": form,
             "hackathon_id": hackathon_id,
+            "slack_enabled": settings.SLACK_ENABLED,
         }
 
         return render(request, "hackathon/create-event.html", context)
@@ -322,7 +336,6 @@ def update_hackathon(request, hackathon_id):
     else:
         form = HackathonForm(request.POST, instance=hackathon)
         # Convert start and end date strings to datetime and validate
-
         start_date = format_date(request.POST.get('start_date'))
         end_date = format_date(request.POST.get('end_date'))
         now = datetime.now()
@@ -345,6 +358,17 @@ def update_hackathon(request, hackathon_id):
         if form.is_valid():
             form.instance.updated = now
             form.save()
+
+            if not request.POST.get('channel_name'):
+                hackathon.channel_name = None
+                hackathon.channel_url = None
+                hackathon.save()
+                logger.info(f"Removed channel from hackathon {hackathon.display_name} successfully.")
+            elif request.POST.get('channel_name') and channel_name != request.POST.get('channel_name'):
+                create_new_hackathon_slack_channel.apply_async(kwargs={
+                    'channel_name': hackathon.channel_name,
+                    'hackathon_id': hackathon.id
+                })
             messages.success(
                 request, (f'Thanks, {hackathon.display_name} has been '
                           f'successfully updated!'))
@@ -457,6 +481,8 @@ def enroll_toggle(request):
             messages.success(request, "You have withdrawn from judging.")
         elif request.user in hackathon.participants.all():
             hackathon.participants.remove(request.user)
+            if hackathon.channel_url:
+                kick_user_from_hackathon_slack_channel.apply_async(args=[hackathon.id, request.user.id])
             send_email_from_template.apply_async(args=[request.user.email, request.user.first_name, hackathon.display_name, 'withdraw_participant'])
             messages.success(request,
                              "You have withdrawn from this Hackaton.")
@@ -472,6 +498,8 @@ def enroll_toggle(request):
                 return redirect(reverse('hackathon:view_hackathon', kwargs={
                     'hackathon_id': request.POST.get("hackathon-id")}))
             hackathon.participants.add(request.user)
+            if hackathon.channel_url:
+                invite_user_to_hackathon_slack_channel.apply_async(args=[hackathon.id, request.user.id])
             send_email_from_template.apply_async(args=[request.user.email, request.user.first_name, hackathon.display_name, 'enroll_participant'])
             messages.success(request, "You have enrolled successfully.")
 
