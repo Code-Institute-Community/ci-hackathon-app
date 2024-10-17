@@ -15,8 +15,6 @@ class CustomUserAdmin(BaseUserAdmin):
             'full_name', 'slack_display_name',
             'status', 'organisation',
             'timezone', 'user_type', 'is_external')}),
-            'status', 'organisation',
-            'user_type', 'is_external')}),
         ('Permissions', {'fields': (
             'is_active', 'is_staff', 'is_superuser',
             'profile_is_public', 'email_is_public',
