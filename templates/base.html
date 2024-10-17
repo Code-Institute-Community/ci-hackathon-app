@@ -30,7 +30,7 @@
     </header>
 
     <main class="container main-content-shadow">
-        {% if request.user.is_authenticated and not request.user.current_lms_module %}
+        {% if request.user.is_authenticated and not request.user.status %}
         <div class="alert alert-info" role="alert">
             You have not entered what part of the programme you are currently at. Please go to your profile and add it
             so we can make sure that there is a fair distribution of experience amongst hackathon teams.

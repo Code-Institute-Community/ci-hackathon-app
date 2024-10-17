@@ -227,17 +227,17 @@ class TestHackathonViews(TestCase):
 
         self.client.force_login(self.user)
         self.assertTrue(num_hackathons <= 5)
-        response = self.client.get(reverse('hackathon:hackathon-list'))
+        response = self.client.get(reverse('hackathon:list-hackathons'))
         hackathons = [hackathon.id for hackathon in response.context['hackathons']]
         self.assertTrue(hackathon.id not in hackathons)
 
         self.client.force_login(self.staff_user)
-        response = self.client.get(reverse('hackathon:hackathon-list'))
+        response = self.client.get(reverse('hackathon:list-hackathons'))
         hackathons = [hackathon.id for hackathon in response.context['hackathons']]
         self.assertTrue(hackathon.id in hackathons)
 
         self.client.force_login(self.super_user)
-        response = self.client.get(reverse('hackathon:hackathon-list'))
+        response = self.client.get(reverse('hackathon:list-hackathons'))
         hackathons = [hackathon.id for hackathon in response.context['hackathons']]
         self.assertTrue(hackathon.id in hackathons)
 
@@ -245,7 +245,7 @@ class TestHackathonViews(TestCase):
         hackathon.save()
         
         self.client.force_login(self.user)
-        response = self.client.get(reverse('hackathon:hackathon-list'))
+        response = self.client.get(reverse('hackathon:list-hackathons'))
         hackathons = [hackathon.id for hackathon in response.context['hackathons']]
         self.assertTrue(hackathon.id in hackathons)
 
@@ -255,6 +255,6 @@ class TestHackathonViews(TestCase):
         self.user.save()
 
         self.client.force_login(self.user)
-        response = self.client.get(reverse('hackathon:hackathon-list'))
+        response = self.client.get(reverse('hackathon:list-hackathons'))
         hackathons = [hackathon.id for hackathon in response.context['hackathons']]
         self.assertTrue(hackathon.id in hackathons)

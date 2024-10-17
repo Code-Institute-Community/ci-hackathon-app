@@ -5,7 +5,7 @@ import pytz
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from .lists import LMS_MODULES_CHOICES, TIMEZONE_CHOICES
+from .lists import TIMEZONE_CHOICES
 from main.models import SingletonModel
 from teams.lists import LMS_LEVELS
 
@@ -39,6 +39,30 @@ class Organisation(models.Model):
         return self.display_name
 
 
+class Status(models.Model):
+    """ The participant's status and experience level used for matching
+    students into teams """
+    display_name = models.CharField(max_length=80)
+    level = models.IntegerField()
+    organisation = models.ForeignKey(
+        Organisation, on_delete=models.CASCADE, related_name='statuses',
+        default=1)
+    admin_only = models.BooleanField(default=False)
+    display_order = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.display_name
+
+    @property
+    def escaped_display_name(self):
+        return self.display_name.replace(' ', '_')
+
+    class Meta:
+        ordering = ('display_order', )
+        verbose_name = 'Status'
+        verbose_name_plural = 'Statuses'
+
+
 class CustomUser(AbstractUser):
     """ Custom user model extending the basic AbstractUser model """
 
@@ -54,11 +78,11 @@ class CustomUser(AbstractUser):
         default=''
     )
 
-    current_lms_module = models.CharField(
-        max_length=50,
-        blank=False,
-        default='',
-        choices=LMS_MODULES_CHOICES
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
     )
 
     organisation = models.ForeignKey(
@@ -120,19 +144,16 @@ class CustomUser(AbstractUser):
         """  Return Class object to string via the user email value  """
         return self.slack_display_name
 
-    def human_readable_current_lms_module(self):
-        return self.current_lms_module.replace('_', ' ')
-
     def to_team_member(self):
         teams = self.participated_hackteams.filter(
             hackathon__status='finished')
         return {
             'userid': self.id,
             'name': self.slack_display_name or self.email,
-            'level': LMS_LEVELS.get(self.current_lms_module) or 1,
             'timezone': self.timezone_to_offset(),
             'num_hackathons': teams.count(),
             'participant_label': self.participant_label(),
+            'level': self.status.level or 1
         }
 
     def timezone_to_offset(self):
@@ -157,6 +178,11 @@ class CustomUser(AbstractUser):
         
         return self in hackathon.participants.all()
 
+    def get_level(self):
+        """ Get the level from the status if student has a status assigned """
+        if self.status:
+            return self.status.level
+        return 1
 
     @property
     def user_type(self):

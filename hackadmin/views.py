@@ -16,7 +16,7 @@ from hackathon.models import Hackathon, HackTeam
 @login_required
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def hackadmin_panel(request):
     """ Used for admin to view all registered users and allows to filter
     by individual hackathon """
@@ -32,7 +32,7 @@ def hackadmin_panel(request):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def hackathon_participants(request, hackathon_id):
     """ Used for admin to view all registered users and allows to filter
     by individual hackathon """
@@ -64,7 +64,7 @@ def hackathon_participants(request, hackathon_id):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def all_users(request):
     """ Used for admin to view all registered users and allows to filter
     by individual hackathon """
@@ -81,7 +81,7 @@ def all_users(request):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def remove_participant(request, hackathon_id):
     if request.method == 'POST':
         remove_from_hackathon = (request.POST.get('remove_from_hackathon')
@@ -110,7 +110,7 @@ def remove_participant(request, hackathon_id):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def add_participant(request, hackathon_id):
     if request.method == 'POST':
         hackathon = get_object_or_404(Hackathon, id=hackathon_id)
@@ -128,7 +128,7 @@ def add_participant(request, hackathon_id):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def add_judge(request):
     if request.method == 'POST':
         hackathon = get_object_or_404(Hackathon,

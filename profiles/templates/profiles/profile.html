@@ -71,9 +71,13 @@
                     <label for="about">About</label>
                     <p id="about" class="profile-about">{% if user.about %}{{ user.about }}{% else %}N/A{% endif %}</p>
 
-                    <label for="latestModule">Latest Module</label>
+                    <label for="latestModule">Programming Experience</label>
                     <p id="latestModule">
-                        {{ user.human_readable_current_lms_module|title }}
+                        {% if user.status %}
+                        {{ user.status.display_name|title }}
+                        {% else %}
+                        N/A
+                        {% endif %}
                     </p>
 
                     <label for="latestModule">Timezone</label>

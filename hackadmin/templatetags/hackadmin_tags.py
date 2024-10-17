@@ -1,7 +1,5 @@
 from django.template import Library
 
-from accounts.models import UserType
-
 register = Library()
 
 
@@ -17,7 +15,7 @@ def readable_lms_module(lms_module):
 
 @register.simple_tag
 def split_string(**kwargs):
-    string=kwargs['string']
-    delimiter=kwargs['delimiter']
-    index=kwargs['index']
+    string = kwargs['string']
+    delimiter = kwargs['delimiter']
+    index = kwargs['index']
     return string.split(delimiter)[index]

@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 
-from .models import CustomUser, Organisation, EmailTemplate
+from .models import CustomUser, Organisation, EmailTemplate, Status
 from accounts.models import SlackSiteSettings
 
 
@@ -13,7 +13,7 @@ class CustomUserAdmin(BaseUserAdmin):
         ('Personal info', {'fields': (
             'username', 'first_name', 'last_name',
             'full_name', 'slack_display_name',
-            'current_lms_module', 'organisation',
+            'status', 'organisation',
             'timezone', 'user_type', 'is_external')}),
         ('Permissions', {'fields': (
             'is_active', 'is_staff', 'is_superuser',
@@ -40,7 +40,7 @@ class CustomUserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     list_display = ('email', 'username', 'full_name', 'is_superuser', 'user_type',
-                    'is_external')
+                    'is_external', 'status')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups',
                    'is_external')
     search_fields = ('full_name', 'email', 'slack_display_name')
@@ -59,3 +59,5 @@ admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Organisation)
 admin.site.register(SlackSiteSettings)
 admin.site.register(EmailTemplate, EmailTemplateAdmin)
+admin.site.register(Status)
+

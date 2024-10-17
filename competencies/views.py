@@ -24,7 +24,7 @@ from competencies.models import (
 @login_required
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def list_competencies(request):
     competencies = Competency.objects.order_by('display_name')
     return render(request, 'list_competencies.html', {'competencies': competencies})
@@ -33,7 +33,7 @@ def list_competencies(request):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def create_competency_difficulty(request):
     if request.method == 'POST':
         form = CompetencyDifficultyForm(request.POST)
@@ -55,7 +55,7 @@ def create_competency_difficulty(request):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def edit_competency_difficulty(request, competency_difficulty_id):
     competency_difficulty = get_object_or_404(CompetencyDifficulty,
                                               id=competency_difficulty_id)
@@ -79,7 +79,7 @@ def edit_competency_difficulty(request, competency_difficulty_id):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def create_competency(request):
     if request.method == 'POST':
         form = CompetencyForm(request.POST)
@@ -100,7 +100,7 @@ def create_competency(request):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.STAFF, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def edit_competency(request, competency_id):
     competency = get_object_or_404(Competency,
                                    id=competency_id)

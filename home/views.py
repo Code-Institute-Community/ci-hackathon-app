@@ -22,7 +22,7 @@ def index(request):
     user's full name is present, if it is not redirect to edit profile,
     otherwise redirect to home
     """
-    if not request.user.current_lms_module:
+    if not request.user.status:
         messages.warning(request, 'Please fill in your profile.')
         return redirect(reverse('edit_profile'))
 
