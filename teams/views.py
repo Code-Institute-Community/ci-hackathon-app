@@ -30,7 +30,7 @@ SLACK_CHANNEL_INVITE_ENDPOINT = 'https://slack.com/api/conversations.invite'
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def change_teams(request, hackathon_id):
     """ Page that handles the logic of automatically distributing the teams
     for a hackathon and allows for the admin to re-arrange the team members """
@@ -83,7 +83,7 @@ def change_teams(request, hackathon_id):
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def create_teams(request):
     """ View used to save the hackathon teams created by an admin """
     if request.method == 'POST':
@@ -104,13 +104,13 @@ def create_teams(request):
             return redirect(reverse('hackathon:change_teams',
                                     kwargs={'hackathon_id': hackathon_id}))
     else:
-        return redirect(reverse('hackathon:hackathon-list'))
+        return redirect(reverse('hackathon:list-hackathons'))
 
 
 @login_required
 @can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN,
              UserType.PARTNER_ADMIN],
-            redirect_url='hackathon:hackathon-list')
+            redirect_url='hackathon:list-hackathons')
 def clear_teams(request):
     """ Reset all teams for a specific hackathon """
     if request.method == 'POST':
@@ -122,7 +122,7 @@ def clear_teams(request):
         return redirect(reverse('hackathon:change_teams',
                                 kwargs={'hackathon_id': hackathon_id}))
     else:
-        return redirect(reverse('hackathon:hackathon-list'))
+        return redirect(reverse('hackathon:list-hackathons'))
 
 
 @login_required

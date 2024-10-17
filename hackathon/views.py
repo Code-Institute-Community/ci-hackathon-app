@@ -589,7 +589,7 @@ def assign_mentors(request, hackathon_id):
 
 
 @login_required
-@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:list-hackathons')
 def hackathon_events(request, hackathon_id):
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     events = Event.objects.filter(hackathon=hackathon)
@@ -604,7 +604,7 @@ def hackathon_events(request, hackathon_id):
 
 
 @login_required
-@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:list-hackathons')
 def hackathon_events_endpoint(request, hackathon_id):
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     events = Event.objects.filter(hackathon=hackathon)
@@ -621,7 +621,7 @@ def hackathon_events_endpoint(request, hackathon_id):
 
 
 @login_required
-@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:list-hackathons')
 def change_event(request, hackathon_id, event_id=None):
     hackathon = get_object_or_404(Hackathon, pk=hackathon_id)
     event = get_object_or_404(Event, pk=event_id) if event_id else None
@@ -646,7 +646,7 @@ def change_event(request, hackathon_id, event_id=None):
     })
 
 @login_required
-@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:hackathon-list')
+@can_access([UserType.SUPERUSER, UserType.FACILITATOR_ADMIN, UserType.PARTNER_ADMIN], redirect_url='hackathon:list-hackathons')
 def delete_event(request, hackathon_id, event_id):
     event = get_object_or_404(Event, pk=event_id)
     event.delete()
