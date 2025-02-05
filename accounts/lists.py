@@ -31,4 +31,17 @@ LMS_MODULES_CHOICES = (
     ('staff', 'Staff'),
 )
 
+"""
+List of CI courses to be passed into dropdown of same name for each
+user selection.
+"""
+LMS_COURSE_CHOICES = (
+    ('', 'Select Current Course'),
+    ('L3', 'The Level 3 Diploma in Software Development (L3)'),
+    ('5P', 'The 5 project Diploma in Software Development Course (5P)'),
+    ('4P', 'The 4 project Diploma in Software Development Course (4P)'),
+    ('FSBC', 'The 16 Week Full Stack Developer Bootcamp (BC)'),
+    ('DATABC', 'The 16 Week Data-Analytics Bootcamp (DBC)'),
+)
+
 TIMEZONE_CHOICES = [(tz, tz) for tz in pytz.all_timezones]

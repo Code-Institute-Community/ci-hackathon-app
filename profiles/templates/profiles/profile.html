@@ -71,6 +71,11 @@
                     <label for="about">About</label>
                     <p id="about" class="profile-about">{% if user.about %}{{ user.about }}{% else %}N/A{% endif %}</p>
 
+                    <label for="latestCourse">My Course</label>
+                    <p id="latestCourse">
+                        {{ user.current_course|upper }}
+                    </p>
+
                     <label for="latestModule">Latest Module</label>
                     <p id="latestModule">
                         {{ user.human_readable_current_lms_module|title }}
