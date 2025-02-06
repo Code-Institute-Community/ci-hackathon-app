@@ -4,7 +4,6 @@ on:
   release:
     types:
       - created
-        # branches: [ master ]
 
 jobs:
 
@@ -23,3 +22,9 @@ jobs:
 
       - name: Push Image to AWS Regristry
         run: docker push 949266541515.dkr.ecr.eu-west-1.amazonaws.com/ci-hackathon-app:${GITHUB_REF##*/}
+
+      - name: Extract staticfiles folder from image
+        run: ./extract_staticfiles.sh ${GITHUB_REF##*/}
+
+      - name: Push staticfiles to S3
+        run: AWS_DEFAULT_REGION=eu-west-1 AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY}} AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}} aws s3 cp --recursive --acl public-read static s3://codeinstitute-webpublic/hackathon_staticfiles/${GITHUB_REF##*/}
