@@ -42,6 +42,7 @@ LMS_COURSE_CHOICES = (
     ('4P', 'The 4 project Diploma in Software Development Course (4P)'),
     ('FSBC', 'The 16 Week Full Stack Developer Bootcamp (BC)'),
     ('DATABC', 'The 16 Week Data-Analytics Bootcamp (DBC)'),
+    ('external', 'Other/External'),
 )
 
 TIMEZONE_CHOICES = [(tz, tz) for tz in pytz.all_timezones]
