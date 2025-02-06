@@ -91,6 +91,23 @@
                         {{ user.participant_label|title }}
                     </p>
 
+                    <label for="userTeamCount">Hackathons Joined</label>
+                    <p id="userTeamCount">
+                       {{ user.teams.all|length }}
+                    </p>
+                    <label for="userHackathons">List of Hackathons Joined</label>
+                    {% if user.teams.all %}
+                    <ul id="userHackathons">
+                        {% for team in user.teams.all %}
+                        <li>
+                            <a href="{% url 'hackathon_detail' team.hackathon.slug %}">{{ team.hackathon.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                        <p id="userHackathons">You haven't participated in any hackathons yet. Why not sign up for the next one?</p>
+                    {% endif %}
+
                     <label for="website">Website</label>
                     <p id="website" class="profile-website-url">
                         {% if user.website_url %}
