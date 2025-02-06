@@ -86,6 +86,11 @@
                         {{ user.timezone|title }}
                     </p>
 
+                    <label for="userLabel">Hackathon Level</label>
+                    <p id="userLabel">
+                        {{ user.participant_label|title }}
+                    </p>
+
                     <label for="website">Website</label>
                     <p id="website" class="profile-website-url">
                         {% if user.website_url %}
