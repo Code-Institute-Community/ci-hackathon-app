@@ -1,9 +1,8 @@
 #!/bin/bash
 
-rm -fr static
+rm -fr staticfiles
 
 container_id=$(docker create 949266541515.dkr.ecr.eu-west-1.amazonaws.com/ci-hackathon-app:$1)
-docker exec -it $container_id python3 manage.py collectstatic
-docker cp $container_id:/staticfiles ./static
+docker cp $container_id:/hackathon-app/static ./staticfiles
 docker rm -v $container_id
 
