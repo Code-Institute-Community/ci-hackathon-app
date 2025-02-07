@@ -149,9 +149,12 @@ class CustomUser(AbstractUser):
         offset = datetime.now(pytz.timezone(self.timezone)).strftime('%z')
         return f'UTC{offset[:-2]}'
 
-    def participant_label(self):
-        teams = self.participated_hackteams.filter(
+    def get_participated_teams(self):
+        return self.participated_hackteams.filter(
             hackathon__status='finished')
+
+    def participant_label(self):
+        teams = self.get_participated_teams()
         if teams.count() == 0:
             return 'Hackathon Newbie'
         elif teams.count() < 2:

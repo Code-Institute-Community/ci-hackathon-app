@@ -93,14 +93,14 @@
 
                     <label for="userTeamCount">Hackathons Joined</label>
                     <p id="userTeamCount">
-                       {{ user.teams.all|length }}
+                       {{ user.get_participated_teams|length }}
                     </p>
                     <label for="userHackathons">List of Hackathons Joined</label>
-                    {% if user.teams.all %}
+                    {% if user.get_participated_teams %}
                     <ul id="userHackathons">
-                        {% for team in user.teams.all %}
+                        {% for team in user.get_participated_teams %}
                         <li>
-                            <a href="{% url 'hackathon_detail' team.hackathon.slug %}">{{ team.hackathon.name }}</a>
+                            <a href="{% url 'hackathon:view_hackathon' team.hackathon.id %}" class="profile-url">{{ team.hackathon.display_name }}</a>
                         </li>
                         {% endfor %}
                     </ul>
@@ -111,7 +111,7 @@
                     <label for="website">Website</label>
                     <p id="website" class="profile-website-url">
                         {% if user.website_url %}
-                        <a href="{{ user.website_url }}" target="_blank">
+                        <a href="{{ user.website_url }}" target="_blank" class="profile-url">
                         {{ user.website_url }}
                         </a>
                         {% else %}N/A{% endif %}
