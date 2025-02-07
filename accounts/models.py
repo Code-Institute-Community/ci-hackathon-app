@@ -5,7 +5,7 @@ import pytz
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from .lists import LMS_MODULES_CHOICES, TIMEZONE_CHOICES
+from .lists import LMS_MODULES_CHOICES, TIMEZONE_CHOICES, LMS_COURSE_CHOICES
 from main.models import SingletonModel
 from teams.lists import LMS_LEVELS
 
@@ -59,6 +59,13 @@ class CustomUser(AbstractUser):
         blank=False,
         default='',
         choices=LMS_MODULES_CHOICES
+    )
+
+    current_course = models.CharField(
+        max_length=50,
+        blank=False,
+        default='',
+        choices=LMS_COURSE_CHOICES
     )
 
     organisation = models.ForeignKey(
@@ -130,6 +137,7 @@ class CustomUser(AbstractUser):
             'userid': self.id,
             'name': self.slack_display_name or self.email,
             'level': LMS_LEVELS.get(self.current_lms_module) or 1,
+            'course': LMS_LEVELS.get(self.current_lms_module) or 1,
             'timezone': self.timezone_to_offset(),
             'num_hackathons': teams.count(),
             'participant_label': self.participant_label(),
@@ -141,9 +149,12 @@ class CustomUser(AbstractUser):
         offset = datetime.now(pytz.timezone(self.timezone)).strftime('%z')
         return f'UTC{offset[:-2]}'
 
-    def participant_label(self):
-        teams = self.participated_hackteams.filter(
+    def get_participated_teams(self):
+        return self.participated_hackteams.filter(
             hackathon__status='finished')
+
+    def participant_label(self):
+        teams = self.get_participated_teams()
         if teams.count() == 0:
             return 'Hackathon Newbie'
         elif teams.count() < 2:

@@ -25,6 +25,8 @@ COPY ./templates/ /hackathon-app/templates/
 COPY ./hackadmin/ /hackathon-app/hackadmin/
 COPY ./manage.py /hackathon-app/manage.py
 
+RUN python3 manage.py collectstatic
+
 EXPOSE 8000
 ENTRYPOINT ["gunicorn", "--workers=5", "--timeout=120", "--access-logfile=-",\
             "--bind=0.0.0.0:8000", "--max-requests=1000", "main.wsgi:application"]

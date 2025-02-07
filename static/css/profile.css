@@ -46,9 +46,12 @@
     display: block;
 }
 
+.card .card-body a.profile-url {
+    font-size: 1rem;
+}
+
 .card .card-body p.profile-website-url a {
     text-transform: lowercase;
-    font-size: 1rem;
 }
 /* For specific color targeting of 'o' chars in keeping with the CI Logo */
 

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from .lists import LMS_MODULES_CHOICES, TIMEZONE_CHOICES
+from .lists import LMS_MODULES_CHOICES, TIMEZONE_CHOICES, LMS_COURSE_CHOICES
 from .models import CustomUser
 
 
@@ -23,6 +23,10 @@ class SignupForm(forms.Form):
         widget=forms.Select(choices=LMS_MODULES_CHOICES),
         label="Where are you currently in the programme?"
     )
+    current_course = forms.CharField(
+        widget=forms.Select(choices=LMS_COURSE_CHOICES),
+        label="What course are you currently on?"
+    )
     timezone = forms.CharField(
         widget=forms.Select(choices=TIMEZONE_CHOICES),
         label="Timezone"
@@ -31,7 +35,7 @@ class SignupForm(forms.Form):
     class Meta:
         fields = (
             'email', 'password1', 'password2', 'slack_display_name',
-            'current_lms_module', 'timezone',
+            'current_lms_module', 'timezone', 'current_course', 
         )
         model = get_user_model()
 
@@ -41,6 +45,7 @@ class SignupForm(forms.Form):
         user.username = self.cleaned_data['email']
         user.slack_display_name = self.cleaned_data['slack_display_name']
         user.current_lms_module = self.cleaned_data['current_lms_module']
+        user.current_course = self.cleaned_data['current_course']
         user.timezone = self.cleaned_data['timezone']
         user.save()
 
@@ -62,6 +67,10 @@ class EditProfileForm(forms.ModelForm):
         widget=forms.Select(choices=LMS_MODULES_CHOICES),
         label="Where are you currently in the programme?"
     )
+    current_course = forms.CharField(
+        widget=forms.Select(choices=LMS_COURSE_CHOICES),
+        label="What course are you currently on?"
+    )
     about = forms.CharField(widget=forms.Textarea(), required=False)
     website_url = forms.CharField(required=False)
     timezone = forms.CharField(
@@ -76,6 +85,7 @@ class EditProfileForm(forms.ModelForm):
             'full_name',
             'about',
             'slack_display_name',
+            'current_course', 
             'current_lms_module',
             'website_url',
             'timezone',

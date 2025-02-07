@@ -71,6 +71,11 @@
                     <label for="about">About</label>
                     <p id="about" class="profile-about">{% if user.about %}{{ user.about }}{% else %}N/A{% endif %}</p>
 
+                    <label for="latestCourse">My Course</label>
+                    <p id="latestCourse">
+                        {{ user.current_course|upper }}
+                    </p>
+
                     <label for="latestModule">Latest Module</label>
                     <p id="latestModule">
                         {{ user.human_readable_current_lms_module|title }}
@@ -81,10 +86,32 @@
                         {{ user.timezone|title }}
                     </p>
 
+                    <label for="userLabel">Hackathon Level</label>
+                    <p id="userLabel">
+                        {{ user.participant_label|title }}
+                    </p>
+
+                    <label for="userTeamCount">Hackathons Joined</label>
+                    <p id="userTeamCount">
+                       {{ user.get_participated_teams|length }}
+                    </p>
+                    <label for="userHackathons">List of Hackathons Joined</label>
+                    {% if user.get_participated_teams %}
+                    <ul id="userHackathons">
+                        {% for team in user.get_participated_teams %}
+                        <li>
+                            <a href="{% url 'hackathon:view_hackathon' team.hackathon.id %}" class="profile-url">{{ team.hackathon.display_name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                        <p id="userHackathons">You haven't participated in any hackathons yet. Why not sign up for the next one?</p>
+                    {% endif %}
+
                     <label for="website">Website</label>
                     <p id="website" class="profile-website-url">
                         {% if user.website_url %}
-                        <a href="{{ user.website_url }}" target="_blank">
+                        <a href="{{ user.website_url }}" target="_blank" class="profile-url">
                         {{ user.website_url }}
                         </a>
                         {% else %}N/A{% endif %}
