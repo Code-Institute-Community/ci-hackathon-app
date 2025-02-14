@@ -15,33 +15,44 @@
 <div class="container">
     <div class="row">
         <div class="col-12 col-md-3">
-        <div class="card">
-            <div class="p-3">
+            <div class="card">
+                <div class="p-3">
+                    {% if is_owner %}
+                    <button class="btn btn-secondary btn-sm edit-image"
+                    data-image-type="profile_image"
+                    data-toggle="modal" data-target="#uploadImageModal">
+                    <i class="fas fa-pen mr-2"></i>Edit</button>
+                    {% endif %}
+                    {% if user.profile_image %}
+                    <img class="card-img-top profile-image" src="{{user.profile_image}}" alt="Profile image">
+                    {% else %}
+                    <!-- Greasemann, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons -->
+                    <img class="card-img-top profile-image" src="{% static 'img/profiles/profile.png' %}" alt="Profile image">
+                    {% endif %}
+                </div>
+                <div class="text-center">
                 {% if is_owner %}
-                <button class="btn btn-secondary btn-sm edit-image"
-                data-image-type="profile_image"
-                data-toggle="modal" data-target="#uploadImageModal">
-                <i class="fas fa-pen mr-2"></i>Edit</button>
+                <p class="mt-2">Welcome: <span class="dark-text">{{ user.slack_display_name }}</span></p>
+                <p><a class="btn btn-ci" href="{% url 'edit_profile' %}"><i class="fas fa-user-edit p-1"></i>Edit Profile</a></p>
+                {% if not slack_enabled %}
+                <p><a class="btn btn-ci" href="{% url 'account_change_password' %}"><i class="fas fa-key p-1"></i></i>Change Password</a></p>
                 {% endif %}
-                {% if user.profile_image %}
-                <img class="card-img-top profile-image" src="{{user.profile_image}}" alt="Profile image">
                 {% else %}
-                <!-- Greasemann, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons -->
-                <img class="card-img-top profile-image" src="{% static 'img/profiles/profile.png' %}" alt="Profile image">
+                <p class="mt-2"><span class="dark-text">{{ user.slack_display_name }}</span></p>
                 {% endif %}
+                </div>
             </div>
-            <div class="text-center">
-            {% if is_owner %}
-            <p class="mt-2">Welcome: <span class="dark-text">{{ user.slack_display_name }}</span></p>
-            <p><a class="btn btn-ci" href="{% url 'edit_profile' %}"><i class="fas fa-user-edit p-1"></i>Edit Profile</a></p>
-            {% if not slack_enabled %}
-            <p><a class="btn btn-ci" href="{% url 'account_change_password' %}"><i class="fas fa-key p-1"></i></i>Change Password</a></p>
-            {% endif %}
-            {% else %}
-            <p class="mt-2"><span class="dark-text">{{ user.slack_display_name }}</span></p>
-            {% endif %}
+            <div class="card mt-3">
+                <div class="p-3">
+                    <label class="w-100">Hackathon Badges</label>
+                    {% for team in user.get_participated_teams %}
+                        {% if team.hackathon.badge_url %}
+
+                            <img class="card-img-top profile-image hover_badge mini-badge" src="{{ team.hackathon.badge_url }}" alt="Hackathon badge" style="height: 75px; width: 75px;">
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
         </div>
         <!-- User Information -->
         <div class="col-12 col-md-9">
@@ -114,7 +125,7 @@
                         <a href="{{ user.website_url }}" target="_blank" class="profile-url">
                         {{ user.website_url }}
                         </a>
-                        {% else %}N/A{% endif %}
+                        {% else %}N/A{% endif %}git 
                     </p>
 
                     {% if is_owner or request.user.user_type|is_types:authorised_types or user.email_is_public %}
