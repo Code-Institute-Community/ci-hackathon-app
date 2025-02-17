@@ -119,6 +119,11 @@ class CustomUser(AbstractUser):
         choices=TIMEZONE_CHOICES,
     )
 
+    dropoffs = models.IntegerField(
+        default=0,
+        help_text=("Number of times a user has dropped off from a hackathon")
+    )
+
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
@@ -141,6 +146,7 @@ class CustomUser(AbstractUser):
             'timezone': self.timezone_to_offset(),
             'num_hackathons': teams.count(),
             'participant_label': self.participant_label(),
+            'dropoffs': self.dropoffs,
         }
 
     def timezone_to_offset(self):

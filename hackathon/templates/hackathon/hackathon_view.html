@@ -93,7 +93,12 @@
 
                         {% include 'hackathon/includes/judge_team_display.html' %}
                         {% else %}
-                            {% include 'hackathon/includes/enrollpart.html' %}
+                            {% if request.user.dropoffs <= 3 %}
+                                {% include 'hackathon/includes/enrollpart.html' %}
+                                <p>Dropoffs: {{ request.user.dropoffs }}</p>
+                            {% else %}
+                                <p class="text-center">You have reached the maximum number of dropoffs and can not register for this hackathon. If you feel this is in error please reach out to the community team on Slack.</p>
+                            {% endif %}     
                         {% endif %}
                     </div>  
                 </div>

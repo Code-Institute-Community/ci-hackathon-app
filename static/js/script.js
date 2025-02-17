@@ -10,6 +10,20 @@ $(document).ready(function(){
         }
     });
 
+    $('.remove_hackathon_participant').submit(function(event){
+        let confirmation = confirm("Do you really want to remove this team member?");
+        if(!confirmation){
+            event.preventDefault();
+
+        }
+        else{
+            let confirmationDropoff = confirm("Do you really want to mark this participant as a drop off?");
+            if(confirmationDropoff){
+                $(this).append('<input type="hidden" name="dropOff" value="1" /> ');
+            }
+        }
+    });
+
     $('.hackadmin-add-participant').click(function(){
         let participantId = $(this).data('participant-id');
         $('.participant_id').val(participantId);

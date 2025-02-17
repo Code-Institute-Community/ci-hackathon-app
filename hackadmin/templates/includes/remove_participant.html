@@ -1,4 +1,4 @@
-<form class="delete" action="/hackadmin/{{hackathon.id}}/remove_participant/" method="POST">
+<form class="remove_hackathon_participant" action="/hackadmin/{{hackathon.id}}/remove_participant/" method="POST">
     {% csrf_token %}
     <input type="hidden" value="{{remove_from_hackathon}}" name="remove_from_hackathon">
     <input type="hidden" value="{{team.id}}" name="team_id">

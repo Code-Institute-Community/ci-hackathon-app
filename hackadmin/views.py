@@ -100,6 +100,10 @@ def remove_participant(request, hackathon_id):
                                      id=request.POST.get('team_id'))
             team.participants.remove(participant)
 
+        if request.POST.get('dropoffs'):
+            participant.dropoffs += 1; 
+            participant.save()
+
         messages.success(request, 'Participant successfully removed')
         return redirect(reverse('hackadmin:hackathon_participants',
                                 kwargs={'hackathon_id': hackathon_id}))
