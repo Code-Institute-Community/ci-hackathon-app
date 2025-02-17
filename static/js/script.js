@@ -178,15 +178,3 @@ function _changeClass(element){
 function _chageSelection(form_num, rating){
     $(`#id_form-${form_num}-rating`).val(rating);
 }
-
-$('.mini-badge').click(function() {
-    $(this).addClass('zoom-badge');
-    var poop = $(this);
-    setTimeout(function(){
-        $(poop).removeClass('zoom-badge');
-        $(poop).addClass('shrink-badge');
-    }, 500);
-    setTimeout(function(){
-        $(poop).removeClass('shrink-badge');
-    }, 2500);
-});

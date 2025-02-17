@@ -70,14 +70,3 @@ html form label,
 .dark-text {
     font-weight: 700;
 }
-
-
-.zoom-badge {
-    transform: scale(10);
-    z-index: 1000;
-}
-
-.shrink-badge {
-    transform: scale(1);
-    transition: transform 2s linear;
-}

@@ -48,7 +48,7 @@
                     {% for team in user.get_participated_teams %}
                         {% if team.hackathon.badge_url %}
 
-                            <img class="card-img-top profile-image hover_badge mini-badge" src="{{ team.hackathon.badge_url }}" alt="Hackathon badge" style="height: 75px; width: 75px;">
+                            <img class="card-img-top profile-image hover_badge mini-badge" src="{{ team.hackathon.badge_url }}" alt="Hackathon badge" style="height: 75px; width: 75px;" data-toggle="modal" data-target="#badgeModal" data-badge-url="{{ team.hackathon.badge_url }}">
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -151,10 +151,36 @@
     </div>
 </div>
 
+<!-- Modal for displaying enlarged badge -->
+<div class="modal fade" id="badgeModal" tabindex="-1" role="dialog" aria-labelledby="badgeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="badgeModalImage" src="" alt="Hackathon badge" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
 {% include 'upload_image.html' %}
 
 {% endblock %}
 
 {% block js %}
 <script src="{% static 'js/script.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#badgeModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var badgeUrl = button.data('badge-url');
+            var modal = $(this);
+            modal.find('#badgeModalImage').attr('src', badgeUrl);
+        });
+    });
+</script>
 {% endblock %}
