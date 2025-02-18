@@ -127,7 +127,11 @@
                                 <p class="hackathon-sub-details"><i class="fas fa-clock"></i> End: {{ hackathon.end_date }}</p>
                                 
                                 <p class="hackathon-sub-details"><i class="fas fa-school"></i> Organisation: {{ hackathon.organisation }}</p>
-                                <p class="hackathon-sub-details"><img src="{{ hackathon.badge_url }}" alt="hackathon badge" style="height: 240px;"></p>
+                                {% if hackathon.badge_url %}
+                                    <p class="hackathon-sub-details"><img src="{{ hackathon.badge_url }}" alt="hackathon badge" style="height: 240px;"></p>
+                                {% else %}
+                                <p class="hackathon-sub-details"><img src="https://res.cloudinary.com/djdefbnij/image/upload/v1739874144/CommunityLogo_V3.ai_4_c74vwn.png" alt="hackathon badge" style="height: 240px;"></p>
+                                    {% endif %}    
                             </div>
                         </div>
 
