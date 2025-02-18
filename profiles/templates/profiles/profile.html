@@ -118,14 +118,26 @@
                     {% else %}
                         <p id="userHackathons">You haven't participated in any hackathons yet. Why not sign up for the next one?</p>
                     {% endif %}
-
+                    <label for="dropoffs">Hackathon Drop offs</label>
+                    <p id="dropoffs">
+                        {% if user.dropoffs %}
+                            {{ user.dropoffs }}
+                                {% if user.dropoffs >= 1 %}
+                                   - <em>Dropping off from a hackathon greatly impacts the team, we understand life happens but please try to only register if you can commit the minimum 3 - 5 hours per day.</em>
+                                {% endif %}
+                        {% else %}
+                            Thank you for not dropping off. Keep up the good work!
+                        {% endif %}
+                    </p>
                     <label for="website">Website</label>
                     <p id="website" class="profile-website-url">
                         {% if user.website_url %}
                         <a href="{{ user.website_url }}" target="_blank" class="profile-url">
                         {{ user.website_url }}
                         </a>
-                        {% else %}N/A{% endif %}git 
+                        {% else %}
+                            N/A
+                        {% endif %}
                     </p>
 
                     {% if is_owner or request.user.user_type|is_types:authorised_types or user.email_is_public %}
