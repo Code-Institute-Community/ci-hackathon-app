@@ -124,6 +124,15 @@ class CustomUser(AbstractUser):
         help_text=("Number of times a user has dropped off from a hackathon")
     )
 
+    dropped_off_hackathon = models.ForeignKey(
+        'hackathon.Hackathon',
+        on_delete=models.SET_NULL,
+        related_name='dropped_off_users',
+        null=True,
+        blank=True,
+        help_text=("The hackathon that the user dropped off from")  
+    )
+
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'

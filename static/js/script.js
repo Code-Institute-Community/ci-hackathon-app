@@ -19,7 +19,7 @@ $(document).ready(function(){
         else{
             let confirmationDropoff = confirm("Do you really want to mark this participant as a drop off?");
             if(confirmationDropoff){
-                $(this).append('<input type="hidden" name="dropOff" value="1" /> ');
+                $(this).append('<input type="hidden" name="dropoffs" value="1" /> ');
             }
         }
     });

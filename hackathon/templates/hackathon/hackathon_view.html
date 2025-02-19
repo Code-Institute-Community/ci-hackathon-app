@@ -93,14 +93,15 @@
 
                         {% include 'hackathon/includes/judge_team_display.html' %}
                         {% else %}
-                            {% if request.user.dropoffs <= 2 %}
+                        {% with is_blocked=request.user|user_is_blocked:hackathon %}
+                            {% if not is_blocked %}
                                 {% include 'hackathon/includes/enrollpart.html' %}
-                                <p>Dropoffs: {{ request.user.dropoffs }}</p>
                             {% else %}
-                                <p class="text-center card body mt-2 p-3">You've reached the maximum number of drop-offs and can't register for this hackathon. If you believe this is a mistake, 
+                                <p class="text-center card body mt-2 p-3">Because you dropped off from the last hackathon you will not be allowed to register for this hackathon. If you believe this is a mistake, 
                                     please contact the community team on <a href="https://code-institute-room.slack.com/archives/CDAFARB71">Slack.</a><br>
                                     <em> Make sure to read the <a href="{% url 'codeofconduct' %}">Hackathon Code of Conduct.</a> </em> </p>
-                            {% endif %}     
+                            {% endif %} 
+                        {% endwith %}        
                         {% endif %}
                     </div>  
                 </div>

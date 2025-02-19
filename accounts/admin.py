@@ -14,7 +14,7 @@ class CustomUserAdmin(BaseUserAdmin):
             'username', 'first_name', 'last_name',
             'full_name', 'slack_display_name',
             'current_lms_module', 'organisation',
-            'timezone', 'user_type', 'dropoffs', 'is_external')}),
+            'timezone', 'user_type', 'dropoffs', 'dropped_off_hackathon', 'is_external')}),
         ('Permissions', {'fields': (
             'is_active', 'is_staff', 'is_superuser',
             'profile_is_public', 'email_is_public',

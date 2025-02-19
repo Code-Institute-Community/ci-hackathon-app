@@ -101,7 +101,8 @@ def remove_participant(request, hackathon_id):
             team.participants.remove(participant)
 
         if request.POST.get('dropoffs'):
-            participant.dropoffs += 1; 
+            participant.dropoffs += 1
+            participant.dropped_off_hackathon = get_object_or_404(Hackathon, id=hackathon_id)
             participant.save()
 
         messages.success(request, 'Participant successfully removed')

@@ -1,5 +1,6 @@
 {% load static %}
 {% load account_tags %}
+{% load custom_tags %}
 
 <article class="card hack-card">
     <div class="card-body">
@@ -69,7 +70,11 @@
                 {% endif %}
 
                 {% if request.user.is_authenticated and hackathon.status == 'registration_open' and not request.user.user_type|is_types:authorised_types_on_card and request.user not in hackathon.participants.all %}
-                <div class="enroll-hackathon-card">{% include 'hackathon/includes/enroll_card.html' %}</div>
+                  {% with is_blocked=request.user|user_is_blocked:hackathon %}
+                    {% if not is_blocked %}
+                  <div class="enroll-hackathon-card">{% include 'hackathon/includes/enroll_card.html' %}</div>
+                    {% endif %}
+                  {% endwith %}
                 {% endif %}
                 {% endwith %}
                 
