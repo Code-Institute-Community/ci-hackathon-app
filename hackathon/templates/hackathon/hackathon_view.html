@@ -9,292 +9,308 @@
 
 {% block content %}
 
-
-    <div class="row">
-        <div class="col-md-12 col-lg-4">
-
-            <div class="container">
-                <div class="row">
-                    <div class="col p-0">
-                        {% with authorised_types='FACILITATOR_ADMIN,PARTNER_ADMIN' %}
-                        {% if hackathon.hackathon_image %}
-                        <img class="hackathon-detail-image" 
-                            src="{{ hackathon.hackathon_image }}">
-                        {% else %}
-                        <img class="hackathon-detail-image" 
-                            src="{% static 'img/ci-hackathon--square.png' %}">
-                        {% endif %}
-                        {% if request.user.user_type|is_type:"SUPERUSER" %}
-                        <button class="btn btn-secondary btn-sm edit-image"
-                            data-image-type="hackathon_image"
-                            data-identifier="{{hackathon.id}}"
-                            data-toggle="modal" data-target="#uploadImageModal">
-                            <i class="fas fa-pen mr-2"></i>Edit</button>
-                        {% elif hackathon.created_by == request.user and request.user.user_type|is_types:authorised_types %}
-                        <button class="btn btn-secondary btn-sm edit-image"
-                            data-image-type="hackathon_image"
-                            data-identifier="{{hackathon.id}}"
-                            data-toggle="modal" data-target="#uploadImageModal">
-                            <i class="fas fa-pen mr-2"></i>Edit</button>
-                        {% endif %}
-                        {% endwith %}
-                    </div>
+<div class="row">
+    <div class="col-md-12 col-lg-4">
+        <div class="container">
+            <div class="row">
+                <div class="col p-0">
+                    {% with authorised_types='FACILITATOR_ADMIN,PARTNER_ADMIN' %}
+                    {% if hackathon.hackathon_image %}
+                    <img class="hackathon-detail-image" src="{{ hackathon.hackathon_image }}">
+                    {% else %}
+                    <img class="hackathon-detail-image" src="{% static 'img/ci-hackathon--square.png' %}">
+                    {% endif %}
+                    {% if request.user.user_type|is_type:"SUPERUSER" %}
+                    <button class="btn btn-secondary btn-sm edit-image" data-image-type="hackathon_image" data-identifier="{{hackathon.id}}" data-toggle="modal" data-target="#uploadImageModal">
+                        <i class="fas fa-pen mr-2"></i>Edit
+                    </button>
+                    {% elif hackathon.created_by == request.user and request.user.user_type|is_types:authorised_types %}
+                    <button class="btn btn-secondary btn-sm edit-image" data-image-type="hackathon_image" data-identifier="{{hackathon.id}}" data-toggle="modal" data-target="#uploadImageModal">
+                        <i class="fas fa-pen mr-2"></i>Edit
+                    </button>
+                    {% endif %}
+                    {% endwith %}
                 </div>
+            </div>
 
-    {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
-
-                <div class="row">
-                    <div class="col p-0">
-                        {% if request.user.user_type|is_types:authorised_types %}
-                        <div class="dropdown mt-4 mb-2 ">
-                            <button class="btn btn-ci dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Admin Actions
+            {% with authorised_types='SUPERUSER,STAFF,FACILITATOR_ADMIN,FACILITATOR_JUDGE,PARTNER_ADMIN,PARTNER_JUDGE' %}
+            <div class="row">
+                <div class="col p-0">
+                    {% if request.user.user_type|is_types:authorised_types %}
+                    <div class="dropdown mt-4 mb-2">
+                        <button class="btn btn-ci dropdown-toggle form-control" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Admin Actions
+                        </button>
+                        <div id="judge-dropdown" class="dropdown-menu judge-dropdown" aria-labelledby="dropdownMenuButton">
+                            {% with superuser_types='SUPERUSER,FACILITATOR_ADMIN,PARTNER_ADMIN' %}
+                            {% if request.user.user_type|is_types:superuser_types %}
+                            <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/update">
+                                <i class="fas fa-pen mr-2"></i>Edit Hackathon
+                            </a>
+                            <a role="button" class="dropdown-item" href="{% url 'hackathon:hackathon_events' hackathon.id %}">
+                                <i class="fas fa-calendar mr-2"></i>
+                                {% if hackathon.events.first %}Edit{% else %}Add{% endif %} Events
+                            </a>
+                            <a role="button" class="dropdown-item" href="/hackadmin/{{hackathon.id}}/participants/">
+                                <i class="fas fa-user-cog mr-2"></i>View Hackathon Stats
+                            </a>
+                            <a role="button" class="dropdown-item" href="change_teams">
+                                <i class="fas fa-users mr-2"></i>{% if hackathon.teams.all|length == 0 %}Distribute{% else %}Change{% endif %} Teams
+                            </a>
+                            <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/assign_mentors/">
+                                <i class="fas fa-people-arrows mr-2"></i>Assign Facilitators
+                            </a>
+                            <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/awards/">
+                                <i class="fas fa-award mr-2"></i>Change Awards
+                            </a>
+                            <a role="button" class="dropdown-item" id="change-hack-status" data-toggle="modal" data-target="#changeStatusModal">
+                                <i class="fas fa-recycle mr-2"></i> Change Status
+                            </a>
+                            <a role="button" class="dropdown-item" href="final_score">
+                                <i class="fas fa-tasks mr-2"></i>View Scores
+                            </a>
+                            {% endif %}
+                            {% endwith %}
+                            {% if request.user in hackathon.judges.all %}
+                            <a role="button" class="dropdown-item" href="judge_teams">
+                                <i class="fas fa-gavel mr-2"></i> Judge Teams
+                            </a>
+                            {% endif %}
+                            <div class="dropdown-divider"></div>
+                            {% include 'hackathon/includes/enrollstaff.html' %}
+                        </div>
+                    </div>
+                    {% include 'hackathon/includes/judge_team_display.html' %}
+                    {% else %}
+                    {% with is_blocked=request.user|user_is_blocked:hackathon %}
+                    {% if not is_blocked %}
+                        {% if user in hackathon.participants.all %}
+                            {% include 'hackathon/includes/enrollpart.html' %}
+                        {% else %}
+                            <button type="button" class="btn btn-ci mt-4 mb-2 form-control" data-toggle="modal" data-target="#registerModal">
+                                <i class="fas fa-user-plus mr-2"></i>Enroll as a Participant
                             </button>
-                            <div id="judge-dropdown" class="dropdown-menu judge-dropdown" aria-labelledby="dropdownMenuButton">
-                                {% with superuser_types='SUPERUSER,FACILITATOR_ADMIN,PARTNER_ADMIN' %}
-                                {% if request.user.user_type|is_types:superuser_types %}
-                                <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/update">
-                                    <i class="fas fa-pen mr-2"></i>Edit Hackathon
-                                </a>
-                                <a role="button" class="dropdown-item" href="{% url 'hackathon:hackathon_events' hackathon.id %}">
-                                    <i class="fas fa-calendar mr-2"></i>
-                                    {% if hackathon.events.first %}Edit{% else %}Add{% endif %} Events
-                                </a>
-                                <a role="button" class="dropdown-item" href="/hackadmin/{{hackathon.id}}/participants/">
-                                    <i class="fas fa-user-cog mr-2"></i>View Hackathon Stats
-                                </a>
-                                <a role="button" class="dropdown-item" href="change_teams">
-                                    <i class="fas fa-users mr-2"></i>{% if hackathon.teams.all|length == 0 %}Distribute{% else %}Change{% endif %} Teams
-                                </a>
-                                <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/assign_mentors/">
-                                    <i class="fas fa-people-arrows mr-2"></i>Assign Facilitators
-                                </a>
-                                <a role="button" class="dropdown-item" href="/hackathon/{{hackathon.id}}/awards/">
-                                    <i class="fas fa-award mr-2"></i>Change Awards
-                                </a>
-                                <a role="button" class="dropdown-item" id="change-hack-status" data-toggle="modal" data-target="#changeStatusModal">
-                                    <i class="fas fa-recycle mr-2"></i> Change Status
-                                </a>
-                                <a role="button" class="dropdown-item" href="final_score">
-                                    <i class="fas fa-tasks mr-2"></i>View Scores
-                                </a>
-                                {% endif %}
-                                {% endwith %}
-
-                                {% if request.user in hackathon.judges.all %}
-                                <a role="button" class="dropdown-item" href="judge_teams">
-                                    <i class="fas fa-gavel mr-2"></i> Judge Teams
-                                </a>
-                                {% endif %}
-                                <div class="dropdown-divider"></div>
-                                {% include 'hackathon/includes/enrollstaff.html' %}
+                            <!-- Register Modal -->
+                            <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="registerModalLabel">Register for Hackathon</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Confirmation Checkbox -->
+                                            <div class="card-body">
+                                                <p>By clicking enroll, I confirm that I can commit the minimum 3-5 hours per day for this hackathon and have read the <a href="{% url 'codeofconduct' %}"> <em>Hackathon Code of Conduct.</em> </a>.</p>
+                                            </div>
+                                            <!-- Include enrollpart.html -->
+                                            {% include 'hackathon/includes/enrollpart.html' %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        {% include 'hackathon/includes/judge_team_display.html' %}
-                        {% else %}
-                        {% with is_blocked=request.user|user_is_blocked:hackathon %}
-                            {% if not is_blocked %}
-                                {% include 'hackathon/includes/enrollpart.html' %}
-                            {% else %}
-                                <p class="text-center card body mt-2 p-3">Because you dropped off from the last hackathon you will not be allowed to register for this hackathon. If you believe this is a mistake, 
-                                    please contact the community team on <a href="https://code-institute-room.slack.com/archives/CDAFARB71">Slack.</a><br>
-                                    <em> Make sure to read the <a href="{% url 'codeofconduct' %}">Hackathon Code of Conduct.</a> </em> </p>
-                            {% endif %} 
-                        {% endwith %}        
                         {% endif %}
-                    </div>  
-                </div>
-
-                <div class="row">
-                    <div class="col p-0">
-
-                        <div class="card my-3">
-                            <div class="card-body text-left hackathon-detailed-items">
-                                <p class="hackathon-sub-details"><i class="fas fa-laptop"></i> Theme: {{ hackathon.theme }}</p>
-                                {% if request.user.user_type|is_types:authorised_types %}
-                                <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{ hackathon.status }}</p>
-                                <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
-                                <p class="hackathon-sub-details"><i class="fas fa-users"></i>
-                                    Participants: {{ hackathon.participants.all|length }} / Teams: {{ hackathon.teams.all|length }}</p>
-                                </p>
-                                <p class="hackathon-sub-details"><i class="fas fa-user-friends"></i>
-                                    Max Participants: {% if hackathon.max_participants %}{{ hackathon.max_participants }}{% else %}Unlimited{% endif %}
-                                    {% if hackathon.max_participants_reached %}(Max Reached){% endif %}
-                                </p>
-                                {% else %}
-                                <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: 
-                                    {{hackathon.status|prettify_status:hackathon.max_participants_reached}}</p>
-                                {% endif %}
-                                <p class="hackathon-sub-details"><i class="far fa-clock"></i> Start: {{ hackathon.start_date }}</p>
-                                <p class="hackathon-sub-details"><i class="fas fa-clock"></i> End: {{ hackathon.end_date }}</p>
-                                
-                                <p class="hackathon-sub-details"><i class="fas fa-school"></i> Organisation: {{ hackathon.organisation }}</p>
-                                {% if hackathon.badge_url %}
-                                    <p class="hackathon-sub-details"><img src="{{ hackathon.badge_url }}" alt="hackathon badge" style="height: 240px;"></p>
-                                {% else %}
-                                <p class="hackathon-sub-details"><img src="https://res.cloudinary.com/djdefbnij/image/upload/v1739874144/CommunityLogo_V3.ai_4_c74vwn.png" alt="hackathon badge" style="height: 240px;"></p>
-                                    {% endif %}    
-                            </div>
-                        </div>
-
-                    </div>
+                    {% else %}
+                        <p class="text-center card body mt-2 p-3">Because you dropped off from the last hackathon you will not be allowed to register for this hackathon. If you believe this is a mistake, please contact the community team on <a href="https://code-institute-room.slack.com/archives/CDAFARB71">Slack.</a><br>
+                            <em> Make sure to read the <a href="{% url 'codeofconduct' %}">Hackathon Code of Conduct.</a> </em>
+                        </p>
+                    {% endif %}
+                    {% endwith %}
+                {% endif %}
                 </div>
             </div>
 
-        </div>
-        <div class="col-sm-12 col-lg-8">
-            <h1 class="page-title">{{ hackathon.display_name }} #{{ hackathon.id }}</h1>
-            <div class="card my-3 hackathon-detail-description">
-                <div class="card-body">
-                    {{ hackathon.description|safe|linebreaks }}
-                </div>
-            </div>
-            <!--  Calender is rendered here  --> 
-            {% if hackathon.events.first %}
-            <div id="calendar-container">
-                <div id="calendar" style="height: 600px;"></div>
-                <div class="col d-flex justify-content-center">
-                    <button id="prev-button"><</button>
-                    <button id="next-button">></button>
-                </div>
-            </div>
-            {% endif %}
-            <h1 class="page-title" id="teams">Teams:</h1>
-
-            {% if request.user.user_type|is_types:authorised_types or hackathon.status in 'hack_in_progress, judging, finished' %}
-            <div class="row teams-row">
-                {% if teams %}
-                {% for team in teams %}
-                <div class="col-sm-12 col-lg-4 my-3">
-                    <div class="card team-card">
-                        <div class="card-body">
-                            <div class="card-title text-left my-auto">
-                                <a href="{% url 'view_team' team_id=team.id %}" class="ci-link">
-                                    <h4 class="team-name">
-                                        {{ team }}
-                                    </h4>
-                                </a>
-                            </div>
-                            <div class="card-text">
-                                <p class="text-left card-text-title">Team members:</p>
-                                {% for participant in team.participants.get_queryset %}
-                                    <p class="m-1">
-                                        <i class="fas fa-user-circle mr-2"></i>
-                                        {{ participant.slack_display_name }}
-                                    </p>
-                                {% endfor %}
-                            </div>
-                            <!-- Render project submission button if user is participant of team -->
-                            {% if user in hackathon.participants.all %}
-                                {% if user in team.participants.get_queryset %}
-                                <div class="text-left">
-                                    {% if hackathon.status == 'hack_in_progress' %}
-                                    <a href="/teams/{{team.id}}/project/" class="btn btn-ci">Edit Project</a>
-                                    {% endif %}
-                                </div>
-                                {% endif %}
-                            {% elif user in hackathon.judges.all %}
-                                {% if hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
-                                <div class="text-left">
-                                    <a href="/hackathon/{{hackathon.id}}/team/{{team.id}}/judging/"
-                                        class="btn btn-ci {% if not team.project%}disabled-link{% endif %}">Edit Scores</a>
-                                    <p class="btn-subtitle p-1">{% if not team.project %}No project submitted yet.{% endif %}</p>
-                                </div>
-                                {% endif %}
+            <div class="row">
+                <div class="col p-0">
+                    <div class="card my-3">
+                        <div class="card-body text-left hackathon-detailed-items">
+                            <p class="hackathon-sub-details"><i class="fas fa-laptop"></i> Theme: {{ hackathon.theme }}</p>
+                            {% if request.user.user_type|is_types:authorised_types %}
+                            <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{ hackathon.status }}</p>
+                            <p class="hackathon-sub-details"><i class="fas fa-chalkboard-teacher"></i> Organiser: {{ hackathon.organiser }}</p>
+                            <p class="hackathon-sub-details"><i class="fas fa-users"></i>
+                                Participants: {{ hackathon.participants.all|length }} / Teams: {{ hackathon.teams.all|length }}
+                            </p>
+                            <p class="hackathon-sub-details"><i class="fas fa-user-friends"></i>
+                                Max Participants: {% if hackathon.max_participants %}{{ hackathon.max_participants }}{% else %}Unlimited{% endif %}
+                                {% if hackathon.max_participants_reached %}(Max Reached){% endif %}
+                            </p>
+                            {% else %}
+                            <p class="hackathon-sub-details"><i class="far fa-question-circle"></i> Status: {{hackathon.status|prettify_status:hackathon.max_participants_reached}}</p>
+                            {% endif %}
+                            <p class="hackathon-sub-details"><i class="far fa-clock"></i> Start: {{ hackathon.start_date }}</p>
+                            <p class="hackathon-sub-details"><i class="fas fa-clock"></i> End: {{ hackathon.end_date }}</p>
+                            <p class="hackathon-sub-details"><i class="fas fa-school"></i> Organisation: {{ hackathon.organisation }}</p>
+                            {% if hackathon.badge_url %}
+                            <p class="hackathon-sub-details"><img src="{{ hackathon.badge_url }}" alt="hackathon badge" style="height: 240px;"></p>
+                            {% else %}
+                            <p class="hackathon-sub-details"><img src="https://res.cloudinary.com/djdefbnij/image/upload/v1739874144/CommunityLogo_V3.ai_4_c74vwn.png" alt="hackathon badge" style="height: 240px;"></p>
                             {% endif %}
                         </div>
                     </div>
                 </div>
-                {% endfor %}
-                {% else %}
-                <div class="col-sm-12">
-                    <p>Teams have not been distributed yet.</p>
-                </div>
-                {% endif %}
             </div>
-            
-            <div class="row">
-                <div class="col-sm-12">
-                    {% include 'hackathon/includes/paginator.html' with page_obj=teams %}
+            {% endwith %}
+        </div>
+    </div>
+    <div class="col-sm-12 col-lg-8">
+        <h1 class="page-title">{{ hackathon.display_name }} #{{ hackathon.id }}</h1>
+        <div class="card my-3 hackathon-detail-description">
+            <div class="card-body">
+                {{ hackathon.description|safe|linebreaks }}
+            </div>
+        </div>
+        <!--  Calendar is rendered here  -->
+        {% if hackathon.events.first %}
+        <div id="calendar-container">
+            <div id="calendar" style="height: 600px;"></div>
+            <div class="col d-flex justify-content-center">
+                <button id="prev-button"><</button>
+                <button id="next-button">></button>
+            </div>
+        </div>
+        {% endif %}
+        <h1 class="page-title" id="teams">Teams:</h1>
+        {% if request.user.user_type|is_types:authorised_types or hackathon.status in 'hack_in_progress, judging, finished' %}
+        <div class="row teams-row">
+            {% if teams %}
+            {% for team in teams %}
+            <div class="col-sm-12 col-lg-4 my-3">
+                <div class="card team-card">
+                    <div class="card-body">
+                        <div class="card-title text-left my-auto">
+                            <a href="{% url 'view_team' team_id=team.id %}" class="ci-link">
+                                <h4 class="team-name">
+                                    {{ team }}
+                                </h4>
+                            </a>
+                        </div>
+                        <div class="card-text">
+                            <p class="text-left card-text-title">Team members:</p>
+                            {% for participant in team.participants.get_queryset %}
+                            <p class="m-1">
+                                <i class="fas fa-user-circle mr-2"></i>
+                                {{ participant.slack_display_name }}
+                            </p>
+                            {% endfor %}
+                        </div>
+                        <!-- Render project submission button if user is participant of team -->
+                        {% if user in hackathon.participants.all %}
+                        {% if user in team.participants.get_queryset %}
+                        <div class="text-left">
+                            {% if hackathon.status == 'hack_in_progress' %}
+                            <a href="/teams/{{team.id}}/project/" class="btn btn-ci">Edit Project</a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% elif user in hackathon.judges.all %}
+                        {% if hackathon.status == 'hack_in_progress' or hackathon.status == 'judging' %}
+                        <div class="text-left">
+                            <a href="/hackathon/{{hackathon.id}}/team/{{team.id}}/judging/" class="btn btn-ci {% if not team.project%}disabled-link{% endif %}">Edit Scores</a>
+                            <p class="btn-subtitle p-1">{% if not team.project %}No project submitted yet.{% endif %}</p>
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
+            {% endfor %}
             {% else %}
-            <div class="row">
-                <div class="col-sm-12">
-                    <p>Teams have not been distributed yet.</p>
-                </div>
+            <div class="col-sm-12">
+                <p>Teams have not been distributed yet.</p>
             </div>
             {% endif %}
-
         </div>
-    </div>    
-      
-    <script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var hackathonId = "{{ hackathon.id }}";
-            var calendarContainer = document.getElementById('calendar-container');
-            if (calendarContainer) {
-                var calendar = new tui.Calendar(document.getElementById('calendar'), {
-                    week: {
-                        startDayOfWeek: (new Date()).getDay(),
-                        eventView: ['time'],
-                        taskView: false
-                    },
-                    scheduleView: ['time'],
-                    useCreationPopup: false,
-                    useDetailPopup: true,
+        <div class="row">
+            <div class="col-sm-12">
+                {% include 'hackathon/includes/paginator.html' with page_obj=teams %}
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-sm-12">
+                <p>Teams have not been distributed yet.</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var hackathonId = "{{ hackathon.id }}";
+        var calendarContainer = document.getElementById('calendar-container');
+        if (calendarContainer) {
+            var calendar = new tui.Calendar(document.getElementById('calendar'), {
+                week: {
+                    startDayOfWeek: (new Date()).getDay(),
+                    eventView: ['time'],
+                    taskView: false
+                },
+                scheduleView: ['time'],
+                useCreationPopup: false,
+                useDetailPopup: true,
+            });
+
+            calendar.on('clickSchedule', function (event) {
+                var schedule = event.schedule;
+                calendar.setPopupDetail({
+                    title: schedule.title,
+                    location: schedule.location,
+                    start: schedule.start,
+                    end: schedule.end,
+                    isAllDay: schedule.isAllDay,
+                    state: schedule.state
                 });
-    
-                calendar.on('clickSchedule', function (event) {
-                    var schedule = event.schedule;
-                    calendar.setPopupDetail({
-                        title: schedule.title,
-                        location: schedule.location,
-                        start: schedule.start,
-                        end: schedule.end,
-                        isAllDay: schedule.isAllDay,
-                        state: schedule.state
+            });
+
+            // API call to the events_endpoint to fetch events for the specific hackathon
+            fetch(`/hackathon/${hackathonId}/events_endpoint/`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(event => { // Iterates through the events db and creates them on the calendar
+                        calendar.createEvents([{
+                            id: event.id,
+                            title: event.title,
+                            body: event.body,
+                            category: 'time',
+                            start: new Date(event.start),
+                            end: new Date(event.end),
+                            backgroundColor: '#f05323'
+                        }]);
                     });
-                });
-    
-                // API call to the events_endpoint to fetch events for the specific hackathon
-                fetch(`/hackathon/${hackathonId}/events_endpoint/`)
-                    .then(response => response.json())
-                    .then(data => {
-                            data.forEach(event => { // Iterates through the events db and creates them on the calendar
-                                calendar.createEvents([{
-                                    id: event.id,
-                                    title: event.title,
-                                    body: event.body,
-                                    category: 'time',
-                                    start: new Date(event.start),
-                                    end: new Date(event.end),
-                                    backgroundColor: '#f05323'
-                                    
-                                }]);
-                            });
-                    })
-                    .catch(err => console.error('Error loading events:', err)); // Logs error to console if events cannot be loaded
-    
-                // Get the buttons
-                var prevButton = document.getElementById('prev-button');
-                var nextButton = document.getElementById('next-button');
-    
-                // Add event listeners to the buttons
-                prevButton.addEventListener('click', function () {
-                    calendar.prev();
-                });
-    
-                nextButton.addEventListener('click', function () {
-                    calendar.next();
-                });
-            }
+                })
+                .catch(err => console.error('Error loading events:', err)); // Logs error to console if events cannot be loaded
+
+            // Get the buttons
+            var prevButton = document.getElementById('prev-button');
+            var nextButton = document.getElementById('next-button');
+
+            // Add event listeners to the buttons
+            prevButton.addEventListener('click', function () {
+                calendar.prev();
+            });
+
+            nextButton.addEventListener('click', function () {
+                calendar.next();
+            });
+        }
+
+        var commitmentCheckbox = document.getElementById('commitmentCheckbox');
+        var confirmRegisterButton = document.getElementById('confirmRegisterButton');
+
+        commitmentCheckbox.addEventListener('change', function () {
+            confirmRegisterButton.disabled = !commitmentCheckbox.checked;
         });
-    </script>
-        
-    {% endwith %}
-    {% include 'upload_image.html' %}
-    {% include 'hackathon/includes/change_status.html' %}
+    });
+</script>
+
+{% include 'upload_image.html' %}
+{% include 'hackathon/includes/change_status.html' %}
 {% endblock %}
