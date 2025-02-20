@@ -185,14 +185,4 @@
 
 {% block js %}
 <script src="{% static 'js/script.js' %}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        $('#badgeModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var badgeUrl = button.data('badge-url');
-            var modal = $(this);
-            modal.find('#badgeModalImage').attr('src', badgeUrl);
-        });
-    });
-</script>
 {% endblock %}

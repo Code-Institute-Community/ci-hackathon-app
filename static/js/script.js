@@ -192,3 +192,13 @@ function _changeClass(element){
 function _chageSelection(form_num, rating){
     $(`#id_form-${form_num}-rating`).val(rating);
 }
+
+// Modal for enlarging the badge when clicked
+document.addEventListener('DOMContentLoaded', function() {
+    $('#badgeModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var badgeUrl = button.data('badge-url');
+        var modal = $(this);
+        modal.find('#badgeModalImage').attr('src', badgeUrl);
+    });
+});
