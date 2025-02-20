@@ -4,7 +4,9 @@
 import re
 
 from django.template import Library
+from django.db.models import Q
 import datetime
+from hackathon.models import Hackathon
 
 ANCHOR_PATTERN = r'href[=][\"]?.+?(?=[\"])[\"]'
 
@@ -132,3 +134,18 @@ def remove_hrefs(text):
     TODO: Add functionality to only remove specific links and show others
     """
     return re.sub(ANCHOR_PATTERN, '', text)
+
+
+@register.filter
+def user_is_blocked(user, hackathon):
+    """ Checks if the user is blocked from the this hackathon""" 
+    if not user.dropped_off_hackathon:
+        return False
+    else:
+        orgs = [1]
+        orgs.append(user.organisation.id)
+        hackathons = Hackathon.objects.filter((Q(organisation__in=orgs) | Q(is_public=True)) & Q(end_date__lte=hackathon.end_date)).exclude(status__in=['deleted', 'draft']).order_by('-end_date')
+        if user.dropped_off_hackathon in hackathons[:2]:
+            return True
+        return False
+      

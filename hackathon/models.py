@@ -87,6 +87,11 @@ class Hackathon(models.Model):
         blank=True,
         help_text=("Link to the Google Form for registrations.")
     )
+    badge_url = models.URLField(
+        default="",
+        blank=True,
+        help_text=("Link to the badge image.")
+    )
 
     def __str__(self):
         return self.display_name

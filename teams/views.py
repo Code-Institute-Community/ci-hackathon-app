@@ -46,7 +46,9 @@ def change_teams(request, hackathon_id):
         team_sizes = sorted(choose_team_sizes(participants, team_size))
         if len(team_sizes) == 0:
             return render(request, 'change_teams.html',
-                          {'num_participants': len(participants)})
+                          {'num_participants': len(participants),
+                           'hackathon_id': hackathon_id,
+                           })
         grouped_participants, hackathon_level = group_participants(
             participants, len(team_sizes))
         team_levels = sorted(choose_team_levels(len(team_sizes), hackathon_level))

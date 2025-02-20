@@ -43,6 +43,16 @@ class HackathonForm(forms.ModelForm):
         ),
         required=True
     )
+    badge_url = forms.URLField(
+        label="Badge URL",
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Add badge url if available',
+                'type': 'url'
+            }
+        )
+    )
     start_date = forms.DateTimeField(
         label="Start Date",
         input_formats=['%d/%m/%Y %H:%M'],
@@ -110,7 +120,7 @@ class HackathonForm(forms.ModelForm):
         fields = ['display_name', 'description', 'theme', 'start_date',
                   'end_date', 'status', 'organisation', 'score_categories',
                   'team_size', 'tag_line', 'is_public', 'max_participants',
-                  'allow_external_registrations', 'registration_form'
+                  'allow_external_registrations', 'registration_form', 'badge_url'
                   ]
 
     def __init__(self, *args, **kwargs):

@@ -10,6 +10,20 @@ $(document).ready(function(){
         }
     });
 
+    $('.remove_hackathon_participant').submit(function(event){
+        let confirmation = confirm("Do you really want to remove this team member?");
+        if(!confirmation){
+            event.preventDefault();
+
+        }
+        else{
+            let confirmationDropoff = confirm("Do you really want to mark this participant as a drop off?");
+            if(confirmationDropoff){
+                $(this).append('<input type="hidden" name="dropoffs" value="1" /> ');
+            }
+        }
+    });
+
     $('.hackadmin-add-participant').click(function(){
         let participantId = $(this).data('participant-id');
         $('.participant_id').val(participantId);
@@ -178,3 +192,13 @@ function _changeClass(element){
 function _chageSelection(form_num, rating){
     $(`#id_form-${form_num}-rating`).val(rating);
 }
+
+// Modal for enlarging the badge when clicked
+document.addEventListener('DOMContentLoaded', function() {
+    $('#badgeModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var badgeUrl = button.data('badge-url');
+        var modal = $(this);
+        modal.find('#badgeModalImage').attr('src', badgeUrl);
+    });
+});

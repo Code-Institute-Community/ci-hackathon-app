@@ -93,7 +93,15 @@
 
                         {% include 'hackathon/includes/judge_team_display.html' %}
                         {% else %}
-                            {% include 'hackathon/includes/enrollpart.html' %}
+                        {% with is_blocked=request.user|user_is_blocked:hackathon %}
+                            {% if not is_blocked %}
+                                {% include 'hackathon/includes/enrollpart.html' %}
+                            {% else %}
+                                <p class="text-center card body mt-2 p-3">Because you dropped off from the last hackathon you will not be allowed to register for this hackathon. If you believe this is a mistake, 
+                                    please contact the community team on <a href="https://code-institute-room.slack.com/archives/CDAFARB71">Slack.</a><br>
+                                    <em> Make sure to read the <a href="{% url 'codeofconduct' %}">Hackathon Code of Conduct.</a> </em> </p>
+                            {% endif %} 
+                        {% endwith %}        
                         {% endif %}
                     </div>  
                 </div>
@@ -122,6 +130,11 @@
                                 <p class="hackathon-sub-details"><i class="fas fa-clock"></i> End: {{ hackathon.end_date }}</p>
                                 
                                 <p class="hackathon-sub-details"><i class="fas fa-school"></i> Organisation: {{ hackathon.organisation }}</p>
+                                {% if hackathon.badge_url %}
+                                    <p class="hackathon-sub-details"><img src="{{ hackathon.badge_url }}" alt="hackathon badge" style="height: 240px;"></p>
+                                {% else %}
+                                <p class="hackathon-sub-details"><img src="https://res.cloudinary.com/djdefbnij/image/upload/v1739874144/CommunityLogo_V3.ai_4_c74vwn.png" alt="hackathon badge" style="height: 240px;"></p>
+                                    {% endif %}    
                             </div>
                         </div>
 
