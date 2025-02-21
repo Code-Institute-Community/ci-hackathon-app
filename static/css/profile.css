@@ -70,3 +70,80 @@ html form label,
 .dark-text {
     font-weight: 700;
 }
+
+.trophy-case {
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    border: 2px solid var(--p-orange);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px darkgray;
+    position: relative;
+    overflow: hidden; /* Ensure the shine effect doesn't overflow the card */
+}
+
+.trophy-case::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 10px;
+    background: var(--p-orange);
+    border-radius: 5px 5px 0 0;
+}
+
+.trophy-case::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 10px;
+    background: var(--p-orange);
+    border-radius: 0 0 5px 5px;
+}
+
+.trophy-case .card-img-top {
+    border: 2px solid #d1d1d1;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.trophy-case::before,
+.trophy-case::after {
+    transition: all 0.3s ease;
+}
+
+.trophy-case:hover::before,
+.trophy-case:hover::after {
+    background: #b0e0e6;
+}
+
+.trophy-case::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
+    transform: skewX(-25deg);
+    transition: all 0.5s ease;
+}
+
+.trophy-case:hover::before {
+    left: 125%;
+    transition: all 0.5s ease;
+}
+
+.hack-badge {
+    cursor: pointer;
+}
+
+.hack-badge:hover {
+    box-shadow: 0px 2px 4px 0px darkgray
+}

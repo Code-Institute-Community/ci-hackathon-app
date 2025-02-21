@@ -42,13 +42,14 @@
                 {% endif %}
                 </div>
             </div>
-            <div class="card mt-3">
-                <div class="p-3">
-                    <label class="w-100">Hackathon Badges</label>
+            <div class="card mt-3 trophy-case justify-content-center">
+                <div class="p-0">
+                    <label class="w-100 text-center p-1" style="font-size: larger; font-weight: 800;">Trophy Case</label>
+                    <hr class="m-0 mb-1">
                     {% for team in user.get_participated_teams %}
                         {% if team.hackathon.badge_url %}
-
-                            <img class="card-img-top profile-image hover_badge mini-badge" src="{{ team.hackathon.badge_url }}" alt="Hackathon badge" style="height: 75px; width: 75px;" data-toggle="modal" data-target="#badgeModal" data-badge-url="{{ team.hackathon.badge_url }}">
+                            <img class="card-img-top profile-image hack-badge ml-3" src="{{ team.hackathon.badge_url }}" alt="Hackathon badge" style="height: 75px; width: 75px;" data-toggle="modal" data-target="#badgeModal" data-badge-url="{{ team.hackathon.badge_url }}">
+                           
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -168,6 +169,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="badgeModalLabel"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
