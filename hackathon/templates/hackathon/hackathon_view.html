@@ -95,7 +95,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="registerModalLabel">Register for Hackathon</h5>
+                                            <h5 class="modal-title" id="registerModalLabel">Important</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -103,7 +103,9 @@
                                         <div class="modal-body">
                                             <!-- Confirmation Checkbox -->
                                             <div class="card-body">
-                                                <p>By clicking enroll, I confirm that I can commit the minimum 3-5 hours per day for this hackathon and have read the <a href="{% url 'codeofconduct' %}"><em>Hackathon Code of Conduct.</em></a></p>
+                                                <p>By clicking enroll, I confirm that I can commit the minimum 3-5 hours per day for this hackathon and have read the <a href="{% url 'codeofconduct' %}" target="_blank"><em>Hackathon Code of Conduct.</em></a>
+                                                <br><br><em>Should you drop off without informing your team, facilitator or Community team member, you may not be able to participate in the next hackathon.</em></p>
+                                                </p>
                                             </div>
                                             <!-- Include enrollpart.html -->
                                             {% include 'hackathon/includes/enrollpart.html' %}
